@@ -5,6 +5,45 @@ from dateutil.relativedelta import relativedelta
 from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
 from odoo import fields, exceptions
 
+def _run_sol_onchange_display_product_id(line):
+    line.onchange_display_product_id()  # product_id, rental changed
+    line.product_id_change()
+    line.onchange_rental()  # product_id changed again
+    line.product_id_change()  # product_uom changed
+    line.product_uom_change()
+    line.rental_product_id_change()  # set start end date manually
+
+def _run_sol_onchange_date(line, start_date=False, end_date=False):
+    if start_date:
+        line.start_date = start_date
+    if end_date:
+        line.end_date = end_date
+    line.onchange_start_end_date()  # number_of_time_unit changed
+    line.rental_qty_number_of_days_change()  # product_uom_qty changed
+    line.product_uom_change()
+
+def _run_sol_onchange_product_uom(line, product_uom):
+    line.product_uom = product_uom
+    line.product_uom_change()
+    line.product_id_change()
+    line.onchange_start_end_date()
+    line.rental_qty_number_of_days_change()
+    line.product_uom_change()
+
+def _run_sol_onchange_can_sell_rental(line, can_sell_rental):
+    line.can_sell_rental = can_sell_rental
+    line.onchange_can_sell_rental()
+    line.onchange_rental()
+    line.product_id_change()
+    line.product_uom_change()
+
+def _run_sol_onchange_rental(line, rental):
+    line.rental = rental
+    line.onchange_rental()
+    line.onchange_can_sell_rental()
+    line.rental_product_id_change()
+    line.product_id_change()
+    line.product_uom_change()
 
 class TestRentalPricelist(RentalStockCommon):
     def setUp(self):
@@ -67,46 +106,6 @@ class TestRentalPricelist(RentalStockCommon):
                 }
             )
         )
-
-    def _run_sol_onchange_display_product_id(self, line):
-        line.onchange_display_product_id()  # product_id, rental changed
-        line.product_id_change()
-        line.onchange_rental()  # product_id changed again
-        line.product_id_change()  # product_uom changed
-        line.product_uom_change()
-        line.rental_product_id_change()  # set start end date manually
-
-    def _run_sol_onchange_date(self, line, start_date=False, end_date=False):
-        if start_date:
-            line.start_date = start_date
-        if end_date:
-            line.end_date = end_date
-        line.onchange_start_end_date()  # number_of_time_unit changed
-        line.rental_qty_number_of_days_change()  # product_uom_qty changed
-        line.product_uom_change()
-
-    def _run_sol_onchange_product_uom(self, line, product_uom):
-        line.product_uom = product_uom
-        line.product_uom_change()
-        line.product_id_change()
-        line.onchange_start_end_date()
-        line.rental_qty_number_of_days_change()
-        line.product_uom_change()
-
-    def _run_sol_onchange_can_sell_rental(self, line, can_sell_rental):
-        line.can_sell_rental = can_sell_rental
-        line.onchange_can_sell_rental()
-        line.onchange_rental()
-        line.product_id_change()
-        line.product_uom_change()
-
-    def _run_sol_onchange_rental(self, line, rental):
-        line.rental = rental
-        line.onchange_rental()
-        line.onchange_can_sell_rental()
-        line.rental_product_id_change()
-        line.product_id_change()
-        line.product_uom_change()
 
     def test_00_auto_create_service_product(self):
         """
@@ -184,7 +183,7 @@ class TestRentalPricelist(RentalStockCommon):
         line.onchange_rental()
         line.product_uom_change()
         line.rental_product_id_change()
-        self._run_sol_onchange_date(line)
+        _run_sol_onchange_date(line)
         # self._print_sol(line)
         self.assertEqual(line.rental, True)
         self.assertEqual(line.rental_type, "new_rental")
@@ -197,7 +196,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.number_of_time_unit > 80, True)
 
         # Change product_uom manually
-        self._run_sol_onchange_product_uom(line, self.uom_month)
+        _run_sol_onchange_product_uom(line, self.uom_month)
         # self._print_sol(line)
         self.assertEqual(line.product_id, self.productA.product_rental_month_id)
         self.assertEqual(line.display_product_id, self.productA)
@@ -244,7 +243,7 @@ class TestRentalPricelist(RentalStockCommon):
         line.onchange_rental()
         line.product_uom_change()
         line.rental_product_id_change()
-        self._run_sol_onchange_date(line)
+        _run_sol_onchange_date(line)
         # self._print_sol(line)
         self.assertEqual(line.rental, True)
         self.assertEqual(line.rental_type, "new_rental")
@@ -257,7 +256,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.number_of_time_unit, 3)
 
         # Change can_sell_rental -> True manually
-        self._run_sol_onchange_can_sell_rental(line, True)
+        _run_sol_onchange_can_sell_rental(line, True)
         # self._print_sol(line)
         self.assertEqual(line.rental, False)
         self.assertEqual(line.rental_type, False)
@@ -268,7 +267,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.rental_qty, 0)
 
         # Change rental -> True manually
-        self._run_sol_onchange_rental(line, True)
+        _run_sol_onchange_rental(line, True)
         # self._print_sol(line)
         self.assertEqual(line.rental, True)
         self.assertEqual(line.rental_type, "new_rental")
@@ -383,34 +382,34 @@ class TestRentalPricelist(RentalStockCommon):
                 }
             )
         )
-        self._run_sol_onchange_display_product_id(line)
+        _run_sol_onchange_display_product_id(line)
         # check price of days
-        self._run_sol_onchange_date(line)
+        _run_sol_onchange_date(line)
         self.assertEqual(line.product_uom_qty > 80, True)
         self.assertEqual(line.price_unit, 70)
-        self._run_sol_onchange_date(line, end_date=self.date_two_month_later)
+        _run_sol_onchange_date(line, end_date=self.date_two_month_later)
         self.assertEqual(line.product_uom_qty > 45, True)
         self.assertEqual(line.price_unit, 80)
-        self._run_sol_onchange_date(line, end_date=self.date_one_month_later)
+        _run_sol_onchange_date(line, end_date=self.date_one_month_later)
         self.assertEqual(line.product_uom_qty > 20, True)
         self.assertEqual(line.price_unit, 90)
-        self._run_sol_onchange_date(line, end_date=self.tomorrow)
+        _run_sol_onchange_date(line, end_date=self.tomorrow)
         self.assertEqual(line.product_uom_qty, 2)
         self.assertEqual(line.price_unit, 100)
 
         # check price of months
-        self._run_sol_onchange_product_uom(line, self.uom_month)
-        self._run_sol_onchange_date(
+        _run_sol_onchange_product_uom(line, self.uom_month)
+        _run_sol_onchange_date(
             line, end_date=self.date_28_day_later
         )  # check round
         self.assertEqual(line.product_uom_qty, 1)
         self.assertEqual(line.price_unit, 1000)
-        self._run_sol_onchange_date(
+        _run_sol_onchange_date(
             line, end_date=self.date_63_day_later
         )  # check round
         self.assertEqual(line.product_uom_qty, 2)
         self.assertEqual(line.price_unit, 900)
-        self._run_sol_onchange_date(line, end_date=self.date_three_month_later)
+        _run_sol_onchange_date(line, end_date=self.date_three_month_later)
         self.assertEqual(line.product_uom_qty, 3)
         self.assertEqual(line.price_unit, 800)
 
