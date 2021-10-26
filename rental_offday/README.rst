@@ -1,0 +1,107 @@
+Rental Off-Day
+====================================================
+
+*This file has been generated on 2021-10-25-10-18-19. Changes to it will be overwritten.*
+
+Summary
+-------
+
+Manage off-days in rentals on daily basis
+
+Description
+-----------
+
+During short-term rentals over several days or weeks, the customer and the salesman
+agree on so called off-days. On these days the customer still have the rented products
+but usually doesn't use them and, therefore, does not pay the daily price. This is often
+the case for weekends and holidays, since there might be some legal limitations in using
+the products on these days.
+In order to meet this requirement, the salesman can add off-days on sale order lines for
+products that are rentable in days. These days will not be included in price calculation.
+
+
+Usage
+-----
+
+The off-days can only be used for products rentable in days.
+
+Create a rentable product and its rental service for daily rentals:
+ * Go to Rentals > Configuration > Settings.
+ * Please activate the checkbox for using 'Product Variants'.
+ * Go to Rentals > Products > Products.
+ * Create a new storable product.
+ * Active the checkbox 'Can be Rented'.
+ * Go to page 'Rental Price'.
+ * Activate the boolean fields for daily rental.
+ * Add a usual price for one day.
+ * Save the product, which creates the related rental service.
+ * Add bulk prices as desired, e.g. one day costs 300 €, 7 days 290 €, 21 days 250 €, and so on.
+ * Adjust its stock in location 'Rental In'.
+
+Create a rental order:
+ * Go to Rentals > Customer > Rental Quotations.
+ * Create a new order and choose the type 'Rental Order'.
+ * Add the rental service as an order line.
+ * Set the quantity to rent out one or several storable rentable products.
+ * Choose start and end date, e.g. for 3 weeks.
+ * On the order line you will see a page 'Off-Days' at the bottom.
+ * Choose the type 'Weekend' in order to create 'Fixed Off-Days' and you get a list with all saturdays and sundays within the rental period.
+ * Add some additional off-days as needed.
+ * The number of off-days reduces the rental quantity and is therefore not included in price calculation.
+ * Confirm the order.
+
+
+Changelog
+---------
+
+- ce77a323 2021-10-25 10:17:16 +0200 wagner@elegosoft.com  (HEAD -> v12) fix two syntax errors in documentation (issue #3339)
+- 996b4742 2021-10-25 10:15:33 +0200 wagner@elegosoft.com  fix two syntax errors in documentation (issue #3339)
+- 84b8ac2c 2021-10-19 13:27:42 +0200 maria.sparenberg@elegosoft.com  (origin/feature_4439_blp1250_rental_product_pack_v12) issue #4438 format and finalize description and usage section
+- 8b4d40c4 2021-09-23 09:19:24 +0200 wagner@elegosoft.com  regenerate doc (issue #4016)
+- dd988a2f 2021-06-09 12:42:47 +0200 wagner@elegosoft.com  update documentation (issue #3613)
+- 1abc79fe 2021-05-12 18:08:04 +0200 yweng@elegosoft.com  (origin/wip_4168_sale_rental_v12, wip_4168_sale_rental_v12) [IMP] adjust dependence of rental modules: replace rental_sale with sale_rental
+- 4218464c 2021-01-15 13:20:07 +0000 jenkins-ci@elegosoft.com  [MERGE] remotes/origin/feature_3978_blp963_additional_offdays_v12: addons-rental-vertical remotes/origin/feature_3978_blp963_additional_offdays_v12 - 51af4f6ee418b45af29dde84a394dfe2035bb930 issue #3978 add additional off days by onchange event
+- 51af4f6e 2021-01-14 16:06:40 +0100 maria.sparenberg@elegosoft.com  (origin/feature_3978_blp963_additional_offdays_v12) issue #3978 add additional off days by onchange event
+- bbd5cb25 2021-01-14 13:55:22 +0100 wagner@elegosoft.com  adapt gen-doc and update (issue #3613)
+- 78a189ba 2021-01-12 09:11:44 +0100 maria.sparenberg@elegosoft.com  (origin/feature_3978_blp961_offdays_unittest_v12) issue #3978 fix unittest
+- eb2e57bd 2021-01-11 14:03:33 +0100 maria.sparenberg@elegosoft.com  (origin/feature_3978_blp954_several_offdays_v12) issue #3978 add several additional off days in sale order line form view (not tree view)
+- a35a62d4 2020-12-22 22:59:30 +0100 kay.haeusler@elego.de  regenerate all de.po and \*.pot files; issue #4016
+- 83ed8f72 2020-12-22 18:06:08 +0100 wagner@elegosoft.com  all Python code reformatted by black code formatter (issue #4016)
+- afbe85d7 2020-12-21 19:10:41 +0100 kay.haeusler@elego.de  (origin/feature_3979_blp925_rental_pricelist_interval_v12) fix an onchange problem; issue #3979
+- 32d50e57 2020-12-12 13:24:47 +0100 yweng@elegosoft.com  (origin/feature_3978_blp924_rental_offday_v12) [IMP] Wizard add.offday (issue #3978)
+- c7e3b592 2020-11-06 09:59:46 +0100 wagner@elegosoft.com  regenerate doc from manifests (issue #3613)
+- 391ef2af 2020-10-28 20:59:58 +0100 wagner@elegosoft.com  add usage information for product sets and product packs; add configuration and usage information for rental_sale and extend gen-doc for configuration (issue #3613)
+- d39f57e8 2020-10-28 20:18:47 +0100 wagner@elegosoft.com  add links to the index in README.md (issue #3613)
+- b1039c8c 2020-10-28 17:39:27 +0100 wagner@elegosoft.com  add index generation and add index to README.md (issue #3613)
+- 363cb502 2020-10-28 16:59:43 +0100 wagner@elegosoft.com  change quotes in manifests of rental_forward_shipment_plan and rental_routing and add some draft information about routing; regenerate (issue #3613)
+- fb94de5c 2020-10-28 16:20:59 +0100 wagner@elegosoft.com  add descriptions to rental_timeline modules and regenerate (issue #3613)
+- f1affe52 2020-10-28 12:45:28 +0100 wagner@elegosoft.com  regenerate doc (issue #3613)
+- 86e7c1a6 2020-10-28 12:35:56 +0100 maria.sparenberg@elegosoft.com  issue #3613 add manifest description and usage for several rental modules
+- 5244748e 2020-10-27 14:52:26 +0100 wagner@elegosoft.com  regenerate documentation and add README.rst files (issue #3339)
+- d02ea5d8 2020-10-27 14:41:06 +0100 wagner@elegosoft.com  (tag: bp_rental_v12_integration-cep-849) update doc generation script (issue #3339)
+- 1be4b54c 2020-09-15 12:08:18 +0200 yweng@elegosoft.com  (origin/feature_3866_blp804_rename_sale_rental_v12) [MIG] Rename Module sale_rental and rental_sale (update dependence and xml_id)
+- 114c04ca 2020-09-11 15:36:33 +0200 yweng@elegosoft.com  (origin/feature_3822_blp790_duplicated_fields_v12) [MIG] Model 'product.template': replace rental_ok with rental
+- 7a4cfcb4 2020-09-11 11:28:47 +0200 maria.sparenberg@elegosoft.com  issue #3602 fix duplicated labels in module rental_offday
+- eee2472b 2020-06-26 19:24:51 +0200 wagner@elegosoft.com  (origin/fix_3339_blp669_extend_documentation_v12, origin/fix_3339_blp666_extend_documentation_v12, fix_3339_blp669_extend_documentation_v12, fix_3339_blp666_extend_documentation_v12) update documentation (issue #3339)
+- 92cd0c00 2020-06-02 14:22:31 +0200 maria.sparenberg@elegosoft.com  (origin/feature_3674_blp631_rental_offday_v12) issue #3674 add description to datamodel rental.offday
+- 57b29fa1 2020-05-24 12:58:49 +0200 wagner@elegosoft.com  (origin/fix_3339_blp622_extend_documentation_v12, origin/fix_3339_bl616_extend_documentation_v12, fix_3339_blp622_extend_documentation_v12, fix_3339_bl616_extend_documentation_v12) update documentation for fix release (issue #3339)
+- 94dc79ca 2020-05-16 18:10:44 +0200 wagner@elegosoft.com  (origin/fix_3339_blp559_extend_documentation_v12, fix_3339_blp559_extend_documentation_v12) update module documentation (issue #3339)
+- 89adaaf3 2020-05-16 14:54:03 +0200 wagner@elegosoft.com  fixup categories and regenerate documentation (issue #3339)
+- 134218b1 2020-05-03 18:34:51 +0200 wagner@elegosoft.com  (origin/feature_3339_blp541_update_doc_v12, feature_3339_blp541_update_doc_v12) unify license and author and regenerate documentation (issue #3613, issue #3339)
+- 795b1b6a 2020-04-24 20:58:26 +0200 wagner@elegosoft.com  (tag: bp_rental_v12_integration-cep-521, tag: bp_rental_v12_integration-cep-520, tag: bp_rental_v12_integration-cep-519, tag: bp_rental_v12_integration-cep-518, tag: bp_rental_v12_integration-cep-517, tag: bp_rental_v12_integration-cep-516, tag: bp_rental_v12_integration-cep-514, tag: bp_rental_v12_integration-cep-513, tag: bp_rental_v12_integration-cep-512, tag: bp_rental_v12_integration-cep-511, tag: bp_rental_v12_integration-cep-510, tag: bp_rental_v12_integration-cep-509, tag: bp_rental_v12_integration-cep-508, tag: bp_rental_v12_integration-cep-507, tag: bp_rental_v12_integration-cep-506, tag: bp_rental_v12_integration-cep-505, tag: bp_humanilog_v12_integration-cep-322, tag: bp_humanilog_v12_integration-cep-321, tag: bp_humanilog_v12_integration-cep-320, tag: baseline_rental-vertical_v12_swrent_daily_build-503, origin/rental_v12_integration-cep-503, rental_v12_integration-cep-503) regenerate documentation (issue #3613)
+- 7fac932a 2020-04-13 14:13:09 +0200 wagner@elegosoft.com  (origin/fix_3339_blp455_extend_documentation_v12, fix_3339_blp455_extend_documentation_v12) regenerate documentation (issue #3339)
+- 2da340dc 2020-04-13 14:11:24 +0200 wagner@elegosoft.com  change license for rental-vertical to AGPL (issue #3339)
+- 6d3410b3 2020-04-13 13:28:20 +0200 wagner@elegosoft.com  regenerate documentation (issue #3339)
+- 0bab92d2 2020-04-09 12:41:12 +0200 wagner@elegosoft.com  (origin/fix_3339_blp355_extend_documentation_v12, fix_3339_blp355_extend_documentation_v12) update/regenerate addon documentation (issue #3339)
+- a26a41cc 2020-03-18 13:58:55 +0100 maria.sparenberg@elegosoft.com  issue #3589 move fields to correct groups in module rental_offday
+- b49c01da 2020-03-15 10:12:53 +0100 wagner@elegosoft.com  (origin/fix_3339_blp384_extend_documentation_v12) regenerate doc (issue #3339)
+- cea0e942 2020-03-13 20:38:19 +0100 wagner@elegosoft.com  update documentation to build 380 (issue #3339)
+- e371276d 2020-03-10 18:14:07 +0000 jenkins-ci@elegosoft.com  [MERGE] remotes/origin/fix_3339_blp343_extend_documentation_v12: addons-rental-vertical remotes/origin/fix_3339_blp343_extend_documentation_v12 - 9576b54fbb0cbcbffb804587fd722df8a4057da0 allow cli overwrite of module arguments; regenerate doc for rental_product_instance_appointment rental_product_variant rental_offday rental_invoice rental_contract_month rental_contract (issue #3339)
+- b454e5d1 2020-03-10 18:14:06 +0000 jenkins-ci@elegosoft.com  [MERGE] remotes/origin/feature_3576_blp343_unittest_rental_offday_v12: addons-rental-vertical remotes/origin/feature_3576_blp343_unittest_rental_offday_v12 - d9313d98f1961b9291fd769e4cbb1d56a567f97b issue #3576 add unittest for rental_offday
+- d9313d98 2020-03-10 14:53:00 +0100 maria.sparenberg@elegosoft.com  (origin/feature_3576_blp343_unittest_rental_offday_v12) issue #3576 add unittest for rental_offday
+- 9576b54f 2020-03-09 14:32:43 +0100 wagner@elegosoft.com  (origin/fix_3339_blp343_extend_documentation_v12, fix_3339_blp343_extend_documentation_v12) allow cli overwrite of module arguments; regenerate doc for rental_product_instance_appointment rental_product_variant rental_offday rental_invoice rental_contract_month rental_contract (issue #3339)
+- 81eb48d1 2020-03-09 12:51:45 +0100 maria.sparenberg@elegosoft.com  issue #3287 add description and usage section for rental_offday
+- f01d189d 2020-03-09 12:51:45 +0100 maria.sparenberg@elegosoft.com  (origin/feature_3287_blp343_rental_offday_v12) issue #3287 add description and usage section for rental_offday
+- 804dc443 2020-03-07 21:06:12 +0100 wagner@elegosoft.com  regenerate module documentation (issue #3339)
+- 6fd1771a 2020-03-06 20:32:25 +0100 kay.haeusler@elego.de  (origin/feature_3462_blp333_renaming_addons_v12) rename and split some addons; issue #3462
+
