@@ -1,7 +1,7 @@
-[![Runbot Status](https://runbot.odoo-community.org/runbot/badge/flat/298/14.0.svg)](https://runbot.odoo-community.org/runbot/repo/github-com-oca-vertical-rental-298)
-[![Build Status](https://travis-ci.com/OCA/vertical-rental.svg?branch=14.0)](https://travis-ci.com/OCA/vertical-rental)
-[![codecov](https://codecov.io/gh/OCA/vertical-rental/branch/14.0/graph/badge.svg)](https://codecov.io/gh/OCA/vertical-rental)
-[![Translation Status](https://translation.odoo-community.org/widgets/vertical-rental-14-0/-/svg-badge.svg)](https://translation.odoo-community.org/engage/vertical-rental-14-0/?utm_source=widget)
+[![Runbot Status](https://runbot.odoo-community.org/runbot/badge/flat/298/12.0.svg)](https://runbot.odoo-community.org/runbot/repo/github-com-oca-vertical-rental-298)
+[![Build Status](https://travis-ci.com/OCA/vertical-rental.svg?branch=12.0)](https://travis-ci.com/OCA/vertical-rental)
+[![codecov](https://codecov.io/gh/OCA/vertical-rental/branch/12.0/graph/badge.svg)](https://codecov.io/gh/OCA/vertical-rental)
+[![Translation Status](https://translation.odoo-community.org/widgets/vertical-rental-12-0/-/svg-badge.svg)](https://translation.odoo-community.org/engage/vertical-rental-12-0/?utm_source=widget)
 
 <!-- /!\ do not modify above this line -->
 
