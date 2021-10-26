@@ -16,7 +16,7 @@ Create a rentable product and its rental service.
  * Please activate the checkbox for using 'Product Variants'.
  * Go to Rentals > Products > Products.
  * Create a new storable product.
- * Active the checkbox 'Can be Rented'.
+ * Activate the checkbox 'Can be Rented'.
  * Go to page 'Sales & Purchase'.
  * Create the rental service and configure its name and price.
 
