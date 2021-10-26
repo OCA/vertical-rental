@@ -15,7 +15,12 @@ Addons for managing rental operations in Odoo
 
 [//]: # (addons)
 
-This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[rental_base](rental_base/) | 12.0.1.0.1 |  | Manage Rental of Products
+[rental_pricelist](rental_pricelist/) | 12.0.1.0.1 |  | Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").
 
 [//]: # (end addons)
 
