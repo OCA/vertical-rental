@@ -9,7 +9,11 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo12-addon-rental_base',
+        'odoo12-addon-rental_check_availability',
+        'odoo12-addon-rental_offday',
         'odoo12-addon-rental_pricelist',
+        'odoo12-addon-rental_pricelist_interval',
+        'odoo12-addon-rental_product_pack',
     ],
     classifiers=[
         'Programming Language :: Python',
