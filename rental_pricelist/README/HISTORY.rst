@@ -2,7 +2,11 @@
 Changelog
 ---------
 
-- 46c8af62 2021-09-22 15:37:56 +0200 maria.sparenberg@elegosoft.com  (HEAD -> feature_4433_blp1142_rental_base_v12, origin/feature_4433_blp1142_rental_base_v12) issue #4433 format stuff, add help texts and update usage section
+- d8665dd9 2021-10-19 12:26:31 +0200 yweng@elegosoft.com  [IMP] Add Unittest for module rental_check_availability and adjust Unittest of rental_pricelist and rental_pricelist_interval (issue 4436)
+- c98f3a27 2021-10-10 18:18:12 +0000 jenkins-ci@elegosoft.com  [MERGE] remotes/origin/feature_4448_blp1142_rental_pricelist_v12: addons-rental-vertical remotes/origin/feature_4448_blp1142_rental_pricelist_v12 - 04838da6267547849c4cc4a3ecdd8aa7da0fc74f [IMP] make rental service active again after deactiving them , (issue#4448)
+- 04838da6 2021-09-28 09:11:35 +0200 cpatel@elegosoft.com  (origin/feature_4448_blp1142_rental_pricelist_v12) [IMP] make rental service active again after deactiving them , (issue#4448)
+- 8b4d40c4 2021-09-23 09:19:24 +0200 wagner@elegosoft.com  regenerate doc (issue #4016)
+- 46c8af62 2021-09-22 15:37:56 +0200 maria.sparenberg@elegosoft.com  issue #4433 format stuff, add help texts and update usage section
 - ad7e8fb7 2021-09-21 16:50:25 +0200 maria.sparenberg@elegosoft.com  issue #4433 add product menu to rental_base, remove configs and dashboard to separate modules
 - cef8bcb6 2021-06-25 15:21:15 +0000 jenkins-ci@elegosoft.com  [MERGE] remotes/origin/feature_4273_blp1110_rental_product_pack_v12: addons-rental-vertical remotes/origin/feature_4273_blp1110_rental_product_pack_v12 - 8b3f8264d894702df1b16242fefa3f48425f7f43 [IMP] improve german translation,to rental_contract (issue#3920)
 - 89ed6dbf 2021-06-25 10:53:08 +0200 cpatel@elegosoft.com  [IMP] display_product_id only to sale.order.line tree view, (issue#4276)

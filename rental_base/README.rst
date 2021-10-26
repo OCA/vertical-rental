@@ -1,7 +1,7 @@
 Rental Base
 ====================================================
 
-*This file has been generated on 2021-09-23-09-13-22. Changes to it will be overwritten.*
+*This file has been generated on 2021-10-25-10-18-19. Changes to it will be overwritten.*
 
 Summary
 -------
@@ -25,7 +25,7 @@ Create a rentable product and its rental service.
  * Please activate the checkbox for using 'Product Variants'.
  * Go to Rentals > Products > Products.
  * Create a new storable product.
- * Active the checkbox 'Can be Rented'.
+ * Activate the checkbox 'Can be Rented'.
  * Go to page 'Sales & Purchase'.
  * Create the rental service and configure its name and price.
 
@@ -44,7 +44,12 @@ Please also see the usage section of sale_rental module.
 Changelog
 ---------
 
+- d32f4bf1 2021-10-19 13:27:01 +0200 maria.sparenberg@elegosoft.com  issue #4439 format code and finalize description and usage section
+- bc386fa1 2021-10-10 18:18:14 +0000 jenkins-ci@elegosoft.com  [MERGE] remotes/origin/fix_3339_blp1142_update_start_end_date_v12: addons-rental-vertical remotes/origin/fix_3339_blp1142_update_start_end_date_v12 - 2906b713c7dbf38b2bf5da09627dd51dd0198cbe [FIX] function update_start_end_date() of sale.order.line (issue 3339)
+- 75791881 2021-09-24 08:44:15 +0200 maria.sparenberg@elegosoft.com  (origin/feature_4433_blp1142_rental_base_v12, feature_4433_blp1142_rental_base_v12) issue #4433 change view id to match parent id
+- 8b4d40c4 2021-09-23 09:19:24 +0200 wagner@elegosoft.com  regenerate doc (issue #4016)
 - ad7e8fb7 2021-09-21 16:50:25 +0200 maria.sparenberg@elegosoft.com  issue #4433 add product menu to rental_base, remove configs and dashboard to separate modules
+- 2906b713 2021-08-03 16:16:44 +0200 yweng@elegosoft.com  (origin/fix_3339_blp1142_update_start_end_date_v12, fix_3339_blp1142_update_start_end_date_v12) [FIX] function update_start_end_date() of sale.order.line (issue 3339)
 - 6ba4bcb9 2021-07-01 16:33:45 +0200 yweng@elegosoft.com  [IMP] implements Unittest for module rental_routing and rental_forward_shipment_plan
 - dd988a2f 2021-06-09 12:42:47 +0200 wagner@elegosoft.com  update documentation (issue #3613)
 - 1abc79fe 2021-05-12 18:08:04 +0200 yweng@elegosoft.com  (origin/wip_4168_sale_rental_v12, wip_4168_sale_rental_v12) [IMP] adjust dependence of rental modules: replace rental_sale with sale_rental
