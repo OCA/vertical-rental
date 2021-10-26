@@ -1,0 +1,76 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* rental_check_availability
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-18 11:56+0000\n"
+"PO-Revision-Date: 2021-10-18 14:06+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: de\n"
+"X-Generator: Poedit 3.0\n"
+
+#. module: rental_check_availability
+#: model_terms:ir.ui.view,arch_db:rental_check_availability.view_order_form_order_line_tree_color
+msgid "Check Availability"
+msgstr "Verfügbarkeit prüfen"
+
+#. module: rental_check_availability
+#: model:ir.model.fields,field_description:rental_check_availability.field_sale_order_line__concurrent_orders
+msgid "Concurrent Orders"
+msgstr "Zeitgleiche Aufträge"
+
+#. module: rental_check_availability
+#: code:addons/rental_check_availability/models/sale.py:114
+#, python-format
+msgid "No found concurrent Rental Order/Quotation(s)."
+msgstr "Es konnten keine zeitgleichen Aufträge gefunden werden."
+
+#. module: rental_check_availability
+#: selection:sale.order.line,concurrent_orders:0
+msgid "None"
+msgstr "Keine"
+
+#. module: rental_check_availability
+#: code:addons/rental_check_availability/models/sale.py:48
+#, python-format
+msgid "Not enough stock!"
+msgstr "Bestand nicht ausreichend!"
+
+#. module: rental_check_availability
+#: selection:sale.order.line,concurrent_orders:0
+msgid "Order"
+msgstr "Auftrag"
+
+#. module: rental_check_availability
+#: selection:sale.order.line,concurrent_orders:0
+msgid "Quotation"
+msgstr "Angebot"
+
+#. module: rental_check_availability
+#: model:ir.model,name:rental_check_availability.model_sale_order
+msgid "Sale Order"
+msgstr "Verkaufsauftrag"
+
+#. module: rental_check_availability
+#: model:ir.model,name:rental_check_availability.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Auftragsposition"
+
+#. module: rental_check_availability
+#: model_terms:ir.ui.view,arch_db:rental_check_availability.view_order_form
+msgid "View concurrent Order/Quotation(s)"
+msgstr "Zeitgleiche Aufträge anzeigen."
+
+#. module: rental_check_availability
+#: code:addons/rental_check_availability/models/sale.py:49
+#, python-format
+msgid "You want to rent %.2f %s but you only have %.2f %s available in the selected period."
+msgstr "Sie versuchen %.2f %s Einheiten zu vermieten, es sind aber nur %.2f %s Einheiten im aktuellen Bestand verfügbar."
