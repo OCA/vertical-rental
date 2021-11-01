@@ -2,7 +2,6 @@
 account-analytic
 account-closing
 account-financial-tools
-account_invoice_pricelist
 contract
 manufacture
 mis-builder
