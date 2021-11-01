@@ -438,4 +438,4 @@ class TestRentalPricelist(RentalStockCommon):
         self.env["sale.order.line"].create(vals)
         with self.assertRaises(exceptions.UserError) as e:
             self.rental_order.action_confirm()
-        self.assertEqual("Product D is not correctly configured.", e.exception.name)
+        self.assertEqual("The product Product D is not correctly configured.", e.exception.name)
