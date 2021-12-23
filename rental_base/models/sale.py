@@ -2,6 +2,7 @@
 
 from odoo import api, fields, models, exceptions, _
 from odoo.tools import float_round
+from odoo.exceptions import UserError, ValidationError
 import datetime
 
 
@@ -125,6 +126,65 @@ class SaleOrderLine(models.Model):
     def _onchange_order_type(self):
         self.rental = self.order_type == 'rental'
 
+    @api.constrains(
+        "rental_type",
+        "extension_rental_id",
+        "start_date",
+        "end_date",
+        "rental_qty",
+        "product_uom_qty",
+        "product_id",
+    )
+    def _check_sale_line_rental(self):
+        for line in self:
+            if line.rental_type == "rental_extension":
+                if not line.extension_rental_id:
+                    raise ValidationError(
+                        _(
+                            'Missing "Rental to Extend" on the sale order line '
+                            "with rental service %s."
+                        )
+                        % line.product_id.name
+                    )
+
+                if line.rental_qty != line.extension_rental_id.rental_qty:
+                    raise ValidationError(
+                        _(
+                            "On the sale order line with rental service %s, "
+                            "you are trying to extend a rental with a rental "
+                            "quantity (%s) that is different from the quantity "
+                            "of the original rental (%s). This is not supported."
+                        )
+                        % (
+                            line.product_id.name,
+                            line.rental_qty,
+                            line.extension_rental_id.rental_qty,
+                        )
+                    )
+            if line.rental_type in ("new_rental", "rental_extension"):
+                if not line.product_id.rented_product_id:
+                    raise ValidationError(
+                        _(
+                            'On the "new rental" sale order line with product '
+                            '"%s", we should have a rental service product!'
+                        )
+                        % (line.product_id.name)
+                    )
+            elif line.sell_rental_id:
+                if line.product_uom_qty != line.sell_rental_id.rental_qty:
+                    raise ValidationError(
+                        _(
+                            "On the sale order line with product %s "
+                            "you are trying to sell a rented product with a "
+                            "quantity (%s) that is different from the rented "
+                            "quantity (%s). This is not supported."
+                        )
+                        % (
+                            line.product_id.name,
+                            line.product_uom_qty,
+                            line.sell_rental_id.rental_qty,
+                        )
+                    )
 
     @api.multi
     def _prepare_invoice_line(self, qty):
