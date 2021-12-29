@@ -1,8 +1,9 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, exceptions, _
-from odoo.tools import float_round
 import datetime
+
+from odoo import _, api, exceptions, fields, models
+from odoo.tools import float_round
 
 
 class SaleOrder(models.Model):
