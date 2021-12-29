@@ -3,6 +3,7 @@
 import datetime
 
 from odoo import _, api, exceptions, fields, models
+from odoo.exceptions import ValidationError
 from odoo.tools import float_round
 
 
@@ -53,7 +54,6 @@ class SaleOrder(models.Model):
                     }
                 )
 
-    @api.multi
     def unlink(self):
         for rec in self:
             rentals = self.env["sale.rental"].search(
@@ -89,9 +89,69 @@ class SaleOrderLine(models.Model):
         }
     )
 
-    @api.multi
-    def _prepare_invoice_line(self, qty):
-        res = super()._prepare_invoice_line(qty)
+    @api.constrains(
+        "rental_type",
+        "extension_rental_id",
+        "start_date",
+        "end_date",
+        "rental_qty",
+        "product_uom_qty",
+        "product_id",
+    )
+    def _check_sale_line_rental(self):
+        for line in self:
+            if line.rental_type == "rental_extension":
+                if not line.extension_rental_id:
+                    raise ValidationError(
+                        _(
+                            'Missing "Rental to Extend" on the sale order line '
+                            "with rental service %s."
+                        )
+                        % line.product_id.name
+                    )
+
+                if line.rental_qty != line.extension_rental_id.rental_qty:
+                    raise ValidationError(
+                        _(
+                            "On the sale order line with rental service %s, "
+                            "you are trying to extend a rental with a rental "
+                            "quantity (%s) that is different from the quantity "
+                            "of the original rental (%s). This is not supported."
+                        )
+                        % (
+                            line.product_id.name,
+                            line.rental_qty,
+                            line.extension_rental_id.rental_qty,
+                        )
+                    )
+            if line.rental_type in ("new_rental", "rental_extension"):
+                if not line.product_id.rented_product_id:
+                    raise ValidationError(
+                        _(
+                            'On the "new rental" sale order line with product '
+                            '"%s", we should have a rental service product!'
+                        )
+                        % (line.product_id.name)
+                    )
+            elif line.sell_rental_id:
+                if line.product_uom_qty != line.sell_rental_id.rental_qty:
+                    raise ValidationError(
+                        _(
+                            "On the sale order line with product %s "
+                            "you are trying to sell a rented product with a "
+                            "quantity (%s) that is different from the rented "
+                            "quantity (%s). This is not supported."
+                        )
+                        % (
+                            line.product_id.name,
+                            line.product_uom_qty,
+                            line.sell_rental_id.rental_qty,
+                        )
+                    )
+
+    def _prepare_invoice_line(self, **optional_values):
+        self.ensure_one()
+        res = super()._prepare_invoice_line(**optional_values)
         if self.product_id.income_analytic_account_id:
             res["account_analytic_id"] = self.product_id.income_analytic_account_id.id
         return res
@@ -107,7 +167,6 @@ class SaleOrderLine(models.Model):
             "hour": uom_hour,
         }
 
-    @api.multi
     def _get_number_of_time_unit(self):
         self.ensure_one()
         number = False
@@ -123,7 +182,6 @@ class SaleOrderLine(models.Model):
             number = float_round(number, precision_rounding=1)
         return number
 
-    @api.multi
     def update_start_end_date(self, date_start, date_end):
         for line in self:
             # update sale order lines
@@ -149,9 +207,7 @@ class SaleOrderLine(models.Model):
                 )
                 if rentals and date_start:
                     rental = rentals[0]
-                    date_move_out = fields.Date.to_date(
-                        rental.out_move_id.date_expected
-                    )
+                    date_move_out = fields.Date.to_date(rental.out_move_id.date)
                     if date_start != date_move_out:
                         if rental.out_move_id.state not in [
                             "draft",
@@ -160,14 +216,15 @@ class SaleOrderLine(models.Model):
                         ]:
                             raise exceptions.UserError(
                                 _(
-                                    "Outgoing shipment is in state %s. You cannot change the start date anymore."
+                                    "Outgoing shipment is in state %s. You cannot change \
+                                        the start date anymore."
                                 )
                                 % rental.out_move_id.state
                             )
-                        rental.out_move_id.date_expected = datetime_start
+                        rental.out_move_id.date = datetime_start
                 if rentals and date_end:
                     rental = rentals[0]
-                    date_move_in = fields.Date.to_date(rental.in_move_id.date_expected)
+                    date_move_in = fields.Date.to_date(rental.in_move_id.date)
                     if date_end != date_move_in:
                         if rental.in_move_id.state not in [
                             "draft",
@@ -176,13 +233,13 @@ class SaleOrderLine(models.Model):
                         ]:
                             raise exceptions.UserError(
                                 _(
-                                    "Incoming shipment is in state %s. You cannot change the end date anymore."
+                                    "Incoming shipment is in state %s. You cannot change \
+                                        the end date anymore."
                                 )
                                 % rental.in_move_id.state
                             )
-                        rental.in_move_id.date_expected = datetime_end
+                        rental.in_move_id.date = datetime_end
 
-    @api.multi
     def write(self, values):
         """
         Both fields start_date and end_date were made editable in state draft, sent and sale,

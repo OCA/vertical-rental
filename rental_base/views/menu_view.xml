@@ -28,7 +28,6 @@
         <field name="name">Rental Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
         <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale" />
         <field name="context" eval="{'default_type_id': ref('rental_sale_type')}" />
@@ -50,7 +49,6 @@
         <field name="name">Rental Quotations</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
         <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale" />
         <field name="context" eval="{'default_type_id': ref('rental_sale_type')}" />
@@ -74,7 +72,6 @@
         <field name="res_model">product.product</field>
         <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_rental': 1}</field>
-        <field name="view_type">form</field>
         <field name="search_view_id" ref="rental_base.rental_product_search_view" />
     </record>
 
@@ -96,7 +93,7 @@
         name="Customers"
         id="menu_customers"
         parent="menu_top_customer"
-        action="base.action_partner_form"
+        action="account.res_partner_action_customer"
         sequence="0"
     />
             <menuitem
@@ -155,14 +152,14 @@
         name="Customer Invoices"
         id="menu_customer_invoices2"
         parent="menu_customer_invoices"
-        action="account.action_invoice_tree1"
+        action="account.action_move_out_invoice_type"
         sequence="20"
     />
                 <menuitem
         name="Customer Credit Notes"
         id="menu_customer_credit_notes"
         parent="menu_customer_invoices"
-        action="account.action_invoice_out_refund"
+        action="account.action_move_out_refund_type"
         sequence="25"
     />
 
@@ -177,7 +174,7 @@
         name="Vendors"
         id="menu_vendors"
         parent="menu_top_vendor"
-        action="base.action_partner_supplier_form"
+        action="account.res_partner_action_supplier"
         sequence="0"
     />
         <menuitem
@@ -210,14 +207,14 @@
         name="Vendor Bills"
         id="menu_vendor_bills"
         parent="menu_vendor_invoices"
-        action="account.action_vendor_bill_template"
+        action="account.action_move_in_invoice_type"
         sequence="5"
     />
             <menuitem
         name="Vendor Credit Notes"
         id="menu_vendor_credit_notes"
         parent="menu_vendor_invoices"
-        action="account.action_invoice_in_refund"
+        action="account.action_move_in_refund_type"
         sequence="10"
     />
 
@@ -248,17 +245,16 @@
         name="Settings"
         id="menu_settings"
         parent="menu_config"
-        action="action_rental_configuration"
+        action="rental_base.action_rental_configuration"
         sequence="0"
-        web_icon="rental_base,static/description/icon.png"
     />
-            <menuitem
+        <menuitem
         name="Products"
         id="menu_config_products"
         parent="menu_config"
         sequence="20"
     />
-            <menuitem
+        <menuitem
         name="Rental Positions"
         id="menu_rental_positions"
         parent="menu_config"

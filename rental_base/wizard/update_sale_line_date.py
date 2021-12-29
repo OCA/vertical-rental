@@ -1,10 +1,6 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-import logging
-
 from odoo import _, api, exceptions, fields, models
-
-logger = logging.getLogger(__name__)
 
 
 class UpdateSaleLineDateLine(models.TransientModel):
@@ -112,7 +108,7 @@ class UpdateSaleLineDate(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        res = {}
+        res = super().default_get(fields)
         active_id = self.env.context.get("active_id")
         order = self.env["sale.order"].browse(active_id)
         seq = 1
@@ -159,8 +155,8 @@ class UpdateSaleLineDate(models.TransientModel):
                 for line in self.line_ids:
                     message_body += _("<li>%s: %s - %s -> %s - %s</li>") % (
                         line.order_line_id.product_id.name,
-                        line.order_line_id.date_start,
-                        line.order_line_id.date_end,
+                        line.order_line_id.start_date,
+                        line.order_line_id.end_date,
                         line.date_start,
                         line.date_end,
                     )
@@ -187,8 +183,8 @@ class UpdateSaleLineDate(models.TransientModel):
                     if self.from_line <= line.sequence <= self.to_line:
                         message_body += _("<li>%s: %s - %s -> %s - %s</li>") % (
                             line.order_line_id.product_id.name,
-                            line.order_line_id.date_start,
-                            line.order_line_id.date_end,
+                            line.order_line_id.start_date,
+                            line.order_line_id.end_date,
                             line.date_start,
                             line.date_end,
                         )

@@ -1,0 +1,13 @@
+# See https://github.com/OCA/odoo-community.org/blob/master/website/Contribution/CONTRIBUTING.rst#oca_dependencies-txt
+account-analytic
+account-closing
+account-financial-tools
+contract
+manufacture
+mis-builder
+partner-contact
+product-attribute
+product-pack
+purchase-workflow
+sale-workflow
+web

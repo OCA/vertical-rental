@@ -25,8 +25,6 @@ class RentalStockCommon(common.TransactionCase):
         self.partnerA = self.PartnerObj.create(
             {
                 "name": "Partner A",
-                "customer": True,
-                "supplier": True,
                 "country_id": self.env.ref("base.de").id,
             }
         )

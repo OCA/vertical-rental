@@ -2,35 +2,9 @@
 
 {
     "name": "Rental Base",
-    "version": "12.0.1.0.1",
+    "version": "14.0.1.0.0",
     "category": "Rental",
     "summary": "Manage Rental of Products",
-    "description": """Base Module for Rental Management
-
-This module provides a new menu for rental management.
-It is based on the sale_rental module that currently can be found in sale-workflow repository.
-""",
-    "usage": """
-Create a rentable product and its rental service.
- * Go to Rentals > Configuration > Settings.
- * Please activate the checkbox for using 'Product Variants'.
- * Go to Rentals > Products > Products.
- * Create a new storable product.
- * Activate the checkbox 'Can be Rented'.
- * Go to page 'Sales & Purchase'.
- * Create the rental service and configure its name and price.
-
-Create a rental order:
- * Go to Rentals > Customer > Rental Quotations.
- * Create a new order and choose the type 'Rental Order'.
- * Add the rental service as an order line.
- * Set the quantity to rent out one or several storable rentable products.
- * Choose start and end date.
- * Confirm the order.
- * Check out the two deliveries, one for outgoing and one for incoming delivery.
-
-Please also see the usage section of sale_rental module.
-""",
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/vertical-rental",
     "depends": [
@@ -44,6 +18,7 @@ Please also see the usage section of sale_rental module.
         "sales_team",
     ],
     "data": [
+        "security/ir.model.access.csv",
         "data/ir_sequence_data.xml",
         "data/order_type_data.xml",
         "data/product_uom_data.xml",
@@ -56,6 +31,7 @@ Please also see the usage section of sale_rental module.
     ],
     "demo": [],
     "qweb": [],
+    "installable": True,
     "application": True,
     "license": "AGPL-3",
 }

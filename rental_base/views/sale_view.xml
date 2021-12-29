@@ -31,18 +31,18 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale_start_end_dates.view_order_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='default_start_date']" position="replace" />
-            <xpath expr="//field[@name='default_end_date']" position="replace" />
-            <xpath expr="//field[@name='pricelist_id']" position="before">
-                <label for="" string="Service Period" />
-                <div name="service_period">
+            <field name="default_start_date" position="replace" />
+            <field name="default_end_date" position="replace" />
+            <field name="validity_date" position="after">
+                <span class="o_form_label font-weight-bold">Service Period</span>
+                <div name="service_period" string="Service Period">
                     <field name="default_start_date" class="oe_inline" nolabel="1" /> to
                     <field name="default_end_date" class="oe_inline" nolabel="1" />
                 </div>
-            </xpath>
-            <xpath expr="//field[@name='number_of_days']" position="attributes">
+            </field>
+            <field name="number_of_days" position="attributes">
                 <attribute name="attrs">{'invisible': 1}</attribute>
-            </xpath>
+            </field>
         </field>
     </record>
 
@@ -82,7 +82,7 @@
         <field name="arch" type="xml">
             <!-- Sale Order -->
             <!-- Button Header -->
-            <xpath expr="//button[@name='print_quotation']" position="after">
+            <xpath expr="//button[@name='action_confirm']" position="after">
                 <button
                     name="%(action_update_sale_line_date)d"
                     string="Update Times"
@@ -98,7 +98,7 @@
                 <attribute name="attrs">{'invisible': 1}</attribute>
             </xpath>
             <xpath
-                expr="//group[@name='sales_person']//field[@name='analytic_account_id']"
+                expr="//group[@name='sale_info']//field[@name='analytic_account_id']"
                 position="attributes"
             >
                 <attribute name="attrs">{'invisible': 1}</attribute>
@@ -118,7 +118,7 @@
                 <separator colspan="2" />
                 <field name="client_order_ref" string="Order Reference" />
             </xpath>
-            <xpath expr="//field[@name='pricelist_id']" position="before">
+            <xpath expr="//label[@for='pricelist_id']" position="before">
                 <separator colspan="2" />
                 <field
                     name="analytic_account_id"
@@ -131,7 +131,10 @@
 
             <!-- Sale Order Lines -->
             <!-- Hide fields inserted by sale module to move them to new location -->
-            <xpath expr="//group[field[@name='tax_id']]" position="attributes">
+            <xpath
+                expr="//group[field[@name='analytic_tag_ids']]"
+                position="attributes"
+            >
                 <attribute name="id">further_rental_info</attribute>
             </xpath>
             <xpath expr="//field[@name='tax_id']" position="attributes">
@@ -143,10 +146,10 @@
             <xpath expr="//div[field[@name='customer_lead']]" position="attributes">
                 <attribute name="attrs">{'invisible': 1}</attribute>
             </xpath>
-            <xpath expr="//label[@for='analytic_tag_ids']" position="attributes">
+            <!-- <xpath expr="//label[@for='analytic_tag_ids']" position="attributes">
                 <attribute name="attrs">{'invisible': 1}</attribute>
-            </xpath>
-            <xpath expr="//div[field[@name='analytic_tag_ids']]" position="attributes">
+            </xpath> -->
+            <xpath expr="//field[@name='analytic_tag_ids']" position="attributes">
                 <attribute name="attrs">{'invisible': 1}</attribute>
             </xpath>
             <xpath expr="//label[@for='qty_delivered']" position="attributes">
