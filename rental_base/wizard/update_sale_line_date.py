@@ -153,8 +153,8 @@ class UpdateSaleLineDate(models.TransientModel):
                 for line in self.line_ids:
                     message_body += _("<li>%s: %s - %s -> %s - %s</li>") % (
                         line.order_line_id.product_id.name,
-                        line.order_line_id.date_start,
-                        line.order_line_id.date_end,
+                        line.order_line_id.start_date,
+                        line.order_line_id.end_date,
                         line.date_start,
                         line.date_end,
                     )
@@ -179,8 +179,8 @@ class UpdateSaleLineDate(models.TransientModel):
                     if self.from_line <= line.sequence <= self.to_line:
                         message_body += _("<li>%s: %s - %s -> %s - %s</li>") % (
                             line.order_line_id.product_id.name,
-                            line.order_line_id.date_start,
-                            line.order_line_id.date_end,
+                            line.order_line_id.start_date,
+                            line.order_line_id.end_date,
                             line.date_start,
                             line.date_end,
                         )
