@@ -20,6 +20,12 @@ class SaleOrder(models.Model):
         readonly=False,
     )
 
+    is_rental_order = fields.Boolean(
+        string="Is Rental Order",
+        compute="_compute_is_rental_order",
+        store=True,
+    )
+
     @api.depends("order_line.start_date")
     def _compute_default_start_date(self):
         for order in self:
@@ -51,6 +57,19 @@ class SaleOrder(models.Model):
                         "default_end_date": max(dates),
                     }
                 )
+
+    @api.depends("type_id")
+    def _compute_is_rental_order(self):
+        try:
+            rental_type = self.env['ir.model.data'].sudo().get_object('rental_base', 'rental_sale_type')
+        except ValueError:
+            for order in self:
+                order.is_rental_order = False
+            return
+        for order in self:
+            order.is_rental_order = False
+            if order.type_id.id == rental_type.id:
+                order.is_rental_order = True
 
     @api.multi
     def unlink(self):
