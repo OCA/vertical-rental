@@ -60,13 +60,8 @@
                 <group name="group_pack" position="after">
                     <group name="group_found_pack">
                         <group string="Found in packs" colspan="4">
-                            <field
-                                name="used_in_pack_line_ids"
-                                nolabel="1"
-                                context="{'default_parent_product_id': active_id}"
-                            >
+                            <field name="used_in_pack_line_ids" nolabel="1">
                                 <tree editable="bottom">
-                                    <field name="product_id" />
                                     <field name="parent_product_id" />
                                     <field name="quantity" />
                                 </tree>
@@ -77,14 +72,8 @@
                 <xpath expr="//field[@name='pack_line_ids']" position="inside">
                     <tree editable="bottom">
                         <field name="product_id" />
-                        <field name="parent_product_id" />
                         <field name="quantity" />
                     </tree>
-                </xpath>
-                <xpath expr="//field[@name='pack_line_ids']" position="attributes">
-                    <attribute
-                        name="context"
-                    >{'default_parent_product_id': active_id}</attribute>
                 </xpath>
             </field>
         </record>
