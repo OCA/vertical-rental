@@ -2,8 +2,9 @@
 
 from dateutil.relativedelta import relativedelta
 
-from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
 from odoo import fields
+
+from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
 
 
 class TestRentalProductPack(RentalStockCommon):
