@@ -15,7 +15,11 @@ Addons for managing rental operations in Odoo
 
 [//]: # (addons)
 
-This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[rental_base](rental_base/) | 14.0.1.0.0 |  | Manage Rental of Products
 
 [//]: # (end addons)
 
