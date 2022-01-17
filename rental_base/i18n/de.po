@@ -1,0 +1,634 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* rental_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-12-29 09:21+0000\n"
+"PO-Revision-Date: 2021-12-29 09:21+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: rental_base
+#: code:addons/rental_base/models/sale.py:0
+#, python-format
+msgid ""
+"\n"
+"Order: %s\n"
+"Line with product: '%s'\n"
+"\n"
+"Please use instead the button 'Update Times' in the order to correctly update the order line's times, its timeline entry, contract and its stock moves and pickings as required."
+msgstr ""
+"\n"
+"Auftrag: %s\n"
+"Position mit Produkt: '%s'\n"
+"\n"
+"Bitte stattdessen den Button 'Zeitraum ändern' verwenden, um die Zeiten in den Auftragszeilen, den dazugehörigen Zeitachsen-Eintrag, den Vertrag und die Lagerbewegungen bzw. Lieferscheinen (wenn nötig) korrekt zu aktualisieren."
+
+#. module: rental_base
+#: code:addons/rental_base/wizard/update_sale_line_date.py:0
+#: code:addons/rental_base/wizard/update_sale_line_date.py:0
+#, python-format
+msgid "<li>%s: %s - %s -> %s - %s</li>"
+msgstr ""
+
+#. module: rental_base
+#: code:addons/rental_base/wizard/update_sale_line_date.py:0
+#, python-format
+msgid "<li>(All lines): %s - %s -> %s - %s</li>"
+msgstr "<li>(Alle Positionen): %s - %s -> %s - %s</li>"
+
+#. module: rental_base
+#: code:addons/rental_base/wizard/update_sale_line_date.py:0
+#, python-format
+msgid "<li>(Lines: %s - %s): %s - %s -> %s - %s</li>"
+msgstr "<li>(Positionen: %s - %s): %s - %s -> %s - %s</li>"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.sale_start_end_dates
+msgid "<span class=\"o_form_label font-weight-bold\">Service Period</span>"
+msgstr ""
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "<span>&amp;nbsp;</span>"
+msgstr ""
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__all_line
+msgid "All Lines"
+msgstr "Alle Positionen"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.res_config_settings_view_form
+msgid "Attributes"
+msgstr "Attribute"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.update_sale_line_date_form
+msgid ""
+"By changing the start and end dates of order lines, the dates are also updated in the timeline,the related stock pickings and contracts, if available.\n"
+"                Attention: The ordered quantities are not updated!"
+msgstr ""
+"Durch das Ändern des Datums für die Auftragszeilen werden auch die Daten in der Zeitachse, den zugehörigen Lieferscheinen und Abonnements (wenn verfügbar) geändert.\n"
+"                Achtung: Die Bestellmengen werden nicht aktualisiert!"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_product_product__rental
+#: model:ir.model.fields,field_description:rental_base.field_product_template__rental
+msgid "Can be Rent"
+msgstr ""
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.rental_product_search_view
+msgid "Can be Rented"
+msgstr "Kann vermietet werden"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.update_sale_line_date_form
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__change
+msgid "Change"
+msgstr "Ändern"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_config
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.res_config_settings_view_form
+msgid "Configure your products with variants"
+msgstr "Konfigurieren Sie Ihre Produkte mit Varianten"
+
+#. module: rental_base
+#: model_terms:ir.actions.act_window,help:rental_base.action_rental_orders
+#: model_terms:ir.actions.act_window,help:rental_base.action_rental_quotations
+msgid "Create a new quotation, the first step of a new sale!"
+msgstr ""
+"Erstellen Sie ein neues Angebot, den ersten Schritt eines neuen Verkaufs!"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__create_uid
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__create_uid
+msgid "Created by"
+msgstr "Erstellt von"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__create_date
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__create_date
+msgid "Created on"
+msgstr "Erstellt am"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_customer_credit_notes
+msgid "Customer Credit Notes"
+msgstr "Kundengutschriften"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_customer_invoices2
+msgid "Customer Invoices"
+msgstr "Kundenrechnungen"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_customers
+#: model:ir.ui.menu,name:rental_base.menu_top_customer
+msgid "Customers"
+msgstr "Kunden"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__date_end
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__date_end
+msgid "Date End"
+msgstr "Enddatum"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__date_start
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__date_start
+msgid "Date Start"
+msgstr "Startdatum"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__date_in_line
+msgid "Date in Lines"
+msgstr "Einzelne Positionen"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Day(s)"
+msgstr "Tag(e)"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_sale_order__default_end_date
+msgid "Default End Date"
+msgstr "Enddatum"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_sale_order__default_start_date
+msgid "Default Start Date"
+msgstr "Startdatum"
+
+#. module: rental_base
+#: model:ir.model.fields,help:rental_base.field_sale_order_line__rental_qty_uom
+msgid "Default unit of measure used for all stock operations."
+msgstr "Standardmaßeinheit, die für alle Lagervorgänge verwendet wird."
+
+#. module: rental_base
+#: model_terms:ir.actions.act_window,help:rental_base.stock_picking_action_picking_type_in
+#: model_terms:ir.actions.act_window,help:rental_base.stock_picking_action_picking_type_out
+msgid "Define a new transfer"
+msgstr "Neue Lagerbewegung erstellen"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Delivered Rental Quantity"
+msgstr "Gelieferte Menge"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_customer_delivery
+#: model:ir.ui.menu,name:rental_base.menu_vendor_delivery
+msgid "Delivery"
+msgstr "Lieferungen"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Description"
+msgstr "Beschreibung"
+
+#. module: rental_base
+#: model:ir.model,name:rental_base.model_update_sale_line_date_line
+msgid "Details for updating sale order line dates"
+msgstr "Details für das Aktualisieren der Datumsangaben in Auftragszeilen"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_ir_sequence__display_name
+#: model:ir.model.fields,field_description:rental_base.field_product_template__display_name
+#: model:ir.model.fields,field_description:rental_base.field_sale_order__display_name
+#: model:ir.model.fields,field_description:rental_base.field_sale_order_line__display_name
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__display_name
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__display_name
+msgid "Display Name"
+msgstr "Anzeigename"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_sale_order_line__end_date
+msgid "End Date"
+msgstr "Enddatum"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__from_line
+msgid "From"
+msgstr "Von"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_ir_sequence__id
+#: model:ir.model.fields,field_description:rental_base.field_product_template__id
+#: model:ir.model.fields,field_description:rental_base.field_sale_order__id
+#: model:ir.model.fields,field_description:rental_base.field_sale_order_line__id
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__id
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__id
+msgid "ID"
+msgstr ""
+
+#. module: rental_base
+#: model:ir.model.fields,help:rental_base.field_update_sale_line_date__all_line
+msgid "If set, all order lines of this order are updated with the given dates."
+msgstr ""
+"Wenn der Haken gesetzt ist, werden alle Auftragszeilen dieses Auftrags mit "
+"den angegebenen Daten aktualisiert."
+
+#. module: rental_base
+#: model:ir.model.fields,help:rental_base.field_update_sale_line_date__date_in_line
+msgid "If set, you can set an individual date in every selected position."
+msgstr ""
+"Wenn der Haken gesetzt ist, kann ein individuelles Datum in jeder "
+"ausgewählten Position gesetzt werden."
+
+#. module: rental_base
+#: model:ir.model.fields,help:rental_base.field_update_sale_line_date__from_line
+msgid ""
+"In order to update one or several order lines, please set a number referring"
+" to the first order line that should to be changed."
+msgstr ""
+"Um eine oder mehrere Auftragszeilen zu aktualisieren, bitte die Zahl "
+"angeben, die der ersten zu ändernden Auftragszeile entspricht."
+
+#. module: rental_base
+#: model:ir.model.fields,help:rental_base.field_update_sale_line_date__to_line
+msgid ""
+"In order to update one or several order lines, please set a number referring"
+" to the last order line that should to be changed."
+msgstr ""
+"Um eine oder mehrere Auftragszeilen zu aktualisieren, bitte die Zahl "
+"angeben, die der letzten zu ändernden Auftragszeile entspricht."
+
+#. module: rental_base
+#: model:ir.actions.act_window,name:rental_base.stock_picking_action_picking_type_in
+#: model:ir.ui.menu,name:rental_base.menu_customer_delivery_incoming
+#: model:ir.ui.menu,name:rental_base.menu_vendor_delivery_incoming
+msgid "Incoming Deliveries"
+msgstr "Eingehende Lieferungen"
+
+#. module: rental_base
+#: code:addons/rental_base/models/sale.py:0
+#, python-format
+msgid ""
+"Incoming shipment is in state %s. You cannot change"
+"                                         the end date anymore."
+msgstr ""
+"Die eingehende Lieferung ist im Status %s. Das Enddatum kann nicht mehr "
+"geändert werden."
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Invoiced Rental Time"
+msgstr "Abgerechnete Zeit"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_customer_invoices
+#: model:ir.ui.menu,name:rental_base.menu_vendor_invoices
+msgid "Invoices"
+msgstr "Rechnungen"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Invoicing"
+msgstr "Abrechnung"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_ir_sequence____last_update
+#: model:ir.model.fields,field_description:rental_base.field_product_template____last_update
+#: model:ir.model.fields,field_description:rental_base.field_sale_order____last_update
+#: model:ir.model.fields,field_description:rental_base.field_sale_order_line____last_update
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date____last_update
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line____last_update
+msgid "Last Modified on"
+msgstr "Zuletzt geändert am"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__write_uid
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__write_uid
+msgid "Last Updated by"
+msgstr "Zuletzt aktualisiert von"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__write_date
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__write_date
+msgid "Last Updated on"
+msgstr "Zuletzt aktualisiert am"
+
+#. module: rental_base
+#: code:addons/rental_base/models/sale.py:0
+#, python-format
+msgid ""
+"Missing \"Rental to Extend\" on the sale order line with rental service %s."
+msgstr ""
+
+#. module: rental_base
+#: model:uom.uom,name:rental_base.product_uom_month
+msgid "Month(s)"
+msgstr "Monat(e)"
+
+#. module: rental_base
+#: code:addons/rental_base/models/sale.py:0
+#, python-format
+msgid ""
+"On the \"new rental\" sale order line with product \"%s\", we should have a "
+"rental service product!"
+msgstr ""
+
+#. module: rental_base
+#: code:addons/rental_base/models/sale.py:0
+#, python-format
+msgid ""
+"On the sale order line with product %s you are trying to sell a rented "
+"product with a quantity (%s) that is different from the rented quantity "
+"(%s). This is not supported."
+msgstr ""
+
+#. module: rental_base
+#: code:addons/rental_base/models/sale.py:0
+#, python-format
+msgid ""
+"On the sale order line with rental service %s, you are trying to extend a "
+"rental with a rental quantity (%s) that is different from the quantity of "
+"the original rental (%s). This is not supported."
+msgstr ""
+
+#. module: rental_base
+#: model_terms:ir.actions.act_window,help:rental_base.action_rental_orders
+#: model_terms:ir.actions.act_window,help:rental_base.action_rental_quotations
+msgid ""
+"Once the quotation is confirmed, it becomes a sales order.<br> You will be "
+"able to create an invoice and collect the payment."
+msgstr ""
+"Sobald das Angebot bestätigt ist, wird es zu einem Kundenauftrag.<br> Sie "
+"können eine Rechnung erstellen und die Zahlung einziehen."
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Order Information"
+msgstr "Auftragsinformation"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__order_line_id
+msgid "Order Line"
+msgstr "Auftragsposition"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Order Reference"
+msgstr "Bestellnummer"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Order Type"
+msgstr "Auftragstyp"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Ordered Rental Time"
+msgstr "Mietzeit"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_customer_orders
+msgid "Orders"
+msgstr "Aufträge"
+
+#. module: rental_base
+#: model:ir.actions.act_window,name:rental_base.stock_picking_action_picking_type_out
+#: model:ir.ui.menu,name:rental_base.menu_customer_delivery_outgoing
+#: model:ir.ui.menu,name:rental_base.menu_vendor_delivery_outgoing
+msgid "Outgoing Deliveries"
+msgstr "Ausgehende Lieferungen"
+
+#. module: rental_base
+#: code:addons/rental_base/models/sale.py:0
+#, python-format
+msgid ""
+"Outgoing shipment is in state %s. You cannot change"
+"                                         the start date anymore."
+msgstr ""
+"Die ausgehende Lieferung ist im Status %s. Das Startdatum kann nicht mehr "
+"geändert werden."
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__line_ids
+msgid "Positions"
+msgstr "Positionen"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__product_id
+#: model_terms:ir.ui.view,arch_db:rental_base.res_config_settings_view_form
+msgid "Product"
+msgstr "Produkt"
+
+#. module: rental_base
+#: model:ir.model,name:rental_base.model_product_template
+msgid "Product Template"
+msgstr "Produktvorlage"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_sale_order_line__rental_qty_uom
+msgid "Product Unit of Measure"
+msgstr "Produkteinheit"
+
+#. module: rental_base
+#: model:ir.actions.act_window,name:rental_base.view_rental_product_action
+msgid "Product Variants"
+msgstr "Produktvarianten"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_config_products
+#: model:ir.ui.menu,name:rental_base.menu_master_data
+#: model:ir.ui.menu,name:rental_base.menu_products
+msgid "Products"
+msgstr "Produkte"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_customer_quotations
+msgid "Quotations"
+msgstr "Angebote"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.res_config_settings_view_form
+msgid "Rental"
+msgstr "Vermietung"
+
+#. module: rental_base
+#: model:sale.order.type,name:rental_base.rental_sale_type
+msgid "Rental Order"
+msgstr "Mietauftrag"
+
+#. module: rental_base
+#: model:ir.actions.act_window,name:rental_base.action_rental_orders
+#: model:ir.ui.menu,name:rental_base.menu_rental_orders
+msgid "Rental Orders"
+msgstr "Mietaufträge"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_rental_positions
+msgid "Rental Positions"
+msgstr "Mietpositionen"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Rental Quantity"
+msgstr "Mietproduktmenge"
+
+#. module: rental_base
+#: model:ir.actions.act_window,name:rental_base.action_rental_quotations
+#: model:ir.ui.menu,name:rental_base.menu_rental_quotations
+msgid "Rental Quotations"
+msgstr "Mietangebote"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Rental Settings"
+msgstr "Mieteinstellungen"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Rental Time Unit"
+msgstr "Mietzeiteinheit"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Rental Times"
+msgstr "Mietzeiten"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_rental_root
+msgid "Rentals"
+msgstr "Vermietungen"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__order_id
+msgid "Sale Order"
+msgstr "Verkaufsauftrag"
+
+#. module: rental_base
+#: model:ir.model,name:rental_base.model_sale_order
+msgid "Sales Order"
+msgstr ""
+
+#. module: rental_base
+#: model:ir.model,name:rental_base.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Auftragsposition"
+
+#. module: rental_base
+#: model:ir.model,name:rental_base.model_ir_sequence
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__sequence
+msgid "Sequence"
+msgstr "Nummernfolge"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.sale_start_end_dates
+msgid "Service Period"
+msgstr "Leistungszeitraum"
+
+#. module: rental_base
+#: model:ir.actions.act_window,name:rental_base.action_rental_configuration
+#: model:ir.ui.menu,name:rental_base.menu_settings
+msgid "Settings"
+msgstr "Einstellungen"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_sale_order_line__start_date
+msgid "Start Date"
+msgstr "Startdatum"
+
+#. module: rental_base
+#: code:addons/rental_base/wizard/update_sale_line_date.py:0
+#, python-format
+msgid "The value in 'To' is less then the value in 'From'."
+msgstr "Der Wert im Feld 'Bis' ist kleiner als der Wert im Feld 'Von'."
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__to_line
+msgid "To"
+msgstr "Bis"
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Transport"
+msgstr ""
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.update_sale_line_date_form
+msgid "Update"
+msgstr "Aktualisieren"
+
+#. module: rental_base
+#: code:addons/rental_base/wizard/update_sale_line_date.py:0
+#, python-format
+msgid "Update Date of Sale Order Lines<lu>"
+msgstr "Zeitraum der Auftragszeilen aktualisieren<lu>"
+
+#. module: rental_base
+#: model:ir.actions.act_window,name:rental_base.action_update_sale_line_date
+#: model_terms:ir.ui.view,arch_db:rental_base.update_sale_line_date_form
+#: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
+msgid "Update Times"
+msgstr "Zeitraum ändern"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_vendor_bills
+msgid "Vendor Bills"
+msgstr "Lieferantenrechnungen"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_vendor_credit_notes
+msgid "Vendor Credit Notes"
+msgstr "Lieferantengutschriften"
+
+#. module: rental_base
+#: model:ir.ui.menu,name:rental_base.menu_top_vendor
+#: model:ir.ui.menu,name:rental_base.menu_vendors
+msgid "Vendors"
+msgstr "Lieferanten"
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__wizard_id
+msgid "Wizard"
+msgstr "Assistent"
+
+#. module: rental_base
+#: model:ir.model,name:rental_base.model_update_sale_line_date
+msgid "Wizard for updating sale order line dates"
+msgstr "Assistent für das Aktualisieren der Datumsangaben in Auftragszeilen"
+
+#. module: rental_base
+#: code:addons/rental_base/models/sale.py:0
+#, python-format
+msgid ""
+"You are not allowed to change the 'end date' in an order line of a confirmed"
+" order."
+msgstr ""
+"Es ist nicht erlaubt, das 'Enddatum' in einer Auftragszeile eines "
+"bestätigten Auftrags zu ändern."
+
+#. module: rental_base
+#: code:addons/rental_base/models/sale.py:0
+#, python-format
+msgid ""
+"You are not allowed to change the 'start date' in an order line of a "
+"confirmed order."
+msgstr ""
+"Es ist nicht erlaubt, das 'Startdatum' in einer Auftragszeile eines "
+"bestätigten Auftrags zu ändern."
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.sale_start_end_dates
+msgid "to"
+msgstr "bis"
