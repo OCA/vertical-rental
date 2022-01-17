@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="sale.action_orders" model="ir.actions.act_window">
+        <field name="name">Sales Orders</field>
+        <field
+            name="context"
+            eval="{'default_type_id': ref('sale_order_type.normal_sale_type')}"
+        />
+        <field
+            name="domain"
+            eval="[('type_id','!=', ref('rental_sale_type')), ('state', 'not in', ('draft', 'sent'))]"
+        />
+    </record>
+
+    <record id="sale.action_quotations" model="ir.actions.act_window">
+        <field name="name">Sales Quotations</field>
+        <field
+            name="context"
+            eval="{'search_default_my_quotation': 1, 'default_type_id': ref('sale_order_type.normal_sale_type')}"
+        />
+        <field
+            name="domain"
+            eval="[('type_id','!=', ref('rental_sale_type')), ('state', 'in', ('draft', 'sent', 'cancel'))]"
+        />
+    </record>
+
+    <record id="action_rental_orders" model="ir.actions.act_window">
+        <field name="name">Rental Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale" />
+        <field name="context" eval="{'default_type_id': ref('rental_sale_type')}" />
+        <field
+            name="domain"
+            eval="[('type_id','=', ref('rental_sale_type')), ('state', 'not in', ('draft', 'sent'))]"
+        />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new quotation, the first step of a new sale!
+            </p><p>
+                Once the quotation is confirmed, it becomes a sales order.<br
+                /> You will be able to create an invoice and collect the payment.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_rental_quotations" model="ir.actions.act_window">
+        <field name="name">Rental Quotations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale" />
+        <field name="context" eval="{'default_type_id': ref('rental_sale_type')}" />
+        <field
+            name="domain"
+            eval="[('type_id','=', ref('rental_sale_type')), ('state', 'in', ['draft', 'sent', 'cancel'])]"
+        />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new quotation, the first step of a new sale!
+            </p><p>
+                Once the quotation is confirmed, it becomes a sales order.<br
+                /> You will be able to create an invoice and collect the payment.
+            </p>
+        </field>
+    </record>
+
+    <record id="view_rental_product_action" model="ir.actions.act_window">
+        <field name="name">Product Variants</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="context">{'search_default_rental': 1}</field>
+        <field name="search_view_id" ref="rental_base.rental_product_search_view" />
+    </record>
+
+    <!-- Main Menu -->
+    <menuitem
+        name="Rentals"
+        id="menu_rental_root"
+        sequence="5"
+        web_icon="rental_base,static/description/icon.png"
+    />
+
+    <menuitem
+        name="Customers"
+        id="menu_top_customer"
+        parent="menu_rental_root"
+        sequence="10"
+    />
+        <menuitem
+        name="Customers"
+        id="menu_customers"
+        parent="menu_top_customer"
+        action="account.res_partner_action_customer"
+        sequence="0"
+    />
+            <menuitem
+        name="Quotations"
+        id="menu_customer_quotations"
+        parent="menu_top_customer"
+        sequence="5"
+    />
+                <menuitem
+        name="Rental Quotations"
+        id="menu_rental_quotations"
+        parent="menu_customer_quotations"
+        action="action_rental_quotations"
+        sequence="5"
+    />
+            <menuitem
+        name="Orders"
+        id="menu_customer_orders"
+        parent="menu_top_customer"
+        sequence="10"
+    />
+                <menuitem
+        name="Rental Orders"
+        id="menu_rental_orders"
+        parent="menu_customer_orders"
+        action="action_rental_orders"
+        sequence="5"
+    />
+            <menuitem
+        name="Delivery"
+        id="menu_customer_delivery"
+        parent="menu_top_customer"
+        sequence="15"
+    />
+                <menuitem
+        name="Outgoing Deliveries"
+        id="menu_customer_delivery_outgoing"
+        parent="menu_customer_delivery"
+        action="stock_picking_action_picking_type_out"
+        sequence="5"
+    />
+                <menuitem
+        name="Incoming Deliveries"
+        id="menu_customer_delivery_incoming"
+        parent="menu_customer_delivery"
+        action="stock_picking_action_picking_type_in"
+        sequence="10"
+    />
+            <menuitem
+        name="Invoices"
+        id="menu_customer_invoices"
+        parent="menu_top_customer"
+        sequence="20"
+    />
+                <menuitem
+        name="Customer Invoices"
+        id="menu_customer_invoices2"
+        parent="menu_customer_invoices"
+        action="account.action_move_out_invoice_type"
+        sequence="20"
+    />
+                <menuitem
+        name="Customer Credit Notes"
+        id="menu_customer_credit_notes"
+        parent="menu_customer_invoices"
+        action="account.action_move_out_refund_type"
+        sequence="25"
+    />
+
+
+    <menuitem
+        name="Vendors"
+        id="menu_top_vendor"
+        parent="menu_rental_root"
+        sequence="15"
+    />
+        <menuitem
+        name="Vendors"
+        id="menu_vendors"
+        parent="menu_top_vendor"
+        action="account.res_partner_action_supplier"
+        sequence="0"
+    />
+        <menuitem
+        name="Delivery"
+        id="menu_vendor_delivery"
+        parent="menu_top_vendor"
+        sequence="15"
+    />
+            <menuitem
+        name="Incoming Deliveries"
+        id="menu_vendor_delivery_incoming"
+        parent="menu_vendor_delivery"
+        action="stock_picking_action_picking_type_in"
+        sequence="5"
+    />
+            <menuitem
+        name="Outgoing Deliveries"
+        id="menu_vendor_delivery_outgoing"
+        parent="menu_vendor_delivery"
+        action="stock_picking_action_picking_type_out"
+        sequence="10"
+    />
+        <menuitem
+        name="Invoices"
+        id="menu_vendor_invoices"
+        parent="menu_top_vendor"
+        sequence="20"
+    />
+            <menuitem
+        name="Vendor Bills"
+        id="menu_vendor_bills"
+        parent="menu_vendor_invoices"
+        action="account.action_move_in_invoice_type"
+        sequence="5"
+    />
+            <menuitem
+        name="Vendor Credit Notes"
+        id="menu_vendor_credit_notes"
+        parent="menu_vendor_invoices"
+        action="account.action_move_in_refund_type"
+        sequence="10"
+    />
+
+
+    <menuitem
+        name="Products"
+        id="menu_master_data"
+        parent="menu_rental_root"
+        sequence="20"
+    />
+        <menuitem
+        name="Products"
+        id="menu_products"
+        parent="menu_master_data"
+        action="view_rental_product_action"
+        groups="product.group_product_variant"
+        sequence="0"
+    />
+
+    <menuitem
+        name="Configuration"
+        id="menu_config"
+        parent="menu_rental_root"
+        sequence="30"
+        groups="sales_team.group_sale_manager"
+    />
+        <menuitem
+        name="Settings"
+        id="menu_settings"
+        parent="menu_config"
+        action="rental_base.action_rental_configuration"
+        sequence="0"
+    />
+        <menuitem
+        name="Products"
+        id="menu_config_products"
+        parent="menu_config"
+        sequence="20"
+    />
+        <menuitem
+        name="Rental Positions"
+        id="menu_rental_positions"
+        parent="menu_config"
+        action="sale_rental.sale_rental_action"
+        groups="base.group_no_one"
+        sequence="100"
+    />
+</odoo>
