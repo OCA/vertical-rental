@@ -43,7 +43,6 @@ Refer to the usage information of the OCA module product_pack to learn how to
 define product packs.
 Please note, that this module does not include the behavior of the module sale_product_pack.
 """,
-
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/vertical-rental",
     "depends": [
