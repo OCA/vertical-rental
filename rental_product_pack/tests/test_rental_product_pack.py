@@ -34,6 +34,7 @@ class TestRentalProductPack(RentalStockCommon):
 
         self.rental_order = self.env["sale.order"].create(
             {
+                "type_id": self.rental_sale_type.id,
                 "partner_id": self.partnerA.id,
                 "order_line": [
                     (

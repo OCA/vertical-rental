@@ -1,14 +1,13 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models
+from odoo import models
 
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    @api.multi
     def action_confirm(self):
-        res = super(SaleOrder, self).action_confirm()
+        res = super().action_confirm()
         for order in self:
             out_pickings = order.picking_ids.filtered(
                 lambda x: x.picking_type_id.code == "outgoing" and x.state != "cancel"
@@ -21,7 +20,7 @@ class SaleOrder(models.Model):
                     if move.product_id and move.product_id.pack_ok:
                         for line in move.product_id.pack_line_ids:
                             qty = move.product_uom_qty * line.quantity
-                            new_move = move.copy(
+                            move.copy(
                                 {
                                     "product_id": line.product_id.id,
                                     "product_uom_qty": qty,
