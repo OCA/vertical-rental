@@ -131,29 +131,38 @@ class TestRentalPricelist(RentalStockCommon):
             }
         )
         # check service products of product A
-        check_hour = check_day = check_month = False
+        check_hour_A = check_day_A = check_month_A = False
         self.assertEqual(len(self.productA.rental_service_ids), 3)
         for p in self.productA.rental_service_ids:
             if p.uom_id == self.uom_month:
                 self.assertEqual(p.lst_price, 1000)
-                check_month = True
+                check_month_A = True
             if p.uom_id == self.uom_day:
                 self.assertEqual(p.lst_price, 100)
-                check_day = True
+                check_day_A = True
             if p.uom_id == self.uom_hour:
                 self.assertEqual(p.lst_price, 10)
-                check_hour = True
+                check_hour_A = True
+        self.assertTrue(check_hour_A)
+        self.assertTrue(check_day_A)
+        self.assertTrue(check_month_A)
 
         # check service products of product B
-        check_hour = check_day = check_month = False
+        check_hour_B = check_day_B = check_month_B = False
         self.assertEqual(len(self.productB.rental_service_ids), 3)
         for p in self.productB.rental_service_ids:
             if p.uom_id == self.uom_month:
                 self.assertEqual(p.lst_price, 2000)
+                check_month_B = True
             if p.uom_id == self.uom_day:
                 self.assertEqual(p.lst_price, 200)
+                check_day_B = True
             if p.uom_id == self.uom_hour:
                 self.assertEqual(p.lst_price, 20)
+                check_hour_B = True
+        self.assertTrue(check_hour_B)
+        self.assertTrue(check_day_B)
+        self.assertTrue(check_month_B)
 
     def test_01_rental_onchange_productA(self):
         """
@@ -439,5 +448,5 @@ class TestRentalPricelist(RentalStockCommon):
         with self.assertRaises(exceptions.UserError) as e:
             self.rental_order.action_confirm()
         self.assertEqual(
-            "The product Product D is not correctly configured.", e.exception.name
+            "The product Product D is not correctly configured.", str(e.exception)
         )

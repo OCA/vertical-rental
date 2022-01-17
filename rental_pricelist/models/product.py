@@ -1,7 +1,7 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-
 from odoo import _, api, exceptions, fields, models
+from odoo.exceptions import ValidationError
 
 
 class ProductProduct(models.Model):
@@ -98,13 +98,32 @@ class ProductProduct(models.Model):
         default=lambda self: self._default_pricelist(),
     )
 
+    # override from sale_rental, to remove Uom constrain
+    @api.constrains("rented_product_id", "must_have_dates", "type", "uom_id")
+    def _check_rental(self):
+        self.env.ref("uom.product_uom_day")
+        for product in self:
+            if product.rented_product_id:
+                if product.type != "service":
+                    raise ValidationError(
+                        _("The rental product '%s' must be of type 'Service'.")
+                        % product.name
+                    )
+                if not product.must_have_dates:
+                    raise ValidationError(
+                        _(
+                            "The rental product '%s' must have the option "
+                            "'Must Have Start and End Dates' checked."
+                        )
+                        % product.name
+                    )
+
     @api.model
     def _get_rental_service_prefix_suffix(self, field, str_type, rental_type):
         field_name = "rental_service_%s_%s_%s" % (field, str_type, rental_type)
         res = getattr(self.env.user.company_id, field_name)
         return res
 
-    @api.multi
     def _get_rental_service(self, rental_type):
         self.ensure_one()
         if rental_type == "month" and self.product_rental_month_id:
@@ -118,7 +137,6 @@ class ProductProduct(models.Model):
                 _("The product has no related rental services.")
             )
 
-    @api.multi
     def _get_rental_service_list(self):
         self.ensure_one()
         rental_services = []
@@ -159,7 +177,6 @@ class ProductProduct(models.Model):
             )
         return rental_type
 
-    @api.multi
     def _get_rental_service_name(self, rental_type, sp_name):
         self.ensure_one()
         prefix = self._get_rental_service_prefix_suffix("name", "prefix", rental_type)
@@ -171,7 +188,6 @@ class ProductProduct(models.Model):
             name = "%s %s" % (name, suffix)
         return name
 
-    @api.multi
     def _get_rental_service_default_code(self, rental_type, sp_code):
         self.ensure_one()
         prefix = self._get_rental_service_prefix_suffix(
@@ -229,7 +245,6 @@ class ProductProduct(models.Model):
         )
         return rental_service
 
-    @api.multi
     def _update_rental_service_analytic_account(self, vals):
         self.ensure_one()
         analytic_vals = {}
@@ -243,7 +258,6 @@ class ProductProduct(models.Model):
             )
         self.rental_service_ids.write(analytic_vals)
 
-    @api.multi
     def _update_rental_service_default_code(self, vals):
         self.ensure_one()
         if "default_code" in vals:
@@ -256,7 +270,6 @@ class ProductProduct(models.Model):
                 )
                 rental_service.default_code = rental_service_dc
 
-    @api.multi
     def _update_rental_service_name(self, vals):
         self.ensure_one()
         if "name" in vals:
@@ -269,7 +282,6 @@ class ProductProduct(models.Model):
                 )
                 rental_service.name = service_name
 
-    @api.multi
     def _update_rental_service_fields(self, vals, fields, rental_services):
         self.ensure_one()
         service_vals = {}
@@ -287,7 +299,6 @@ class ProductProduct(models.Model):
                 p.write(service_vals)
         self.rental_service_ids.write(service_vals)
 
-    @api.multi
     def write(self, vals):
         res = super(ProductProduct, self).write(vals)
         for p in self:
@@ -342,39 +353,28 @@ class ProductProduct(models.Model):
                 p._update_rental_service_fields(vals, update_fields, rental_services)
         return res
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         ext_vals = {}
-        if vals.get("rental_of_month", False):
-            ext_vals["rental_of_month"] = True
-            ext_vals["rental_price_month"] = vals.get("rental_price_month")
-            del vals["rental_of_month"]
-            if "rental_price_month" in vals:
-                del vals["rental_price_month"]
-        if vals.get("rental_of_day", False):
-            ext_vals["rental_of_day"] = True
-            ext_vals["rental_price_day"] = vals.get("rental_price_day")
-            del vals["rental_of_day"]
-            if "rental_price_day" in vals:
-                del vals["rental_price_day"]
-        if vals.get("rental_of_hour", False):
-            ext_vals["rental_of_hour"] = True
-            ext_vals["rental_price_hour"] = vals.get("rental_price_hour")
-            del vals["rental_of_hour"]
-            if "rental_price_hour" in vals:
-                del vals["rental_price_hour"]
-        res = super().create(vals)
-        if "income_analytic_account_id" in vals:
-            ext_vals["income_analytic_account_id"] = vals.get(
-                "income_analytic_account_id", False
-            )
-        else:
-            ext_vals["income_analytic_account_id"] = res.income_analytic_account_id.id
-        if "expense_analytic_account_id" in vals:
-            ext_vals["expense_analytic_account_id"] = vals.get(
-                "expense_analytic_account_id", False
-            )
-        else:
-            ext_vals["expense_analytic_account_id"] = res.expense_analytic_account_id.id
+        for vals in vals_list:
+            if vals.get("rental_of_month", False):
+                ext_vals["rental_of_month"] = True
+                ext_vals["rental_price_month"] = vals.get("rental_price_month")
+                del vals["rental_of_month"]
+                if "rental_price_month" in vals:
+                    del vals["rental_price_month"]
+            if vals.get("rental_of_day", False):
+                ext_vals["rental_of_day"] = True
+                ext_vals["rental_price_day"] = vals.get("rental_price_day")
+                del vals["rental_of_day"]
+                if "rental_price_day" in vals:
+                    del vals["rental_price_day"]
+            if vals.get("rental_of_hour", False):
+                ext_vals["rental_of_hour"] = True
+                ext_vals["rental_price_hour"] = vals.get("rental_price_hour")
+                del vals["rental_of_hour"]
+                if "rental_price_hour" in vals:
+                    del vals["rental_price_hour"]
+        res = super().create(vals_list)
         res.write(ext_vals)
         return res

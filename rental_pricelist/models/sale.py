@@ -45,7 +45,6 @@ class SaleOrderLine(models.Model):
             ]
         return domain
 
-    @api.multi
     def _set_product_id(self):
         self.ensure_one()
         if self.rental and self.display_product_id:
@@ -66,7 +65,6 @@ class SaleOrderLine(models.Model):
         elif not self.rental and self.display_product_id:
             self.product_id = self.display_product_id
 
-    @api.multi
     @api.onchange("display_product_id")
     def onchange_display_product_id(self):
         if self.display_product_id:
@@ -80,7 +78,6 @@ class SaleOrderLine(models.Model):
             self.rental = True
         self._set_product_id()
 
-    @api.multi
     @api.onchange("rental")
     def onchange_rental(self):
         if self.rental:
@@ -95,7 +92,6 @@ class SaleOrderLine(models.Model):
             self.extension_rental_id = False
         self._set_product_id()
 
-    @api.multi
     @api.onchange("can_sell_rental")
     def onchange_can_sell_rental(self):
         if self.can_sell_rental:
@@ -108,7 +104,6 @@ class SaleOrderLine(models.Model):
             self.sell_rental_id = False
             self._set_product_id()
 
-    @api.multi
     def _check_rental_availability(self):
         res = {}
         self.ensure_one()
@@ -246,7 +241,6 @@ class SaleOrderLine(models.Model):
             qty = self.rental_qty * self.number_of_time_unit
             self.product_uom_qty = qty
 
-    @api.multi
     def _get_product_rental_uom_ids(self):
         self.ensure_one()
         time_uoms = self._get_time_uom()
@@ -259,13 +253,13 @@ class SaleOrderLine(models.Model):
             uom_ids.append(time_uoms["hour"].id)
         return uom_ids
 
-    @api.multi
     @api.onchange("product_id")
     def product_id_change(self):
         res = super(SaleOrderLine, self).product_id_change()
-        if self.rental and "domain" in res and "product_uom" in res["domain"]:
-            del res["domain"]["product_uom"]
+        if self.rental:
             if self.display_product_id.rental:
+                if "domain" not in res:
+                    res["domain"] = {}
                 uom_ids = self._get_product_rental_uom_ids()
                 res["domain"]["product_uom"] = [("id", "in", uom_ids)]
                 if uom_ids and self.product_uom.id not in uom_ids:
@@ -312,7 +306,6 @@ class SaleOrderLine(models.Model):
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    @api.multi
     def _check_rental_order_line(self):
         for order in self:
             for line in order.order_line:
@@ -323,7 +316,6 @@ class SaleOrder(models.Model):
                             % line.product_id.name
                         )
 
-    @api.multi
     def action_confirm(self):
         self._check_rental_order_line()
         return super().action_confirm()
