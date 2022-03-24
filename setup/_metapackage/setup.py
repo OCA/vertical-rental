@@ -9,6 +9,7 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo14-addon-rental_base',
+        'odoo14-addon-rental_pricelist',
     ],
     classifiers=[
         'Programming Language :: Python',
