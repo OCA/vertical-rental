@@ -29,8 +29,10 @@
     <record id="sale_start_end_dates" model="ir.ui.view">
         <field name="name">rental_base.sale_start_end_dates</field>
         <field name="model">sale.order</field>
+        <field name="priority">110</field> <!--Priority greater than 100-->
         <field name="inherit_id" ref="sale_start_end_dates.view_order_form" />
         <field name="arch" type="xml">
+            <!-- Use of position=replace: It is necessary to adjust view design -->
             <field name="default_start_date" position="replace" />
             <field name="default_end_date" position="replace" />
             <field name="validity_date" position="after">
