@@ -14,12 +14,14 @@ class SaleOrder(models.Model):
         string="Default Start Date",
         compute="_compute_default_start_date",
         readonly=False,
+        store=True,
     )
 
     default_end_date = fields.Date(
         string="Default End Date",
         compute="_compute_default_end_date",
         readonly=False,
+        store=True,
     )
 
     @api.depends("order_line.start_date")
@@ -153,7 +155,7 @@ class SaleOrderLine(models.Model):
         self.ensure_one()
         res = super()._prepare_invoice_line(**optional_values)
         if self.product_id.income_analytic_account_id:
-            res["account_analytic_id"] = self.product_id.income_analytic_account_id.id
+            res["analytic_account_id"] = self.product_id.income_analytic_account_id.id
         return res
 
     @api.model
