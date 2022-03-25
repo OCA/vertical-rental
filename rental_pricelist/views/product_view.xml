@@ -5,8 +5,10 @@
         <record id="product_normal_form_view" model="ir.ui.view">
             <field name="name">view.product.product.form</field>
             <field name="model">product.product</field>
+            <field name="priority">112</field> <!--Priority greater than 100-->
             <field name="inherit_id" ref="product.product_normal_form_view" />
             <field name="arch" type="xml">
+                <!-- Use of position=replace: It is necessary to adjust view design -->
                 <group name="rental-product" position="replace" />
                 <xpath expr="//notebook" position="inside">
                     <page
@@ -164,8 +166,10 @@
         <record id="product_template_only_form_view" model="ir.ui.view">
             <field name="name">view.product.template.form</field>
             <field name="model">product.template</field>
+            <field name="priority">111</field> <!--Priority greater than 100-->
             <field name="inherit_id" ref="product.product_template_only_form_view" />
             <field name="arch" type="xml">
+                <!-- Use of position=replace: It is necessary to adjust view design -->
                 <group name="rental-product-template" position="replace" />
             </field>
         </record>
