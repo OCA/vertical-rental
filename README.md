@@ -19,8 +19,8 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[rental_base](rental_base/) | 14.0.1.0.0 |  | Manage Rental of Products
-[rental_pricelist](rental_pricelist/) | 14.0.1.0.0 |  | Enables the user to define different rental prices with time uom (Month, Day and Hour).
+[rental_base](rental_base/) | 14.0.1.0.1 |  | Manage Rental of Products
+[rental_pricelist](rental_pricelist/) | 14.0.1.0.1 |  | Enables the user to define different rental prices with time uom (Month, Day and Hour).
 
 [//]: # (end addons)
 
