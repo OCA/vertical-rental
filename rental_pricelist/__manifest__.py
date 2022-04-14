@@ -4,7 +4,7 @@
     "name": "Rental Pricelist",
     "summary": "Enables the user to define different rental prices with "
     "time uom (Month, Day and Hour).",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "category": "Rental",
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/vertical-rental",
