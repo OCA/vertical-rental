@@ -1,0 +1,100 @@
+Rental Product Pack
+====================================================
+
+*This file has been generated on 2021-10-25-10-18-19. Changes to it will be overwritten.*
+
+Summary
+-------
+
+Manage rentals with product packs
+
+Description
+-----------
+
+This module allows to manage rentals with product packs.
+You can define product packs as described in the module product_pack.
+The components of the pack are added to both rental stock pickings after order confirmation.
+
+
+Usage
+-----
+
+Install the module.
+No further configuration is needed.
+
+Create at least one storable product that will be a component of a pack.
+ * Go to Rentals > Configuration > Settings.
+ * Please activate the checkbox for using 'Product Variants'.
+ * Go to Rentals > Products > Products.
+ * Create a new storable product.
+
+Create a rentable pack product.
+ * Create a new storable product.
+ * Activate the checkbox 'Can be Rented' and 'Is Pack'.
+ * Go to page 'Pack'.
+ * Choose Pack Type (e.g. Non-detailled) and add the previously created storable products that are part of this pack.
+ * Go to page 'Sales & Purchase'.
+ * Create the rental service and configure its name and price.
+
+Create a rental order:
+ * Go to Rentals > Customer > Rental Quotations.
+ * Create a new order and choose the type 'Rental Order'.
+ * Add the rental service of the rentable pack product as an order line.
+ * Set the quantity.
+ * Choose start and end date.
+ * Confirm the order.
+ * Check out the two deliveries, one for outgoing and one for incoming delivery.
+ * You can see all parts of the pack in both stock pickings.
+
+Hint:
+Refer to the usage information of the OCA module product_pack to learn how to
+define product packs.
+Please note, that this module does not include the behavior of the module sale_product_pack.
+
+
+Changelog
+---------
+
+- d32f4bf1 2021-10-19 13:27:01 +0200 maria.sparenberg@elegosoft.com  issue #4439 format code and finalize description and usage section
+- 8b4d40c4 2021-09-23 09:19:24 +0200 wagner@elegosoft.com  regenerate doc (issue #4016)
+- cef8bcb6 2021-06-25 15:21:15 +0000 jenkins-ci@elegosoft.com  [MERGE] remotes/origin/feature_4273_blp1110_rental_product_pack_v12: addons-rental-vertical remotes/origin/feature_4273_blp1110_rental_product_pack_v12 - 8b3f8264d894702df1b16242fefa3f48425f7f43 [IMP] improve german translation,to rental_contract (issue#3920)
+- aaa95c56 2021-06-25 10:44:10 +0200 cpatel@elegosoft.com  [IMP] parent_product_id to pack lines automatically filled, (issue#4273)
+- 8a51e30d 2021-06-23 11:39:35 +0200 cpatel@elegosoft.com  [IMP] todo points 1. sshow fields used_in_pack_line_ids under Pack tab, when pack_ok is True OR used_in_pack_line_ids is set 2. show parent_product_id field to the product pack line tree view issue(#4273)
+- dd988a2f 2021-06-09 12:42:47 +0200 wagner@elegosoft.com  update documentation (issue #3613)
+- bbd5cb25 2021-01-14 13:55:22 +0100 wagner@elegosoft.com  adapt gen-doc and update (issue #3613)
+- 83ed8f72 2020-12-22 18:06:08 +0100 wagner@elegosoft.com  all Python code reformatted by black code formatter (issue #4016)
+- c7e3b592 2020-11-06 09:59:46 +0100 wagner@elegosoft.com  regenerate doc from manifests (issue #3613)
+- 391ef2af 2020-10-28 20:59:58 +0100 wagner@elegosoft.com  add usage information for product sets and product packs; add configuration and usage information for rental_sale and extend gen-doc for configuration (issue #3613)
+- d39f57e8 2020-10-28 20:18:47 +0100 wagner@elegosoft.com  add links to the index in README.md (issue #3613)
+- b1039c8c 2020-10-28 17:39:27 +0100 wagner@elegosoft.com  add index generation and add index to README.md (issue #3613)
+- 363cb502 2020-10-28 16:59:43 +0100 wagner@elegosoft.com  change quotes in manifests of rental_forward_shipment_plan and rental_routing and add some draft information about routing; regenerate (issue #3613)
+- fb94de5c 2020-10-28 16:20:59 +0100 wagner@elegosoft.com  add descriptions to rental_timeline modules and regenerate (issue #3613)
+- f1affe52 2020-10-28 12:45:28 +0100 wagner@elegosoft.com  regenerate doc (issue #3613)
+- 5244748e 2020-10-27 14:52:26 +0100 wagner@elegosoft.com  regenerate documentation and add README.rst files (issue #3339)
+- d02ea5d8 2020-10-27 14:41:06 +0100 wagner@elegosoft.com  (tag: bp_rental_v12_integration-cep-849) update doc generation script (issue #3339)
+- 7580ae89 2020-10-05 22:19:25 +0200 wagner@elegosoft.com  (origin/fix_3884_blp819_fix_application_status_and_deps_v12, fix_3884_blp819_fix_application_status_and_deps_v12) set application to false for all modules except rental_base (issue #3884, issue #3339)
+- 63e22e69 2020-09-10 14:38:42 +0200 yweng@elegosoft.com  (origin/fix_3856_blp778_duplicated_in_pickings_of_reconfirmed_sale_order_v12) [FIX] (#3856) the canceled pickings or moves of a canceled sale order should not be set into state 'confirmed' again, if the user confirm the canceled sale order again. It works with FIX feature_3856_blp778_rockbird_terminate_contract_v12 together
+- 17d4b8ad 2020-07-01 12:56:29 +0200 yweng@elegosoft.com  (origin/feature_3745_blp677_rental_product_pack_access_v12) [IMP] override access rights of model product.pack.line for normal user
+- eee2472b 2020-06-26 19:24:51 +0200 wagner@elegosoft.com  (origin/fix_3339_blp669_extend_documentation_v12, origin/fix_3339_blp666_extend_documentation_v12, fix_3339_blp669_extend_documentation_v12, fix_3339_blp666_extend_documentation_v12) update documentation (issue #3339)
+- 57b29fa1 2020-05-24 12:58:49 +0200 wagner@elegosoft.com  (origin/fix_3339_blp622_extend_documentation_v12, origin/fix_3339_bl616_extend_documentation_v12, fix_3339_blp622_extend_documentation_v12, fix_3339_bl616_extend_documentation_v12) update documentation for fix release (issue #3339)
+- 94dc79ca 2020-05-16 18:10:44 +0200 wagner@elegosoft.com  (origin/fix_3339_blp559_extend_documentation_v12, fix_3339_blp559_extend_documentation_v12) update module documentation (issue #3339)
+- 89adaaf3 2020-05-16 14:54:03 +0200 wagner@elegosoft.com  fixup categories and regenerate documentation (issue #3339)
+- 134218b1 2020-05-03 18:34:51 +0200 wagner@elegosoft.com  (origin/feature_3339_blp541_update_doc_v12, feature_3339_blp541_update_doc_v12) unify license and author and regenerate documentation (issue #3613, issue #3339)
+- 795b1b6a 2020-04-24 20:58:26 +0200 wagner@elegosoft.com  (tag: bp_rental_v12_integration-cep-521, tag: bp_rental_v12_integration-cep-520, tag: bp_rental_v12_integration-cep-519, tag: bp_rental_v12_integration-cep-518, tag: bp_rental_v12_integration-cep-517, tag: bp_rental_v12_integration-cep-516, tag: bp_rental_v12_integration-cep-514, tag: bp_rental_v12_integration-cep-513, tag: bp_rental_v12_integration-cep-512, tag: bp_rental_v12_integration-cep-511, tag: bp_rental_v12_integration-cep-510, tag: bp_rental_v12_integration-cep-509, tag: bp_rental_v12_integration-cep-508, tag: bp_rental_v12_integration-cep-507, tag: bp_rental_v12_integration-cep-506, tag: bp_rental_v12_integration-cep-505, tag: bp_humanilog_v12_integration-cep-322, tag: bp_humanilog_v12_integration-cep-321, tag: bp_humanilog_v12_integration-cep-320, tag: baseline_rental-vertical_v12_swrent_daily_build-503, origin/rental_v12_integration-cep-503, rental_v12_integration-cep-503) regenerate documentation (issue #3613)
+- 7fac932a 2020-04-13 14:13:09 +0200 wagner@elegosoft.com  (origin/fix_3339_blp455_extend_documentation_v12, fix_3339_blp455_extend_documentation_v12) regenerate documentation (issue #3339)
+- 2da340dc 2020-04-13 14:11:24 +0200 wagner@elegosoft.com  change license for rental-vertical to AGPL (issue #3339)
+- 6d3410b3 2020-04-13 13:28:20 +0200 wagner@elegosoft.com  regenerate documentation (issue #3339)
+- 0bab92d2 2020-04-09 12:41:12 +0200 wagner@elegosoft.com  (origin/fix_3339_blp355_extend_documentation_v12, fix_3339_blp355_extend_documentation_v12) update/regenerate addon documentation (issue #3339)
+- b49c01da 2020-03-15 10:12:53 +0100 wagner@elegosoft.com  (origin/fix_3339_blp384_extend_documentation_v12) regenerate doc (issue #3339)
+- cea0e942 2020-03-13 20:38:19 +0100 wagner@elegosoft.com  update documentation to build 380 (issue #3339)
+- a5b57990 2020-03-11 17:48:38 +0100 yweng@elegosoft.com  [IMP] Unittests of module rental_product_pack
+- 804dc443 2020-03-07 21:06:12 +0100 wagner@elegosoft.com  regenerate module documentation (issue #3339)
+- 7dde7fa1 2020-03-03 00:19:35 +0100 wagner@elegosoft.com  (origin/fix_3339_blp311_extend_documentation_v12, fix_3339_blp311_extend_documentation_v12) add changelogs in HISTORY.rst and some minor improvements (issue #3339)
+- 467665c9 2020-03-01 15:50:45 +0100 wagner@elegosoft.com  (origin/feature_3339_blp297_add_some_module_descriptions_v12, feature_3339_blp297_add_some_module_descriptions_v12) add some generated reST and HTML documentation (issue #3339)
+- 1db47608 2020-02-29 23:48:15 +0100 wagner@elegosoft.com  add some more simple module decsriptions (issue #3339)
+- 6965ed1c 2020-02-29 22:46:34 +0100 wagner@elegosoft.com  fix some mistakes in author and license, make summaries one line, add some descriptions (issue #3339)
+- 361fb14a 2020-02-11 13:09:55 +0100 maria.sparenberg@elegosoft.com  issue #3279 add German translations for rental_product_pack
+- b5f3dbc1 2020-01-23 15:32:23 +0100 yweng@elegosoft.com  [IMP] fixes errors in module rental_product_pack and redefine type of field 'init_regist' Char -> Date
+- 94e76bbb 2020-01-23 13:08:03 +0100 yweng@elegosoft.com  [IMP] set liscense, copyrights and author
+- b2e6d5ce 2020-01-21 20:51:21 +0100 yweng@elegosoft.com  (origin/feature_3304_blp151_refactoring_swrent_product_extension_v12) [IMP] Add neu Module rental_base, rental_product_pack and Refactoring of module sale_rental_menu (deprecated)
+
