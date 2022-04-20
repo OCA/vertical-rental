@@ -161,4 +161,4 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.price_unit, 1750)
         with self.assertRaises(exceptions.UserError) as e:
             _run_sol_onchange_date(line, end_date=self.date_24_day_later)
-        self.assertEqual("Max rental interval (21 days) is exceeded.", e.exception.name)
+        self.assertEqual("Max rental interval (21 days) is exceeded.", str(e.exception))
