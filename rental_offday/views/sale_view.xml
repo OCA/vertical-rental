@@ -1,44 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
     <record id="view_order_form" model="ir.ui.view">
         <field name="name">rental_offday.view_order_form</field>
         <field name="model">sale.order</field>
-        <field name="inherit_id" ref="rental_base.view_order_form"/>
+        <field name="inherit_id" ref="rental_base.view_order_form" />
         <field name="arch" type="xml">
-            <xpath expr="//group[@id='rental_times']//label[@for='product_uom_qty']" position="before">
-                <label for="offday_number" string="Off-Time"  attrs="{'invisible': [('show_offday', '=', False)]}"/>
+            <xpath
+                expr="//group[@id='rental_times']//label[@for='product_uom_qty']"
+                position="before"
+            >
+                <label
+                    for="offday_number"
+                    string="Off-Time"
+                    attrs="{'invisible': [('show_offday', '=', False)]}"
+                />
                 <div attrs="{'invisible': [('show_offday', '=', False)]}">
-                    <field name="offday_number" class="oe_inline"/> Day(s)
+                    <field name="offday_number" class="oe_inline" /> Day(s)
                 </div>
             </xpath>
             <xpath expr="//field[@name='order_line']//form" position="inside">
                 <notebook>
-                    <page name="offdays" string="Off-Days" attrs="{'invisible': [('show_offday', '=', False)]}">
-                        <field name="show_offday" invisible="1"/>
+                    <page
+                        name="offdays"
+                        string="Off-Days"
+                        attrs="{'invisible': [('show_offday', '=', False)]}"
+                    >
+                        <field name="show_offday" invisible="1" />
                         <group>
                             <group string="Fixed Off Days">
-                                <field name="fixed_offday_type"/>
+                                <field name="fixed_offday_type" />
                                 <field name="fixed_offday_ids" nolabel="1" colspan="3">
                                     <tree>
-                                        <field name="date"/>
-                                        <field name="name"/>
+                                        <field name="date" />
+                                        <field name="name" />
                                     </tree>
                                 </field>
                             </group>
                             <group string="Additional Off Days">
-                                <div name="additional_offday_period" colspan="3" class="oe_edit_only">
+                                <div
+                                    name="additional_offday_period"
+                                    colspan="3"
+                                    class="oe_edit_only"
+                                >
                                     <span>From &amp;nbsp;</span>
-                                    <field class="oe_inline" name="offday_date_start" nolabel="1"/>
+                                    <field
+                                        class="oe_inline"
+                                        name="offday_date_start"
+                                        nolabel="1"
+                                    />
                                     <span>&amp;nbsp; to &amp;nbsp;</span>
-                                    <field class="oe_inline" name="offday_date_end" nolabel="1"/>
+                                    <field
+                                        class="oe_inline"
+                                        name="offday_date_end"
+                                        nolabel="1"
+                                    />
                                     <strong>&amp;nbsp; OK? &amp;nbsp;</strong>
-                                    <field class="oe_inline" name="add_additional_offdays"/>
+                                    <field
+                                        class="oe_inline"
+                                        name="add_additional_offdays"
+                                    />
                                 </div>
                                 <field name="add_offday_ids" nolabel="1">
                                     <tree editable="bottom">
-                                        <field name="date"/>
-                                        <field name="name"/>
+                                        <field name="date" />
+                                        <field name="name" />
                                     </tree>
                                 </field>
                             </group>

@@ -28,4 +28,3 @@ Create a rental order:
  * Add some additional off-days as needed.
  * The number of off-days reduces the rental quantity and is therefore not included in price calculation.
  * Confirm the order.
-
