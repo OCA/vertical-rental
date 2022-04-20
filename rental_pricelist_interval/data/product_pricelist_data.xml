@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
         <!-- Price list -->
         <record id="pricelist_interval" model="product.pricelist">
             <field name="name">Public Pricelist (Interval)</field>
             <field name="sequence">10</field>
-            <field name="is_interval_pricelist" eval="True"/>
+            <field name="is_interval_pricelist" eval="True" />
         </record>
 
         <!--
