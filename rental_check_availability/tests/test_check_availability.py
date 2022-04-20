@@ -76,7 +76,7 @@ class TestRentalCheckAvailability(RentalStockCommon):
         return rental_order
 
     def test_00_check_availability(self):
-        # Rental Orders
+        # Rental Orders Info
         # RO 1  (qty: 2)    today -------- 10 (none)
         # RO 2  (qty: 2)                                 20 ----------- 30 (none)
         # RO 3  (qty: 3)                                           27 - 30 (quotation)
@@ -85,7 +85,8 @@ class TestRentalCheckAvailability(RentalStockCommon):
         # RO 6  (qty: 1)              5 --------- 15 (none)
         expected_warning = {
             "title": "Not enough stock!",
-            "message": "You want to rent 3.00 Unit(s) but you only have 2.00 Unit(s) available in the selected period.",
+            "message": "You want to rent 3.00 Units but you only "
+            "have 2.00 Units available in the selected period.",
         }
         # create some quantity of productA (qty: 4)
         self.env["stock.quant"]._update_available_quantity(
