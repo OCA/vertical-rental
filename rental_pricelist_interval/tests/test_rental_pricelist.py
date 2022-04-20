@@ -2,9 +2,13 @@
 
 from dateutil.relativedelta import relativedelta
 
+from odoo import exceptions, fields
+
 from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
-from odoo.addons.rental_pricelist.tests.test_rental_pricelist import _run_sol_onchange_display_product_id, _run_sol_onchange_date
-from odoo import fields, exceptions
+from odoo.addons.rental_pricelist.tests.test_rental_pricelist import (
+    _run_sol_onchange_date,
+    _run_sol_onchange_display_product_id,
+)
 
 
 class TestRentalPricelist(RentalStockCommon):
