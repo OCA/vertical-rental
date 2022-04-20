@@ -16,4 +16,3 @@ To use this module, you need to:
    from base price and interval ranges configured in company settings.
 
 #. Adapt interval min. quantities or prices for the selected product if desired.
-

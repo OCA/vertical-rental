@@ -1,6 +1,6 @@
-from openupgradelib import openupgrade
-from odoo.tools.float_utils import float_compare, float_round, float_is_zero
 import logging
+
+from openupgradelib import openupgrade
 
 _logger = logging.getLogger(__name__)
 

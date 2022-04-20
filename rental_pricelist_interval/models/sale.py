@@ -1,8 +1,7 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, exceptions, _
-from odoo.tools import float_compare
-from odoo.exceptions import ValidationError, UserError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class SaleOrderLine(models.Model):

@@ -16,4 +16,3 @@ of odoo price lists. This enables to rent out products and charge for day interv
 
 These ranges can be configured freely on general and/or product level. In contrast to rentals
 on daily, monthly or yearly bases a different price computation is applied in sale order lines.
-
