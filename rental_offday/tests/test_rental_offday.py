@@ -107,7 +107,7 @@ class TestRentalOffDay(TransactionCase):
             )
             self.sale_order_line.onchange_add_offday_ids()
         self.assertEqual(
-            e.exception.name,
+            str(e.exception),
             _('The off-day "%s" was already created as fixed off-day.')
             % date_fixed_offday,
         )
@@ -132,7 +132,7 @@ class TestRentalOffDay(TransactionCase):
             )
             self.sale_order_line.onchange_add_offday_ids()
         self.assertEqual(
-            e.exception.name,
+            str(e.exception),
             _('The off-day "%s" is not between %s and %s.')
             % (date_before_start, self.date_start, self.date_end),
         )
