@@ -20,12 +20,8 @@
                 </div>
             </xpath>
             <xpath expr="//field[@name='order_line']//form" position="inside">
-                <notebook>
-                    <page
-                        name="offdays"
-                        string="Off-Days"
-                        attrs="{'invisible': [('show_offday', '=', False)]}"
-                    >
+                <notebook attrs="{'invisible': [('show_offday', '=', False)]}">
+                    <page name="offdays" string="Off-Days">
                         <field name="show_offday" invisible="1" />
                         <group>
                             <group string="Fixed Off Days">
