@@ -1,43 +1,61 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
         <!-- ProductProduct -->
         <record id="product_normal_form_view" model="ir.ui.view">
             <field name="name">view.product.product.form</field>
             <field name="model">product.product</field>
-            <field name="inherit_id" ref="rental_pricelist.product_normal_form_view"/>
+            <field name="inherit_id" ref="rental_pricelist.product_normal_form_view" />
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='rental_price']/group" position='inside'>
                     <group string="Interval Basis">
-                        <field name="rental_of_interval"/>
-                        <field name="def_interval_pricelist_id" invisible="1"/>
-                        <field name="rental_price_interval" attrs="{'invisible': [('rental_of_interval','=',False)]}"/>
-                        <field name="rental_interval_max" attrs="{'invisible': [('rental_of_interval','=',False)]}"/>
-                        <field name="product_rental_interval_id" groups="base.group_no_one"/>
+                        <field name="rental_of_interval" />
+                        <field name="def_interval_pricelist_id" invisible="1" />
+                        <field
+                            name="rental_price_interval"
+                            attrs="{'invisible': [('rental_of_interval','=',False)]}"
+                        />
+                        <field
+                            name="rental_interval_max"
+                            attrs="{'invisible': [('rental_of_interval','=',False)]}"
+                        />
+                        <field
+                            name="product_rental_interval_id"
+                            groups="base.group_no_one"
+                        />
                         <strong colspan="1" class="oe_inline">Bulk Prices</strong>
-                        <button name="action_reset_rental_price_interval_items"
-                                type="object" string="Reset Interval Prices" class="oe_inline"/>
-                        <field name="interval_scale_pricelist_item_ids"
-                               position="inside"
-                               domain="[('product_id', '=', product_rental_interval_id),
+                        <button
+                            name="action_reset_rental_price_interval_items"
+                            type="object"
+                            string="Reset Interval Prices"
+                            class="oe_inline"
+                        />
+                        <field
+                            name="interval_scale_pricelist_item_ids"
+                            position="inside"
+                            domain="[('product_id', '=', product_rental_interval_id),
                                         ('pricelist_id', '=', def_interval_pricelist_id)]"
-                               context="{
+                            context="{
                                'default_applied_on': '0_product_variant',
                                'default_compute_price': 'fixed',
                                'default_product_id': product_rental_interval_id, 'default_pricelist_id': def_interval_pricelist_id}"
-                               attrs="{'invisible': ['|', ('rental_of_interval', '=', False), ('product_rental_interval_id', '=', False)]}"
-                               nolabel="1"
-                               colspan="2"
+                            attrs="{'invisible': ['|', ('rental_of_interval', '=', False), ('product_rental_interval_id', '=', False)]}"
+                            nolabel="1"
+                            colspan="2"
                         >
                             <tree string="Pricelist Items" editable="bottom">
-                                <field name="min_quantity"/>
-                                <field name="fixed_price" string="Price"
-                                       required="1" widget="monetary"
-                                       options="{'currency_field': 'currency_id'}"/>
-                                <field name="compute_price" invisible="1"/>
-                                <field name="applied_on" invisible="1"/>
-                                <field name="product_id" invisible="1"/>
-                                <field name="pricelist_id" invisible="1"/>
+                                <field name="min_quantity" />
+                                <field
+                                    name="fixed_price"
+                                    string="Price"
+                                    required="1"
+                                    widget="monetary"
+                                    options="{'currency_field': 'currency_id'}"
+                                />
+                                <field name="compute_price" invisible="1" />
+                                <field name="applied_on" invisible="1" />
+                                <field name="product_id" invisible="1" />
+                                <field name="pricelist_id" invisible="1" />
                             </tree>
                         </field>
                     </group>
