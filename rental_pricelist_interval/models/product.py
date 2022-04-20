@@ -14,6 +14,7 @@ class ProductPricelistItem(models.Model):
     @api.onchange("product_id")
     def _onchange_product_id(self):
         uom_interval = self.env.ref("rental_pricelist_interval.product_uom_interval")
+        super()._onchange_product_id()
         if self.product_id.rented_product_id:
             if self.product_id.uom_id.id == uom_interval.id:
                 self.interval_item_id = self.product_id.rented_product_id.id
@@ -25,33 +26,13 @@ class ProductPricelist(models.Model):
     is_interval_pricelist = fields.Boolean("Interval Pricelist")
 
 
-# TODO delete class RentalPriceIntervalItem after migration of price
-class RentalPriceIntervalItem(models.Model):
-    _name = "rental.price.interval.item"
-    _description = "Rental Price Interval Item"
-
-    name = fields.Char(
-        "Name",
-    )
-
-    price = fields.Float(
-        "Price",
-    )
-
-    min_quantity = fields.Integer(
-        "Interval (days)",
-    )
-
-    product_id = fields.Many2one("product.product", "Product")
-
-
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
     def _default_interval_pricelist(self):
         try:
             res = self.env.ref("rental_pricelist_interval.pricelist_interval").id
-        except:
+        except Exception:
             return False
         return res
 
@@ -89,7 +70,6 @@ class ProductProduct(models.Model):
         default=lambda self: self._default_interval_pricelist(),
     )
 
-    @api.multi
     def _get_rental_service(self, rental_type):
         self.ensure_one()
         if rental_type == "interval" and self.product_rental_interval_id:
@@ -106,7 +86,6 @@ class ProductProduct(models.Model):
         else:
             return super()._get_rental_service_uom(rental_type)
 
-    @api.multi
     def write(self, vals):
         res = super(ProductProduct, self).write(vals)
         for p in self:
@@ -125,20 +104,20 @@ class ProductProduct(models.Model):
                 p._update_rental_service_analytic_account(vals)
         return res
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         ext_vals = {}
-        if vals.get("rental_of_interval", False):
-            ext_vals["rental_of_interval"] = True
-            ext_vals["rental_price_interval"] = vals.get("rental_price_interval")
-            del vals["rental_of_interval"]
-            if "rental_price_interval" in vals:
-                del vals["rental_price_interval"]
-        res = super().create(vals)
+        for vals in vals_list:
+            if vals.get("rental_of_interval", False):
+                ext_vals["rental_of_interval"] = True
+                ext_vals["rental_price_interval"] = vals.get("rental_price_interval")
+                del vals["rental_of_interval"]
+                if "rental_price_interval" in vals:
+                    del vals["rental_price_interval"]
+        res = super().create(vals_list)
         res.write(ext_vals)
         return res
 
-    @api.multi
     def action_reset_rental_price_interval_items(self):
         self.ensure_one()
         company = self.company_id or self.env.user.company_id
