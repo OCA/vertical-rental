@@ -1,8 +1,6 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-import time
-from datetime import timedelta
-from odoo import api, fields, models, exceptions, _
+from odoo import _, api, exceptions, fields, models
 
 
 class RentalOffday(models.Model):
