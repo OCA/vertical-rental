@@ -28,7 +28,6 @@ class RentalOffday(models.Model):
         required=True,
     )
 
-    @api.multi
     @api.constrains("fixed_order_line_id", "date", "add_order_line_id")
     def _check_date(self):
         for line in self:
