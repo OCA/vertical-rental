@@ -15,4 +15,3 @@ To use this module, you need to:
 
 #. To check the concurrent order for a critical sale order line just click
    on the inline button being displayed in the sale order line.
-
