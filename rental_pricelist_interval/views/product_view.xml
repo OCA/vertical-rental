@@ -28,7 +28,7 @@
                             name="action_reset_rental_price_interval_items"
                             type="object"
                             string="Reset Interval Prices"
-                            class="oe_inline"
+                            class="oe_inline btn-secondary"
                         />
                         <field
                             name="interval_scale_pricelist_item_ids"
@@ -56,6 +56,7 @@
                                 <field name="applied_on" invisible="1" />
                                 <field name="product_id" invisible="1" />
                                 <field name="pricelist_id" invisible="1" />
+                                <field name="company_id" invisible="1" />
                             </tree>
                         </field>
                     </group>
