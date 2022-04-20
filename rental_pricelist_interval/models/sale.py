@@ -19,7 +19,6 @@ class SaleOrderLine(models.Model):
         string="Rental Interval",
     )
 
-    @api.multi
     def _get_number_of_time_unit(self):
         res = super()._get_number_of_time_unit()
         time_uoms = self._get_time_uom()
@@ -35,7 +34,6 @@ class SaleOrderLine(models.Model):
         return res
 
     # (override) _set_product_id from module rental_pricelist
-    @api.multi
     def _set_product_id(self):
         self.ensure_one()
         if self.rental and self.display_product_id:
@@ -57,11 +55,11 @@ class SaleOrderLine(models.Model):
                 else:
                     self.rental = False
                     self.product_id = self.display_product_id
-                    # raise exceptions.UserError(_('The product has no related rental services.'))
+                    # raise exceptions.UserError(_('The product has no related \n
+                    # rental services.'))
         elif not self.rental and self.display_product_id:
             self.product_id = self.display_product_id
 
-    @api.multi
     def _check_interval_price(self):
         self.ensure_one()
         uom_interval = self.env.ref("rental_pricelist_interval.product_uom_interval")
@@ -75,7 +73,6 @@ class SaleOrderLine(models.Model):
                         % product.rental_interval_max
                     )
 
-    @api.multi
     def _update_interval_price(self):
         self.ensure_one()
         if self.order_id.pricelist_id and self.order_id.partner_id:
@@ -103,7 +100,6 @@ class SaleOrderLine(models.Model):
                     self.company_id,
                 )
 
-    @api.multi
     def _get_product_rental_uom_ids(self):
         self.ensure_one()
         time_uoms = self._get_time_uom()
@@ -115,7 +111,6 @@ class SaleOrderLine(models.Model):
             res = super()._get_product_rental_uom_ids()
         return res
 
-    @api.multi
     @api.onchange("product_id")
     def product_id_change(self):
         uom_interval = self.env.ref("rental_pricelist_interval.product_uom_interval")
@@ -149,7 +144,7 @@ class SaleOrderLine(models.Model):
 
     @api.onchange("product_uom", "product_uom_qty")
     def product_uom_change(self):
-        res = super(SaleOrderLine, self).product_uom_change()
+        res = super().product_uom_change()
         self._update_interval_price()
         return res
 
