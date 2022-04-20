@@ -1,11 +1,10 @@
-from odoo.tests.common import TransactionCase
-from odoo.tools.translate import _
-from odoo.exceptions import UserError
-from odoo import fields
-
+import logging
 from datetime import date, timedelta
 
-import logging
+from odoo import fields
+from odoo.exceptions import UserError
+from odoo.tests.common import TransactionCase
+from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
