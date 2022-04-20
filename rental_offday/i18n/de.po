@@ -4,13 +4,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-19 11:33+0000\n"
-"PO-Revision-Date: 2021-10-19 11:33+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2022-01-06 09:18+0000\n"
+"PO-Revision-Date: 2022-01-06 09:18+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -29,7 +28,7 @@ msgstr "<span>Von &amp;nbsp;</span>"
 #. module: rental_offday
 #: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
 msgid "<strong>&amp;nbsp; OK? &amp;nbsp;</strong>"
-msgstr "<strong>&amp;nbsp; OK? &amp;nbsp;</strong>"
+msgstr ""
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__add_additional_offdays
@@ -73,6 +72,7 @@ msgstr "Beschreibung"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday__display_name
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__display_name
 msgid "Display Name"
 msgstr "Anzeigename"
 
@@ -88,11 +88,13 @@ msgstr "Feste Standtage"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday__id
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday____last_update
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line____last_update
 msgid "Last Modified on"
 msgstr "Zuletzt geändert am"
 
@@ -112,7 +114,7 @@ msgid "Number of Off-Days"
 msgstr "Anzahl der Standtage"
 
 #. module: rental_offday
-#: code:addons/rental_offday/models/sale.py:184
+#: code:addons/rental_offday/models/sale.py:0
 #, python-format
 msgid "Off days' start date must be earlier than end date."
 msgstr "Das Startdatum der Standtage muss vor deren Enddatum liegen."
@@ -168,22 +170,22 @@ msgid "Show Off-Days"
 msgstr "Standtage anzeigen"
 
 #. module: rental_offday
-#: code:addons/rental_offday/models/sale.py:129
-#: code:addons/rental_offday/models/sale.py:156
-#: code:addons/rental_offday/tests/test_rental_offday.py:137
+#: code:addons/rental_offday/models/sale.py:0
+#: code:addons/rental_offday/models/sale.py:0
+#: code:addons/rental_offday/tests/test_rental_offday.py:0
 #, python-format
 msgid "The off-day \"%s\" is not between %s and %s."
 msgstr "Der Standtag \"%s\" liegt nicht zwischen %s und %s."
 
 #. module: rental_offday
-#: code:addons/rental_offday/models/sale.py:161
-#: code:addons/rental_offday/tests/test_rental_offday.py:112
+#: code:addons/rental_offday/models/sale.py:0
+#: code:addons/rental_offday/tests/test_rental_offday.py:0
 #, python-format
 msgid "The off-day \"%s\" was already created as fixed off-day."
 msgstr "Der Standtag \"%s\" wurde schon als fester Standtag hinzugefügt."
 
 #. module: rental_offday
-#: code:addons/rental_offday/models/sale.py:98
+#: code:addons/rental_offday/models/sale.py:0
 #, python-format
 msgid "The start date must be anterior to the end date."
 msgstr "Das Startdatum muss vor dem Enddatum liegen."
@@ -191,41 +193,37 @@ msgstr "Das Startdatum muss vor dem Enddatum liegen."
 #. module: rental_offday
 #: model:ir.model.fields,help:rental_offday.field_sale_order_line__offday_number
 msgid ""
-"This is the number of days, the product is not used by the customer during "
-"the rental period.\n"
-"Fixed off-days, e.g. for the weekend, can be created automatically but you "
-"can also add manually more off-days."
+"This is the number of days, the product is not used by the customer during the rental period.\n"
+"Fixed off-days, e.g. for the weekend, can be created automatically but you can also add manually more off-days."
 msgstr ""
-"Dies ist die Anzahl der Tage, die das Produkt während des Mietzeitraums "
-"nicht vom Kunden benutzt wird.\n"
-"Feste Standtage, z.B. für Wochenenden, können automatisch erstellt werden, "
-"but auch manuell lassen sich weitere Standtage hinzufügen."
+"Dies ist die Anzahl der Tage, die das Produkt während des Mietzeitraums nicht vom Kunden benutzt wird.\n"
+"Feste Standtage, z.B. für Wochenenden, können automatisch erstellt werden, but auch manuell lassen sich weitere Standtage hinzufügen."
 
 #. module: rental_offday
-#: selection:sale.order.line,fixed_offday_type:0
+#: model:ir.model.fields.selection,name:rental_offday.selection__sale_order_line__fixed_offday_type__weekend
 msgid "Weekend"
 msgstr "Wochenende"
 
 #. module: rental_offday
-#: code:addons/rental_offday/models/sale.py:179
+#: code:addons/rental_offday/models/sale.py:0
 #, python-format
 msgid "You cannot add an off day earlier than %s."
 msgstr "Sie können keinen Standtag vor dem %s hinzufügen."
 
 #. module: rental_offday
-#: code:addons/rental_offday/models/sale.py:182
+#: code:addons/rental_offday/models/sale.py:0
 #, python-format
 msgid "You cannot add an off day later than %s."
 msgstr "Sie können keinen Standtag nach dem %s hinzufügen."
 
 #. module: rental_offday
-#: code:addons/rental_offday/models/rental_offday.py:53
-#: code:addons/rental_offday/models/sale.py:168
+#: code:addons/rental_offday/models/rental_offday.py:0
+#: code:addons/rental_offday/models/sale.py:0
 #, python-format
 msgid "You have already created the off-day \"%s\"."
 msgstr "Der Standtag \"%s\" wurde schon hinzugefügt."
 
 #. module: rental_offday
-#: selection:sale.order.line,fixed_offday_type:0
+#: model:ir.model.fields.selection,name:rental_offday.selection__sale_order_line__fixed_offday_type__none
 msgid "none"
 msgstr "Keine"
