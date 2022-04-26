@@ -11,6 +11,7 @@ setuptools.setup(
         'odoo14-addon-rental_base',
         'odoo14-addon-rental_offday',
         'odoo14-addon-rental_pricelist',
+        'odoo14-addon-rental_pricelist_interval',
         'odoo14-addon-rental_product_pack',
     ],
     classifiers=[
