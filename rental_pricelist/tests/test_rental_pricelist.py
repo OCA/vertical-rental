@@ -1,5 +1,7 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
-
+import base64
+import io
+from PIL import Image
 from dateutil.relativedelta import relativedelta
 
 from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
@@ -49,6 +51,7 @@ class TestRentalPricelist(RentalStockCommon):
     def setUp(self):
         super().setUp()
 
+        self.env.user.company_id.rental_service_copy_image = False
         # Product Created A, B, C
         ProductObj = self.env["product.product"]
         self.productA = ProductObj.create(
@@ -439,3 +442,25 @@ class TestRentalPricelist(RentalStockCommon):
         with self.assertRaises(exceptions.UserError) as e:
             self.rental_order.action_confirm()
         self.assertEqual("The product Product D is not correctly configured.", e.exception.name)
+
+    def test_variant_images(self):
+        """Check option rental_service_copy_image
+        """
+        f = io.BytesIO()
+        Image.new('RGB', (800, 500), '#000000').save(f, 'PNG')
+        f.seek(0)
+        image_black = base64.b64encode(f.read())
+        self.assertFalse(self.productA.image_medium)
+        self.assertFalse(self.productA.product_rental_month_id.image_medium)
+        self.assertFalse(self.productA.product_rental_day_id.image_medium)
+        self.assertFalse(self.productA.product_rental_hour_id.image_medium)
+        self.productA.image_medium = image_black
+        self.assertFalse(self.productA.product_rental_month_id.image_medium)
+        self.assertFalse(self.productA.product_rental_day_id.image_medium)
+        self.assertFalse(self.productA.product_rental_hour_id.image_medium)
+        self.productA.company_id.rental_service_copy_image = True
+        self.productA.image_medium = False
+        self.productA.image_medium = image_black
+        self.assertTrue(self.productA.product_rental_month_id.image_medium)
+        self.assertTrue(self.productA.product_rental_day_id.image_medium)
+        self.assertTrue(self.productA.product_rental_hour_id.image_medium)

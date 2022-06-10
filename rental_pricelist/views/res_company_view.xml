@@ -52,6 +52,9 @@
                                        string="Suffix Code"
                                 />
                             </group>
+                            <group name="rental_service_setting" string="Others">
+                                <field name="rental_service_copy_image"/>
+                            </group>
                         </group>
                     </page>
                 </notebook>

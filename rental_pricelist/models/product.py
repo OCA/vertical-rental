@@ -321,12 +321,13 @@ class ProductProduct(models.Model):
                 p._update_rental_service_name(vals)
             # update image and description for service product
             update_fields = [
-                "image_medium",
                 "description_sale",
                 "categ_id",
                 "rental",
                 "active",
             ]
+            if p.company_id.rental_service_copy_image:
+                update_fields.append("image_medium")
             # when 'active' set to True from False,
             # then 'rental_service_ids' set to Null, 
             # need to find rental service products from main product

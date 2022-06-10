@@ -115,3 +115,8 @@ class ResCompany(models.Model):
              "default code is built by adding the prefix code, "
              "the product's default code and the suffix code.",
     )
+
+    rental_service_copy_image = fields.Boolean(
+        string="Copy Image",
+        help="Copy the image from storable product to its rental service.",
+    )
