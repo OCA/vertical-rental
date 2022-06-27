@@ -45,6 +45,7 @@ Please also see the usage section of sale_rental module.
         "sales_team",
     ],
     "data": [
+        "security/rental_security.xml",
         "data/ir_sequence_data.xml",
         "data/order_type_data.xml",
         "data/product_uom_data.xml",
