@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="group_rental_menu" model="res.groups">
+        <field name="name">See Rental Menu</field>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>
