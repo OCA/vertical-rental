@@ -107,6 +107,25 @@ class SaleOrderLine(models.Model):
         }
     )
 
+    #use this field to show the widget radio for field rental
+    order_type = fields.Selection(string='Order Type',
+        selection=[('normal', 'Normal'), ('rental', 'Rental')],
+        compute='_compute_order_type', inverse='_write_order_type')
+
+    @api.depends('rental')
+    def _compute_order_type(self):
+        for rec in self:
+            rec.order_type = 'rental' if rec.rental else 'normal'
+
+    def _write_order_type(self):
+        for rec in self:
+            rec.rental = rec.order_type == 'rental'
+
+    @api.onchange('order_type')
+    def _onchange_order_type(self):
+        self.rental = self.order_type == 'rental'
+
+
     @api.multi
     def _prepare_invoice_line(self, qty):
         res = super()._prepare_invoice_line(qty)
