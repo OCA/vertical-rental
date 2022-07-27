@@ -18,12 +18,16 @@
             <xpath expr="//field[@name='product_id']" position="before">
                 <field name="display_product_id" attrs="{'required': [('display_type', '=', False)]}" context="{'type_id': parent.type_id}"/>
                 <field name="rental_ok" invisible="1"/>
+                <field name="sale_ok" invisible="1"/>
             </xpath>
             <xpath expr="//group[@id='rental_settings']" position="attributes">
                 <attribute name="attrs">{'invisible': [('rental_ok', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//group[@id='rental_settings']//field[@name='rental']" position="attributes">
                 <attribute name="context">{'type_id': parent.type_id}</attribute>
+            </xpath>
+            <xpath expr="//group[@id='rental_settings']//field[@name='order_type']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('sale_ok', '=', False), ('rental_ok', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//group[@id='rental_times']//field[@name='number_of_days']" position="attributes">
                 <attribute name="invisible">1</attribute>

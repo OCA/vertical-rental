@@ -25,24 +25,26 @@ class SaleOrderLine(models.Model):
         related="display_product_id.rental",
     )
 
+    sale_ok = fields.Boolean(
+        string="Can be Sold",
+        related="display_product_id.sale_ok",
+    )
+
     @api.model
     def _get_product_domain(self):
-        domain = [("sale_ok", "=", True)]
-        rental_type_id = self.env.ref("rental_base.rental_sale_type").id
-        if self.env.context.get("default_type_id", False) == rental_type_id:
-            domain = [
-                "|",
-                "&",
-                ("type", "=", "product"),
-                "|",
-                ("sale_ok", "=", True),
-                ("rental", "=", True),
-                "&",
-                ("type", "=", "service"),
-                "&",
-                ("sale_ok", "=", True),
-                ("rental", "=", False),
-            ]
+        domain = [
+            "|",
+            "&",
+            ("type", "=", "product"),
+            "|",
+            ("sale_ok", "=", True),
+            ("rental", "=", True),
+            "&",
+            ("type", "=", "service"),
+            "&",
+            ("sale_ok", "=", True),
+            ("rental", "=", False),
+        ]
         return domain
 
     @api.multi
@@ -69,15 +71,12 @@ class SaleOrderLine(models.Model):
     @api.multi
     @api.onchange("display_product_id")
     def onchange_display_product_id(self):
-        if self.display_product_id:
-            self.product_id = self.display_product_id
-            if self.display_product_id.rental:
-                self.rental = True
-            self.rental = False
-            self.can_sell_rental = False
+        self.can_sell_rental = False
         rental_type_id = self.env.ref("rental_base.rental_sale_type").id
-        if self.env.context.get("type_id", False) == rental_type_id:
+        if self.env.context.get("type_id", False) == rental_type_id and self.display_product_id.rental:
             self.rental = True
+        else:
+            self.rental = False
         self._set_product_id()
 
     @api.multi
