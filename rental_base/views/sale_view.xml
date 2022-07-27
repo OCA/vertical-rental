@@ -215,7 +215,8 @@
             <xpath expr="//group[@id='further_rental_info']" position="inside">
                 <!-- Group: Rental Settings -->
                 <group id="rental_settings" string="Rental Settings" colspan="4">
-                    <field name="rental"/>
+                    <field name="rental" invisible="1"/>
+                    <field name="order_type" widget="radio" options="{'horizontal': True}"/>
                     <field name="rental_type"
                            attrs="{'invisible': [('rental', '=', False)],
                                    'required': [('rental', '=', True)]}"
