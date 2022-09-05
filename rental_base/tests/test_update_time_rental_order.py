@@ -158,15 +158,3 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
         self.assertEqual(
             rental_2.in_move_id.date_expected, fields.Datetime.to_datetime(self.date_0112)
         )
-
-    def test_01_so_line_order_type(self):
-        # rental order
-        rental_order_1 = self._create_rental_order(
-            self.partnerA.id, self.date_0101, self.date_0110
-        )
-        order_line = rental_order_1.order_line
-        self.assertEqual(order_line.order_type, "rental")
-        self.assertTrue(order_line.rental)
-        order_line.order_type = "normal"
-        order_line._onchange_order_type()
-        self.assertFalse(order_line.rental)

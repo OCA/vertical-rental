@@ -37,12 +37,8 @@ Please also see the usage section of sale_rental module.
     "depends": [
         "account",
         "product_analytic",
-        "sale",
         "sale_order_type",
         "sale_rental",
-        "sale_start_end_dates",
-        "sale_stock",
-        "sales_team",
     ],
     "data": [
         "security/rental_security.xml",
