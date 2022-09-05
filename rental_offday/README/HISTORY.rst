@@ -2,7 +2,11 @@
 Changelog
 ---------
 
-- ce77a323 2021-10-25 10:17:16 +0200 wagner@elegosoft.com  (HEAD -> v12) fix two syntax errors in documentation (issue #3339)
+- 1e549e87 2022-05-04 12:56:56 +0200 wagner@elegosoft.com  (origin/feature_2832_blp7_new_logos_v12, feature_2832_blp7_new_logos_v12) update doc (issue #3613, issue #4016)
+- 02eb49c8 2022-05-04 12:18:32 +0200 wagner@elegosoft.com  update doc (issue #4016)
+- 4ff94cf3 2022-05-04 12:09:50 +0200 wagner@elegosoft.com  add new rental logo (issue #3613, issue #4016)
+- 296b6193 2021-10-25 10:20:28 +0200 wagner@elegosoft.com  regenrate documentation (issue #4016)
+- ce77a323 2021-10-25 10:17:16 +0200 wagner@elegosoft.com  fix two syntax errors in documentation (issue #3339)
 - 996b4742 2021-10-25 10:15:33 +0200 wagner@elegosoft.com  fix two syntax errors in documentation (issue #3339)
 - 84b8ac2c 2021-10-19 13:27:42 +0200 maria.sparenberg@elegosoft.com  (origin/feature_4439_blp1250_rental_product_pack_v12) issue #4438 format and finalize description and usage section
 - 8b4d40c4 2021-09-23 09:19:24 +0200 wagner@elegosoft.com  regenerate doc (issue #4016)
