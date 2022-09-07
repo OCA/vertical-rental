@@ -5,11 +5,6 @@
     "version": "12.0.1.0.0",
     "category": "Rental",
     "summary": "Manage rentals with product packs",
-    "description": """
-This module allows to manage rentals with product packs.
-You can define product packs as described in the module product_pack.
-The components of the pack are added to both rental stock pickings after order confirmation.
-""",
     "usage": """
 Install the module.
 No further configuration is needed.
