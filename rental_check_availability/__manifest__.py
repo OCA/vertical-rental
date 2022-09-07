@@ -26,7 +26,7 @@ To use this module, you need to:
 """,
     "version": "12.0.1.0.0",
     "category": "Rental",
-    "author": "Odoo Community Association (OCA)/Elego Software Solutions GmbH",
+    "author": "Odoo Community Association (OCA), Elego Software Solutions GmbH",
     "website": "https://github.com/OCA/vertical-rental",
     "depends": [
         "rental_pricelist",
