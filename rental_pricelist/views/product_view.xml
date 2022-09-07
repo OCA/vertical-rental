@@ -6,6 +6,7 @@
             <field name="name">view.product.product.form</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="priority">100</field>
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='rental-product']" position="replace" />
                 <xpath expr="//notebook" position="inside">

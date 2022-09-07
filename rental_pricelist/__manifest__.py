@@ -42,7 +42,7 @@ Please also see the usage section of sale_rental and rental_base module.
     """,
     "version": "12.0.1.0.1",
     "category": "Rental",
-    "author": "Odoo Community Association (OCA)/Elego Software Solutions GmbH",
+    "author": "Odoo Community Association (OCA), Elego Software Solutions GmbH",
     "website": "https://github.com/OCA/vertical-rental",
     "depends": [
         "rental_base",
