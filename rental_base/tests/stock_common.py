@@ -107,4 +107,3 @@ class RentalStockCommon(common.TransactionCase):
         )
         self.assertEqual(rental_order.state, "draft")
         return rental_order
-

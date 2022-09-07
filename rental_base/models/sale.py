@@ -1,9 +1,10 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, exceptions, _
-from odoo.tools import float_round
-from odoo.exceptions import UserError, ValidationError
 import datetime
+
+from odoo import _, api, exceptions, fields, models
+from odoo.exceptions import ValidationError
+from odoo.tools import float_round
 
 
 class SaleOrder(models.Model):
@@ -62,7 +63,11 @@ class SaleOrder(models.Model):
     @api.depends("type_id")
     def _compute_is_rental_order(self):
         try:
-            rental_type = self.env['ir.model.data'].sudo().get_object('rental_base', 'rental_sale_type')
+            rental_type = (
+                self.env["ir.model.data"]
+                .sudo()
+                .get_object("rental_base", "rental_sale_type")
+            )
         except ValueError:
             for order in self:
                 order.is_rental_order = False
@@ -167,24 +172,27 @@ class SaleOrderLine(models.Model):
                             line.sell_rental_id.rental_qty,
                         )
                     )
-    #use this field to show the widget radio for field rental
-    order_type = fields.Selection(string='Order Type',
-        selection=[('normal', 'Normal'), ('rental', 'Rental')],
-        compute='_compute_order_type', inverse='_write_order_type')
 
-    @api.depends('rental')
+    # use this field to show the widget radio for field rental
+    order_type = fields.Selection(
+        string="Order Type",
+        selection=[("normal", "Normal"), ("rental", "Rental")],
+        compute="_compute_order_type",
+        inverse="_write_order_type",
+    )
+
+    @api.depends("rental")
     def _compute_order_type(self):
         for rec in self:
-            rec.order_type = 'rental' if rec.rental else 'normal'
+            rec.order_type = "rental" if rec.rental else "normal"
 
     def _write_order_type(self):
         for rec in self:
-            rec.rental = rec.order_type == 'rental'
+            rec.rental = rec.order_type == "rental"
 
-    @api.onchange('order_type')
+    @api.onchange("order_type")
     def _onchange_order_type(self):
-        self.rental = self.order_type == 'rental'
-
+        self.rental = self.order_type == "rental"
 
     @api.multi
     def _prepare_invoice_line(self, qty):

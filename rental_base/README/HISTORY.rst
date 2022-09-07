@@ -137,4 +137,3 @@ Changelog
 - 5188db94 2020-01-22 20:51:43 +0100 yweng@elegosoft.com  [ADD] add module rental_contract
 - 7aa3746c 2020-01-22 15:22:34 +0100 cpatel@elegosoft.com  (origin/feature_3304_blp157_rental_base_config_setting_v12) [IMP] add config setting for module rental_product_set
 - b2e6d5ce 2020-01-21 20:51:21 +0100 yweng@elegosoft.com  (origin/feature_3304_blp151_refactoring_swrent_product_extension_v12) [IMP] Add neu Module rental_base, rental_product_pack and Refactoring of module sale_rental_menu (deprecated)
-

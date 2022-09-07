@@ -91,10 +91,12 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
             fields.Datetime.to_datetime(self.date_0111),
         )
         self.assertEqual(
-            rental_1.out_move_id.date_expected, fields.Datetime.to_datetime(self.date_0102)
+            rental_1.out_move_id.date_expected,
+            fields.Datetime.to_datetime(self.date_0102),
         )
         self.assertEqual(
-            rental_1.in_move_id.date_expected, fields.Datetime.to_datetime(self.date_0111)
+            rental_1.in_move_id.date_expected,
+            fields.Datetime.to_datetime(self.date_0111),
         )
         # 2. change date, date_in_lines = True
         line_ids_value_2 = []
@@ -153,8 +155,10 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
             fields.Datetime.to_datetime(self.date_0112),
         )
         self.assertEqual(
-            rental_2.out_move_id.date_expected, fields.Datetime.to_datetime(self.date_0103)
+            rental_2.out_move_id.date_expected,
+            fields.Datetime.to_datetime(self.date_0103),
         )
         self.assertEqual(
-            rental_2.in_move_id.date_expected, fields.Datetime.to_datetime(self.date_0112)
+            rental_2.in_move_id.date_expected,
+            fields.Datetime.to_datetime(self.date_0112),
         )
