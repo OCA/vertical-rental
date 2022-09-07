@@ -147,6 +147,7 @@ class TestRentalPricelist(RentalStockCommon):
             if p.uom_id == self.uom_hour:
                 self.assertEqual(p.lst_price, 10)
                 check_hour = True
+        self.assertTrue(check_hour and check_day and check_month)
 
         # check service products of product B
         check_hour = check_day = check_month = False
@@ -154,10 +155,14 @@ class TestRentalPricelist(RentalStockCommon):
         for p in self.productB.rental_service_ids:
             if p.uom_id == self.uom_month:
                 self.assertEqual(p.lst_price, 2000)
+                check_month = True
             if p.uom_id == self.uom_day:
                 self.assertEqual(p.lst_price, 200)
+                check_day = True
             if p.uom_id == self.uom_hour:
                 self.assertEqual(p.lst_price, 20)
+                check_hour = True
+        self.assertTrue(check_hour and check_day and check_month)
 
     def test_01_rental_onchange_productA(self):
         """
