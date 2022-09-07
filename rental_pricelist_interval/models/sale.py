@@ -57,7 +57,6 @@ class SaleOrderLine(models.Model):
                 else:
                     self.rental = False
                     self.product_id = self.display_product_id
-                    # raise exceptions.UserError(_('The product has no related rental services.'))
         elif not self.rental and self.display_product_id:
             self.product_id = self.display_product_id
 
