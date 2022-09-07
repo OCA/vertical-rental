@@ -24,7 +24,8 @@ Create a rentable pack product.
  * Create a new storable product.
  * Activate the checkbox 'Can be Rented' and 'Is Pack'.
  * Go to page 'Pack'.
- * Choose Pack Type (e.g. Non-detailled) and add the previously created storable products that are part of this pack.
+ * Choose Pack Type (e.g. Non-detailled)
+ * Add the previously created storable products that are part of this pack.
  * Go to page 'Sales & Purchase'.
  * Create the rental service and configure its name and price.
 
