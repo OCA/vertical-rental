@@ -265,7 +265,8 @@ class SaleOrderLine(models.Model):
                         ]:
                             raise exceptions.UserError(
                                 _(
-                                    "Outgoing shipment is in state %s. You cannot change the start date anymore."
+                                    "Outgoing shipment is in state %s. "
+                                    "You cannot change the start date anymore."
                                 )
                                 % rental.out_move_id.state
                             )
@@ -281,7 +282,8 @@ class SaleOrderLine(models.Model):
                         ]:
                             raise exceptions.UserError(
                                 _(
-                                    "Incoming shipment is in state %s. You cannot change the end date anymore."
+                                    "Incoming shipment is in state %s. You cannot "
+                                    "change the end date anymore."
                                 )
                                 % rental.in_move_id.state
                             )
