@@ -51,7 +51,7 @@ class ProductProduct(models.Model):
     def _default_interval_pricelist(self):
         try:
             res = self.env.ref("rental_pricelist_interval.pricelist_interval").id
-        except:
+        except ValueError:
             return False
         return res
 
