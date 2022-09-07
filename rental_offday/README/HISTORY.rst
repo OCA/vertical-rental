@@ -56,4 +56,3 @@ Changelog
 - f01d189d 2020-03-09 12:51:45 +0100 maria.sparenberg@elegosoft.com  (origin/feature_3287_blp343_rental_offday_v12) issue #3287 add description and usage section for rental_offday
 - 804dc443 2020-03-07 21:06:12 +0100 wagner@elegosoft.com  regenerate module documentation (issue #3339)
 - 6fd1771a 2020-03-06 20:32:25 +0100 kay.haeusler@elego.de  (origin/feature_3462_blp333_renaming_addons_v12) rename and split some addons; issue #3462
-
