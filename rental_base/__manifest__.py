@@ -5,11 +5,6 @@
     "version": "12.0.1.0.1",
     "category": "Rental",
     "summary": "Manage Rental of Products",
-    "description": """Base Module for Rental Management
-
-This module provides a new menu for rental management.
-It is based on the sale_rental module that currently can be found in sale-workflow repository.
-""",
     "usage": """
 Create a rentable product and its rental service.
  * Go to Rentals > Configuration > Settings.
