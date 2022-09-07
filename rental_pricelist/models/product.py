@@ -1,9 +1,7 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-import math
 
-from odoo import api, fields, models, exceptions, _
-from odoo.tools import float_compare
+from odoo import _, api, exceptions, fields, models
 
 
 class ProductProduct(models.Model):
@@ -176,8 +174,12 @@ class ProductProduct(models.Model):
     @api.multi
     def _get_rental_service_default_code(self, rental_type, sp_code):
         self.ensure_one()
-        prefix = self._get_rental_service_prefix_suffix("default_code", "prefix", rental_type)
-        suffix = self._get_rental_service_prefix_suffix("default_code", "suffix", rental_type)
+        prefix = self._get_rental_service_prefix_suffix(
+            "default_code", "prefix", rental_type
+        )
+        suffix = self._get_rental_service_prefix_suffix(
+            "default_code", "suffix", rental_type
+        )
         default_code = sp_code
         if default_code:
             if prefix:
@@ -276,9 +278,10 @@ class ProductProduct(models.Model):
                 service_vals[field] = vals.get(field, False)
         # check 'active' becomes True from False
         check_rental_services = (
-            service_vals.get('active', False) and
-            not self.rental_service_ids and
-            rental_services)
+            service_vals.get("active", False)
+            and not self.rental_service_ids
+            and rental_services
+        )
         if check_rental_services:
             for p in rental_services:
                 p.write(service_vals)
@@ -329,12 +332,14 @@ class ProductProduct(models.Model):
             if p.company_id.rental_service_copy_image:
                 update_fields.append("image_medium")
             # when 'active' set to True from False,
-            # then 'rental_service_ids' set to Null, 
+            # then 'rental_service_ids' set to Null,
             # need to find rental service products from main product
             rental_services = []
             if vals.get("active", False):
                 rental_services = p._get_rental_service_list()
-            if (vals.keys() & update_fields) and (p.rental_service_ids or rental_services):
+            if (vals.keys() & update_fields) and (
+                p.rental_service_ids or rental_services
+            ):
                 p._update_rental_service_fields(vals, update_fields, rental_services)
         return res
 

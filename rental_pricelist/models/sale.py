@@ -1,8 +1,8 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, exceptions, _
-from odoo.tools import float_compare
+from odoo import _, api, exceptions, fields, models
 from odoo.exceptions import ValidationError
+from odoo.tools import float_compare
 
 
 class SaleOrderLine(models.Model):
@@ -11,7 +11,7 @@ class SaleOrderLine(models.Model):
     number_of_time_unit = fields.Float(
         string="Number of TU",
         help="This is the time difference given by "
-             "start and end date for this order line.",
+        "start and end date for this order line.",
     )
 
     display_product_id = fields.Many2one(
@@ -73,7 +73,10 @@ class SaleOrderLine(models.Model):
     def onchange_display_product_id(self):
         self.can_sell_rental = False
         rental_type_id = self.env.ref("rental_base.rental_sale_type").id
-        if self.env.context.get("type_id", False) == rental_type_id and self.display_product_id.rental:
+        if (
+            self.env.context.get("type_id", False) == rental_type_id
+            and self.display_product_id.rental
+        ):
             self.rental = True
         else:
             self.rental = False
@@ -118,8 +121,7 @@ class SaleOrderLine(models.Model):
             location=rental_in_location.id
         ).product_id.rented_product_id
         in_location_available_qty = (
-            rented_product_ctx.qty_available
-            - rented_product_ctx.outgoing_qty
+            rented_product_ctx.qty_available - rented_product_ctx.outgoing_qty
         )
         compare_qty = float_compare(
             in_location_available_qty,
@@ -319,7 +321,8 @@ class SaleOrder(models.Model):
                 if line.rental and line.product_id:
                     if line.product_id.type != "service":
                         raise exceptions.UserError(
-                            _("The product %s is not correctly configured.") % line.product_id.name
+                            _("The product %s is not correctly configured.")
+                            % line.product_id.name
                         )
 
     @api.multi
