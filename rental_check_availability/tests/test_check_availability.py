@@ -83,9 +83,13 @@ class TestRentalCheckAvailability(RentalStockCommon):
         # RO 4  (qty: 1)              5 ----------------------- 25 (none)
         # RO 5  (qty: 3)    today - 2 (order)
         # RO 6  (qty: 1)              5 --------- 15 (none)
+        msg = (
+            "You want to rent 3.00 Unit(s) but you only have 2.00 Unit(s) "
+            "available in the selected period."
+        )
         expected_warning = {
             "title": "Not enough stock!",
-            "message": "You want to rent 3.00 Unit(s) but you only have 2.00 Unit(s) available in the selected period.",
+            "message": msg,
         }
         # create some quantity of productA (qty: 4)
         self.env["stock.quant"]._update_available_quantity(
