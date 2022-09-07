@@ -178,7 +178,7 @@ class SaleOrderLine(models.Model):
         string="Order Type",
         selection=[("normal", "Normal"), ("rental", "Rental")],
         compute="_compute_order_type",
-        inverse="_write_order_type",
+        inverse="_inverse_order_type",
     )
 
     @api.depends("rental")
@@ -186,7 +186,7 @@ class SaleOrderLine(models.Model):
         for rec in self:
             rec.order_type = "rental" if rec.rental else "normal"
 
-    def _write_order_type(self):
+    def _inverse_order_type(self):
         for rec in self:
             rec.rental = rec.order_type == "rental"
 

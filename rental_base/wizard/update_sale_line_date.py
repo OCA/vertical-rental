@@ -112,7 +112,7 @@ class UpdateSaleLineDate(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        res = {}
+        res = super().default_get(fields)
         active_id = self.env.context.get("active_id")
         order = self.env["sale.order"].browse(active_id)
         seq = 1

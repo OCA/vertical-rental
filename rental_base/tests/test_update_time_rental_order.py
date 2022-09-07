@@ -2,7 +2,7 @@
 
 from odoo import fields
 
-from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
+from .stock_common import RentalStockCommon
 
 
 class TestUpdateTimeRentalOrder(RentalStockCommon):

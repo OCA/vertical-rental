@@ -30,6 +30,7 @@
         <field name="name">rental_base.sale_start_end_dates</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale_start_end_dates.view_order_form" />
+        <field name="priority">100</field>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='default_start_date']" position="replace" />
             <xpath expr="//field[@name='default_end_date']" position="replace" />
