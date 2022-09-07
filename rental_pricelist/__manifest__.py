@@ -2,11 +2,12 @@
 
 {
     "name": "Rental Pricelist",
-    "summary": 'Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").',
+    "summary": 'Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").',  # noqa: B950
     "description": """
-Rental prices are usually scaled prices based on a time unit, typically day, sometimes months or hour.
-This modules integrates the standard Odoo pricelists into rental use cases and allows the user an
-easy way to specify the prices in a product tab as well as to use all the enhanced pricelist features.
+Rental prices are usually scaled prices based on a time unit, typically day,
+sometimes months or hour. This modules integrates the standard Odoo pricelists
+into rental use cases and allows the user an easy way to specify the prices in
+a product tab as well as to use all the enhanced pricelist features.
 """,
     "usage": """
 Create a rentable product:
@@ -19,7 +20,8 @@ Create a rentable product:
  Configure the naming of rental services:
  * Go to Settings > Users & Companies > Companies.
  * To to page 'Rental Services'.
- * Configure the rental service names by providing a prefix and suffix for the name and default code.
+ * Configure the rental service names by providing a prefix
+   and suffix for the name and default code.
 
  Create the rental services:
  * Go to the previously created rentable storable product.
@@ -47,6 +49,7 @@ Please also see the usage section of sale_rental and rental_base module.
     "version": "12.0.1.0.1",
     "category": "Rental",
     "author": "Odoo Community Association (OCA)/Elego Software Solutions GmbH",
+    "website": "https://github.com/OCA/vertical-rental",
     "depends": [
         "rental_base",
     ],
