@@ -51,4 +51,3 @@ Changelog
 - b5f3dbc1 2020-01-23 15:32:23 +0100 yweng@elegosoft.com  [IMP] fixes errors in module rental_product_pack and redefine type of field 'init_regist' Char -> Date
 - 94e76bbb 2020-01-23 13:08:03 +0100 yweng@elegosoft.com  [IMP] set liscense, copyrights and author
 - b2e6d5ce 2020-01-21 20:51:21 +0100 yweng@elegosoft.com  (origin/feature_3304_blp151_refactoring_swrent_product_extension_v12) [IMP] Add neu Module rental_base, rental_product_pack and Refactoring of module sale_rental_menu (deprecated)
-

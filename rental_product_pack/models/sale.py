@@ -1,11 +1,10 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api
+from odoo import api, models
 
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
-
 
     @api.multi
     def action_confirm(self):
