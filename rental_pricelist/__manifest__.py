@@ -40,7 +40,7 @@ Create a rental order:
 
 Please also see the usage section of sale_rental and rental_base module.
     """,
-    "version": "12.0.1.0.1",
+    "version": "12.0.1.0.2",
     "category": "Rental",
     "author": "Odoo Community Association (OCA), Elego Software Solutions GmbH",
     "website": "https://github.com/OCA/vertical-rental",
