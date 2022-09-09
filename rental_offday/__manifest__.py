@@ -2,7 +2,7 @@
 
 {
     "name": "Rental Off-Day",
-    "version": "12.0.1.0.0",
+    "version": "12.0.1.0.1",
     "category": "Rental",
     "summary": "Manage off-days in rentals on daily basis",
     "usage": """
