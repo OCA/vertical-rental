@@ -19,12 +19,12 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[rental_base](rental_base/) | 12.0.1.0.1 |  | Manage Rental of Products
-[rental_check_availability](rental_check_availability/) | 12.0.1.0.0 |  | Extends the sale_rental module for checking availability of the rented product.
-[rental_offday](rental_offday/) | 12.0.1.0.0 |  | Manage off-days in rentals on daily basis
-[rental_pricelist](rental_pricelist/) | 12.0.1.0.1 |  | Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").
-[rental_pricelist_interval](rental_pricelist_interval/) | 12.0.1.0.3 |  | Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").
-[rental_product_pack](rental_product_pack/) | 12.0.1.0.0 |  | Manage rentals with product packs
+[rental_base](rental_base/) | 12.0.1.0.2 |  | Manage Rental of Products
+[rental_check_availability](rental_check_availability/) | 12.0.1.0.1 |  | Extends the sale_rental module for checking availability of the rented product.
+[rental_offday](rental_offday/) | 12.0.1.0.1 |  | Manage off-days in rentals on daily basis
+[rental_pricelist](rental_pricelist/) | 12.0.1.0.2 |  | Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").
+[rental_pricelist_interval](rental_pricelist_interval/) | 12.0.1.0.4 |  | Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").
+[rental_product_pack](rental_product_pack/) | 12.0.1.0.1 |  | Manage rentals with product packs
 
 [//]: # (end addons)
 
