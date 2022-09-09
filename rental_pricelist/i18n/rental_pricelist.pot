@@ -6,8 +6,6 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-22 13:03+0000\n"
-"PO-Revision-Date: 2021-09-22 13:03+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -47,6 +45,11 @@ msgid "<strong colspan=\"2\" attrs=\"{'invisible': [('product_rental_month_id', 
 msgstr ""
 
 #. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_sale_order_line__sale_ok
+msgid "Can be Sold"
+msgstr ""
+
+#. module: rental_pricelist
 #: model:ir.model.fields,field_description:rental_pricelist.field_sale_order_line__rental_ok
 msgid "Can be rented"
 msgstr ""
@@ -54,6 +57,16 @@ msgstr ""
 #. module: rental_pricelist
 #: model:ir.model,name:rental_pricelist.model_res_company
 msgid "Companies"
+msgstr ""
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_copy_image
+msgid "Copy Image"
+msgstr ""
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_copy_image
+msgid "Copy the image from storable product to its rental service."
 msgstr ""
 
 #. module: rental_pricelist
@@ -152,7 +165,7 @@ msgid "Hourly Rentals"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:198
+#: code:addons/rental_pricelist/models/sale.py:199
 #, python-format
 msgid "Missing \"Rental to Extend\" on the sale order line with rental service %s."
 msgstr ""
@@ -173,14 +186,14 @@ msgid "Monthly Rentals"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/product.py:135
-#: code:addons/rental_pricelist/models/product.py:148
+#: code:addons/rental_pricelist/models/product.py:145
+#: code:addons/rental_pricelist/models/product.py:158
 #, python-format
 msgid "No expected rental type (rental unit of measure) is found."
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:132
+#: code:addons/rental_pricelist/models/sale.py:133
 #, python-format
 msgid "Not enough stock!"
 msgstr ""
@@ -191,21 +204,26 @@ msgid "Number of TU"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:222
+#: code:addons/rental_pricelist/models/sale.py:223
 #, python-format
 msgid "On the \"new rental\" sale order line with product \"%s\", we should have a rental service product!"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:231
+#: code:addons/rental_pricelist/models/sale.py:232
 #, python-format
 msgid "On the sale order line with product %s you are trying to sell a rented product with a quantity (%s) that is different from the rented quantity (%s). This is not supported."
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:207
+#: code:addons/rental_pricelist/models/sale.py:208
 #, python-format
 msgid "On the sale order line with rental service %s, you are trying to extend a rental with a rental quantity (%s) that is different from the quantity of the original rental (%s). This is not supported."
+msgstr ""
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_company_rental_service_form
+msgid "Others"
 msgstr ""
 
 #. module: rental_pricelist
@@ -320,7 +338,7 @@ msgid "Rental Services"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/product.py:184
+#: code:addons/rental_pricelist/models/product.py:198
 #, python-format
 msgid "Rental of %s (%s)"
 msgstr ""
@@ -391,13 +409,13 @@ msgid "Suffix of Rental Service Name (Month)"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:323
+#: code:addons/rental_pricelist/models/sale.py:324
 #, python-format
 msgid "The product %s is not correctly configured."
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/product.py:120
+#: code:addons/rental_pricelist/models/product.py:118
 #, python-format
 msgid "The product has no related rental services."
 msgstr ""
@@ -413,7 +431,8 @@ msgid "Time"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:133
+#: code:addons/rental_pricelist/models/sale.py:134
 #, python-format
 msgid "You want to rent %.2f %s but you only have %.2f %s currently available on the stock location \"%s\"! Make sure that you get some units back in the meantime or re-supply the stock location \"%s\"."
 msgstr ""
+
