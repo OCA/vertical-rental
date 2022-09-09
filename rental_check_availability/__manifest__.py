@@ -24,7 +24,7 @@ To use this module, you need to:
 * Ben Brich <b.brich@humanilog.org> (www.humanilog.org)
 * Yu Weng <yweng@elegosoft.com> (www.elegosoft.com)
 """,
-    "version": "12.0.1.0.0",
+    "version": "12.0.1.0.1",
     "category": "Rental",
     "author": "Odoo Community Association (OCA), Elego Software Solutions GmbH",
     "website": "https://github.com/OCA/vertical-rental",
