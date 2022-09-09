@@ -1,11 +1,10 @@
-from odoo.tests.common import TransactionCase
-from odoo.tools.translate import _
-from odoo.exceptions import UserError
-from odoo import fields
-
+import logging
 from datetime import date, timedelta
 
-import logging
+from odoo import fields
+from odoo.exceptions import UserError
+from odoo.tests.common import TransactionCase
+from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
@@ -197,3 +196,38 @@ class TestRentalOffDay(TransactionCase):
         self.assertEqual(len(self.sale_order_line.fixed_offday_ids), 8)
         self.assertEqual(len(self.sale_order_line.add_offday_ids), 7)
         self.assertEqual(self.sale_order_line.product_uom_qty, 16)
+
+        with self.assertRaises(UserError) as e:
+            self.sale_order_line.offday_date_start = fields.Date.from_string(
+                "2020-11-20"
+            )
+            self.sale_order_line.offday_date_end = fields.Date.from_string("2020-12-28")
+            self.sale_order_line.add_additional_offdays = True
+            self.sale_order_line.onchange_add_additional_offdays()
+        self.assertEqual(
+            e.exception.name,
+            _("You cannot add an off day earlier than %s.") % (date_start),
+        )
+
+        with self.assertRaises(UserError) as e:
+            self.sale_order_line.offday_date_start = fields.Date.from_string(
+                "2020-12-01"
+            )
+            self.sale_order_line.offday_date_end = fields.Date.from_string("2021-01-20")
+            self.sale_order_line.add_additional_offdays = True
+            self.sale_order_line.onchange_add_additional_offdays()
+        self.assertEqual(
+            e.exception.name,
+            _("You cannot add an off day later than %s.") % (date_end),
+        )
+
+        with self.assertRaises(UserError) as e:
+            self.sale_order_line.offday_date_start = fields.Date.from_string(
+                "2020-12-28"
+            )
+            self.sale_order_line.offday_date_end = fields.Date.from_string("2020-12-18")
+            self.sale_order_line.add_additional_offdays = True
+            self.sale_order_line.onchange_add_additional_offdays()
+        self.assertEqual(
+            e.exception.name, _("Off days' start date must be earlier than end date.")
+        )

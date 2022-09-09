@@ -5,15 +5,6 @@
     "version": "12.0.1.0.0",
     "category": "Rental",
     "summary": "Manage off-days in rentals on daily basis",
-    "description": """
-During short-term rentals over several days or weeks, the customer and the salesman
-agree on so called off-days. On these days the customer still have the rented products
-but usually doesn't use them and, therefore, does not pay the daily price. This is often
-the case for weekends and holidays, since there might be some legal limitations in using
-the products on these days.
-In order to meet this requirement, the salesman can add off-days on sale order lines for
-products that are rentable in days. These days will not be included in price calculation.
-""",
     "usage": """
 The off-days can only be used for products rentable in days.
 
@@ -37,9 +28,11 @@ Create a rental order:
  * Set the quantity to rent out one or several storable rentable products.
  * Choose start and end date, e.g. for 3 weeks.
  * On the order line you will see a page 'Off-Days' at the bottom.
- * Choose the type 'Weekend' in order to create 'Fixed Off-Days' and you get a list with all saturdays and sundays within the rental period.
+ * Choose the type 'Weekend' in order to create 'Fixed Off-Days'
+   and you get a list with all saturdays and sundays within the rental period.
  * Add some additional off-days as needed.
- * The number of off-days reduces the rental quantity and is therefore not included in price calculation.
+ * The number of off-days reduces the rental quantity
+   and is therefore not included in price calculation.
  * Confirm the order.
 """,
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",

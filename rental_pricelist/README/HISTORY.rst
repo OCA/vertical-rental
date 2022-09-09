@@ -2,6 +2,15 @@
 Changelog
 ---------
 
+- 8c252fe3 2022-07-05 11:31:44 +0200 chandnip445@gmail.com  (origin/wip_fix_conflict_cpatel_yweng_v12) [FIX] conflicts from cpatel and yweng
+- 9b388b37 2022-06-10 14:27:18 +0200 yweng@elegosoft.com  (origin/feature_4670_blp1038_rental_product_pack_routing_v12) [IMP] add field rental_service_copy_image for res.company (issue #4972)
+- 931c91ee 2022-05-17 15:34:14 +0200 yweng@elegosoft.com  (origin/feature_4972_blp1031_rental_pricelist_v12) [IMP] Rental UX Improvements (issue #4972)
+- 1e549e87 2022-05-04 12:56:56 +0200 wagner@elegosoft.com  (origin/feature_2832_blp7_new_logos_v12, feature_2832_blp7_new_logos_v12) update doc (issue #3613, issue #4016)
+- 02eb49c8 2022-05-04 12:18:32 +0200 wagner@elegosoft.com  update doc (issue #4016)
+- 4ff94cf3 2022-05-04 12:09:50 +0200 wagner@elegosoft.com  add new rental logo (issue #3613, issue #4016)
+- ebcb3b67 2021-11-04 19:18:27 +0000 jenkins-ci@elegosoft.com  [MERGE] remotes/origin/feature_3339_blp1254_fix_guitest_v12: addons-rental-vertical remotes/origin/feature_3339_blp1254_fix_guitest_v12 - fa2ff086b771c129533099f5f66e8b369da07d07 issue #3339 fix guitest in rental_pricelist
+- fa2ff086 2021-11-01 17:05:11 +0100 maria.sparenberg@elegosoft.com  (origin/feature_3339_blp1254_fix_guitest_v12) issue #3339 fix guitest in rental_pricelist
+- 296b6193 2021-10-25 10:20:28 +0200 wagner@elegosoft.com  regenrate documentation (issue #4016)
 - d8665dd9 2021-10-19 12:26:31 +0200 yweng@elegosoft.com  [IMP] Add Unittest for module rental_check_availability and adjust Unittest of rental_pricelist and rental_pricelist_interval (issue 4436)
 - c98f3a27 2021-10-10 18:18:12 +0000 jenkins-ci@elegosoft.com  [MERGE] remotes/origin/feature_4448_blp1142_rental_pricelist_v12: addons-rental-vertical remotes/origin/feature_4448_blp1142_rental_pricelist_v12 - 04838da6267547849c4cc4a3ecdd8aa7da0fc74f [IMP] make rental service active again after deactiving them , (issue#4448)
 - 04838da6 2021-09-28 09:11:35 +0200 cpatel@elegosoft.com  (origin/feature_4448_blp1142_rental_pricelist_v12) [IMP] make rental service active again after deactiving them , (issue#4448)
@@ -76,4 +85,3 @@ Changelog
 - cea0e942 2020-03-13 20:38:19 +0100 wagner@elegosoft.com  update documentation to build 380 (issue #3339)
 - 804dc443 2020-03-07 21:06:12 +0100 wagner@elegosoft.com  regenerate module documentation (issue #3339)
 - 6fd1771a 2020-03-06 20:32:25 +0100 kay.haeusler@elego.de  (origin/feature_3462_blp333_renaming_addons_v12) rename and split some addons; issue #3462
-

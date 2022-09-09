@@ -5,11 +5,6 @@
     "version": "12.0.1.0.1",
     "category": "Rental",
     "summary": "Manage Rental of Products",
-    "description": """Base Module for Rental Management
-
-This module provides a new menu for rental management.
-It is based on the sale_rental module that currently can be found in sale-workflow repository.
-""",
     "usage": """
 Create a rentable product and its rental service.
  * Go to Rentals > Configuration > Settings.
@@ -31,20 +26,16 @@ Create a rental order:
 
 Please also see the usage section of sale_rental module.
 """,
-
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/vertical-rental",
     "depends": [
         "account",
         "product_analytic",
-        "sale",
         "sale_order_type",
         "sale_rental",
-        "sale_start_end_dates",
-        "sale_stock",
-        "sales_team",
     ],
     "data": [
+        "security/rental_security.xml",
         "data/ir_sequence_data.xml",
         "data/order_type_data.xml",
         "data/product_uom_data.xml",

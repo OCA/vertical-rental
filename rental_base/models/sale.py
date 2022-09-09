@@ -1,8 +1,10 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, exceptions, _
-from odoo.tools import float_round
 import datetime
+
+from odoo import _, api, exceptions, fields, models
+from odoo.exceptions import ValidationError
+from odoo.tools import float_round
 
 
 class SaleOrder(models.Model):
@@ -18,6 +20,12 @@ class SaleOrder(models.Model):
         string="Default End Date",
         compute="_compute_default_end_date",
         readonly=False,
+    )
+
+    is_rental_order = fields.Boolean(
+        string="Is Rental Order",
+        compute="_compute_is_rental_order",
+        store=True,
     )
 
     @api.depends("order_line.start_date")
@@ -51,6 +59,23 @@ class SaleOrder(models.Model):
                         "default_end_date": max(dates),
                     }
                 )
+
+    @api.depends("type_id")
+    def _compute_is_rental_order(self):
+        try:
+            rental_type = (
+                self.env["ir.model.data"]
+                .sudo()
+                .get_object("rental_base", "rental_sale_type")
+            )
+        except ValueError:
+            for order in self:
+                order.is_rental_order = False
+            return
+        for order in self:
+            order.is_rental_order = False
+            if order.type_id.id == rental_type.id:
+                order.is_rental_order = True
 
     @api.multi
     def unlink(self):
@@ -87,6 +112,87 @@ class SaleOrderLine(models.Model):
             "sale": [("readonly", False)],
         }
     )
+
+    @api.constrains(
+        "rental_type",
+        "extension_rental_id",
+        "start_date",
+        "end_date",
+        "rental_qty",
+        "product_uom_qty",
+        "product_id",
+    )
+    def _check_sale_line_rental(self):
+        for line in self:
+            if line.rental_type == "rental_extension":
+                if not line.extension_rental_id:
+                    raise ValidationError(
+                        _(
+                            'Missing "Rental to Extend" on the sale order line '
+                            "with rental service %s."
+                        )
+                        % line.product_id.name
+                    )
+
+                if line.rental_qty != line.extension_rental_id.rental_qty:
+                    raise ValidationError(
+                        _(
+                            "On the sale order line with rental service %s, "
+                            "you are trying to extend a rental with a rental "
+                            "quantity (%s) that is different from the quantity "
+                            "of the original rental (%s). This is not supported."
+                        )
+                        % (
+                            line.product_id.name,
+                            line.rental_qty,
+                            line.extension_rental_id.rental_qty,
+                        )
+                    )
+            if line.rental_type in ("new_rental", "rental_extension"):
+                if not line.product_id.rented_product_id:
+                    raise ValidationError(
+                        _(
+                            'On the "new rental" sale order line with product '
+                            '"%s", we should have a rental service product!'
+                        )
+                        % (line.product_id.name)
+                    )
+            elif line.sell_rental_id:
+                if line.product_uom_qty != line.sell_rental_id.rental_qty:
+                    raise ValidationError(
+                        _(
+                            "On the sale order line with product %s "
+                            "you are trying to sell a rented product with a "
+                            "quantity (%s) that is different from the rented "
+                            "quantity (%s). This is not supported."
+                        )
+                        % (
+                            line.product_id.name,
+                            line.product_uom_qty,
+                            line.sell_rental_id.rental_qty,
+                        )
+                    )
+
+    # use this field to show the widget radio for field rental
+    order_type = fields.Selection(
+        string="Order Type",
+        selection=[("normal", "Normal"), ("rental", "Rental")],
+        compute="_compute_order_type",
+        inverse="_inverse_order_type",
+    )
+
+    @api.depends("rental")
+    def _compute_order_type(self):
+        for rec in self:
+            rec.order_type = "rental" if rec.rental else "normal"
+
+    def _inverse_order_type(self):
+        for rec in self:
+            rec.rental = rec.order_type == "rental"
+
+    @api.onchange("order_type")
+    def _onchange_order_type(self):
+        self.rental = self.order_type == "rental"
 
     @api.multi
     def _prepare_invoice_line(self, qty):
@@ -159,7 +265,8 @@ class SaleOrderLine(models.Model):
                         ]:
                             raise exceptions.UserError(
                                 _(
-                                    "Outgoing shipment is in state %s. You cannot change the start date anymore."
+                                    "Outgoing shipment is in state %s. "
+                                    "You cannot change the start date anymore."
                                 )
                                 % rental.out_move_id.state
                             )
@@ -175,7 +282,8 @@ class SaleOrderLine(models.Model):
                         ]:
                             raise exceptions.UserError(
                                 _(
-                                    "Incoming shipment is in state %s. You cannot change the end date anymore."
+                                    "Incoming shipment is in state %s. You cannot "
+                                    "change the end date anymore."
                                 )
                                 % rental.in_move_id.state
                             )

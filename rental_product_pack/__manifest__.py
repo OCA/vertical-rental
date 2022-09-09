@@ -5,11 +5,6 @@
     "version": "12.0.1.0.0",
     "category": "Rental",
     "summary": "Manage rentals with product packs",
-    "description": """
-This module allows to manage rentals with product packs.
-You can define product packs as described in the module product_pack.
-The components of the pack are added to both rental stock pickings after order confirmation.
-""",
     "usage": """
 Install the module.
 No further configuration is needed.
@@ -24,7 +19,8 @@ Create a rentable pack product.
  * Create a new storable product.
  * Activate the checkbox 'Can be Rented' and 'Is Pack'.
  * Go to page 'Pack'.
- * Choose Pack Type (e.g. Non-detailled) and add the previously created storable products that are part of this pack.
+ * Choose Pack Type (e.g. Non-detailled)
+ * Add the previously created storable products that are part of this pack.
  * Go to page 'Sales & Purchase'.
  * Create the rental service and configure its name and price.
 
@@ -43,7 +39,6 @@ Refer to the usage information of the OCA module product_pack to learn how to
 define product packs.
 Please note, that this module does not include the behavior of the module sale_product_pack.
 """,
-
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/vertical-rental",
     "depends": [

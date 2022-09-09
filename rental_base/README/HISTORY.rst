@@ -2,6 +2,20 @@
 Changelog
 ---------
 
+- 5b9382da 2022-07-11 09:51:58 +0000 jenkins-ci@elegosoft.com  [MERGE] remotes/origin/feature_5033_blp1387_rental_menu_v12: addons-rental-vertical remotes/origin/feature_5033_blp1387_rental_menu_v12 - 97803e6313d75e4674a6d0807d7b20c9b517d54a [IMP] add group to see rental menu (issue #5033)
+- 8c252fe3 2022-07-05 11:31:44 +0200 chandnip445@gmail.com  (origin/wip_fix_conflict_cpatel_yweng_v12) [FIX] conflicts from cpatel and yweng
+- 97803e63 2022-06-27 09:35:28 +0200 yweng@elegosoft.com  (origin/feature_5033_blp1387_rental_menu_v12, feature_5033_blp1387_rental_menu_v12) [IMP] add group to see rental menu (issue #5033)
+- 931c91ee 2022-05-17 15:34:14 +0200 yweng@elegosoft.com  (origin/feature_4972_blp1031_rental_pricelist_v12) [IMP] Rental UX Improvements (issue #4972)
+- 2d6ba4d8 2022-05-23 12:38:59 +0200 cpatel@elegosoft.com  [IMP] refactor the dependencies in rental modules, (issue#4955)
+- 1e549e87 2022-05-04 12:56:56 +0200 wagner@elegosoft.com  (origin/feature_2832_blp7_new_logos_v12, feature_2832_blp7_new_logos_v12) update doc (issue #3613, issue #4016)
+- 02eb49c8 2022-05-04 12:18:32 +0200 wagner@elegosoft.com  update doc (issue #4016)
+- 4ff94cf3 2022-05-04 12:09:50 +0200 wagner@elegosoft.com  add new rental logo (issue #3613, issue #4016)
+- 0a7d4741 2022-02-05 11:54:04 +0000 jenkins-ci@elegosoft.com  [MERGE] remotes/origin/v12: addons-rental-vertical remotes/origin/v12 - d9593e161c7cf28c376467b1238dfce794b45fd3 humanilog-v12 one time integration of humanilog-v12 branches by humanilog_v12_daily_build-964
+- 7439c9d6 2022-01-12 18:46:18 +0100 yweng@elegosoft.com  (origin/feature_4574_blp964_rental_base_v12) [IMP] adjust menu action with default filter for rental orders and normal sale orders (issue 4574)
+- a285e95c 2021-12-29 11:56:47 +0100 cpatel@elegosoft.com  (origin/fix_4516_blp1295_rental_base_v12) [FIX] correction made when user update times on lines, unit tests added for it, (issue#4516)
+- 19d29957 2021-12-23 17:12:20 +0100 cpatel@elegosoft.com  [FIX] correct Update Times , when user want to change start and end date on rental order, (issue#4516)
+- e64c6ac7 2021-12-16 20:41:43 +0100 yweng@elegosoft.com  [IMP] improves form view of product (issue 4574)
+- 296b6193 2021-10-25 10:20:28 +0200 wagner@elegosoft.com  regenrate documentation (issue #4016)
 - d32f4bf1 2021-10-19 13:27:01 +0200 maria.sparenberg@elegosoft.com  issue #4439 format code and finalize description and usage section
 - bc386fa1 2021-10-10 18:18:14 +0000 jenkins-ci@elegosoft.com  [MERGE] remotes/origin/fix_3339_blp1142_update_start_end_date_v12: addons-rental-vertical remotes/origin/fix_3339_blp1142_update_start_end_date_v12 - 2906b713c7dbf38b2bf5da09627dd51dd0198cbe [FIX] function update_start_end_date() of sale.order.line (issue 3339)
 - 75791881 2021-09-24 08:44:15 +0200 maria.sparenberg@elegosoft.com  (origin/feature_4433_blp1142_rental_base_v12, feature_4433_blp1142_rental_base_v12) issue #4433 change view id to match parent id
@@ -123,4 +137,3 @@ Changelog
 - 5188db94 2020-01-22 20:51:43 +0100 yweng@elegosoft.com  [ADD] add module rental_contract
 - 7aa3746c 2020-01-22 15:22:34 +0100 cpatel@elegosoft.com  (origin/feature_3304_blp157_rental_base_config_setting_v12) [IMP] add config setting for module rental_product_set
 - b2e6d5ce 2020-01-21 20:51:21 +0100 yweng@elegosoft.com  (origin/feature_3304_blp151_refactoring_swrent_product_extension_v12) [IMP] Add neu Module rental_base, rental_product_pack and Refactoring of module sale_rental_menu (deprecated)
-

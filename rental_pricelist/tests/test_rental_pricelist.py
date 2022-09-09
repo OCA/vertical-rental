@@ -1,9 +1,14 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
+import base64
+import io
 
 from dateutil.relativedelta import relativedelta
+from PIL import Image
+
+from odoo import exceptions, fields
 
 from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
-from odoo import fields, exceptions
+
 
 def _run_sol_onchange_display_product_id(line):
     line.onchange_display_product_id()  # product_id, rental changed
@@ -12,6 +17,7 @@ def _run_sol_onchange_display_product_id(line):
     line.product_id_change()  # product_uom changed
     line.product_uom_change()
     line.rental_product_id_change()  # set start end date manually
+
 
 def _run_sol_onchange_date(line, start_date=False, end_date=False):
     if start_date:
@@ -22,6 +28,7 @@ def _run_sol_onchange_date(line, start_date=False, end_date=False):
     line.rental_qty_number_of_days_change()  # product_uom_qty changed
     line.product_uom_change()
 
+
 def _run_sol_onchange_product_uom(line, product_uom):
     line.product_uom = product_uom
     line.product_uom_change()
@@ -30,12 +37,14 @@ def _run_sol_onchange_product_uom(line, product_uom):
     line.rental_qty_number_of_days_change()
     line.product_uom_change()
 
+
 def _run_sol_onchange_can_sell_rental(line, can_sell_rental):
     line.can_sell_rental = can_sell_rental
     line.onchange_can_sell_rental()
     line.onchange_rental()
     line.product_id_change()
     line.product_uom_change()
+
 
 def _run_sol_onchange_rental(line, rental):
     line.rental = rental
@@ -45,10 +54,12 @@ def _run_sol_onchange_rental(line, rental):
     line.product_id_change()
     line.product_uom_change()
 
+
 class TestRentalPricelist(RentalStockCommon):
     def setUp(self):
         super().setUp()
 
+        self.env.user.company_id.rental_service_copy_image = False
         # Product Created A, B, C
         ProductObj = self.env["product.product"]
         self.productA = ProductObj.create(
@@ -136,6 +147,7 @@ class TestRentalPricelist(RentalStockCommon):
             if p.uom_id == self.uom_hour:
                 self.assertEqual(p.lst_price, 10)
                 check_hour = True
+        self.assertTrue(check_hour and check_day and check_month)
 
         # check service products of product B
         check_hour = check_day = check_month = False
@@ -150,6 +162,7 @@ class TestRentalPricelist(RentalStockCommon):
             if p.uom_id == self.uom_hour:
                 self.assertEqual(p.lst_price, 20)
                 check_hour = True
+        self.assertTrue(check_hour and check_day and check_month)
 
     def test_01_rental_onchange_productA(self):
         """
@@ -399,14 +412,10 @@ class TestRentalPricelist(RentalStockCommon):
 
         # check price of months
         _run_sol_onchange_product_uom(line, self.uom_month)
-        _run_sol_onchange_date(
-            line, end_date=self.date_28_day_later
-        )  # check round
+        _run_sol_onchange_date(line, end_date=self.date_28_day_later)  # check round
         self.assertEqual(line.product_uom_qty, 1)
         self.assertEqual(line.price_unit, 1000)
-        _run_sol_onchange_date(
-            line, end_date=self.date_63_day_later
-        )  # check round
+        _run_sol_onchange_date(line, end_date=self.date_63_day_later)  # check round
         self.assertEqual(line.product_uom_qty, 2)
         self.assertEqual(line.price_unit, 900)
         _run_sol_onchange_date(line, end_date=self.date_three_month_later)
@@ -438,4 +447,27 @@ class TestRentalPricelist(RentalStockCommon):
         self.env["sale.order.line"].create(vals)
         with self.assertRaises(exceptions.UserError) as e:
             self.rental_order.action_confirm()
-        self.assertEqual("The product Product D is not correctly configured.", e.exception.name)
+        self.assertEqual(
+            "The product Product D is not correctly configured.", e.exception.name
+        )
+
+    def test_variant_images(self):
+        """Check option rental_service_copy_image"""
+        f = io.BytesIO()
+        Image.new("RGB", (800, 500), "#000000").save(f, "PNG")
+        f.seek(0)
+        image_black = base64.b64encode(f.read())
+        self.assertFalse(self.productA.image_medium)
+        self.assertFalse(self.productA.product_rental_month_id.image_medium)
+        self.assertFalse(self.productA.product_rental_day_id.image_medium)
+        self.assertFalse(self.productA.product_rental_hour_id.image_medium)
+        self.productA.image_medium = image_black
+        self.assertFalse(self.productA.product_rental_month_id.image_medium)
+        self.assertFalse(self.productA.product_rental_day_id.image_medium)
+        self.assertFalse(self.productA.product_rental_hour_id.image_medium)
+        self.productA.company_id.rental_service_copy_image = True
+        self.productA.image_medium = False
+        self.productA.image_medium = image_black
+        self.assertTrue(self.productA.product_rental_month_id.image_medium)
+        self.assertTrue(self.productA.product_rental_day_id.image_medium)
+        self.assertTrue(self.productA.product_rental_hour_id.image_medium)

@@ -5,7 +5,7 @@ ci: Travis
 dependency_installation_mode: OCA
 generate_requirements_txt: true
 include_wkhtmltopdf: false
-odoo_version: 13.0
+odoo_version: 12.0
 rebel_module_groups: []
 repo_description: Addons for managing rental operations in Odoo
 repo_name: Vertical Rental

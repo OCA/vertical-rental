@@ -1,7 +1,7 @@
 Rental Check Availability
 ====================================================
 
-*This file has been generated on 2021-10-25-10-18-19. Changes to it will be overwritten.*
+*This file has been generated on 2022-07-26-13-09-49. Changes to it will be overwritten.*
 
 Summary
 -------
@@ -19,4 +19,3 @@ After the installation of this module the availability is checked in considerati
 of goods in stock and the amount of products used in concurrent sale orders at the certain desired timeframe.
 In case of insufficient products in stock the user receives visual notification on respective sale order line
 and can access the list of concurrent sale orders directly.
-

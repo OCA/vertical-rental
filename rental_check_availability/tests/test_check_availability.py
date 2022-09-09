@@ -1,9 +1,14 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
-from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
-from odoo.addons.rental_pricelist.tests.test_rental_pricelist import _run_sol_onchange_display_product_id, _run_sol_onchange_date
+
 from odoo import fields
+
+from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
+from odoo.addons.rental_pricelist.tests.test_rental_pricelist import (
+    _run_sol_onchange_date,
+    _run_sol_onchange_display_product_id,
+)
 
 
 class TestRentalCheckAvailability(RentalStockCommon):
@@ -78,69 +83,59 @@ class TestRentalCheckAvailability(RentalStockCommon):
         # RO 4  (qty: 1)              5 ----------------------- 25 (none)
         # RO 5  (qty: 3)    today - 2 (order)
         # RO 6  (qty: 1)              5 --------- 15 (none)
+        msg = (
+            "You want to rent 3.00 Unit(s) but you only have 2.00 Unit(s) "
+            "available in the selected period."
+        )
         expected_warning = {
-            'title': 'Not enough stock!',
-            'message': 'You want to rent 3.00 Unit(s) but you only have 2.00 Unit(s) available in the selected period.'
+            "title": "Not enough stock!",
+            "message": msg,
         }
-        #create some quantity of productA (qty: 4)
-        self.env['stock.quant']._update_available_quantity(self.productA, self.warehouse0.rental_in_location_id, 4)
-        #RO 1
-        rental_order_1 = self.create_rental_order(
-            self.today, self.date_10_day_later, 2
+        # create some quantity of productA (qty: 4)
+        self.env["stock.quant"]._update_available_quantity(
+            self.productA, self.warehouse0.rental_in_location_id, 4
         )
+        # RO 1
+        rental_order_1 = self.create_rental_order(self.today, self.date_10_day_later, 2)
         rental_order_1.action_confirm()
-        self.assertEqual(
-            rental_order_1.order_line.concurrent_orders, 'none'
-        )
+        self.assertEqual(rental_order_1.order_line.concurrent_orders, "none")
 
-        #RO 2
+        # RO 2
         rental_order_2 = self.create_rental_order(
             self.date_20_day_later, self.date_30_day_later, 2
         )
-        self.assertEqual(
-            rental_order_2.order_line.concurrent_orders, 'none'
-        )
+        self.assertEqual(rental_order_2.order_line.concurrent_orders, "none")
 
-        #RO 3
+        # RO 3
         rental_order_3 = self.create_rental_order(
             self.date_27_day_later, self.date_30_day_later, 3
         )
         res = rental_order_3.order_line.onchange_start_end_date()
         self.assertEqual(res.get("warning", False), expected_warning)
-        self.assertEqual(
-            rental_order_3.order_line.concurrent_orders, 'quotation'
-        )
+        self.assertEqual(rental_order_3.order_line.concurrent_orders, "quotation")
         action = rental_order_3.order_line.action_view_concurrent_orders()
         self.assertEqual(
             action.get("domain", False), [("id", "in", [rental_order_2.id])]
         )
 
-        #RO 4
+        # RO 4
         rental_order_4 = self.create_rental_order(
             self.date_5_day_later, self.date_25_day_later, 1
         )
-        self.assertEqual(
-            rental_order_4.order_line.concurrent_orders, 'none'
-        )
+        self.assertEqual(rental_order_4.order_line.concurrent_orders, "none")
 
-        #RO 5
-        rental_order_5 = self.create_rental_order(
-            self.today, self.date_2_day_later, 3
-        )
+        # RO 5
+        rental_order_5 = self.create_rental_order(self.today, self.date_2_day_later, 3)
         res = rental_order_5.order_line.onchange_start_end_date()
         self.assertEqual(res.get("warning", False), expected_warning)
-        self.assertEqual(
-            rental_order_5.order_line.concurrent_orders, 'order'
-        )
+        self.assertEqual(rental_order_5.order_line.concurrent_orders, "order")
         action = rental_order_5.order_line.action_view_concurrent_orders()
         self.assertEqual(
             action.get("domain", False), [("id", "in", [rental_order_1.id])]
         )
 
-        #RO 6
+        # RO 6
         rental_order_6 = self.create_rental_order(
             self.date_5_day_later, self.date_15_day_later, 1
         )
-        self.assertEqual(
-            rental_order_6.order_line.concurrent_orders, 'none'
-        )
+        self.assertEqual(rental_order_6.order_line.concurrent_orders, "none")

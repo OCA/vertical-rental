@@ -1,7 +1,7 @@
 Rental Pricelist (Interval)
 ====================================================
 
-*This file has been generated on 2021-10-25-10-18-19. Changes to it will be overwritten.*
+*This file has been generated on 2022-07-26-13-09-49. Changes to it will be overwritten.*
 
 Summary
 -------
@@ -16,4 +16,3 @@ of odoo price lists. This enables to rent out products and charge for day interv
 
 These ranges can be configured freely on general and/or product level. In contrast to rentals
 on daily, monthly or yearly bases a different price computation is applied in sale order lines.
-

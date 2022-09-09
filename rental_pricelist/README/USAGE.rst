@@ -36,4 +36,3 @@ Create a rental order:
  * Check out the two deliveries, one for outgoing and one for incoming delivery.
 
 Please also see the usage section of sale_rental and rental_base module.
-

@@ -6,6 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-27 07:37+0000\n"
+"PO-Revision-Date: 2022-06-27 07:37+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -14,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: rental_base
-#: code:addons/rental_base/models/sale.py:235
+#: code:addons/rental_base/models/sale.py:233
 #, python-format
 msgid "\n"
 "Order: %s\n"
@@ -76,6 +78,11 @@ msgstr ""
 #. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__change
 msgid "Change"
+msgstr ""
+
+#. module: rental_base
+#: model:ir.model,name:rental_base.model_res_config_settings
+msgid "Config Settings"
 msgstr ""
 
 #. module: rental_base
@@ -236,7 +243,7 @@ msgid "Incoming Deliveries"
 msgstr ""
 
 #. module: rental_base
-#: code:addons/rental_base/models/sale.py:177
+#: code:addons/rental_base/models/sale.py:175
 #, python-format
 msgid "Incoming shipment is in state %s. You cannot change the end date anymore."
 msgstr ""
@@ -324,7 +331,7 @@ msgid "Outgoing Deliveries"
 msgstr ""
 
 #. module: rental_base
-#: code:addons/rental_base/models/sale.py:161
+#: code:addons/rental_base/models/sale.py:160
 #, python-format
 msgid "Outgoing shipment is in state %s. You cannot change the start date anymore."
 msgstr ""
@@ -426,6 +433,11 @@ msgid "Sales Order Line"
 msgstr ""
 
 #. module: rental_base
+#: model:res.groups,name:rental_base.group_rental_menu
+msgid "See Rental Menu"
+msgstr ""
+
+#. module: rental_base
 #: model:ir.model,name:rental_base.model_ir_sequence
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__sequence
 msgid "Sequence"
@@ -508,13 +520,13 @@ msgid "Wizard for updating sale order line dates"
 msgstr ""
 
 #. module: rental_base
-#: code:addons/rental_base/models/sale.py:228
+#: code:addons/rental_base/models/sale.py:226
 #, python-format
 msgid "You are not allowed to change the 'end date' in an order line of a confirmed order."
 msgstr ""
 
 #. module: rental_base
-#: code:addons/rental_base/models/sale.py:211
+#: code:addons/rental_base/models/sale.py:209
 #, python-format
 msgid "You are not allowed to change the 'start date' in an order line of a confirmed order."
 msgstr ""
@@ -523,4 +535,3 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:rental_base.sale_start_end_dates
 msgid "to"
 msgstr ""
-

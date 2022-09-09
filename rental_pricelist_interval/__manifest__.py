@@ -2,13 +2,8 @@
 
 {
     "name": "Rental Pricelist (Interval)",
-    "summary": 'Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").',
-    "description": """
-This Module implements a new rental service product for interval pricing under consideration
-of odoo price lists. This enables to rent out products and charge for day interval ranges.
-
-These ranges can be configured freely on general and/or product level. In contrast to rentals
-on daily, monthly or yearly bases a different price computation is applied in sale order lines.
+    "summary": """
+Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").
 """,
     "usage": """
 To use this module, you need to:
@@ -33,16 +28,17 @@ To use this module, you need to:
     "configuration": """
 To configure this module, you need to:
 
-#. Go to company settings and define the default interval ranges on 'Rental Interval Prices' tab.
-   These ranges will be applied for computation of price intervals for rental service products when interval pricing is activated
-   in stockable product.
+#. Go to company settings and define the default interval ranges on
+   'Rental Interval Prices' tab. These ranges will be applied for computation of price intervals
+   for rental service products when interval pricing is activated in stockable product.
 
 #. If desired go to 'RS (Prefix and Suffix)' tab an define how rental interval service product
    names and reference numbers are created.
 """,
     "version": "12.0.1.0.3",
     "category": "Rental",
-    "author": "Odoo Community Association (OCA)/Elego Software Solutions GmbH",
+    "author": "Odoo Community Association (OCA), Elego Software Solutions GmbH",
+    "website": "https://github.com/OCA/vertical-rental",
     "depends": [
         "rental_pricelist",
     ],
