@@ -35,7 +35,7 @@ To configure this module, you need to:
 #. If desired go to 'RS (Prefix and Suffix)' tab an define how rental interval service product
    names and reference numbers are created.
 """,
-    "version": "12.0.1.0.3",
+    "version": "12.0.1.0.4",
     "category": "Rental",
     "author": "Odoo Community Association (OCA), Elego Software Solutions GmbH",
     "website": "https://github.com/OCA/vertical-rental",
