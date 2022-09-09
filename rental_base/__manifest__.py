@@ -2,7 +2,7 @@
 
 {
     "name": "Rental Base",
-    "version": "12.0.1.0.1",
+    "version": "12.0.1.0.2",
     "category": "Rental",
     "summary": "Manage Rental of Products",
     "usage": """
