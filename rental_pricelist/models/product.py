@@ -101,7 +101,7 @@ class ProductProduct(models.Model):
     # override from sale_rental, to remove Uom constrain
     @api.constrains("rented_product_id", "must_have_dates", "type", "uom_id")
     def _check_rental(self):
-        day_uom = self.env.ref("uom.product_uom_day")
+        self.env.ref("uom.product_uom_day")
         for product in self:
             if product.rented_product_id:
                 if product.type != "service":
