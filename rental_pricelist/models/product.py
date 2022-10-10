@@ -101,7 +101,7 @@ class ProductProduct(models.Model):
     # override from sale_rental, to remove Uom constrain
     @api.constrains("rented_product_id", "must_have_dates", "type", "uom_id")
     def _check_rental(self):
-        self.env.ref("uom.product_uom_day")
+        day_uom = self.env.ref("uom.product_uom_day")
         for product in self:
             if product.rented_product_id:
                 if product.type != "service":
@@ -231,6 +231,8 @@ class ProductProduct(models.Model):
             rental_type,
             product.default_code,
         )
+        rental_service.sudo().uom_id = uom.id
+        rental_service.sudo().uom_po_id = uom.id
         rental_service.write(
             {
                 "uom_id": uom.id,
@@ -376,5 +378,22 @@ class ProductProduct(models.Model):
                 if "rental_price_hour" in vals:
                     del vals["rental_price_hour"]
         res = super().create(vals_list)
+        for vals in vals_list:
+            if "income_analytic_account_id" in vals:
+                ext_vals["income_analytic_account_id"] = vals.get(
+                    "income_analytic_account_id", False
+                )
+            else:
+                ext_vals[
+                    "income_analytic_account_id"
+                ] = res.income_analytic_account_id.id
+            if "expense_analytic_account_id" in vals:
+                ext_vals["expense_analytic_account_id"] = vals.get(
+                    "expense_analytic_account_id", False
+                )
+            else:
+                ext_vals[
+                    "expense_analytic_account_id"
+                ] = res.expense_analytic_account_id.id
         res.write(ext_vals)
         return res
