@@ -10,4 +10,3 @@ To configure this module, you need to:
 
 #. If desired go to 'RS (Prefix and Suffix)' tab an define how rental interval service product
    names and reference numbers are created.
-
