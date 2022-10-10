@@ -1,7 +1,7 @@
 Rental Product Pack
 ====================================================
 
-*This file has been generated on 2021-10-25-10-18-19. Changes to it will be overwritten.*
+*This file has been generated on 2022-05-04-12-21-41. Changes to it will be overwritten.*
 
 Summary
 -------
@@ -14,3 +14,4 @@ Description
 This module allows to manage rentals with product packs.
 You can define product packs as described in the module product_pack.
 The components of the pack are added to both rental stock pickings after order confirmation.
+
