@@ -1,7 +1,7 @@
 Rental Off-Day
 ====================================================
 
-*This file has been generated on 2021-10-25-10-18-19. Changes to it will be overwritten.*
+*This file has been generated on 2022-05-04-12-21-41. Changes to it will be overwritten.*
 
 Summary
 -------
@@ -18,3 +18,4 @@ the case for weekends and holidays, since there might be some legal limitations 
 the products on these days.
 In order to meet this requirement, the salesman can add off-days on sale order lines for
 products that are rentable in days. These days will not be included in price calculation.
+
