@@ -56,6 +56,19 @@ class TestRentalPricelist(RentalStockCommon):
     def setUp(self):
         super().setUp()
 
+        self.analytic_account_A = self.env["account.analytic.account"].create(
+            {
+                "name": "Analytic Account A",
+                "code": "100001",
+            }
+        )
+        self.analytic_account_B = self.env["account.analytic.account"].create(
+            {
+                "name": "Analytic Account B",
+                "code": "100002",
+            }
+        )
+
         # Product Created A, B, C
         ProductObj = self.env["product.product"]
         self.productA = ProductObj.create(
@@ -69,6 +82,8 @@ class TestRentalPricelist(RentalStockCommon):
                 "rental_price_month": 1000,
                 "rental_price_day": 100,
                 "rental_price_hour": 10,
+                "income_analytic_account_id": self.analytic_account_A.id,
+                "expense_analytic_account_id": self.analytic_account_A.id,
             }
         )
         self.productB = ProductObj.create(
@@ -128,10 +143,13 @@ class TestRentalPricelist(RentalStockCommon):
                 "rental_price_month": 2000,
                 "rental_price_day": 200,
                 "rental_price_hour": 20,
+                "income_analytic_account_id": self.analytic_account_B.id,
+                "expense_analytic_account_id": self.analytic_account_B.id,
             }
         )
         # check service products of product A
         check_hour_A = check_day_A = check_month_A = False
+        check_income_aa_A = check_expense_aa_A = False
         self.assertEqual(len(self.productA.rental_service_ids), 3)
         for p in self.productA.rental_service_ids:
             if p.uom_id == self.uom_month:
@@ -143,12 +161,22 @@ class TestRentalPricelist(RentalStockCommon):
             if p.uom_id == self.uom_hour:
                 self.assertEqual(p.lst_price, 10)
                 check_hour_A = True
+            if p.income_analytic_account_id == self.productA.income_analytic_account_id:
+                check_income_aa_A = True
+            if (
+                p.expense_analytic_account_id
+                == self.productA.expense_analytic_account_id
+            ):
+                check_expense_aa_A = True
         self.assertTrue(check_hour_A)
         self.assertTrue(check_day_A)
         self.assertTrue(check_month_A)
+        self.assertTrue(check_income_aa_A)
+        self.assertTrue(check_expense_aa_A)
 
         # check service products of product B
         check_hour_B = check_day_B = check_month_B = False
+        check_income_aa_B = check_expense_aa_B = False
         self.assertEqual(len(self.productB.rental_service_ids), 3)
         for p in self.productB.rental_service_ids:
             if p.uom_id == self.uom_month:
@@ -160,9 +188,18 @@ class TestRentalPricelist(RentalStockCommon):
             if p.uom_id == self.uom_hour:
                 self.assertEqual(p.lst_price, 20)
                 check_hour_B = True
+            if p.income_analytic_account_id == self.productB.income_analytic_account_id:
+                check_income_aa_B = True
+            if (
+                p.expense_analytic_account_id
+                == self.productB.expense_analytic_account_id
+            ):
+                check_expense_aa_B = True
         self.assertTrue(check_hour_B)
         self.assertTrue(check_day_B)
         self.assertTrue(check_month_B)
+        self.assertTrue(check_income_aa_B)
+        self.assertTrue(check_expense_aa_B)
 
     def test_01_rental_onchange_productA(self):
         """

@@ -256,9 +256,10 @@ class SaleOrderLine(models.Model):
     @api.onchange("product_id")
     def product_id_change(self):
         res = super(SaleOrderLine, self).product_id_change()
-        if self.rental and "domain" in res and "product_uom" in res["domain"]:
-            del res["domain"]["product_uom"]
+        if self.rental:
             if self.display_product_id.rental:
+                if "domain" not in res:
+                    res["domain"] = {}
                 uom_ids = self._get_product_rental_uom_ids()
                 res["domain"]["product_uom"] = [("id", "in", uom_ids)]
                 if uom_ids and self.product_uom.id not in uom_ids:
