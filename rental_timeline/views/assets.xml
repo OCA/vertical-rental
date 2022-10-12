@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template
+        id="assets_backend"
+        name="sale rental timeline assets"
+        inherit_id="web.assets_backend"
+    >
+        <xpath expr="." position="inside">
+            <link
+                rel="stylesheet"
+                type="text/scss"
+                href="/rental_timeline/static/src/scss/rental_timeline.scss"
+            />
+
+            <script
+                type="text/javascript"
+                src="/rental_timeline/static/src/js/Popup.js"
+            />
+            <script
+                type="text/javascript"
+                src="/rental_timeline/static/src/js/timeline_renderer.js"
+            />
+            <script
+                type="text/javascript"
+                src="/rental_timeline/static/src/js/timeline_controller.js"
+            />
+            <script
+                type="text/javascript"
+                src="/rental_timeline/static/src/js/timeline_view.js"
+            />
+        </xpath>
+    </template>
+</odoo>
