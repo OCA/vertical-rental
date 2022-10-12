@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <!-- Action -->
+        <record id="action_view_all_timeline" model="ir.actions.act_window">
+            <field name="context">
+                {'search_default_product_id': [active_id], 'default_product_id': active_id}
+            </field>
+            <field name="name">Timelines</field>
+            <field name="domain">
+                ['|', ('active','=', True), ('active','=', False), ('product_id', '=', active_id)]
+            </field>
+            <field name="res_model">product.timeline</field>
+        </record>
+
+        <!-- Form View -->
+        <record id="product_timeline_form_view" model="ir.ui.view">
+            <field name="name">view.product.product.timeline.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <button name="toggle_active" position="before">
+                    <button
+                        class="oe_stat_button"
+                        name="%(rental_timeline.action_view_all_timeline)d"
+                        type="action"
+                        icon="fa-history"
+                    >
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Timelines</span>
+                        </div>
+                    </button>
+                </button>
+            </field>
+        </record>
+
+    </data>
+</odoo>
