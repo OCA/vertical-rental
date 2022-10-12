@@ -1,0 +1,42 @@
+.vis-tooltip {
+    border-radius: 5px;
+    table,
+    td,
+    tr,
+    tr:first-child {
+        border: none;
+        font-family: Roboto, Noto;
+        font-size: 13px;
+    }
+    tr {
+        border-top: 1px solid #dee2e6;
+    }
+    td:last-child {
+        padding-left: 10px;
+    }
+}
+
+.vis-item-content {
+    padding: 0 !important;
+    a {
+        height: 100%;
+        width: 100%;
+        display: block;
+        i {
+            width: auto;
+            padding-right: 3px;
+        }
+    }
+}
+
+.vis-label .vis-nesting-group collapsed div {
+    display: none;
+}
+
+.vis-label .vis-nesting-group expanded div {
+    display: block;
+}
+
+.vis-left.vis-panel.vis-vertical-scroll {
+    direction: ltr !important;
+}
