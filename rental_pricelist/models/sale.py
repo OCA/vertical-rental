@@ -35,7 +35,7 @@ class SaleOrderLine(models.Model):
         domain = [
             "|",
             "&",
-            ("type", "=", "product"),
+            ("type", "in", ["product", "consu"]),
             "|",
             ("sale_ok", "=", True),
             ("rental", "=", True),
