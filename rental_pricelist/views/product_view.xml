@@ -107,6 +107,52 @@
                                     </tree>
                                 </field>
                             </group>
+                            <group string="Weekly Basis">
+                                <field name="rental_of_week" />
+                                <field name="def_pricelist_id" invisible="1" />
+                                <field
+                                    name="rental_price_week"
+                                    attrs="{'invisible': [('rental_of_week','=',False)]}"
+                                />
+                                <field
+                                    name="product_rental_week_id"
+                                    groups="base.group_no_one"
+                                />
+                                <strong
+                                    colspan="2"
+                                    attrs="{'invisible': [('product_rental_week_id', '=', False)]}"
+                                >
+                                    Bulk Prices
+                                </strong>
+                                <field
+                                    name="week_scale_pricelist_item_ids"
+                                    position="inside"
+                                    domain="[('product_id', '=', product_rental_week_id),
+                                                ('pricelist_id', '=', def_pricelist_id)]"
+                                    context="{
+                                       'default_applied_on': '0_product_variant',
+                                       'default_compute_price': 'fixed',
+                                       'default_product_id': product_rental_week_id, 'default_pricelist_id': def_pricelist_id}"
+                                    attrs="{'invisible': ['|', ('rental_of_week', '=', False), ('product_rental_week_id', '=', False)]}"
+                                    nolabel="1"
+                                    colspan="2"
+                                >
+                                    <tree string="Pricelist Items" editable="bottom">
+                                        <field name="min_quantity" />
+                                        <field
+                                            name="fixed_price"
+                                            string="Price"
+                                            required="1"
+                                            widget="monetary"
+                                            options="{'currency_field': 'currency_id'}"
+                                        />
+                                        <field name="compute_price" invisible="1" />
+                                        <field name="applied_on" invisible="1" />
+                                        <field name="product_id" invisible="1" />
+                                        <field name="pricelist_id" invisible="1" />
+                                    </tree>
+                                </field>
+                            </group>
                             <group string="Hourly Basis">
                                 <field name="rental_of_hour" />
                                 <field

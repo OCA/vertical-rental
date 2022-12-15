@@ -58,6 +58,9 @@ class SaleOrderLine(models.Model):
             elif self.display_product_id.rental_of_month:
                 self.product_uom = time_uoms["month"]
                 self.product_id = self.display_product_id.product_rental_month_id
+            elif self.display_product_id.rental_of_week:
+                self.product_uom = time_uoms["week"]
+                self.product_id = self.display_product_id.product_rental_week_id
             elif self.display_product_id.rental_of_hour:
                 self.product_uom = time_uoms["hour"]
                 self.product_id = self.display_product_id.product_rental_hour_id
@@ -255,6 +258,8 @@ class SaleOrderLine(models.Model):
         uom_ids = []
         if self.display_product_id.rental_of_month:
             uom_ids.append(time_uoms["month"].id)
+        if self.display_product_id.rental_of_week:
+            uom_ids.append(time_uoms["week"].id)
         if self.display_product_id.rental_of_day:
             uom_ids.append(time_uoms["day"].id)
         if self.display_product_id.rental_of_hour:
