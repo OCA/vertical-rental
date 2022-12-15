@@ -16,6 +16,11 @@ class ProductProduct(models.Model):
         copy=False,
     )
 
+    rental_of_week = fields.Boolean(
+        string="Rented in weeks",
+        copy=False,
+    )
+
     rental_of_day = fields.Boolean(
         string="Rented in days",
         copy=False,
@@ -29,6 +34,13 @@ class ProductProduct(models.Model):
     product_rental_month_id = fields.Many2one(
         comodel_name="product.product",
         string="Rental Service (Month)",
+        ondelete="set null",
+        copy=False,
+    )
+
+    product_rental_week_id = fields.Many2one(
+        comodel_name="product.product",
+        string="Rental Service (Week)",
         ondelete="set null",
         copy=False,
     )
@@ -53,6 +65,14 @@ class ProductProduct(models.Model):
         copy=False,
         readonly=False,
         related="product_rental_month_id.list_price",
+    )
+
+    rental_price_week = fields.Float(
+        string="Price / Week",
+        store=True,
+        copy=False,
+        readonly=False,
+        related="product_rental_week_id.list_price",
     )
 
     rental_price_day = fields.Float(
@@ -85,6 +105,13 @@ class ProductProduct(models.Model):
         copy=False,
     )
 
+    week_scale_pricelist_item_ids = fields.One2many(
+        comodel_name="product.pricelist.item",
+        inverse_name="week_item_id",
+        string="Week Scale Pricelist Items",
+        copy=False,
+    )
+
     hour_scale_pricelist_item_ids = fields.One2many(
         comodel_name="product.pricelist.item",
         inverse_name="hour_item_id",
@@ -109,6 +136,8 @@ class ProductProduct(models.Model):
         self.ensure_one()
         if rental_type == "month" and self.product_rental_month_id:
             return self.product_rental_month_id
+        elif rental_type == "week" and self.product_rental_week_id:
+            return self.product_rental_week_id
         elif rental_type == "day" and self.product_rental_day_id:
             return self.product_rental_day_id
         elif rental_type == "hour" and self.product_rental_hour_id:
@@ -124,6 +153,8 @@ class ProductProduct(models.Model):
         rental_services = []
         if self.product_rental_month_id:
             rental_services.append(self.product_rental_month_id)
+        if self.product_rental_week_id:
+            rental_services.append(self.product_rental_week_id)
         if self.product_rental_day_id:
             rental_services.append(self.product_rental_day_id)
         if self.product_rental_hour_id:
@@ -136,6 +167,8 @@ class ProductProduct(models.Model):
         uom = False
         if rental_type == "month":
             uom = time_uoms["month"]
+        elif rental_type == "week":
+            uom = time_uoms["week"]
         elif rental_type == "day":
             uom = time_uoms["day"]
         elif rental_type == "hour":
@@ -298,6 +331,12 @@ class ProductProduct(models.Model):
                         "month", p, p.rental_price_month
                     )
                     p.product_rental_month_id = service_product
+            if vals.get("rental_of_week", False):
+                if not p.product_rental_week_id:
+                    service_product = self._create_rental_service(
+                        "week", p, p.rental_price_week
+                    )
+                    p.product_rental_week_id = service_product
             if vals.get("rental_of_day", False):
                 if not p.product_rental_day_id:
                     service_product = self._create_rental_service(
@@ -352,6 +391,12 @@ class ProductProduct(models.Model):
             del vals["rental_of_month"]
             if "rental_price_month" in vals:
                 del vals["rental_price_month"]
+        if vals.get("rental_of_week", False):
+            ext_vals["rental_of_week"] = True
+            ext_vals["rental_price_week"] = vals.get("rental_price_week")
+            del vals["rental_of_week"]
+            if "rental_price_week" in vals:
+                del vals["rental_price_week"]
         if vals.get("rental_of_day", False):
             ext_vals["rental_of_day"] = True
             ext_vals["rental_price_day"] = vals.get("rental_price_day")
