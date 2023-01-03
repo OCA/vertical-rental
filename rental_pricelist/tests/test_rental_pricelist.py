@@ -3,6 +3,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import exceptions, fields
+from odoo.exceptions import ValidationError
 
 from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
 
@@ -105,6 +106,25 @@ class TestRentalPricelist(RentalStockCommon):
                 "name": "Product D",
                 "type": "product",
                 "rental": True,
+            }
+        )
+        self.productE = ProductObj.create(
+            {
+                "name": "Product E",
+                "type": "product",
+                "rental": True,
+                "rental_of_day": True,
+                "rental_price_day": 500,
+                "default_code": "PRD-E123",
+            }
+        )
+        self.productF = ProductObj.create(
+            {
+                "name": "Product F",
+                "type": "product",
+                "rental": True,
+                "rental_of_hour": True,
+                "rental_price_hour": 1000,
             }
         )
         self.today = fields.Date.from_string(fields.Date.today())
@@ -487,3 +507,120 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(
             "The product Product D is not correctly configured.", str(e.exception)
         )
+
+    def test_05_check_rental_productE(self):
+        self.assertEqual(len(self.productE.rental_service_ids), 1)
+        rental_serviceE = self.productE.rental_service_ids[0]
+        # check type and must_have_dates of product
+        self.assertEqual(rental_serviceE.type, "service")
+        self.assertEqual(rental_serviceE.must_have_dates, True)
+        with self.assertRaises(ValidationError) as e:
+            rental_serviceE.type = "consu"
+        self.assertEqual(
+            "The rental product 'Rental of Product E (Day(s))' must be of type 'Service'.",
+            str(e.exception),
+        )
+        with self.assertRaises(ValidationError) as e:
+            rental_serviceE.must_have_dates = False
+        self.assertEqual(
+            "The rental product 'Rental of Product E (Day(s))'"
+            " must have the option 'Must Have Start and End Dates' checked.",
+            str(e.exception),
+        )
+        # check onchange method of product.pricelist.item
+        self.productE.write(
+            {
+                "hour_scale_pricelist_item_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "min_quantity": 3,
+                            "fixed_price": 600,
+                            "applied_on": "0_product_variant",
+                            "compute_price": "fixed",
+                            "product_id": self.productE.product_rental_day_id.id,
+                            "pricelist_id": self.productE.def_pricelist_id.id,
+                        },
+                    ),
+                ],
+            }
+        )
+        # add item from pricelist
+        item1 = self.env["product.pricelist.item"].create(
+            {
+                "applied_on": "0_product_variant",
+                "compute_price": "fixed",
+                "product_id": self.productE.product_rental_day_id.id,
+                "pricelist_id": self.productE.def_pricelist_id.id,
+                "min_quantity": 80,
+                "fixed_price": 70,
+            }
+        )
+        item1._onchange_product_id()
+        self.assertEqual(item1.day_item_id, self.productE)
+        # check default_code
+        self.assertEqual(self.productE.default_code, "PRD-E123")
+        self.assertEqual(rental_serviceE.default_code, "RENT-D-PRD-E123")
+        # update and check default_code
+        self.productE.default_code = "PRD-E110"
+        self.assertEqual(self.productE.default_code, "PRD-E110")
+        self.assertEqual(rental_serviceE.default_code, "RENT-D-PRD-E110")
+        # update and check name
+        self.productE.name = "Product E1"
+        self.assertEqual(rental_serviceE.name, "Rental of Product E1 (Day(s))")
+        # update active
+        self.productE.active = False
+        self.assertEqual(rental_serviceE.active, False)
+        self.productE.active = True
+        self.assertTrue(rental_serviceE.active)
+
+    def test_06_check_start_end_dates_productF(self):
+        rental_order = (
+            self.env["sale.order"]
+            .with_context(
+                {
+                    "default_type_id": self.rental_sale_type.id,
+                }
+            )
+            .create(
+                {
+                    "partner_id": self.partnerA.id,
+                    "pricelist_id": self.env.ref("product.list0").id,
+                }
+            )
+        )
+        line = (
+            self.env["sale.order.line"]
+            .with_context(
+                {
+                    "type_id": self.rental_sale_type.id,
+                }
+            )
+            .new(
+                {
+                    "order_id": rental_order.id,
+                    "display_product_id": self.productF.id,
+                }
+            )
+        )
+        line.onchange_display_product_id()
+        line.product_id_change()
+        line.onchange_rental()
+        line.product_uom_change()
+        line.rental_product_id_change()
+        _run_sol_onchange_date(line)
+        line.start_end_dates_product_id_change()
+        # no dates avaiavlbe
+        self.assertEqual(line.start_date, False)
+        self.assertEqual(line.end_date, False)
+        # set dates on rental order
+        rental_order.update(
+            {
+                "default_start_date": self.today,
+                "default_end_date": self.tomorrow,
+            }
+        )
+        line.start_end_dates_product_id_change()
+        self.assertEqual(line.start_date, self.today)
+        self.assertEqual(line.end_date, self.tomorrow)
