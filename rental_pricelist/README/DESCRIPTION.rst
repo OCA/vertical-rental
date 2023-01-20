@@ -1,12 +1,12 @@
 Rental Pricelist
 ====================================================
 
-*This file has been generated on 2021-10-25-10-18-19. Changes to it will be overwritten.*
+*This file has been generated on 2022-05-04-12-21-41. Changes to it will be overwritten.*
 
 Summary
 -------
 
-Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").
+Enables the user to define different rental prices with time uom (Month, Day and Hour).
 
 Description
 -----------
