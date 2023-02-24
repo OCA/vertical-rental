@@ -645,83 +645,70 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                 group_categ_again++;
             }
 
-            if (x2x) {
-                groups = this.groups;
-                this.selected_groups = this.groups;
-                this.createSelectGroups();
-            } else {
-                if (typeof this.$select_groups !== "undefined") {
-                    this.$(".selected-groups").html("");
-                    this.$select_groups.remove();
-                }
-                groups = this.split_groups(events, group_bys);
-
-                if (group_bys[0] === "partner_id") {
-                    for (let i = 0; i < groups.length; i++) {
-                        data.forEach(item => {
-                            if (!("nestedGroups" in groups[i])) {
-                                // If(item.group === groups[i].id && !_.isEqual(item.evt.partner_id, groups[i].partner_id)){
-                                //     if(i +1 < groups.length) {
-                                //         for(let j = i +1 ; j < groups.length; j ++) {
-                                //             if(!('nestedGroups' in groups[j])) {
-                                //                 if(_.isEqual(item.evt.product_id, groups[j].product_id)){
-                                //                     if(_.isEqual(item.evt.partner_id, groups[j].partner_id)) {
-                                //                         item.original_group = item.group
-                                //                         item.group = groups[j].id
-                                //                     }
-                                //                 }
-                                //             }
-                                //         }
-                                //     }
-                                // } else
-                                if (
-                                    item.group !== groups[i].id &&
-                                    _.isEqual(
-                                        item.evt.product_id,
-                                        groups[i].product_id
-                                    ) &&
-                                    _.isEqual(item.evt.partner_id, groups[i].partner_id)
-                                ) {
-                                    item.group = groups[i].id;
-                                }
-                            }
-                        });
-                    }
-                }
-
-                if (group_bys[0] === "order_name") {
-                    for (let i = 0; i < groups.length; i++) {
-                        data.forEach(item => {
-                            if (!("nestedGroups" in groups[i])) {
-                                // If(item.group === groups[i].id && item.evt.order_name !== groups[i].order_name){
-                                //     if(i +1 < groups.length) {
-                                //         for(let j = i +1 ; j < groups.length; j ++) {
-                                //             if( item.evt.order_name === groups[j].order_name && _.isEqual(item.evt.product_id, groups[j].product_id)){
-                                //                 item.original_group = item.group
-                                //                 item.group = groups[j].id
-                                //             }
-                                //         }
-                                //     }
-                                // } else
-                                if (
-                                    item.group !== groups[i].id &&
-                                    _.isEqual(
-                                        item.evt.product_id,
-                                        groups[i].product_id
-                                    ) &&
-                                    item.evt.order_name === groups[i].order_name
-                                ) {
-                                    item.group = groups[i].id;
-                                }
-                            }
-                        });
-                    }
-                }
-
-                groups = new vis.DataSet(groups);
+            if (typeof this.$select_groups !== "undefined") {
+                this.$(".selected-groups").html("");
+                this.$select_groups.remove();
             }
-            this.timeline.setGroups(groups);
+            groups = this.split_groups(events, group_bys);
 
+            if (group_bys[0] === "partner_id") {
+                for (let i = 0; i < groups.length; i++) {
+                    data.forEach(item => {
+                        if (!("nestedGroups" in groups[i])) {
+                            // If(item.group === groups[i].id && !_.isEqual(item.evt.partner_id, groups[i].partner_id)){
+                            //     if(i +1 < groups.length) {
+                            //         for(let j = i +1 ; j < groups.length; j ++) {
+                            //             if(!('nestedGroups' in groups[j])) {
+                            //                 if(_.isEqual(item.evt.product_id, groups[j].product_id)){
+                            //                     if(_.isEqual(item.evt.partner_id, groups[j].partner_id)) {
+                            //                         item.original_group = item.group
+                            //                         item.group = groups[j].id
+                            //                     }
+                            //                 }
+                            //             }
+                            //         }
+                            //     }
+                            // } else
+                            if (
+                                item.group !== groups[i].id &&
+                                _.isEqual(item.evt.product_id, groups[i].product_id) &&
+                                _.isEqual(item.evt.partner_id, groups[i].partner_id)
+                            ) {
+                                item.group = groups[i].id;
+                            }
+                        }
+                    });
+                }
+            }
+
+            if (group_bys[0] === "order_name") {
+                for (let i = 0; i < groups.length; i++) {
+                    data.forEach(item => {
+                        if (!("nestedGroups" in groups[i])) {
+                            // If(item.group === groups[i].id && item.evt.order_name !== groups[i].order_name){
+                            //     if(i +1 < groups.length) {
+                            //         for(let j = i +1 ; j < groups.length; j ++) {
+                            //             if( item.evt.order_name === groups[j].order_name && _.isEqual(item.evt.product_id, groups[j].product_id)){
+                            //                 item.original_group = item.group
+                            //                 item.group = groups[j].id
+                            //             }
+                            //         }
+                            //     }
+                            // } else
+                            if (
+                                item.group !== groups[i].id &&
+                                _.isEqual(item.evt.product_id, groups[i].product_id) &&
+                                item.evt.order_name === groups[i].order_name
+                            ) {
+                                item.group = groups[i].id;
+                            }
+                        }
+                    });
+                }
+            }
+
+            groups = new vis.DataSet(groups);
+            this.timeline.setGroups(groups);
             this.timeline.setItems(data);
             var mode = !this.mode || this.mode === "fit";
             var adjust = _.isUndefined(adjust_window) || adjust_window;
