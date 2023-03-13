@@ -27,22 +27,19 @@ class SaleOrderLine(models.Model):
 
     @api.model
     def _get_product_domain(self):
-        domain = [("sale_ok", "=", True)]
-        rental_type_id = self.env.ref("rental_base.rental_sale_type").id
-        if self.env.context.get("default_type_id", False) == rental_type_id:
-            domain = [
-                "|",
-                "&",
-                ("type", "=", "product"),
-                "|",
-                ("sale_ok", "=", True),
-                ("rental", "=", True),
-                "&",
-                ("type", "=", "service"),
-                "&",
-                ("sale_ok", "=", True),
-                ("rental", "=", False),
-            ]
+        domain = [
+            "|",
+            "&",
+            ("type", "=", "product"),
+            "|",
+            ("sale_ok", "=", True),
+            ("rental", "=", True),
+            "&",
+            ("type", "=", "service"),
+            "&",
+            ("sale_ok", "=", True),
+            ("rental", "=", False),
+        ]
         return domain
 
     def _set_product_id(self):
