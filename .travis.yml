@@ -5,7 +5,7 @@ cache:
     - $HOME/.cache/pre-commit
 
 python:
-  - "3.9"
+  - "3.6"
 
 addons:
   postgresql: "9.6"
