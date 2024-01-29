@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* rental_base
+# 	* rental_base
 #
 msgid ""
 msgstr ""
@@ -19,11 +19,14 @@ msgstr ""
 #. module: rental_base
 #: code:addons/rental_base/models/sale.py:343
 #, fuzzy, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Order: %s\n"
 "Line with product: '%s'\n"
 "\n"
-"Please use instead the button 'Update Times' in the order to correctly update the order line's times, its timeline entry, contract and its stock moves and pickings as required."
+"Please use instead the button 'Update Times' in the order to correctly "
+"update the order line's times, its timeline entry, contract and its stock "
+"moves and pickings as required."
 msgstr ""
 "\n"
 "Pedido: %s\n"
@@ -69,7 +72,10 @@ msgstr "Atributos"
 
 #. module: rental_base
 #: model_terms:ir.ui.view,arch_db:rental_base.update_sale_line_date_form
-msgid "By changing the start and end dates of order lines, the dates are also updated in the timeline,the related stock pickings and contracts, if available.\n"
+msgid ""
+"By changing the start and end dates of order lines, the dates are also "
+"updated in the timeline,the related stock pickings and contracts, if "
+"available.\n"
 "                Attention: The ordered quantities are not updated!"
 msgstr ""
 
@@ -234,12 +240,16 @@ msgstr ""
 
 #. module: rental_base
 #: model:ir.model.fields,help:rental_base.field_update_sale_line_date__from_line
-msgid "In order to update one or several order lines, please set a number referring to the first order line that should to be changed."
+msgid ""
+"In order to update one or several order lines, please set a number referring "
+"to the first order line that should to be changed."
 msgstr ""
 
 #. module: rental_base
 #: model:ir.model.fields,help:rental_base.field_update_sale_line_date__to_line
-msgid "In order to update one or several order lines, please set a number referring to the last order line that should to be changed."
+msgid ""
+"In order to update one or several order lines, please set a number referring "
+"to the last order line that should to be changed."
 msgstr ""
 
 #. module: rental_base
@@ -252,7 +262,8 @@ msgstr ""
 #. module: rental_base
 #: code:addons/rental_base/models/sale.py:284
 #, python-format
-msgid "Incoming shipment is in state %s. You cannot change the end date anymore."
+msgid ""
+"Incoming shipment is in state %s. You cannot change the end date anymore."
 msgstr ""
 
 #. module: rental_base
@@ -297,7 +308,8 @@ msgstr ""
 #. module: rental_base
 #: code:addons/rental_base/models/sale.py:130
 #, python-format
-msgid "Missing \"Rental to Extend\" on the sale order line with rental service %s."
+msgid ""
+"Missing \"Rental to Extend\" on the sale order line with rental service %s."
 msgstr ""
 
 #. module: rental_base
@@ -318,25 +330,35 @@ msgstr "Pedido Normal"
 #. module: rental_base
 #: code:addons/rental_base/models/sale.py:154
 #, python-format
-msgid "On the \"new rental\" sale order line with product \"%s\", we should have a rental service product!"
+msgid ""
+"On the \"new rental\" sale order line with product \"%s\", we should have a "
+"rental service product!"
 msgstr ""
 
 #. module: rental_base
 #: code:addons/rental_base/models/sale.py:163
 #, python-format
-msgid "On the sale order line with product %s you are trying to sell a rented product with a quantity (%s) that is different from the rented quantity (%s). This is not supported."
+msgid ""
+"On the sale order line with product %s you are trying to sell a rented "
+"product with a quantity (%s) that is different from the rented quantity "
+"(%s). This is not supported."
 msgstr ""
 
 #. module: rental_base
 #: code:addons/rental_base/models/sale.py:139
 #, python-format
-msgid "On the sale order line with rental service %s, you are trying to extend a rental with a rental quantity (%s) that is different from the quantity of the original rental (%s). This is not supported."
+msgid ""
+"On the sale order line with rental service %s, you are trying to extend a "
+"rental with a rental quantity (%s) that is different from the quantity of "
+"the original rental (%s). This is not supported."
 msgstr ""
 
 #. module: rental_base
 #: model_terms:ir.actions.act_window,help:rental_base.action_rental_orders
 #: model_terms:ir.actions.act_window,help:rental_base.action_rental_quotations
-msgid "Once the quotation is confirmed, it becomes a sales order.<br> You will be able to create an invoice and collect the payment."
+msgid ""
+"Once the quotation is confirmed, it becomes a sales order.<br> You will be "
+"able to create an invoice and collect the payment."
 msgstr ""
 
 #. module: rental_base
@@ -380,7 +402,8 @@ msgstr "Entregas de Saída"
 #. module: rental_base
 #: code:addons/rental_base/models/sale.py:267
 #, python-format
-msgid "Outgoing shipment is in state %s. You cannot change the start date anymore."
+msgid ""
+"Outgoing shipment is in state %s. You cannot change the start date anymore."
 msgstr ""
 
 #. module: rental_base
@@ -571,13 +594,17 @@ msgstr "Assistente para atualizar datas das linhas do pedido de vendas"
 #. module: rental_base
 #: code:addons/rental_base/models/sale.py:336
 #, python-format
-msgid "You are not allowed to change the 'end date' in an order line of a confirmed order."
+msgid ""
+"You are not allowed to change the 'end date' in an order line of a confirmed "
+"order."
 msgstr ""
 
 #. module: rental_base
 #: code:addons/rental_base/models/sale.py:319
 #, python-format
-msgid "You are not allowed to change the 'start date' in an order line of a confirmed order."
+msgid ""
+"You are not allowed to change the 'start date' in an order line of a "
+"confirmed order."
 msgstr ""
 
 #. module: rental_base
