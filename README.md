@@ -25,6 +25,7 @@ addon | version | maintainers | summary
 [rental_pricelist](rental_pricelist/) | 12.0.1.0.2 |  | Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").
 [rental_pricelist_interval](rental_pricelist_interval/) | 12.0.1.0.4 |  | Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").
 [rental_product_pack](rental_product_pack/) | 12.0.1.0.1 |  | Manage rentals with product packs
+[rental_timeline](rental_timeline/) | 12.0.1.0.0 |  | Timeline view for rental orders and rental products
 
 [//]: # (end addons)
 

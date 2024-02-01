@@ -14,6 +14,7 @@ setuptools.setup(
         'odoo12-addon-rental_pricelist',
         'odoo12-addon-rental_pricelist_interval',
         'odoo12-addon-rental_product_pack',
+        'odoo12-addon-rental_timeline',
     ],
     classifiers=[
         'Programming Language :: Python',
