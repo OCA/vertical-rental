@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
 
         <record id="res_config_settings_view_form" model="ir.ui.view">
             <field name="model">res.config.settings</field>
@@ -56,5 +55,4 @@
             <field name="context">{'module' : 'rental_base'}</field>
         </record>
 
-    </data>
 </odoo>
