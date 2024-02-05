@@ -28,24 +28,24 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
 msgid ""
 "<strong colspan=\"2\" attrs=\"{'invisible': [('product_rental_day_id', '=', False)]}\">\n"
-"                                    Bulk Prices\n"
-"                                </strong>"
+"                                Bulk Prices\n"
+"                            </strong>"
 msgstr ""
 
 #. module: rental_pricelist
 #: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
 msgid ""
 "<strong colspan=\"2\" attrs=\"{'invisible': [('product_rental_hour_id', '=', False)]}\">\n"
-"                                    Bulk Prices\n"
-"                                </strong>"
+"                                Bulk Prices\n"
+"                            </strong>"
 msgstr ""
 
 #. module: rental_pricelist
 #: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
 msgid ""
 "<strong colspan=\"2\" attrs=\"{'invisible': [('product_rental_month_id', '=', False)]}\">\n"
-"                                    Bulk Prices\n"
-"                                </strong>"
+"                                Bulk Prices\n"
+"                            </strong>"
 msgstr ""
 
 #. module: rental_pricelist
@@ -343,11 +343,6 @@ msgstr ""
 #: model:ir.model.fields,help:rental_pricelist.field_product_product__rental_price_hour
 #: model:ir.model.fields,help:rental_pricelist.field_product_product__rental_price_month
 msgid "Price at which the product is sold to customers."
-msgstr ""
-
-#. module: rental_pricelist
-#: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
-msgid "Pricelist Items"
 msgstr ""
 
 #. module: rental_pricelist
