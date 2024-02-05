@@ -545,6 +545,11 @@ msgid "Vendors"
 msgstr ""
 
 #. module: rental_base
+#: model:uom.uom,name:rental_base.product_uom_week
+msgid "Week(s)"
+msgstr ""
+
+#. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__wizard_id
 msgid "Wizard"
 msgstr ""
