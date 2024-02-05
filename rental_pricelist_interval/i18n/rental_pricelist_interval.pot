@@ -155,11 +155,6 @@ msgid "Pricelist"
 msgstr ""
 
 #. module: rental_pricelist_interval
-#: model_terms:ir.ui.view,arch_db:rental_pricelist_interval.product_normal_form_view
-msgid "Pricelist Items"
-msgstr ""
-
-#. module: rental_pricelist_interval
 #: model:ir.model,name:rental_pricelist_interval.model_product_pricelist_item
 msgid "Pricelist Rule"
 msgstr ""
