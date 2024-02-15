@@ -12,31 +12,23 @@ class UpdateSaleLineDateLine(models.TransientModel):
         required=True,
     )
 
-    sequence = fields.Integer(
-        string="Sequence",
-    )
+    sequence = fields.Integer()
 
     order_line_id = fields.Many2one(
         comodel_name="sale.order.line",
         required=True,
     )
 
-    date_start = fields.Date(
-        string="Date Start",
-    )
+    date_start = fields.Date()
 
-    date_end = fields.Date(
-        string="Date End",
-    )
+    date_end = fields.Date()
 
     product_id = fields.Many2one(
         comodel_name="product.product",
         string="Product",
     )
 
-    change = fields.Boolean(
-        string="Change",
-    )
+    change = fields.Boolean()
 
 
 class UpdateSaleLineDate(models.TransientModel):
@@ -44,12 +36,10 @@ class UpdateSaleLineDate(models.TransientModel):
     _description = "Wizard for updating sale order line dates"
 
     date_start = fields.Date(
-        string="Date Start",
         required=True,
     )
 
     date_end = fields.Date(
-        string="Date End",
         required=True,
     )
 
@@ -153,22 +143,26 @@ class UpdateSaleLineDate(models.TransientModel):
         if self.all_line:
             if self.date_in_line:
                 for line in self.line_ids:
-                    message_body += _("<li>%s: %s - %s -> %s - %s</li>") % (
-                        line.order_line_id.product_id.name,
-                        line.order_line_id.start_date,
-                        line.order_line_id.end_date,
-                        line.date_start,
-                        line.date_end,
+                    message_body += _(
+                        """<li>%(name)s: %(start_date)s - %(end_date)s
+                            -> %(date_start)s - %(date_end)s</li>""",
+                        name=line.order_line_id.product_id.name,
+                        start_date=line.order_line_id.start_date,
+                        end_date=line.order_line_id.end_date,
+                        date_start=line.date_start,
+                        date_end=line.date_end,
                     )
                     line.order_line_id.update_start_end_date(
                         line.date_start, line.date_end
                     )
             else:
-                message_body += _("<li>(All lines): %s - %s -> %s - %s</li>") % (
-                    self.order_id.default_start_date,
-                    self.order_id.default_end_date,
-                    self.date_start,
-                    self.date_end,
+                message_body += _(
+                    """<li>(All lines): %(start_date)s - %(default_end_date)s
+                        -> %(date_start)s - %(date_end)s</li>""",
+                    start_date=self.order_id.default_start_date,
+                    default_end_date=self.order_id.default_end_date,
+                    date_start=self.date_start,
+                    date_end=self.date_end,
                 )
                 self.order_id.order_line.filtered(
                     lambda x: x.start_date and x.end_date
@@ -181,24 +175,28 @@ class UpdateSaleLineDate(models.TransientModel):
             if self.date_in_line:
                 for line in self.line_ids:
                     if self.from_line <= line.sequence <= self.to_line:
-                        message_body += _("<li>%s: %s - %s -> %s - %s</li>") % (
-                            line.order_line_id.product_id.name,
-                            line.order_line_id.start_date,
-                            line.order_line_id.end_date,
-                            line.date_start,
-                            line.date_end,
+                        message_body += _(
+                            """<li>%(name)s: %(start_date)s - %(end_date)s
+                                -> %(date_start)s - %(date_end)s</li>""",
+                            name=line.order_line_id.product_id.name,
+                            start_date=line.order_line_id.start_date,
+                            end_date=line.order_line_id.end_date,
+                            date_start=line.date_start,
+                            date_end=line.date_end,
                         )
                         line.order_line_id.update_start_end_date(
                             line.date_start, line.date_end
                         )
             else:
-                message_body += _("<li>(Lines: %s - %s): %s - %s -> %s - %s</li>") % (
-                    self.from_line,
-                    self.to_line,
-                    self.order_id.default_start_date,
-                    self.order_id.default_end_date,
-                    self.date_start,
-                    self.date_end,
+                message_body += _(
+                    """<li>(Lines: %(from_line)s - %(to_line)s): %(default_start_date)s -
+                    %(default_end_date)s -> %(date_start)s - %(date_end)s</li>""",
+                    from_line=self.from_line,
+                    to_line=self.to_line,
+                    default_start_date=self.order_id.default_start_date,
+                    default_end_date=self.order_id.default_end_date,
+                    date_start=self.date_start,
+                    date_end=self.date_end,
                 )
                 for line in self.line_ids:
                     if self.from_line <= line.sequence <= self.to_line:
