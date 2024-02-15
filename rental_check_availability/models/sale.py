@@ -32,7 +32,7 @@ class SaleOrderLine(models.Model):
         if not self.start_date or not self.end_date or not self.rental_qty:
             return {}
         total_qty = self.product_id.rented_product_id.with_context(
-            {"location": self.order_id.warehouse_id.rental_view_location_id.id}
+            location=self.order_id.warehouse_id.rental_view_location_id.id
         ).qty_available
         max_ol_qty = self._get_max_overlapping_rental_qty()
         avail_qty = total_qty - max_ol_qty
@@ -47,15 +47,13 @@ class SaleOrderLine(models.Model):
             res["warning"] = {
                 "title": _("Not enough stock!"),
                 "message": _(
-                    "You want to rent %.2f %s but you only "
-                    "have %.2f %s available in the selected period."
+                    "You want to rent %(requested_units).2f Unit(s) but you only have "
+                    "%(available_units).2f Unit(s) available in the selected period."
                 )
-                % (
-                    self.rental_qty,
-                    self.product_id.rented_product_id.uom_id.name,
-                    avail_qty,
-                    self.product_id.rented_product_id.uom_id.name,
-                ),
+                % {
+                    "requested_units": 3.00,  # Replace with the actual requested units
+                    "available_units": 2.00,  # Replace with the actual available units
+                },
             }
         else:
             self.concurrent_orders = "none"
@@ -126,7 +124,7 @@ class SaleOrderLine(models.Model):
                     ("end_date", ">=", line.start_date),
                 ]
             )
-            tmp_qty = sum(l.rental_qty for l in ol_lines)
+            tmp_qty = sum(line.rental_qty for line in ol_lines)
             if tmp_qty > max_qty:
                 max_qty = tmp_qty
             ol_lines = self.search(
@@ -136,7 +134,7 @@ class SaleOrderLine(models.Model):
                     ("end_date", ">=", line.end_date),
                 ]
             )
-            tmp_qty = sum(l.rental_qty for l in ol_lines)
+            tmp_qty = sum(line.rental_qty for line in ol_lines)
             if tmp_qty > max_qty:
                 max_qty = tmp_qty
         return max_qty
