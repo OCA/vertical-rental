@@ -22,6 +22,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [rental_base](rental_base/) | 14.0.1.0.1 |  | Manage Rental of Products
+[rental_check_availability](rental_check_availability/) | 14.0.1.0.0 |  | Extends the sale_rental module for checking availabilityof the rented product.
 [rental_offday](rental_offday/) | 14.0.1.0.0 |  | Manage off-days in rentals on daily basis
 [rental_pricelist](rental_pricelist/) | 14.0.1.0.2 |  | Enables the user to define different rental prices with time uom (Month, Day and Hour).
 [rental_pricelist_interval](rental_pricelist_interval/) | 14.0.1.0.0 |  | Enables the user to define different rental prices time uom (Month, Day and Hour).
