@@ -68,7 +68,7 @@ class TestRentalCheckAvailability(RentalStockCommon):
         return rental_order
 
     def test_00_check_availability(self):
-        # Rental Orders
+        # Rental Orders Info
         # RO 1  (qty: 2)    today -------- 10 (none)
         # RO 2  (qty: 2)                                 20 ----------- 30 (none)
         # RO 3  (qty: 3)                                           27 - 30 (quotation)

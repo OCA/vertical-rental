@@ -5,7 +5,6 @@ from odoo import _, api, exceptions, fields, models
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    @api.multi
     def action_check_rental_availability(self):
         for order in self:
             for line in order.order_line:
@@ -24,8 +23,7 @@ class SaleOrderLine(models.Model):
         default="none",
     )
 
-    # (override) _check_rental_availability in module rental_pricelist
-    @api.multi
+    # (override) from module rental_pricelist
     def _check_rental_availability(self):
         self.ensure_one()
         res = {}
@@ -59,6 +57,7 @@ class SaleOrderLine(models.Model):
             self.concurrent_orders = "none"
         return res
 
+    # (override) from module rental_pricelist
     @api.onchange("start_date", "end_date", "product_uom")
     def onchange_start_end_date(self):
         res = {}
@@ -68,7 +67,6 @@ class SaleOrderLine(models.Model):
             res = self._check_rental_availability()
         return res
 
-    @api.multi
     def _get_concurrent_order_lines(self):
         self.ensure_one()
         domain = []
@@ -88,7 +86,6 @@ class SaleOrderLine(models.Model):
         res = self.search(domain)
         return res
 
-    @api.multi
     def _get_concurrent_orders(self):
         self.ensure_one()
         sols = self._get_concurrent_order_lines()
@@ -101,7 +98,6 @@ class SaleOrderLine(models.Model):
             "sale_order_ids": quotations.ids + orders.ids,
         }
 
-    @api.multi
     def action_view_concurrent_orders(self):
         self.ensure_one()
         record_ids = self._get_concurrent_orders()["sale_order_ids"]
@@ -111,7 +107,6 @@ class SaleOrderLine(models.Model):
             return action
         raise exceptions.UserError(_("No found concurrent Rental Order/Quotation(s)."))
 
-    @api.multi
     def _get_max_overlapping_rental_qty(self):
         self.ensure_one()
         lines = self._get_concurrent_order_lines()
