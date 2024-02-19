@@ -211,7 +211,11 @@ class ProductProduct(models.Model):
         uom = self._get_rental_service_uom(rental_type)
         values = {
             "hw_product_id": product.id,
-            "name": _("Rental of %s (%s)") % (product.name, uom.name),
+            "name": _(
+                "Rental of %(product_name)s (%(uom_name)s)",
+                product_name=product.name,
+                uom_name=uom.name,
+            ),
             "categ_id": product.categ_id.id,
             "copy_image": True,
             "default_code": "RENT-%s-%s" % (rental_type.upper(), product.default_code),

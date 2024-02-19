@@ -34,3 +34,4 @@ class ProductPricelistItem(models.Model):
                 self.day_item_id = self.product_id.rented_product_id.id
             if self.product_id.uom_id.id == uom_hour.id:
                 self.hour_item_id = self.product_id.rented_product_id.id
+        return

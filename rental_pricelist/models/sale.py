@@ -122,19 +122,17 @@ class SaleOrderLine(models.Model):
             res["warning"] = {
                 "title": _("Not enough stock!"),
                 "message": _(
-                    "You want to rent %.2f %s but you only "
-                    "have %.2f %s currently available on the "
-                    'stock location "%s"! Make sure that you '
+                    "You want to rent %(rental_qty).2f %(uom_name)s but you only "
+                    "have %(in_qty).2f %(uom_name)s currently available on the "
+                    'stock location "%(in_name)s"! Make sure that you '
                     "get some units back in the meantime or "
-                    're-supply the stock location "%s".'
-                )
-                % (
-                    self.rental_qty,
-                    self.product_id.rented_product_id.uom_id.name,
-                    in_location_available_qty,
-                    self.product_id.rented_product_id.uom_id.name,
-                    rental_in_location.name,
-                    rental_in_location.name,
+                    're-supply the stock location "%(in_name)s".',
+                    rental_qty=self.rental_qty,
+                    uom_name=self.product_id.rented_product_id.uom_id.name,
+                    in_qty=in_location_available_qty,
+                    uom_name=self.product_id.rented_product_id.uom_id.name,
+                    in_name=rental_in_location.name,
+                    in_name=rental_in_location.name,
                 ),
             }
         return res
@@ -196,15 +194,14 @@ class SaleOrderLine(models.Model):
                 if line.rental_qty != line.extension_rental_id.rental_qty:
                     raise ValidationError(
                         _(
-                            "On the sale order line with rental service %s, "
+                            "On the sale order line with rental service %(name)s, "
                             "you are trying to extend a rental with a rental "
-                            "quantity (%s) that is different from the quantity "
-                            "of the original rental (%s). This is not supported."
-                        )
-                        % (
-                            line.product_id.name,
-                            line.rental_qty,
-                            line.extension_rental_id.rental_qty,
+                            "quantity (%(rental_qty)s) that is different from the quantity "
+                            "of the original rental (%(ext_rental_qty)s)."
+                            "This is not supported.",
+                            name=line.product_id.name,
+                            rental_qty=line.rental_qty,
+                            ext_rental_qty=line.extension_rental_id.rental_qty,
                         )
                     )
             if line.rental_type in ("new_rental", "rental_extension"):
@@ -220,15 +217,13 @@ class SaleOrderLine(models.Model):
                 if line.product_uom_qty != line.sell_rental_id.rental_qty:
                     raise ValidationError(
                         _(
-                            "On the sale order line with product %s "
+                            "On the sale order line with product %(name)s "
                             "you are trying to sell a rented product with a "
-                            "quantity (%s) that is different from the rented "
-                            "quantity (%s). This is not supported."
-                        )
-                        % (
-                            line.product_id.name,
-                            line.product_uom_qty,
-                            line.sell_rental_id.rental_qty,
+                            "quantity (%(uom_qty)s) that is different from the rented "
+                            "quantity (%(rental_qty)s). This is not supported.",
+                            name=line.product_id.name,
+                            uom_qty=line.product_uom_qty,
+                            rental_qty=line.sell_rental_id.rental_qty,
                         )
                     )
 

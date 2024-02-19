@@ -137,7 +137,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.rental_order = (
             self.env["sale.order"]
             .with_context(
-                {
+                **{
                     "default_type_id": self.rental_sale_type.id,
                 }
             )
@@ -229,7 +229,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
+                **{
                     "type_id": self.rental_sale_type.id,
                 }
             )
@@ -289,7 +289,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
+                **{
                     "type_id": self.rental_sale_type.id,
                 }
             )
@@ -439,7 +439,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
+                **{
                     "type_id": self.rental_sale_type.id,
                 }
             )
@@ -486,7 +486,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
+                **{
                     "type_id": self.rental_sale_type.id,
                 }
             )
@@ -579,7 +579,7 @@ class TestRentalPricelist(RentalStockCommon):
         rental_order = (
             self.env["sale.order"]
             .with_context(
-                {
+                **{
                     "default_type_id": self.rental_sale_type.id,
                 }
             )
@@ -593,7 +593,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
+                **{
                     "type_id": self.rental_sale_type.id,
                 }
             )
