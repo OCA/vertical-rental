@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">rental_pricelist.view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="rental_base.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='order_line']//field[@name='product_id']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']//tree//field[@name='product_id']"
+                position="before"
+            >
+                <field
+                    name="display_product_id"
+                    attrs="{'required': [('display_type', '=', False)]}"
+                    context="{'type_id': parent.type_id}"
+                />
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']//tree//field[@name='product_id']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_id']" position="before">
+                <field
+                    name="display_product_id"
+                    attrs="{'required': [('display_type', '=', False)]}"
+                    context="{'type_id': parent.type_id}"
+                />
+                <field name="rental_ok" invisible="1" />
+            </xpath>
+            <xpath expr="//group[@id='rental_settings']" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'invisible': [('rental_ok', '=', False)]}</attribute>
+            </xpath>
+            <xpath
+                expr="//group[@id='rental_settings']//field[@name='rental']"
+                position="attributes"
+            >
+                <attribute name="context">{'type_id': parent.type_id}</attribute>
+            </xpath>
+            <xpath
+                expr="//group[@id='rental_times']//field[@name='number_of_days']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//group[@id='rental_times']//label[@for='product_uom_qty']"
+                position="before"
+            >
+                <label for="number_of_time_unit" string="Time" />
+                <div>
+                    <field name="number_of_time_unit" required="1" class="oe_inline" />
+                    <span>&amp;nbsp;</span>
+                    <field
+                        name="product_uom"
+                        force_save="1"
+                        groups="uom.group_uom"
+                        class="oe_inline oe_no_button"
+                        attrs="{'readonly': 1}"
+                    />
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sales_order_filter" model="ir.ui.view">
+        <field name="name">view.sales.order.filter</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute
+                    name="filter_domain"
+                >['|', ('order_line.product_id', 'ilike', self), ('order_line.display_product_id', 'ilike', self)]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

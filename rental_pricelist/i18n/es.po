@@ -1,0 +1,568 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* rental_pricelist
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-01-04 11:53+0000\n"
+"PO-Revision-Date: 2022-01-04 11:53+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_order_form
+msgid "<span>&amp;nbsp;</span>"
+msgstr "<span>&amp;nbsp;</span>"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_company_rental_service_form
+msgid ""
+"<span>Configure the name and default code of your rental services.</span>"
+msgstr ""
+"<span>Configura el nombre y el código por defecto de tus servicios de "
+"alquiler.</span>"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
+msgid ""
+"<strong colspan=\"2\" attrs=\"{'invisible': [('product_rental_day_id', '=', "
+"False)]}\">\n"
+"                                    Bulk Prices\n"
+"                                </strong>"
+msgstr ""
+"<strong colspan=\"2\" attrs=\"{'invisible': [('product_rental_day_id', '=', "
+"False)]}\">\n"
+"                                    Precios a granel\n"
+"                                </strong>"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
+msgid ""
+"<strong colspan=\"2\" attrs=\"{'invisible': [('product_rental_hour_id', '=', "
+"False)]}\">\n"
+"                                    Bulk Prices\n"
+"                                </strong>"
+msgstr ""
+"<strong colspan=\"2\" attrs=\"{'invisible': [('product_rental_hour_id', '=', "
+"False)]}\">\n"
+"                                    Precios a granel\n"
+"                                </strong>"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
+msgid ""
+"<strong colspan=\"2\" attrs=\"{'invisible': [('product_rental_month_id', "
+"'=', False)]}\">\n"
+"                                    Bulk Prices\n"
+"                                </strong>"
+msgstr ""
+"<strong colspan=\"2\" attrs=\"{'invisible': [('product_rental_month_id', "
+"'=', False)]}\">\n"
+"                                    Precios a granel\n"
+"                                </strong>"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_sale_order_line__rental_ok
+msgid "Can be rented"
+msgstr "Puede ser alquilado"
+
+#. module: rental_pricelist
+#: model:ir.model,name:rental_pricelist.model_res_company
+msgid "Companies"
+msgstr "Compañias"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
+msgid "Daily Basis"
+msgstr "Base diaria"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_company_rental_service_form
+msgid "Daily Rentals"
+msgstr "Alquileres diarios"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__day_scale_pricelist_item_ids
+msgid "Day Scale Pricelist Items"
+msgstr "Artículos de lista de precios de escala de día"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__def_pricelist_id
+msgid "Default Pricelist"
+msgstr "Lista de precios por defecto"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_default_code_prefix_day
+msgid ""
+"Define the default code of the daily rental service by setting a prefix "
+"code. The entire default code is built by adding the prefix code, the "
+"product's default code and the suffix code."
+msgstr ""
+"Defina el código predeterminado del servicio de alquiler diario configurando "
+"un código de prefijo. Todo el código predeterminado se construye agregando "
+"el código de prefijo, el código predeterminado del producto y el código de "
+"sufijo."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_default_code_suffix_day
+msgid ""
+"Define the default code of the daily rental service by setting a suffix "
+"code. The entire default code is built by adding the prefix code, the "
+"product's default code and the suffix code."
+msgstr ""
+"Defina el código predeterminado del servicio de alquiler diario configurando "
+"un código de sufijo. Todo el código predeterminado se construye agregando el "
+"código de prefijo, el código predeterminado del producto y el código de "
+"sufijo."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_default_code_prefix_hour
+msgid ""
+"Define the default code of the hourly rental service by setting a prefix "
+"code. The entire default code is built by adding the prefix code, the "
+"product's default code and the suffix code."
+msgstr ""
+"Defina el código predeterminado del servicio de alquiler por horas "
+"configurando un código de prefijo. Todo el código predeterminado se "
+"construye agregando el código de prefijo, el código predeterminado del "
+"producto y el código de sufijo."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_default_code_suffix_hour
+msgid ""
+"Define the default code of the hourly rental service by setting a suffix "
+"code. The entire default code is built by adding the prefix code, the "
+"product's default code and the suffix code."
+msgstr ""
+"Defina el código predeterminado del servicio de alquiler por horas "
+"configurando un código de sufijo. Todo el código predeterminado se construye "
+"agregando el código de prefijo, el código predeterminado del producto y el "
+"código de sufijo."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_default_code_prefix_month
+msgid ""
+"Define the default code of the monthly rental service by setting a prefix "
+"code. The entire default code is built by adding the prefix code, the "
+"product's default code and the suffix code."
+msgstr ""
+"Defina el código predeterminado del servicio de alquiler mensual "
+"configurando un código de prefijo. Todo el código predeterminado se "
+"construye agregando el código de prefijo, el código predeterminado del "
+"producto y el código de sufijo."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_default_code_suffix_month
+msgid ""
+"Define the default code of the monthly rental service by setting a suffix "
+"code. The entire default code is built by adding the prefix code, the "
+"product's default code and the suffix code."
+msgstr ""
+"Defina el código predeterminado del servicio de alquiler mensual "
+"configurando un código de sufijo. Todo el código predeterminado se construye "
+"agregando el código de prefijo, el código predeterminado del producto y el "
+"código de sufijo."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_name_prefix_day
+msgid ""
+"Define the name of the daily rental service by setting a prefix. The entire "
+"name is built by adding the prefix, the product's name and the suffix."
+msgstr ""
+"Defina el nombre del servicio de alquiler diario estableciendo un prefijo. "
+"El nombre completo se construye agregando el prefijo, el nombre del producto "
+"y el sufijo."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_name_suffix_day
+msgid ""
+"Define the name of the daily rental service by setting a suffix. The entire "
+"name is built by adding the prefix, the product's name and the suffix."
+msgstr ""
+"Defina el nombre del servicio de alquiler diario estableciendo un sufijo. El "
+"nombre completo se construye agregando el prefijo, el nombre del producto y "
+"el sufijo."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_name_prefix_hour
+msgid ""
+"Define the name of the hourly rental service by setting a prefix. The entire "
+"name is built by adding the prefix, the product's name and the suffix."
+msgstr ""
+"Defina el nombre del servicio de alquiler por horas estableciendo un "
+"prefijo. El nombre completo se construye agregando el prefijo, el nombre del "
+"producto y el sufijo."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_name_suffix_hour
+msgid ""
+"Define the name of the hourly rental service by setting a suffix. The entire "
+"name is built by adding the prefix, the product's name and the suffix."
+msgstr ""
+"Defina el nombre del servicio de alquiler por horas estableciendo un sufijo. "
+"El nombre completo se construye agregando el prefijo, el nombre del producto "
+"y el sufijo."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_name_prefix_month
+msgid ""
+"Define the name of the monthly rental service by setting a prefix. The "
+"entire name is built by adding the prefix, the product's name and the suffix."
+msgstr ""
+"Defina el nombre del servicio de alquiler mensual estableciendo un prefijo. "
+"El nombre completo se construye agregando el prefijo, el nombre del producto "
+"y el sufijo."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_name_suffix_month
+msgid ""
+"Define the name of the monthly rental service by setting a suffix. The "
+"entire name is built by adding the prefix, the product's name and the suffix."
+msgstr ""
+"Defina el nombre del servicio de alquiler mensual estableciendo un sufijo. "
+"El nombre completo se construye agregando el prefijo, el nombre del producto "
+"y el sufijo."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_pricelist_item__display_name
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__display_name
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__display_name
+#: model:ir.model.fields,field_description:rental_pricelist.field_sale_order__display_name
+#: model:ir.model.fields,field_description:rental_pricelist.field_sale_order_line__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__hour_scale_pricelist_item_ids
+msgid "Hour Scale Pricelist Items"
+msgstr "Artículos de lista de precios en escala de horas"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
+msgid "Hourly Basis"
+msgstr "En base horaria"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_company_rental_service_form
+msgid "Hourly Rentals"
+msgstr "Alquileres por horas"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_pricelist_item__id
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__id
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__id
+#: model:ir.model.fields,field_description:rental_pricelist.field_sale_order__id
+#: model:ir.model.fields,field_description:rental_pricelist.field_sale_order_line__id
+msgid "ID"
+msgstr "ID"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_pricelist_item____last_update
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product____last_update
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company____last_update
+#: model:ir.model.fields,field_description:rental_pricelist.field_sale_order____last_update
+#: model:ir.model.fields,field_description:rental_pricelist.field_sale_order_line____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: rental_pricelist
+#: code:addons/rental_pricelist/models/sale.py:0
+#, python-format
+msgid ""
+"Missing \"Rental to Extend\" on the sale order line with rental service %s."
+msgstr ""
+"Falta \"Alquiler a ampliar\" en la línea del pedido de venta con el servicio "
+"de alquiler %s."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__month_scale_pricelist_item_ids
+msgid "Month Scale Pricelist Items"
+msgstr "Artículos de lista de precios de escala mensual"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
+msgid "Monthly Basis"
+msgstr "Base mensual"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_company_rental_service_form
+msgid "Monthly Rentals"
+msgstr "Alquileres mensuales"
+
+#. module: rental_pricelist
+#: code:addons/rental_pricelist/models/product.py:0
+#, python-format
+msgid "No expected rental type (rental unit of measure) is found."
+msgstr ""
+"No se encuentra ningún tipo de alquiler esperado (unidad de medida de "
+"alquiler)."
+
+#. module: rental_pricelist
+#: code:addons/rental_pricelist/models/sale.py:0
+#, python-format
+msgid "Not enough stock!"
+msgstr "¡No hay suficiente inventario!"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_sale_order_line__number_of_time_unit
+msgid "Number of TU"
+msgstr "Número de unidades tiempo"
+
+#. module: rental_pricelist
+#: code:addons/rental_pricelist/models/sale.py:0
+#, python-format
+msgid ""
+"On the \"new rental\" sale order line with product \"%s\", we should have a "
+"rental service product!"
+msgstr ""
+"En la línea de pedido \"nuevo alquiler\" en el producto \"%s\", ¡deberíamos "
+"de tener un producto de servicio de alquiler!"
+
+#. module: rental_pricelist
+#: code:addons/rental_pricelist/models/sale.py:0
+#, python-format
+msgid ""
+"On the sale order line with product %s you are trying to sell a rented "
+"product with a quantity (%s) that is different from the rented quantity "
+"(%s). This is not supported."
+msgstr ""
+"En la linea de pedido con el producto %s estás intentando vender un producto "
+"alquilado con una cantidad (%s) que es diferente de la cantidad alquilada "
+"(%s). Esto no está soportado."
+
+#. module: rental_pricelist
+#: code:addons/rental_pricelist/models/sale.py:0
+#, python-format
+msgid ""
+"On the sale order line with rental service %s, you are trying to extend a "
+"rental with a rental quantity (%s) that is different from the quantity of "
+"the original rental (%s). This is not supported."
+msgstr ""
+"En la línea de pedido con el servicio de alquiler %s, estás intentando "
+"extender un alquiler con una cantidad (%s) que es diferente de la cantidad "
+"del alquiler original (%s). Esto no está soportado."
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_company_rental_service_form
+msgid "Prefix"
+msgstr "Prefijo"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_company_rental_service_form
+msgid "Prefix Code"
+msgstr "Código prefijo"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_default_code_prefix_day
+msgid "Prefix of Rental Service Internal Reference (Day)"
+msgstr "Prefijo de Referencia Interna del Servicio de alquiler (Día)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_default_code_prefix_hour
+msgid "Prefix of Rental Service Internal Reference (Hour)"
+msgstr "Prefijo de Referencia Interna del Servicio de alquiler (Hora)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_default_code_prefix_month
+msgid "Prefix of Rental Service Internal Reference (Month)"
+msgstr "Prefijo de Referencia Interna del Servicio de alquiler (Mensual)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_name_prefix_day
+msgid "Prefix of Rental Service Name (Day)"
+msgstr "Prefijo del nombre del servicio de alquiler (Día)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_name_prefix_hour
+msgid "Prefix of Rental Service Name (Hour)"
+msgstr "Nombre del servicioPrefijo del nombre del servicio de alquiler (Hora)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_name_prefix_month
+msgid "Prefix of Rental Service Name (Month)"
+msgstr "Prefijo del nombre del servicio de alquiler (Mes)"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
+msgid "Price"
+msgstr "Precio:"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__rental_price_day
+msgid "Price / Day"
+msgstr "Precio por día"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__rental_price_hour
+msgid "Price / Hour"
+msgstr "Precio por hora"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__rental_price_month
+msgid "Price / Month"
+msgstr "Precio por mes"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_product_product__rental_price_day
+#: model:ir.model.fields,help:rental_pricelist.field_product_product__rental_price_hour
+#: model:ir.model.fields,help:rental_pricelist.field_product_product__rental_price_month
+msgid "Price at which the product is sold to customers."
+msgstr "Precio al cual el producto es vendido."
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
+msgid "Pricelist Items"
+msgstr "Artículos de la lista de precios"
+
+#. module: rental_pricelist
+#: model:ir.model,name:rental_pricelist.model_product_pricelist_item
+msgid "Pricelist Rule"
+msgstr "Reglas de la lista de precios"
+
+#. module: rental_pricelist
+#: model:ir.model,name:rental_pricelist.model_product_product
+#: model:ir.model.fields,field_description:rental_pricelist.field_sale_order_line__display_product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
+msgid "Rental Price"
+msgstr "Precio de alquiler"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_pricelist_item__day_item_id
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__product_rental_day_id
+msgid "Rental Service (Day)"
+msgstr "Servicio de alquiler (días)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_pricelist_item__hour_item_id
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__product_rental_hour_id
+msgid "Rental Service (Hour)"
+msgstr "Servicio de alquiler (horas)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_pricelist_item__month_item_id
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__product_rental_month_id
+msgid "Rental Service (Month)"
+msgstr "Servicio de alquiler (meses)"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_company_rental_service_form
+msgid "Rental Services"
+msgstr "Servicios de alquiler"
+
+#. module: rental_pricelist
+#: code:addons/rental_pricelist/models/product.py:0
+#, python-format
+msgid "Rental of %s (%s)"
+msgstr "Alquiler de %s (%s)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__rental_of_day
+msgid "Rented in days"
+msgstr "Alquilado por días"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__rental_of_hour
+msgid "Rented in hours"
+msgstr "Alquilado por horas"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__rental_of_month
+msgid "Rented in months"
+msgstr "Alquilado por meses"
+
+#. module: rental_pricelist
+#: model:ir.model,name:rental_pricelist.model_sale_order
+msgid "Sales Order"
+msgstr "Ordenes de venta"
+
+#. module: rental_pricelist
+#: model:ir.model,name:rental_pricelist.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea de pedidos de venta"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_company_rental_service_form
+msgid "Suffix"
+msgstr "Sufijo"
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_company_rental_service_form
+msgid "Suffix Code"
+msgstr "Código de sufijo"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_default_code_suffix_day
+msgid "Suffix of Rental Service Internal Reference (Day)"
+msgstr "Suffix of Rental Service Internal Reference (Day)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_default_code_suffix_hour
+msgid "Suffix of Rental Service Internal Reference (Hour)"
+msgstr "Suffix of Rental Service Internal Reference (Hora)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_default_code_suffix_month
+msgid "Suffix of Rental Service Internal Reference (Month)"
+msgstr "Sufijo de Referencia Interna del Servicio de Alquiler (Mes)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_name_suffix_day
+msgid "Suffix of Rental Service Name (Day)"
+msgstr "Sufijo del Servicio de Alquiler (Día)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_name_suffix_hour
+msgid "Suffix of Rental Service Name (Hour)"
+msgstr "Sufijo del Servicio de Alquiler (Hora)"
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_name_suffix_month
+msgid "Suffix of Rental Service Name (Month)"
+msgstr "Sufijo del Servicio de Alquiler (Mes)"
+
+#. module: rental_pricelist
+#: code:addons/rental_pricelist/models/sale.py:0
+#, python-format
+msgid "The product %s is not correctly configured."
+msgstr "El producto %s no está configurado correctamente."
+
+#. module: rental_pricelist
+#: code:addons/rental_pricelist/models/product.py:0
+#, python-format
+msgid "The product has no related rental services."
+msgstr "El producto no tiene servicios de alquiler relacionados."
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_sale_order_line__number_of_time_unit
+msgid ""
+"This is the time difference given by start and end date for this order line."
+msgstr ""
+"Esta es la diferencia de tiempo entre la fecha de comienzo y la de fin para "
+"esta línea de pedido."
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_order_form
+msgid "Time"
+msgstr "Tiempo"
+
+#. module: rental_pricelist
+#: code:addons/rental_pricelist/models/sale.py:0
+#, python-format
+msgid ""
+"You want to rent %.2f %s but you only have %.2f %s currently available on "
+"the stock location \"%s\"! Make sure that you get some units back in the "
+"meantime or re-supply the stock location \"%s\"."
+msgstr ""
+"¡ Quieres alquilar %.2f %s pero sólo tienes %.2f %s ahora mismo disponibles "
+"en el almacén '%s' ! Asegurate de que recibirás alguna unidad de vuelta "
+"mientras no se cumpla el plazo o suministra el almacén '%s'."
