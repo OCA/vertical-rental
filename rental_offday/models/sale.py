@@ -128,8 +128,13 @@ class SaleOrderLine(models.Model):
             for day in self.add_offday_ids:
                 if day.date < self.start_date or day.date > self.end_date:
                     raise exceptions.UserError(
-                        _('The off-day "%s" is not between %s and %s.')
-                        % (day.date, self.start_date, self.end_date)
+                        _(
+                            """The off-day "%(date)s" is not between
+                            %(start_date)s and %(end_date)s.""",
+                            date=day.date,
+                            start_date=self.start_date,
+                            end_date=self.end_date,
+                        )
                     )
 
     # Override function in sale_rental
@@ -155,8 +160,13 @@ class SaleOrderLine(models.Model):
                     continue
                 if day.date < self.start_date or day.date > self.end_date:
                     raise exceptions.UserError(
-                        _('The off-day "%s" is not between %s and %s.')
-                        % (day.date, self.start_date, self.end_date)
+                        _(
+                            """The off-day "%(date)s" is not between
+                            %(start_date)s and %(end_date)s.""",
+                            date=day.date,
+                            start_date=self.start_date,
+                            end_date=self.end_date,
+                        )
                     )
                 if day.date in [d.date for d in self.fixed_offday_ids]:
                     raise exceptions.UserError(
