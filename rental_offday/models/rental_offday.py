@@ -24,7 +24,6 @@ class RentalOffday(models.Model):
     )
 
     date = fields.Date(
-        string="Date",
         required=True,
     )
 
