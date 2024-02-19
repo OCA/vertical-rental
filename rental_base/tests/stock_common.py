@@ -64,7 +64,7 @@ class RentalStockCommon(common.TransactionCase):
                 "location_dest_id": dst_location.id,
             }
         )
-        move.onchange_product_id()
+        move._onchange_product_id()
         move_values = move._convert_to_write(move._cache)
         move_values.update(**values)
         return Move.create(move_values)
