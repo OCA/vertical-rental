@@ -121,7 +121,12 @@ class SaleOrderLine(models.Model):
             and self.product_id.rented_product_id
             and self.product_id.rented_product_id.rental_of_interval
         ):
-            if self.rental and "domain" in res and "product_uom" in res["domain"]:
+            if (
+                self.rental
+                and res
+                and "domain" in res
+                and "product_uom" in res["domain"]
+            ):
                 del res["domain"]["product_uom"]
                 if self.display_product_id.rental:
                     uom_ids = [uom_interval.id]
