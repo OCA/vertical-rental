@@ -18,6 +18,7 @@ class ProductPricelistItem(models.Model):
         if self.product_id.rented_product_id:
             if self.product_id.uom_id.id == uom_interval.id:
                 self.interval_item_id = self.product_id.rented_product_id.id
+        return
 
 
 class ProductPricelist(models.Model):
