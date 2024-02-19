@@ -1,0 +1,233 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* rental_offday
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-01-06 09:18+0000\n"
+"PO-Revision-Date: 2022-01-06 09:18+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: rental_offday
+#: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
+msgid "<span>&amp;nbsp; to &amp;nbsp;</span>"
+msgstr "<span>&amp;nbsp; to &amp;nbsp;</span>"
+
+#. module: rental_offday
+#: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
+msgid "<span>From &amp;nbsp;</span>"
+msgstr "<span>Desde &amp;nbsp;</span>"
+
+#. module: rental_offday
+#: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
+msgid "<strong>&amp;nbsp; OK? &amp;nbsp;</strong>"
+msgstr "<strong>&amp;nbsp; OK? &amp;nbsp;</strong>"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__add_additional_offdays
+msgid "Add"
+msgstr "Añadir"
+
+#. module: rental_offday
+#: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
+msgid "Additional Off Days"
+msgstr "Días libres adicionales"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__add_offday_ids
+msgid "Additional Off-Days"
+msgstr "Días libres adicionales"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_rental_offday__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_rental_offday__create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_rental_offday__date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: rental_offday
+#: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
+msgid "Day(s)"
+msgstr "Día(s)"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_rental_offday__name
+msgid "Description"
+msgstr "Descripción"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_rental_offday__display_name
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: rental_offday
+#: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
+msgid "Fixed Off Days"
+msgstr "Días libres fijos"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__fixed_offday_ids
+msgid "Fixed Off-Days"
+msgstr "Días libres fijos"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_rental_offday__id
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__id
+msgid "ID"
+msgstr "ID"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_rental_offday____last_update
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_rental_offday__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_rental_offday__write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__offday_number
+msgid "Number of Off-Days"
+msgstr "Número de días libres"
+
+#. module: rental_offday
+#: code:addons/rental_offday/models/sale.py:0
+#, python-format
+msgid "Off days' start date must be earlier than end date."
+msgstr "La fecha de comienzo debe ser anterior a la fecha de fin."
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__fixed_offday_type
+msgid "Off-Day Type"
+msgstr "Tipo de día libre"
+
+#. module: rental_offday
+#: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
+msgid "Off-Days"
+msgstr "Días libres"
+
+#. module: rental_offday
+#: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
+msgid "Off-Time"
+msgstr "Tiempo libre"
+
+#. module: rental_offday
+#: model:ir.model,name:rental_offday.model_rental_offday
+msgid "Off-days for daily rentals"
+msgstr "Días libres para alquileres por días"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__offday_date_end
+msgid "Offday End Date"
+msgstr "Fin del día libre por defecto"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__offday_date_start
+msgid "Offday Start Date"
+msgstr "Comienzo del día libre por defecto"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_rental_offday__add_order_line_id
+msgid "Order Line (of additional off-day)"
+msgstr "Línea de pedido (de un día libre adicional)"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_rental_offday__fixed_order_line_id
+msgid "Order Line (of fixed off-day)"
+msgstr "Línea de pedido (de un día libre fijo)"
+
+#. module: rental_offday
+#: model:ir.model,name:rental_offday.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea de pedidos de venta"
+
+#. module: rental_offday
+#: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__show_offday
+msgid "Show Off-Days"
+msgstr "Mostrar días libres"
+
+#. module: rental_offday
+#: code:addons/rental_offday/models/sale.py:0
+#: code:addons/rental_offday/tests/test_rental_offday.py:0
+#, python-format
+msgid "The off-day \"%s\" is not between %s and %s."
+msgstr "El día libre \"%s\" no está entre %s y %s."
+
+#. module: rental_offday
+#: code:addons/rental_offday/models/sale.py:0
+#: code:addons/rental_offday/tests/test_rental_offday.py:0
+#, python-format
+msgid "The off-day \"%s\" was already created as fixed off-day."
+msgstr "El día libre \"%s\" ya fue creado como un día libre fijo."
+
+#. module: rental_offday
+#: code:addons/rental_offday/models/sale.py:0
+#, python-format
+msgid "The start date must be anterior to the end date."
+msgstr "La fecha de comienzo debe ser anterior a la fecha de fin."
+
+#. module: rental_offday
+#: model:ir.model.fields,help:rental_offday.field_sale_order_line__offday_number
+msgid ""
+"This is the number of days, the product is not used by the customer during "
+"the rental period.\n"
+"Fixed off-days, e.g. for the weekend, can be created automatically but you "
+"can also add manually more off-days."
+msgstr ""
+"Este es el número de días que el producto no fue usado por el cliente "
+"durante el periodo de alquiler.\n"
+"Los días libres fijos, por ejemplo para los fines de semana, pueden ser "
+"creados automáticamente pero Vd. también puede añadir manualmente más días "
+"libres."
+
+#. module: rental_offday
+#: model:ir.model.fields.selection,name:rental_offday.selection__sale_order_line__fixed_offday_type__weekend
+msgid "Weekend"
+msgstr "Fin de semana"
+
+#. module: rental_offday
+#: code:addons/rental_offday/models/sale.py:0
+#, python-format
+msgid "You cannot add an off day earlier than %s."
+msgstr "No puedes añadir un día libre antes de %s."
+
+#. module: rental_offday
+#: code:addons/rental_offday/models/sale.py:0
+#, python-format
+msgid "You cannot add an off day later than %s."
+msgstr "No puedes añadir un día libre después de %s."
+
+#. module: rental_offday
+#: code:addons/rental_offday/models/rental_offday.py:0
+#: code:addons/rental_offday/models/sale.py:0
+#, python-format
+msgid "You have already created the off-day \"%s\"."
+msgstr "Ya se ha creado el día libre \"%s\"."
+
+#. module: rental_offday
+#: model:ir.model.fields.selection,name:rental_offday.selection__sale_order_line__fixed_offday_type__none
+msgid "none"
+msgstr "ninguno"
