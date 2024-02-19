@@ -33,13 +33,9 @@ class RentalPriceIntervalRule(models.Model):
     _name = "rental.price.interval.rule"
     _description = "Rental Price Interval Rule"
 
-    name = fields.Char(
-        "Name",
-    )
+    name = fields.Char()
 
-    factor = fields.Float(
-        "Factor",
-    )
+    factor = fields.Float()
 
     min_quantity = fields.Integer(
         "Interval (days)",
