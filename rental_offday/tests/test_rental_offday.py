@@ -114,14 +114,16 @@ class TestRentalOffDay(TransactionCase):
 
         # Add additional off-day not in rental period
         date_before_start = self.date_start - timedelta(days=1)
+        # check Additional Off-Days before adding
+        self.assertEqual(len(self.sale_order_line.add_offday_ids), 0.0)
 
         with self.assertRaises(UserError) as e:
             self.sale_order_line.write(
                 {
                     "add_offday_ids": [
                         (
-                            1,
-                            self.sale_order_line.add_offday_ids[0].id,
+                            0,
+                            0,
                             {
                                 "date": date_before_start,
                                 "name": "Additional off-day before rental period.",
@@ -144,12 +146,14 @@ class TestRentalOffDay(TransactionCase):
 
         # Add 'good' additional off-day
         date_additional_offday = date_fixed_offday + timedelta(days=2)
+        # check Additional Off-Days before adding
+        self.assertEqual(len(self.sale_order_line.add_offday_ids), 0.0)
         self.sale_order_line.write(
             {
                 "add_offday_ids": [
                     (
-                        1,
-                        self.sale_order_line.add_offday_ids[0].id,
+                        0,
+                        0,
                         {
                             "date": date_additional_offday,
                             "name": "Additional off-day.",
