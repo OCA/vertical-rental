@@ -29,10 +29,9 @@
     <record id="sale_start_end_dates" model="ir.ui.view">
         <field name="name">rental_base.sale_start_end_dates</field>
         <field name="model">sale.order</field>
-        <field name="priority">110</field> <!--Priority greater than 100-->
+        <field name="priority">110</field>
         <field name="inherit_id" ref="sale_start_end_dates.view_order_form" />
         <field name="arch" type="xml">
-            <!-- Use of position=replace: It is necessary to adjust view design -->
             <field name="default_start_date" position="replace" />
             <field name="default_end_date" position="replace" />
             <field name="validity_date" position="after">
@@ -46,21 +45,6 @@
                 <attribute name="attrs">{'invisible': 1}</attribute>
             </field>
         </field>
-    </record>
-
-    <!-- Hide fields inserted by sale_stock module to move them to new location -->
-    <record id="sale_stock" model="ir.ui.view">
-            <field name="name">rental_base.sale_stock</field>
-            <field name="model">sale.order</field>
-            <field
-            name="inherit_id"
-            ref="sale_stock.view_order_form_inherit_sale_stock"
-        />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='product_packaging']" position="attributes">
-                    <attribute name="attrs">{'invisible': 1}</attribute>
-                </xpath>
-            </field>
     </record>
 
     <!-- Hide fields inserted by sale_order_type module to move them to new location -->
@@ -347,16 +331,6 @@
 
                 <!-- Group: Transport -->
                 <group id="rental_transport" string="Transport" colspan="4">
-                    <field
-                        name="product_packaging"
-                        attrs="{'invisible': [('product_id', '=', False)]}"
-                        context="{'default_product_id': product_id,
-                                     'tree_view_ref':'product.product_packaging_tree_view',
-                                     'form_view_ref':'product.product_packaging_form_view',
-                                     }"
-                        domain="[('product_id','=',product_id)]"
-                        groups="product.group_stock_packaging"
-                    />
                     <label for="customer_lead" />
                     <div>
                         <field name="customer_lead" class="oe_inline" /> Day(s)
