@@ -2,7 +2,7 @@
 
 {
     "name": "Rental Product Pack",
-    "version": "15.0.1.0.1",
+    "version": "15.0.1.0.0",
     "category": "Rental",
     "summary": "Manage rentals with product packs",
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
