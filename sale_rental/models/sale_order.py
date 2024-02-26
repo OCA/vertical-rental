@@ -286,8 +286,6 @@ class SaleOrderLine(models.Model):
                                 rental_qty=self.rental_qty,
                                 uom_name=product_uom.name,
                                 available_qty=in_location_available_qty,
-                                uom_name=product_uom.name,
-                                location_name=rental_in_location.name,
                                 location_name=rental_in_location.name,
                             ),
                         }
