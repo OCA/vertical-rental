@@ -11,7 +11,7 @@
     "summary": "Manage Rental of Products",
     "author": "Akretion, Sodexis, Odoo Community Association (OCA)",
     "maintainers": ["alexis-via"],
-    "website": "https://github.com/OCA/sale-workflow",
+    "website": "https://github.com/OCA/vertical-rental",
     "depends": ["sale_start_end_dates", "sale_stock", "sales_team"],
     "data": [
         "security/ir.model.access.csv",
