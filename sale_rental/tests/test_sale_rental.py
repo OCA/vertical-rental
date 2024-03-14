@@ -2,6 +2,7 @@ from odoo.exceptions import UserError
 from odoo.tests import Form
 from odoo.tests.common import TransactionCase
 
+
 class TestSaleRental(TransactionCase):
     @classmethod
     def setUpClass(cls):
@@ -23,14 +24,13 @@ class TestSaleRental(TransactionCase):
             "rental": True,
             "rental_type": "new_rental",
             "product_uom_qty": 10,
-            "number_of_days": 10
+            "number_of_days": 10,
         }
         so = so_form.save()
         so.write({"order_line": [(0, 0, line_vals)]})
         sol = so.order_line[0]
         self.assertEqual(sol.price_subtotal, 600)
         so.action_confirm()
-
 
         self.assertEqual(len(so.picking_ids), 2)
         rental_out_pick = so.picking_ids.filtered(
