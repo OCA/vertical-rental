@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2023 Akretion (<http://www.akretion.com>).
+     @author Kévin Roche <kevin.roche@akretion.com>  -->
+<odoo>
+        <record id="product_template_only_form_view" model="ir.ui.view">
+            <field name="name">rental.product.template.only.form</field>
+            <field name="model">product.template</field>
+            <field
+            name="inherit_id"
+            ref="sale_rental.product_template_only_form_view"
+        />
+            <field name="arch" type="xml">
+                <xpath
+                expr="//label[@for='rented_product_tmpl_id']"
+                position="attributes"
+            >
+                    <attribute
+                    name="attrs"
+                >{'invisible': [('type', '!=', 'service')]}</attribute>
+                </xpath>
+                <xpath
+                expr="//field[@name='rented_product_tmpl_id']"
+                position="attributes"
+            >
+                    <attribute
+                    name="attrs"
+                >{'invisible': [('type', '!=', 'service')]}</attribute>
+                </xpath>
+                <xpath expr="//group[@name='sale']" position="before">
+                    <div>
+                        <field
+                        name="show_rental_attributes_values_need_update"
+                        invisible="1"
+                    />
+
+                        <button
+                        name="copy_for_rental"
+                        string="Copy For Rental"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': ['|', '|',('type', '=', 'service'), ('product_variant_count', '=', 1), ('rental_product_tmpl_id', '!=', False)]}"
+                    />
+                        <button
+                        name="update_rental_attributes_values"
+                        string="Update Attributes values"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('show_rental_attributes_values_need_update', '=', False)]}"
+                    />
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='rented_product_tmpl_id']" position="after">
+                    <label
+                    for="rental_product_tmpl_id"
+                    string="Rental Product Template"
+                    attrs="{'invisible': [('type', '=', 'service')]}"
+                />
+                    <field
+                    name="rental_product_tmpl_id"
+                    attrs="{'invisible': [('type', '=', 'service')]}"
+                />
+                    <field name="rental_attributes_values_need_update" invisible="1" />
+                </xpath>
+           </field>
+       </record>
+    </odoo>

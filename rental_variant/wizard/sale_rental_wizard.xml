@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (C) 2023 Akretion (<http://www.akretion.com>).
+     @author Kévin Roche <kevin.roche@akretion.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="sale_rental_line_wizard_view" model="ir.ui.view">
+        <field name="model">sale.rental.line.wizard</field>
+        <field name="arch" type="xml">
+        <form>
+            <group>
+                <field name="rental_line_id" readonly="1" />
+                <group>
+                    <field name="rental_type" required="1" />
+                    <field
+                            name="extension_rental_id"
+                            attrs="{'required': [('rental_type', '=', 'rental_extension')], 'invisible': [('rental_type', '!=', 'rental_extension')]}"
+                        />
+                    <field
+                            name="sell_rental_id"
+                            attrs="{'invisible': [('rental_type', '!=', False)]}"
+                        />
+                    <field name="rental_qty" string="Rented Product Qty" required="1" />
+                </group>
+                <group>
+                    <field name="start_date" required="1" />
+                    <field name="end_date" required="1" />
+                </group>
+            </group>
+            <footer>
+                <button
+                        name="confirm_rental_config"
+                        type="object"
+                        string="Confirm"
+                        class="btn-primary"
+                    />
+                <button string="Discard" special="cancel" class="btn-secondary" />
+            </footer>
+        </form>
+    </field>
+</record>
+</odoo>

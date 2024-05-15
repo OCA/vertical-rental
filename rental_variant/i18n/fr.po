@@ -1,0 +1,205 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* rental_variant
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-14 14:59+0000\n"
+"PO-Revision-Date: 2023-12-14 16:04+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.4.1\n"
+
+#. module: rental_variant
+#: model_terms:ir.ui.view,arch_db:rental_variant.sale_rental_line_wizard_view
+msgid "Confirm"
+msgstr "Confirmer"
+
+#. module: rental_variant
+#: model_terms:ir.ui.view,arch_db:rental_variant.product_template_only_form_view
+msgid "Copy For Rental"
+msgstr "Copier Pour location"
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: rental_variant
+#: model_terms:ir.ui.view,arch_db:rental_variant.sale_rental_line_wizard_view
+msgid "Discard"
+msgstr "Annuler"
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__end_date
+msgid "End Date"
+msgstr "Date de fin"
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__id
+msgid "ID"
+msgstr ""
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_order_line__is_rental
+msgid "Is Rental Variant Exist"
+msgstr ""
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: rental_variant
+#: model:ir.model.fields.selection,name:rental_variant.selection__sale_rental_line_wizard__rental_type__new_rental
+msgid "New Rental"
+msgstr "Nouvelle location"
+
+#. module: rental_variant
+#. odoo-python
+#: code:addons/rental_variant/models/sale_order.py:0
+#, python-format
+msgid "Physical rent product can not be found / created."
+msgstr "Le produit physique à loué ne peut être trouvé / créé."
+
+#. module: rental_variant
+#: model:ir.model,name:rental_variant.model_product_template
+msgid "Product"
+msgstr "Article"
+
+#. module: rental_variant
+#: model:ir.model,name:rental_variant.model_product_product
+msgid "Product Variant"
+msgstr "Variante de produit"
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_product_product__rental_product_tmpl_id
+#: model:ir.model.fields,field_description:rental_variant.field_product_template__rental_product_tmpl_id
+msgid "Related Rental Product Template"
+msgstr "Modèle de location associé"
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_order_line__rental_id
+msgid "Rental"
+msgstr "Location"
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_product_product__rental_attributes_values_need_update
+#: model:ir.model.fields,field_description:rental_variant.field_product_template__rental_attributes_values_need_update
+msgid "Rental Attributes Values Need Update"
+msgstr "Valeurs d'attributs à Mettre à Jour"
+
+#. module: rental_variant
+#: model_terms:ir.ui.view,arch_db:rental_variant.view_order_form
+msgid "Rental Config."
+msgstr "Location Config."
+
+#. module: rental_variant
+#: model:ir.model.fields.selection,name:rental_variant.selection__sale_rental_line_wizard__rental_type__rental_extension
+msgid "Rental Extension"
+msgstr "Exension de location"
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__rental_line_id
+msgid "Rental Line"
+msgstr ""
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_product_product__rental_product_id
+msgid "Rental Product"
+msgstr "Produit Loué"
+
+#. module: rental_variant
+#: model_terms:ir.ui.view,arch_db:rental_variant.product_template_only_form_view
+msgid "Rental Product Template"
+msgstr "Modèle de location"
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__rental_qty
+msgid "Rental Qty"
+msgstr "Qté à louer"
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__rental_type
+msgid "Rental Type"
+msgstr "Type de location"
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__extension_rental_id
+msgid "Rental to Extend"
+msgstr "Location à étendre"
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__sell_rental_id
+msgid "Rental to Sell"
+msgstr "Location à vendre"
+
+#. module: rental_variant
+#: model_terms:ir.ui.view,arch_db:rental_variant.sale_rental_line_wizard_view
+msgid "Rented Product Qty"
+msgstr "Qté produit loué"
+
+#. module: rental_variant
+#: model:ir.model,name:rental_variant.model_sale_rental_line_wizard
+msgid "Sale Rental Line Wizard"
+msgstr ""
+
+#. module: rental_variant
+#: model:ir.model,name:rental_variant.model_sale_order
+msgid "Sales Order"
+msgstr "Bon de commande"
+
+#. module: rental_variant
+#: model:ir.model,name:rental_variant.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Ligne de commande"
+
+#. module: rental_variant
+#: model:ir.model.fields,field_description:rental_variant.field_sale_rental_line_wizard__start_date
+msgid "Start Date"
+msgstr "Date de début"
+
+#. module: rental_variant
+#: model_terms:ir.ui.view,arch_db:rental_variant.product_template_only_form_view
+msgid "Update Attributes values"
+msgstr ""
+
+#. module: rental_variant
+#: model:ir.actions.server,name:rental_variant.ir_cron_update_rental_attributes_values_ir_actions_server
+#: model:ir.cron,cron_name:rental_variant.ir_cron_update_rental_attributes_values
+msgid "Update Rental Attributes Values"
+msgstr "MAJ valeurs d'attributs de location"
+
+#. module: rental_variant
+#. odoo-python
+#: code:addons/rental_variant/models/product_template.py:0
+#, python-format
+msgid "[RENT] %s"
+msgstr "[LOC] %s"
