@@ -10,10 +10,10 @@ from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
 
 def _run_sol_onchange_display_product_id(line):
     line.onchange_display_product_id()  # product_id, rental changed
-    line.product_id_change()
+    line._onchange_product_id()
     line.onchange_rental()  # product_id changed again
-    line.product_id_change()  # product_uom changed
-    line.product_uom_change()
+    line._onchange_product_id()  # product_uom changed
+    line._onchange_product_uom()
     line.rental_product_id_change()  # set start end date manually
 
 
@@ -22,26 +22,26 @@ def _run_sol_onchange_date(line, start_date=False, end_date=False):
         line.start_date = start_date
     if end_date:
         line.end_date = end_date
-    line.onchange_start_end_date()  # number_of_time_unit changed
-    line.rental_qty_number_of_days_change()  # product_uom_qty changed
-    line.product_uom_change()
+    line._onchange_start_end_date()
+    line.rental_qty_number_of_days_change()
+    line._onchange_product_uom()
 
 
 def _run_sol_onchange_product_uom(line, product_uom):
     line.product_uom = product_uom
-    line.product_uom_change()
-    line.product_id_change()
-    line.onchange_start_end_date()
+    line._onchange_product_uom()
+    line._onchange_product_id()
+    line._onchange_start_end_date()
     line.rental_qty_number_of_days_change()
-    line.product_uom_change()
+    line._onchange_product_uom()
 
 
 def _run_sol_onchange_can_sell_rental(line, can_sell_rental):
     line.can_sell_rental = can_sell_rental
     line.onchange_can_sell_rental()
     line.onchange_rental()
-    line.product_id_change()
-    line.product_uom_change()
+    line._onchange_product_id()
+    line._onchange_product_uom()
 
 
 def _run_sol_onchange_rental(line, rental):
@@ -49,24 +49,32 @@ def _run_sol_onchange_rental(line, rental):
     line.onchange_rental()
     line.onchange_can_sell_rental()
     line.rental_product_id_change()
-    line.product_id_change()
-    line.product_uom_change()
+    line._onchange_product_id()
+    line._onchange_product_uom()
 
 
 class TestRentalPricelist(RentalStockCommon):
     def setUp(self):
         super().setUp()
 
+        self.analytic_plan = self.env["account.analytic.plan"].create(
+            {
+                "name": "Analytic Plan Test",
+            }
+        )
+
         self.analytic_account_A = self.env["account.analytic.account"].create(
             {
                 "name": "Analytic Account A",
                 "code": "100001",
+                "plan_id": self.analytic_plan.id,
             }
         )
         self.analytic_account_B = self.env["account.analytic.account"].create(
             {
                 "name": "Analytic Account B",
                 "code": "100002",
+                "plan_id": self.analytic_plan.id,
             }
         )
 
@@ -137,7 +145,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.rental_order = (
             self.env["sale.order"]
             .with_context(
-                {
+                **{
                     "default_type_id": self.rental_sale_type.id,
                 }
             )
@@ -229,7 +237,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
+                **{
                     "type_id": self.rental_sale_type.id,
                 }
             )
@@ -243,18 +251,11 @@ class TestRentalPricelist(RentalStockCommon):
             )
         )
         line.onchange_display_product_id()
-        line.product_id_change()
-        # check uom domain
-        # check_uom_domain = False
-        # if "domain" in res and "product_uom" in res["domain"]:
-        #     self.assertEqual(len(res["domain"]["product_uom"][0][2]), 3)
-        #     check_uom_domain = True
-        # self.assertTrue(check_uom_domain)
+        line._onchange_product_id()
         line.onchange_rental()
-        line.product_uom_change()
+        line._onchange_product_uom()
         line.rental_product_id_change()
         _run_sol_onchange_date(line)
-        # self._print_sol(line)
         self.assertEqual(line.rental, True)
         self.assertEqual(line.rental_type, "new_rental")
         self.assertEqual(line.can_sell_rental, False)
@@ -264,10 +265,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.product_uom_qty > 80, True)
         self.assertEqual(line.rental_qty, 1)
         self.assertEqual(line.number_of_time_unit > 80, True)
-
-        # Change product_uom manually
         _run_sol_onchange_product_uom(line, self.uom_month)
-        # self._print_sol(line)
         self.assertEqual(line.product_id, self.productA.product_rental_month_id)
         self.assertEqual(line.display_product_id, self.productA)
         self.assertEqual(line.product_uom, self.uom_month)
@@ -289,7 +287,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
+                **{
                     "type_id": self.rental_sale_type.id,
                 }
             )
@@ -303,18 +301,11 @@ class TestRentalPricelist(RentalStockCommon):
             )
         )
         line.onchange_display_product_id()
-        line.product_id_change()
-        # check uom domain
-        # check_uom_domain = False
-        # if "domain" in res and "product_uom" in res["domain"]:
-        #     self.assertEqual(res["domain"]["product_uom"][0][2][0], self.uom_month.id)
-        #     check_uom_domain = True
-        # self.assertTrue(check_uom_domain)
+        line._onchange_product_id()
         line.onchange_rental()
-        line.product_uom_change()
+        line._onchange_product_uom()
         line.rental_product_id_change()
         _run_sol_onchange_date(line)
-        # self._print_sol(line)
         self.assertEqual(line.rental, True)
         self.assertEqual(line.rental_type, "new_rental")
         self.assertEqual(line.can_sell_rental, False)
@@ -324,10 +315,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.product_uom_qty, 3)
         self.assertEqual(line.rental_qty, 1)
         self.assertEqual(line.number_of_time_unit, 3)
-
-        # Change can_sell_rental -> True manually
         _run_sol_onchange_can_sell_rental(line, True)
-        # self._print_sol(line)
         self.assertEqual(line.rental, False)
         self.assertEqual(line.rental_type, False)
         self.assertEqual(line.can_sell_rental, True)
@@ -335,10 +323,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.display_product_id, self.productC)
         self.assertEqual(line.product_uom, self.uom_unit)
         self.assertEqual(line.rental_qty, 0)
-
-        # Change rental -> True manually
         _run_sol_onchange_rental(line, True)
-        # self._print_sol(line)
         self.assertEqual(line.rental, True)
         self.assertEqual(line.rental_type, "new_rental")
         self.assertEqual(line.can_sell_rental, False)
@@ -348,19 +333,6 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.rental_qty, 1)
 
     def test_03_rental_pricelist_items(self):
-        # add scale price of product A
-        #    Day     Price
-        #      1     100
-        #     20      90
-        #     45      80
-        #     80      70
-        #
-        #    Month   Price
-        #      1     1000
-        #      2      900
-        #      3      800
-        #
-        # add item from product form view
         self.productA.write(
             {
                 "day_scale_pricelist_item_ids": [
@@ -409,8 +381,6 @@ class TestRentalPricelist(RentalStockCommon):
                 ],
             }
         )
-
-        # add item from pricelist
         item1 = self.env["product.pricelist.item"].create(
             {
                 "applied_on": "0_product_variant",
@@ -439,7 +409,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
+                **{
                     "type_id": self.rental_sale_type.id,
                 }
             )
@@ -453,7 +423,6 @@ class TestRentalPricelist(RentalStockCommon):
             )
         )
         _run_sol_onchange_display_product_id(line)
-        # check price of days
         _run_sol_onchange_date(line)
         self.assertEqual(line.product_uom_qty > 80, True)
         self.assertEqual(line.price_unit, 70)
@@ -466,8 +435,6 @@ class TestRentalPricelist(RentalStockCommon):
         _run_sol_onchange_date(line, end_date=self.tomorrow)
         self.assertEqual(line.product_uom_qty, 2)
         self.assertEqual(line.price_unit, 100)
-
-        # check price of months
         _run_sol_onchange_product_uom(line, self.uom_month)
         _run_sol_onchange_date(line, end_date=self.date_28_day_later)  # check round
         self.assertEqual(line.product_uom_qty, 1)
@@ -486,7 +453,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
+                **{
                     "type_id": self.rental_sale_type.id,
                 }
             )
@@ -498,7 +465,7 @@ class TestRentalPricelist(RentalStockCommon):
             )
         )
         line.onchange_display_product_id()
-        line.product_id_change()
+        line._onchange_product_id()
         line.rental = True
         vals = line._convert_to_write(line._cache)
         self.env["sale.order.line"].create(vals)
@@ -527,7 +494,6 @@ class TestRentalPricelist(RentalStockCommon):
             " must have the option 'Must Have Start and End Dates' checked.",
             str(e.exception),
         )
-        # check onchange method of product.pricelist.item
         self.productE.write(
             {
                 "hour_scale_pricelist_item_ids": [
@@ -546,7 +512,6 @@ class TestRentalPricelist(RentalStockCommon):
                 ],
             }
         )
-        # add item from pricelist
         item1 = self.env["product.pricelist.item"].create(
             {
                 "applied_on": "0_product_variant",
@@ -559,17 +524,13 @@ class TestRentalPricelist(RentalStockCommon):
         )
         item1._onchange_product_id()
         self.assertEqual(item1.day_item_id, self.productE)
-        # check default_code
         self.assertEqual(self.productE.default_code, "PRD-E123")
         self.assertEqual(rental_serviceE.default_code, "RENT-D-PRD-E123")
-        # update and check default_code
         self.productE.default_code = "PRD-E110"
         self.assertEqual(self.productE.default_code, "PRD-E110")
         self.assertEqual(rental_serviceE.default_code, "RENT-D-PRD-E110")
-        # update and check name
         self.productE.name = "Product E1"
         self.assertEqual(rental_serviceE.name, "Rental of Product E1 (Day(s))")
-        # update active
         self.productE.active = False
         self.assertEqual(rental_serviceE.active, False)
         self.productE.active = True
@@ -579,7 +540,7 @@ class TestRentalPricelist(RentalStockCommon):
         rental_order = (
             self.env["sale.order"]
             .with_context(
-                {
+                **{
                     "default_type_id": self.rental_sale_type.id,
                 }
             )
@@ -593,7 +554,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
+                **{
                     "type_id": self.rental_sale_type.id,
                 }
             )
@@ -605,22 +566,22 @@ class TestRentalPricelist(RentalStockCommon):
             )
         )
         line.onchange_display_product_id()
-        line.product_id_change()
+        line._onchange_product_id()
         line.onchange_rental()
-        line.product_uom_change()
+        line._onchange_product_uom()
         line.rental_product_id_change()
         _run_sol_onchange_date(line)
-        line.start_end_dates_product_id_change()
-        # no dates avaiavlbe
+        line._compute_start_date()
+        line._compute_end_date()
         self.assertEqual(line.start_date, False)
         self.assertEqual(line.end_date, False)
-        # set dates on rental order
         rental_order.update(
             {
                 "default_start_date": self.today,
                 "default_end_date": self.tomorrow,
             }
         )
-        line.start_end_dates_product_id_change()
+        line._compute_start_date()
+        line._compute_end_date()
         self.assertEqual(line.start_date, self.today)
         self.assertEqual(line.end_date, self.tomorrow)
