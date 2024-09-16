@@ -6,25 +6,26 @@ from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
 
 
 class TestUpdateTimeRentalOrder(RentalStockCommon):
-    def setUp(self):
-        super().setUp()
-        ProductObj = self.env["product.product"]
-        self.product_rental = ProductObj.create(
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        ProductObj = cls.env["product.product"]
+        cls.product_rental = ProductObj.create(
             {
                 "name": "Rental Product",
                 "type": "product",
-                "categ_id": self.category_all.id,
+                "categ_id": cls.category_all.id,
             }
         )
         # rental service product
-        self.service_rental = self._create_rental_service_day(self.product_rental)
+        cls.service_rental = cls._create_rental_service_day(product=cls.product_rental)
         # dates
-        self.date_0101 = fields.Date.from_string("2021-01-01")
-        self.date_0110 = fields.Date.from_string("2021-01-10")
-        self.date_0102 = fields.Date.from_string("2021-01-02")
-        self.date_0111 = fields.Date.from_string("2021-01-11")
-        self.date_0103 = fields.Date.from_string("2021-01-03")
-        self.date_0112 = fields.Date.from_string("2021-01-12")
+        cls.date_0101 = fields.Date.from_string("2021-01-01")
+        cls.date_0110 = fields.Date.from_string("2021-01-10")
+        cls.date_0102 = fields.Date.from_string("2021-01-02")
+        cls.date_0111 = fields.Date.from_string("2021-01-11")
+        cls.date_0103 = fields.Date.from_string("2021-01-03")
+        cls.date_0112 = fields.Date.from_string("2021-01-12")
 
     def test_00_update_time_rental_order(self):
         # rental order
@@ -54,7 +55,7 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
         wizard_1 = (
             self.env["update.sale.line.date"]
             .with_context(
-                {
+                **{
                     "active_model": "sale.order",
                     "active_ids": rental_order_1.ids,
                 }
@@ -115,7 +116,7 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
         wizard_2 = (
             self.env["update.sale.line.date"]
             .with_context(
-                {
+                **{
                     "active_model": "sale.order",
                     "active_ids": rental_order_1.ids,
                 }

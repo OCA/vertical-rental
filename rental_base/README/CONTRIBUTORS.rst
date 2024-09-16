@@ -1,5 +1,6 @@
+* elego Software Solutions GmbH
 
-Contributors
-------------
+* `Binhex <http://www.binhex.cloud>`_:
 
-elego Software Solutions GmbH, Odoo Community Association (OCA)
+  * Adasat Torres de León <a.torres@binhex.cloud>
+  * Zuzanna Elzbieta Szalaty Szalaty <zuzanna@binhex.cloud>

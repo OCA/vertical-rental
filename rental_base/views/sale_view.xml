@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <!-- Hide fields inserted by sale_rental module to move them to new location -->
     <record id="sale_rental" model="ir.ui.view">
         <field name="name">rental_base.sale_rental</field>
@@ -24,12 +23,12 @@
             </xpath>
         </field>
     </record>
-
     <!-- Hide fields inserted by sale_start_end_dates module to move them to new location -->
     <record id="sale_start_end_dates" model="ir.ui.view">
         <field name="name">rental_base.sale_start_end_dates</field>
         <field name="model">sale.order</field>
-        <field name="priority">110</field> <!--Priority greater than 100-->
+        <field name="priority">110</field>
+        <!--Priority greater than 100-->
         <field name="inherit_id" ref="sale_start_end_dates.view_order_form" />
         <field name="arch" type="xml">
             <!-- Use of position=replace: It is necessary to adjust view design -->
@@ -47,22 +46,17 @@
             </field>
         </field>
     </record>
-
     <!-- Hide fields inserted by sale_stock module to move them to new location -->
     <record id="sale_stock" model="ir.ui.view">
-            <field name="name">rental_base.sale_stock</field>
-            <field name="model">sale.order</field>
-            <field
-            name="inherit_id"
-            ref="sale_stock.view_order_form_inherit_sale_stock"
-        />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='product_packaging']" position="attributes">
-                    <attribute name="attrs">{'invisible': 1}</attribute>
-                </xpath>
-            </field>
+        <field name="name">rental_base.sale_stock</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_packaging_id']" position="attributes">
+                <attribute name="attrs">{'invisible': 1}</attribute>
+            </xpath>
+        </field>
     </record>
-
     <!-- Hide fields inserted by sale_order_type module to move them to new location -->
     <record id="sale_order_type" model="ir.ui.view">
         <field name="name">rental_base.sale_order_type</field>
@@ -76,7 +70,6 @@
             </xpath>
         </field>
     </record>
-
     <record id="view_order_form" model="ir.ui.view">
         <field name="name">rental_base.view_order_form</field>
         <field name="model">sale.order</field>
@@ -105,7 +98,6 @@
             >
                 <attribute name="attrs">{'invisible': 1}</attribute>
             </xpath>
-
             <!-- Sheet -->
             <xpath expr="//field[@name='partner_id']" position="before">
                 <field
@@ -130,15 +122,8 @@
                     force_save="1"
                 />
             </xpath>
-
             <!-- Sale Order Lines -->
             <!-- Hide fields inserted by sale module to move them to new location -->
-            <xpath
-                expr="//group[field[@name='analytic_tag_ids']]"
-                position="attributes"
-            >
-                <attribute name="id">further_rental_info</attribute>
-            </xpath>
             <xpath expr="//field[@name='tax_id']" position="attributes">
                 <attribute name="attrs">{'invisible': 1}</attribute>
             </xpath>
@@ -148,10 +133,7 @@
             <xpath expr="//div[field[@name='customer_lead']]" position="attributes">
                 <attribute name="attrs">{'invisible': 1}</attribute>
             </xpath>
-            <!-- <xpath expr="//label[@for='analytic_tag_ids']" position="attributes">
-                <attribute name="attrs">{'invisible': 1}</attribute>
-            </xpath> -->
-            <xpath expr="//field[@name='analytic_tag_ids']" position="attributes">
+            <xpath expr="//field[@name='analytic_distribution']" position="attributes">
                 <attribute name="attrs">{'invisible': 1}</attribute>
             </xpath>
             <xpath expr="//label[@for='qty_delivered']" position="attributes">
@@ -185,7 +167,6 @@
                     name="attrs"
                 >{'invisible': [('display_type', '=', False)]}</attribute>
             </xpath>
-
             <!-- Group: Order Information -->
             <xpath expr="//group[field[@name='product_id']]" position="attributes">
                 <attribute name="id">order_info</attribute>
@@ -245,8 +226,10 @@
                 />
                 <field name="name" nolabel="1" colspan="2" />
             </xpath>
-
-            <xpath expr="//group[@id='further_rental_info']" position="inside">
+            <xpath
+                expr="//group//field[@name='analytic_distribution']"
+                position="inside"
+            >
                 <!-- Group: Rental Settings -->
                 <group id="rental_settings" string="Rental Settings" colspan="4">
                     <field name="rental" />
@@ -270,7 +253,6 @@
                         domain="[('rented_product_id', '=', product_id), ('state', '=', 'out')]"
                     />
                 </group>
-
                 <!-- Group: Rental Times -->
                 <group
                     id="rental_times"
@@ -343,12 +325,11 @@
                             attrs="{'readonly': 1}"
                         />
                     </div>
-                    </group>
-
+                </group>
                 <!-- Group: Transport -->
                 <group id="rental_transport" string="Transport" colspan="4">
                     <field
-                        name="product_packaging"
+                        name="product_packaging_id"
                         attrs="{'invisible': [('product_id', '=', False)]}"
                         context="{'default_product_id': product_id,
                                      'tree_view_ref':'product.product_packaging_tree_view',
@@ -362,7 +343,6 @@
                         <field name="customer_lead" class="oe_inline" /> Day(s)
                     </div>
                 </group>
-
                 <!-- Group: Invoicing -->
                 <group id="rental_invoicing" string="Invoicing" colspan="4">
                     <field
@@ -374,23 +354,17 @@
                         attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"
                     />
                     <label
-                        for="analytic_tag_ids"
-                        groups="analytic.group_analytic_tags"
+                        for="analytic_distribution"
+                        groups="analytic.group_analytic_accounting"
                     />
-                    <div>
-                        <field
-                            name="analytic_tag_ids"
-                            widget="many2many_tags"
-                            groups="analytic.group_analytic_tags"
-                            options="{'color_field': 'color'}"
-                        />
-                    </div>
+                    <field
+                        name="analytic_distribution"
+                        widget="analytic_distribution"
+                        groups="analytic.group_analytic_accounting"
+                        options="{'product_field': 'product_id', 'business_domain': 'sale_order'}"
+                    />
                 </group>
-
             </xpath>
-
         </field>
     </record>
-
-
 </odoo>

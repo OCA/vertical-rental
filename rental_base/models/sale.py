@@ -1,5 +1,4 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
-
 import datetime
 
 from odoo import _, api, exceptions, fields, models
@@ -11,14 +10,12 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     default_start_date = fields.Date(
-        string="Default Start Date",
         compute="_compute_default_start_date",
         readonly=False,
         store=True,
     )
 
     default_end_date = fields.Date(
-        string="Default End Date",
         compute="_compute_default_end_date",
         readonly=False,
         store=True,
@@ -106,49 +103,54 @@ class SaleOrderLine(models.Model):
                 if not line.extension_rental_id:
                     raise ValidationError(
                         _(
-                            'Missing "Rental to Extend" on the sale order line '
-                            "with rental service %s."
+                            'Missing "Rental to Extend" on the sale order line'
+                            " with rental service %(name)s."
                         )
-                        % line.product_id.name
+                        % {"name": line.product_id.name}
                     )
 
                 if line.rental_qty != line.extension_rental_id.rental_qty:
                     raise ValidationError(
                         _(
-                            "On the sale order line with rental service %s, "
-                            "you are trying to extend a rental with a rental "
-                            "quantity (%s) that is different from the quantity "
-                            "of the original rental (%s). This is not supported."
+                            "On the sale order line with"
+                            " rental service %(name)s"
+                            " ,you are trying to extend a "
+                            "rental with a rental "
+                            "quantity (%(rental_qty)s) "
+                            "that is different from the quantity "
+                            "of the original rental "
+                            "(%(ext_rental_qty)s). "
+                            "This is not supported."
                         )
-                        % (
-                            line.product_id.name,
-                            line.rental_qty,
-                            line.extension_rental_id.rental_qty,
-                        )
+                        % {
+                            "name": line.product_id.name,
+                            "rental_qty": line.rental_qty,
+                            "ext_rental_qty": line.extension_rental_id.rental_qty,
+                        }
                     )
             if line.rental_type in ("new_rental", "rental_extension"):
                 if not line.product_id.rented_product_id:
                     raise ValidationError(
                         _(
                             'On the "new rental" sale order line with product '
-                            '"%s", we should have a rental service product!'
+                            '"%(name)s", we should have a rental service product!'
                         )
-                        % (line.product_id.name)
+                        % {"name": line.product_id.name}
                     )
             elif line.sell_rental_id:
                 if line.product_uom_qty != line.sell_rental_id.rental_qty:
                     raise ValidationError(
                         _(
-                            "On the sale order line with product %s "
+                            "On the sale order line with product %(name)s "
                             "you are trying to sell a rented product with a "
-                            "quantity (%s) that is different from the rented "
-                            "quantity (%s). This is not supported."
+                            "quantity (%(qty)s) that is different from the rented "
+                            "quantity (%(sell_rental_qty)s). This is not supported."
                         )
-                        % (
-                            line.product_id.name,
-                            line.product_uom_qty,
-                            line.sell_rental_id.rental_qty,
-                        )
+                        % {
+                            "name": line.product_id.name,
+                            "qty": line.product_uom_qty,
+                            "sell_rental_qty": line.sell_rental_id.rental_qty,
+                        }
                     )
 
     def _prepare_invoice_line(self, **optional_values):
@@ -218,10 +220,10 @@ class SaleOrderLine(models.Model):
                         ]:
                             raise exceptions.UserError(
                                 _(
-                                    "Outgoing shipment is in state %s. You cannot change \
-                                        the start date anymore."
+                                    "Outgoing shipment is in state %(state)s."
+                                    " You cannot change the start date anymore."
                                 )
-                                % rental.out_move_id.state
+                                % {"state": rental.out_move_id.state}
                             )
                         rental.out_move_id.date = datetime_start
                 if rentals and date_end:
@@ -235,10 +237,10 @@ class SaleOrderLine(models.Model):
                         ]:
                             raise exceptions.UserError(
                                 _(
-                                    "Incoming shipment is in state %s. You cannot change \
-                                        the end date anymore."
+                                    "Incoming shipment is in state %s."
+                                    " You cannot change the end date anymore."
                                 )
-                                % rental.in_move_id.state
+                                % {"state": rental.in_move_id.state}
                             )
                         rental.in_move_id.date = datetime_end
 
@@ -293,14 +295,17 @@ class SaleOrderLine(models.Model):
                 if messages:
                     messages.append(
                         _(
-                            "\nOrder: %s\n"
-                            "Line with product: '%s'\n\n"
+                            "\nOrder: %(order)s\n"
+                            "Line with product: '%(product)s'\n\n"
                             "Please use instead the button 'Update Times' "
                             "in the order to correctly update the order "
                             "line's times, its timeline entry, contract and "
                             "its stock moves and pickings as required."
                         )
-                        % (sol.order_id.name, sol.product_id.display_name)
+                        % {
+                            "order": sol.order_id.name,
+                            "product": sol.product_id.display_name,
+                        }
                     )
                     raise exceptions.UserError("\n".join(messages))
-        return super(SaleOrderLine, self).write(values)
+        return super().write(values)

@@ -7,3 +7,9 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     rental = fields.Boolean("Can be Rent")
+
+
+class ProductProduct(models.Model):
+    _inherit = "product.product"
+
+    rental = fields.Boolean("Can be Rent")
