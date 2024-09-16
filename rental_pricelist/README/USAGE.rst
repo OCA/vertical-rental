@@ -1,7 +1,3 @@
-
-Usage
------
-
 Create a rentable product:
  * Go to Rentals > Configuration > Settings.
  * Please activate the checkbox for using 'Product Variants'.
