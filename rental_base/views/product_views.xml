@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@name='options']" position="inside">
                 <div>
-                    <field name="rental" />
+                    <field name="rental" readonly="0" />
                     <label for="rental" />
                 </div>
             </xpath>
