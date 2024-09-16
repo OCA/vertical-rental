@@ -106,21 +106,25 @@ class ProductProduct(models.Model):
             if product.rented_product_id:
                 if product.type != "service":
                     raise ValidationError(
-                        _("The rental product '%s' must be of type 'Service'.")
-                        % product.name
+                        _("The rental product '%(name)s' must be of type 'Service'.")
+                        % {"name": product.name}
                     )
                 if not product.must_have_dates:
                     raise ValidationError(
                         _(
-                            "The rental product '%s' must have the option "
+                            "The rental product '%(name)s' must have the option "
                             "'Must Have Start and End Dates' checked."
                         )
-                        % product.name
+                        % {"name": product.name}
                     )
 
     @api.model
     def _get_rental_service_prefix_suffix(self, field, str_type, rental_type):
-        field_name = "rental_service_%s_%s_%s" % (field, str_type, rental_type)
+        field_name = "rental_service_%(field)s_%(str_type)s_%(rental_type)s" % {
+            "field": field,
+            "str_type": str_type,
+            "rental_type": rental_type,
+        }
         res = getattr(self.env.user.company_id, field_name)
         return res
 
@@ -128,14 +132,13 @@ class ProductProduct(models.Model):
         self.ensure_one()
         if rental_type == "month" and self.product_rental_month_id:
             return self.product_rental_month_id
-        elif rental_type == "day" and self.product_rental_day_id:
+        if rental_type == "day" and self.product_rental_day_id:
             return self.product_rental_day_id
-        elif rental_type == "hour" and self.product_rental_hour_id:
+        if rental_type == "hour" and self.product_rental_hour_id:
             return self.product_rental_hour_id
-        else:
-            raise exceptions.ValidationError(
-                _("The product has no related rental services.")
-            )
+        raise exceptions.ValidationError(
+            _("The product has no related rental services.")
+        )
 
     def _get_rental_service_list(self):
         self.ensure_one()
@@ -183,9 +186,9 @@ class ProductProduct(models.Model):
         suffix = self._get_rental_service_prefix_suffix("name", "suffix", rental_type)
         name = sp_name
         if prefix:
-            name = "%s %s" % (prefix, name)
+            name = "%(prefix)s %(name)s" % {"prefix": prefix, "name": name}
         if suffix:
-            name = "%s %s" % (name, suffix)
+            name = "%(name)s %(suffix)s" % {"name": name, "suffix": suffix}
         return name
 
     def _get_rental_service_default_code(self, rental_type, sp_code):
@@ -199,9 +202,15 @@ class ProductProduct(models.Model):
         default_code = sp_code
         if default_code:
             if prefix:
-                default_code = "%s-%s" % (prefix, default_code)
+                default_code = "%(prefix)s-%(default_code)s" % {
+                    "prefix": prefix,
+                    "default_code": default_code,
+                }
             if suffix:
-                default_code = "%s-%s" % (default_code, suffix)
+                default_code = "%(default_code)s-%(suffix)s" % {
+                    "default_code": default_code,
+                    "suffix": suffix,
+                }
         else:
             default_code = ""
         return default_code
@@ -211,10 +220,12 @@ class ProductProduct(models.Model):
         uom = self._get_rental_service_uom(rental_type)
         values = {
             "hw_product_id": product.id,
-            "name": _("Rental of %s (%s)") % (product.name, uom.name),
+            "name": _("Rental of %(product_name)s (%(uom_name)s)")
+            % {"product_name": product.name, "uom_name": uom.name},
             "categ_id": product.categ_id.id,
             "copy_image": True,
-            "default_code": "RENT-%s-%s" % (rental_type.upper(), product.default_code),
+            "default_code": "RENT-%(rental)s-%(code)s"
+            % {"rental": rental_type.upper(), "code": product.default_code},
         }
         res = (
             self.env["create.rental.product"]
@@ -290,7 +301,6 @@ class ProductProduct(models.Model):
         for field in fields:
             if field in vals:
                 service_vals[field] = vals.get(field, False)
-        # check 'active' becomes True from False
         check_rental_services = (
             service_vals.get("active", False)
             and not self.rental_service_ids
