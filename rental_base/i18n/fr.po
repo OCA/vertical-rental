@@ -318,6 +318,11 @@ msgid "Invoicing"
 msgstr "Facturation"
 
 #. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_sale_order__is_rental_order
+msgid "Is Rental Order"
+msgstr ""
+
+#. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_ir_sequence____last_update
 #: model:ir.model.fields,field_description:rental_base.field_product_template____last_update
 #: model:ir.model.fields,field_description:rental_base.field_sale_order____last_update
@@ -354,14 +359,19 @@ msgid "Month(s)"
 msgstr "Mois"
 
 #. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_sales_order_filter
+msgid "Normal Order"
+msgstr ""
+
+#. module: rental_base
 #: code:addons/rental_base/models/sale.py:0
 #, python-format
 msgid ""
 "On the \"new rental\" sale order line with product \"%s\", we should have a "
 "rental service product!"
 msgstr ""
-"Sur la ligne de commande de vente \"nouvelle location\" avec le produit \"%s"
-"\", nous devrions avoir un produit de service de location !"
+"Sur la ligne de commande de vente \"nouvelle location\" avec le produit "
+"\"%s\", nous devrions avoir un produit de service de location !"
 
 #. module: rental_base
 #: code:addons/rental_base/models/sale.py:0
@@ -489,6 +499,7 @@ msgstr "Location"
 
 #. module: rental_base
 #: model:sale.order.type,name:rental_base.rental_sale_type
+#: model_terms:ir.ui.view,arch_db:rental_base.view_sales_order_filter
 msgid "Rental Order"
 msgstr "Commande de location"
 
