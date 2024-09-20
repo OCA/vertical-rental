@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_company_rental_service_form" model="ir.ui.view">
+        <field name="name">res.company.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form" />
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Rental Services">
+                    <span
+                    >Configure the name and default code of your rental services.</span>
+                    <group>
+                        <group name="service_month" string="Monthly Rentals">
+                            <field
+                                name="rental_service_name_prefix_month"
+                                string="Prefix"
+                            />
+                            <field
+                                name="rental_service_name_suffix_month"
+                                string="Suffix"
+                            />
+                            <field
+                                name="rental_service_default_code_prefix_month"
+                                string="Prefix Code"
+                            />
+                            <field
+                                name="rental_service_default_code_suffix_month"
+                                string="Suffix Code"
+                            />
+                        </group>
+                        <group name="service_day" string="Daily Rentals">
+                            <field
+                                name="rental_service_name_prefix_day"
+                                string="Prefix"
+                            />
+                            <field
+                                name="rental_service_name_suffix_day"
+                                string="Suffix"
+                            />
+                            <field
+                                name="rental_service_default_code_prefix_day"
+                                string="Prefix Code"
+                            />
+                            <field
+                                name="rental_service_default_code_suffix_day"
+                                string="Suffix Code"
+                            />
+                        </group>
+                        <group name="service_hour" string="Hourly Rentals">
+                            <field
+                                name="rental_service_name_prefix_hour"
+                                string="Prefix"
+                            />
+                            <field
+                                name="rental_service_name_suffix_hour"
+                                string="Suffix"
+                            />
+                            <field
+                                name="rental_service_default_code_prefix_hour"
+                                string="Prefix Code"
+                            />
+                            <field
+                                name="rental_service_default_code_suffix_hour"
+                                string="Suffix Code"
+                            />
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>
