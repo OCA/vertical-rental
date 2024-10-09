@@ -17,17 +17,7 @@ class SaleOrder(models.Model):
             )
             for picking in out_pickings:
                 for move in picking.move_ids_without_package:
-                    if move.product_id and move.product_id.pack_ok:
-                        for line in move.product_id.pack_line_ids:
-                            qty = move.product_uom_qty * line.quantity
-                            move.copy(
-                                {
-                                    "product_id": line.product_id.id,
-                                    "product_uom_qty": qty,
-                                    "rental_pack_move_id": move.id,
-                                    "picking_id": move.picking_id.id,
-                                }
-                            )
+                    move._create_pack_products()
             out_pickings.action_confirm()
             in_pickings.action_confirm()
         return res
