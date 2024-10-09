@@ -18,6 +18,7 @@ class RentalStockCommon(common.TransactionCase):
         self.uom_hour = self.env.ref("uom.product_uom_hour")
         self.uom_day = self.env.ref("uom.product_uom_day")
         self.uom_month = self.env.ref("rental_base.product_uom_month")
+        self.uom_week = self.env.ref("rental_base.product_uom_week")
         self.uom_unit = self.env.ref("uom.product_uom_unit")
         self.uom_kgm = self.env.ref("uom.product_uom_kgm")
         self.warehouse0 = self.env.ref("stock.warehouse0")
