@@ -25,6 +25,16 @@ class ResCompany(models.Model):
         translate=True,
     )
 
+    rental_service_name_prefix_week = fields.Char(
+        string="Prefix of Rental Service Name (Week)",
+        default="Rental of",
+        help="Define the name of the weekly rental service "
+        "by setting a prefix. The entire name is built "
+        "by adding the prefix, the product's name and "
+        "the suffix.",
+        translate=True,
+    )
+
     rental_service_name_prefix_hour = fields.Char(
         string="Prefix of Rental Service Name (Hour)",
         default="Rental of",
@@ -49,6 +59,16 @@ class ResCompany(models.Model):
         string="Suffix of Rental Service Name (Month)",
         default="(Month(s))",
         help="Define the name of the monthly rental service "
+        "by setting a suffix. The entire name is built "
+        "by adding the prefix, the product's name and "
+        "the suffix.",
+        translate=True,
+    )
+
+    rental_service_name_suffix_week = fields.Char(
+        string="Suffix of Rental Service Name (Week)",
+        default="(Week(s))",
+        help="Define the name of the weekly rental service "
         "by setting a suffix. The entire name is built "
         "by adding the prefix, the product's name and "
         "the suffix.",
@@ -83,6 +103,15 @@ class ResCompany(models.Model):
         "the product's default code and the suffix code.",
     )
 
+    rental_service_default_code_prefix_week = fields.Char(
+        string="Prefix of Rental Service Internal Reference (Week)",
+        default="RENT-W",
+        help="Define the default code of the weekly rental "
+        "service by setting a prefix code. The entire "
+        "default code is built by adding the prefix code, "
+        "the product's default code and the suffix code.",
+    )
+
     rental_service_default_code_prefix_hour = fields.Char(
         string="Prefix of Rental Service Internal Reference (Hour)",
         default="RENT-H",
@@ -103,6 +132,14 @@ class ResCompany(models.Model):
     rental_service_default_code_suffix_month = fields.Char(
         string="Suffix of Rental Service Internal Reference (Month)",
         help="Define the default code of the monthly rental "
+        "service by setting a suffix code. The entire "
+        "default code is built by adding the prefix code, "
+        "the product's default code and the suffix code.",
+    )
+
+    rental_service_default_code_suffix_week = fields.Char(
+        string="Suffix of Rental Service Internal Reference (Week)",
+        help="Define the default code of the weekly rental "
         "service by setting a suffix code. The entire "
         "default code is built by adding the prefix code, "
         "the product's default code and the suffix code.",
