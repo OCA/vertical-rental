@@ -46,6 +46,24 @@
                                 string="Suffix Code"
                             />
                         </group>
+                        <group name="service_week" string="Weekly Rentals">
+                            <field
+                                name="rental_service_name_prefix_week"
+                                string="Prefix"
+                            />
+                            <field
+                                name="rental_service_name_suffix_week"
+                                string="Suffix"
+                            />
+                            <field
+                                name="rental_service_default_code_prefix_week"
+                                string="Prefix Code"
+                            />
+                            <field
+                                name="rental_service_default_code_suffix_week"
+                                string="Suffix Code"
+                            />
+                            </group>
                         <group name="service_hour" string="Hourly Rentals">
                             <field
                                 name="rental_service_name_prefix_hour"
