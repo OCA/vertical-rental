@@ -255,7 +255,6 @@ class SaleOrderLine(models.Model):
                     uom_ids = line._get_product_rental_uom_ids()
                     if line.product_uom.id not in uom_ids:
                         line.product_uom = uom_ids and uom_ids[0] or False
-        return True
 
     @api.onchange("product_uom", "product_uom_qty")
     def _onchange_product_uom(self):
@@ -270,7 +269,6 @@ class SaleOrderLine(models.Model):
                         )
                     )[-1]
                     line.product_id = line.display_product_id._get_rental_service(key)
-        return True
 
     @api.onchange("start_date", "end_date", "product_uom")
     def _onchange_start_end_date(self):
