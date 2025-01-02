@@ -267,8 +267,11 @@ class SaleOrderLine(models.Model):
                             lambda key: time_uoms[key].id == line.product_uom.id,
                             time_uoms.keys(),
                         )
-                    )[-1]
-                    line.product_id = line.display_product_id._get_rental_service(key)
+                    )
+                    if key:
+                        line.product_id = line.display_product_id._get_rental_service(
+                            key[-1]
+                        )
 
     @api.onchange("start_date", "end_date", "product_uom")
     def _onchange_start_end_date(self):
