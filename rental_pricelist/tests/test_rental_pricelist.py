@@ -42,6 +42,7 @@ def _run_sol_onchange_can_sell_rental(line, can_sell_rental):
     line.onchange_rental()
     line._onchange_product_id()
     line._onchange_product_uom()
+    line.product_id._compute_rental()
 
 
 def _run_sol_onchange_rental(line, rental):
@@ -316,13 +317,13 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.rental_qty, 1)
         self.assertEqual(line.number_of_time_unit, 3)
         _run_sol_onchange_can_sell_rental(line, True)
-        self.assertEqual(line.rental, False)
+        self.assertEqual(line.rental, True)
         self.assertEqual(line.rental_type, False)
-        self.assertEqual(line.can_sell_rental, True)
-        self.assertEqual(line.product_id, self.productC)
+        self.assertEqual(line.can_sell_rental, False)
+        self.assertEqual(line.product_id, self.productC.product_rental_month_id)
         self.assertEqual(line.display_product_id, self.productC)
-        self.assertEqual(line.product_uom, self.uom_unit)
-        self.assertEqual(line.rental_qty, 0)
+        self.assertEqual(line.product_uom, self.uom_month)
+        self.assertEqual(line.rental_qty, 1)
         _run_sol_onchange_rental(line, True)
         self.assertEqual(line.rental, True)
         self.assertEqual(line.rental_type, "new_rental")
@@ -466,6 +467,8 @@ class TestRentalPricelist(RentalStockCommon):
         )
         line.onchange_display_product_id()
         line._onchange_product_id()
+        line.onchange_rental()
+        line._onchange_product_uom()
         line.rental = True
         vals = line._convert_to_write(line._cache)
         self.env["sale.order.line"].create(vals)
