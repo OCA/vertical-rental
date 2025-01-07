@@ -7,67 +7,59 @@ from odoo.exceptions import ValidationError
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
-    def _default_pricelist(self):
-        # TODO change default pricelist if country group exist
-        return self.env.ref("product.list0").id
-
     rental_of_month = fields.Boolean(
-        string="Rented in months",
-        copy=False,
+        compute="_compute_rental_of_month",
+        inverse="_inverse_rental_of_month",
+        store=True,
     )
 
     rental_of_day = fields.Boolean(
-        string="Rented in days",
-        copy=False,
+        compute="_compute_rental_of_day", inverse="_inverse_rental_of_day", store=True
     )
 
     rental_of_hour = fields.Boolean(
-        string="Rented in hours",
-        copy=False,
+        compute="_compute_rental_of_hour", inverse="_inverse_rental_of_hour", store=True
     )
 
     product_rental_month_id = fields.Many2one(
         comodel_name="product.product",
-        string="Rental Service (Month)",
-        ondelete="set null",
-        copy=False,
+        compute="_compute_product_rental_month_id",
+        inverse="_inverse_product_rental_month_id",
+        store=True,
     )
 
     product_rental_day_id = fields.Many2one(
         comodel_name="product.product",
-        string="Rental Service (Day)",
-        ondelete="set null",
-        copy=False,
+        compute="_compute_product_rental_day_id",
+        inverse="_inverse_product_rental_day_id",
+        store=True,
     )
 
     product_rental_hour_id = fields.Many2one(
         comodel_name="product.product",
-        string="Rental Service (Hour)",
-        ondelete="set null",
-        copy=False,
+        compute="_compute_product_rental_hour_id",
+        inverse="_inverse_product_rental_hour_id",
+        store=True,
     )
 
     rental_price_month = fields.Float(
-        string="Price / Month",
+        compute="_compute_rental_price_month",
+        inverse="_inverse_rental_price_month",
         store=True,
-        copy=False,
-        readonly=False,
         related="product_rental_month_id.list_price",
     )
 
     rental_price_day = fields.Float(
-        string="Price / Day",
+        compute="_compute_rental_price_day",
+        inverse="_inverse_rental_price_day",
         store=True,
-        copy=False,
-        readonly=False,
         related="product_rental_day_id.list_price",
     )
 
     rental_price_hour = fields.Float(
-        string="Price / Hour",
+        compute="_compute_rental_price_hour",
+        inverse="_inverse_rental_price_hour",
         store=True,
-        copy=False,
-        readonly=False,
         related="product_rental_hour_id.list_price",
     )
 
@@ -92,11 +84,98 @@ class ProductProduct(models.Model):
         copy=False,
     )
 
-    def_pricelist_id = fields.Many2one(
-        comodel_name="product.pricelist",
-        string="Default Pricelist",
-        default=lambda self: self._default_pricelist(),
-    )
+    @api.depends("product_tmpl_id.rental_of_month")
+    def _compute_rental_of_month(self):
+        for product in self:
+            product.rental_of_month = product.product_tmpl_id.rental_of_month
+
+    def _inverse_rental_of_month(self):
+        for product in self:
+            product.product_tmpl_id.rental_of_month = product.rental_of_month
+
+    @api.depends("product_tmpl_id.product_rental_month_id")
+    def _compute_product_rental_month_id(self):
+        for product in self:
+            product.product_rental_month_id = (
+                product.product_tmpl_id.product_rental_month_id
+            )
+
+    def _inverse_product_rental_month_id(self):
+        for product in self:
+            product.product_tmpl_id.product_rental_month_id = (
+                product.product_rental_month_id
+            )
+
+    @api.depends("product_tmpl_id.rental_price_month")
+    def _compute_rental_price_month(self):
+        for product in self:
+            product.rental_price_month = product.product_tmpl_id.rental_price_month
+
+    def _inverse_rental_price_month(self):
+        for product in self:
+            product.product_tmpl_id.rental_price_month = product.rental_price_month
+
+    @api.depends("product_tmpl_id.rental_of_day")
+    def _compute_rental_of_day(self):
+        for product in self:
+            product.rental_of_day = product.product_tmpl_id.rental_of_day
+
+    def _inverse_rental_of_day(self):
+        for product in self:
+            product.product_tmpl_id.rental_of_day = product.rental_of_day
+
+    @api.depends("product_tmpl_id.product_rental_day_id")
+    def _compute_product_rental_day_id(self):
+        for product in self:
+            product.product_rental_day_id = (
+                product.product_tmpl_id.product_rental_day_id
+            )
+
+    def _inverse_product_rental_day_id(self):
+        for product in self:
+            product.product_tmpl_id.product_rental_day_id = (
+                product.product_rental_day_id
+            )
+
+    @api.depends("product_tmpl_id.rental_price_day")
+    def _compute_rental_price_day(self):
+        for product in self:
+            product.rental_price_day = product.product_tmpl_id.rental_price_day
+
+    def _inverse_rental_price_day(self):
+        for product in self:
+            product.product_tmpl_id.rental_price_day = product.rental_price_day
+
+    @api.depends("product_tmpl_id.rental_of_hour")
+    def _compute_rental_of_hour(self):
+        for product in self:
+            product.rental_of_hour = product.product_tmpl_id.rental_of_hour
+
+    def _inverse_rental_of_hour(self):
+        for product in self:
+            product.product_tmpl_id.rental_of_hour = product.rental_of_hour
+
+    @api.depends("product_tmpl_id.rental_price_hour")
+    def _compute_rental_price_hour(self):
+        for product in self:
+            product.rental_price_hour = product.product_tmpl_id.rental_price_hour
+
+    def _inverse_rental_price_hour(self):
+        for product in self:
+            product.product_tmpl_id.rental_price_hour = product.rental_price_hour
+
+    @api.depends("product_tmpl_id.product_rental_hour_id")
+    def _compute_product_rental_hour_id(self):
+        for product in self:
+            product.product_rental_hour_id = (
+                product.product_tmpl_id.product_rental_hour_id
+            )
+
+    def _inverse_product_rental_hour_id(self):
+        for product in self:
+            product.product_tmpl_id.product_rental_hour_id = (
+                product.product_rental_hour_id
+            )
 
     # override from sale_rental, to remove Uom constrain
     @api.constrains("rented_product_id", "must_have_dates", "type", "uom_id")

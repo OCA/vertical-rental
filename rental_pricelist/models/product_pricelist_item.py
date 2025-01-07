@@ -11,12 +11,27 @@ class ProductPricelistItem(models.Model):
         string="Rental Service (Day)",
     )
 
+    day_item_tmpl_id = fields.Many2one(
+        comodel_name="product.template",
+        string="Rental Service (Day)",
+    )
+
     month_item_id = fields.Many2one(
         comodel_name="product.product",
         string="Rental Service (Month)",
     )
 
+    month_item_tmpl_id = fields.Many2one(
+        comodel_name="product.template",
+        string="Rental Service (Month)",
+    )
+
     hour_item_id = fields.Many2one(
+        comodel_name="product.product",
+        string="Rental Service (Hour)",
+    )
+
+    hour_item_tmpl_id = fields.Many2one(
         comodel_name="product.product",
         string="Rental Service (Hour)",
     )

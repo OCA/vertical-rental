@@ -14,6 +14,7 @@
     "data": [
         "views/sale_view.xml",
         "views/product_view.xml",
+        "views/product_template_view.xml",
         "views/res_company_view.xml",
     ],
     "demo": [],
