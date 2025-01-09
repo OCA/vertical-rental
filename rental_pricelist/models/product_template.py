@@ -120,12 +120,24 @@ class ProductTemplate(models.Model):
         )
         return product_ids
 
-    def write(self, vals):
-        if vals.get("rental", False):
+    @api.model_create_multi
+    def create(self, vals_list):
+        product_tmpl_ids = super().create(vals_list)
+        for product_tmpl_id in product_tmpl_ids:
+            if product_tmpl_id.rental:
+                product_id = product_tmpl_id._get_product_by_template(limit=1)
+                if product_id:
+                    product_tmpl_id.product_related_id = product_id[0]["id"]
+        return product_tmpl_ids
+
+    @api.onchange("rental_of_month", "rental_of_day", "rental_of_hour")
+    def onchange_rental_of_month_day_hour(self):
+        if (
+            self.rental_of_month or self.rental_of_day or self.rental_of_hour
+        ) and not self.product_related_id:
             product_id = self._get_product_by_template(limit=1)
             if product_id:
-                vals["product_related_id"] = product_id[0]["id"]
-        return super().write(vals)
+                self.product_related_id = product_id[0]["id"]
 
     @api.depends("product_related_id")
     def _compute_product_value_ids(self):
