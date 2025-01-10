@@ -72,19 +72,6 @@ class ProductTemplate(models.Model):
         copy=False,
     )
 
-    """
-        This field defines which product.product is associated with the product.template
-        and obtains the data necessary for Rental.
-    """
-    product_value_ids = fields.Many2many(
-        "product.product", compute="_compute_product_value_ids", store=True
-    )
-    product_related_id = fields.Many2one(
-        "product.product",
-        domain="[('id','in',product_value_ids)]",
-        help="Defines the product associated with the product template.",
-    )
-
     month_scale_pricelist_item_ids = fields.One2many(
         comodel_name="product.pricelist.item",
         inverse_name="month_item_tmpl_id",
@@ -110,13 +97,29 @@ class ProductTemplate(models.Model):
         copy=False,
     )
 
+    """
+        This field defines which product.product is associated with the product.template
+        and obtains the data necessary for Rental.
+    """
+    product_value_ids = fields.Many2many(
+        "product.product", compute="_compute_product_value_ids", store=True
+    )
+    product_related_id = fields.Many2one(
+        "product.product",
+        domain="[('id','in',product_value_ids)]",
+        help="Defines the product associated with the product template.",
+    )
+
     def _default_pricelist(self):
         # TODO change default pricelist if country group exist
         return self.env.ref("product.list0").id
 
     def _get_product_by_template(self, limit=1000):
+        product_tmpl_id = self._origin.id if hasattr(self, "_origin") else self.id
         product_ids = self.env["product.product"].search_read(
-            domain=[["product_tmpl_id", "=", self.id]], fields=["id"], limit=limit
+            domain=[["product_tmpl_id", "=", product_tmpl_id]],
+            fields=["id"],
+            limit=limit,
         )
         return product_ids
 
@@ -139,7 +142,7 @@ class ProductTemplate(models.Model):
             if product_id:
                 self.product_related_id = product_id[0]["id"]
 
-    @api.depends("product_related_id")
+    @api.depends("product_related_id", "rental")
     def _compute_product_value_ids(self):
         for product_tmpl in self:
             self.product_value_ids = [
