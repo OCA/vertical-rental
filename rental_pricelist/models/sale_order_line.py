@@ -23,6 +23,19 @@ class SaleOrderLine(models.Model):
         related="display_product_id.rental",
     )
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        lines = super().create(vals_list)
+        for line in lines:
+            if (
+                line.product_uom_qty > 0
+                and line.order_id.type_id.id
+                == self.env.ref("rental_base.rental_sale_type").id
+                and line.rental_qty == 0
+            ):
+                line.rental_qty = line.product_uom_qty
+        return lines
+
     @api.model
     def _get_product_domain(self):
         domain = [
