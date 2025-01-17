@@ -291,3 +291,4 @@ class SaleOrderLine(models.Model):
         if self.start_date and self.end_date:
             number = self._get_number_of_time_unit()
             self.number_of_time_unit = number
+            self.product_uom_qty = number
