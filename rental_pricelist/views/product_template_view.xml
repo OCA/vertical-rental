@@ -8,6 +8,16 @@
         <!--Priority greater than 100-->
         <field name="inherit_id" ref="product.product_template_only_form_view" />
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='rental']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [('type', '!=', 'product')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//label[@for='rental']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [('type', '!=', 'product')]}
+                </attribute>
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page
                     name="rental_price"
