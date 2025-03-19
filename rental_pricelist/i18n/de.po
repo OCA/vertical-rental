@@ -69,13 +69,6 @@ msgstr ""
 "                                </strong>"
 
 #. module: rental_pricelist
-#: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
-msgid "<strong colspan=\"2\" attrs=\"{'invisible': [('product_rental_week_id', '=', False)]}\">\n"
-"                                    Bulk Prices\n"
-"                                </strong>"
-msgstr ""
-
-#. module: rental_pricelist
 #: model:ir.model.fields,field_description:rental_pricelist.field_sale_order_line__sale_ok
 msgid "Can be Sold"
 msgstr ""
@@ -194,7 +187,10 @@ msgstr ""
 
 #. module: rental_pricelist
 #: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_default_code_prefix_week
-msgid "Define the default code of the weekly rental service by setting a prefix code. The entire default code is built by adding the prefix code, the product's default code and the suffix code."
+msgid ""
+"Define the default code of the weekly rental service by setting a prefix "
+"code. The entire default code is built by adding the prefix code, the "
+"product's default code and the suffix code."
 msgstr ""
 "Hier kann die interne Referenz des Mietservices auf Wochenbasis definiert "
 "werden, indem ein Präfix-Code angegeben wird. Die gesamte interne Referenz "
@@ -203,7 +199,10 @@ msgstr ""
 
 #. module: rental_pricelist
 #: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_default_code_suffix_week
-msgid "Define the default code of the weekly rental service by setting a suffix code. The entire default code is built by adding the prefix code, the product's default code and the suffix code."
+msgid ""
+"Define the default code of the weekly rental service by setting a suffix "
+"code. The entire default code is built by adding the prefix code, the "
+"product's default code and the suffix code."
 msgstr ""
 "Hier kann die interne Referenz des Mietservices auf Wochenbasis definiert "
 "werden, indem ein Suffix-Code angegeben wird. Die gesamte interne Referenz "
@@ -272,7 +271,9 @@ msgstr ""
 
 #. module: rental_pricelist
 #: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_name_prefix_week
-msgid "Define the name of the weekly rental service by setting a prefix. The entire name is built by adding the prefix, the product's name and the suffix."
+msgid ""
+"Define the name of the weekly rental service by setting a prefix. The entire "
+"name is built by adding the prefix, the product's name and the suffix."
 msgstr ""
 "Hier kann der Name des Mietservices auf Wochenbasis definiert werden, indem "
 "ein Präfix angegeben wird. Der gesamte Name wird generiert durch das "
@@ -280,7 +281,9 @@ msgstr ""
 
 #. module: rental_pricelist
 #: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_name_suffix_week
-msgid "Define the name of the weekly rental service by setting a suffix. The entire name is built by adding the prefix, the product's name and the suffix."
+msgid ""
+"Define the name of the weekly rental service by setting a suffix. The entire "
+"name is built by adding the prefix, the product's name and the suffix."
 msgstr ""
 "Hier kann der Name des Mietservices auf Wochenbasis definiert werden, indem "
 "ein Präfix angegeben wird. Der gesamte Name wird generiert durch das "
