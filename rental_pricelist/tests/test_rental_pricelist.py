@@ -68,9 +68,11 @@ class TestRentalPricelist(RentalStockCommon):
                 "type": "product",
                 "rental": True,
                 "rental_of_month": True,
+                "rental_of_week": True,
                 "rental_of_day": True,
                 "rental_of_hour": True,
                 "rental_price_month": 1000,
+                "rental_price_week": 400,
                 "rental_price_day": 100,
                 "rental_price_hour": 10,
             }
@@ -127,16 +129,18 @@ class TestRentalPricelist(RentalStockCommon):
         self.productB.write(
             {
                 "rental_of_month": True,
+                "rental_of_week": True,
                 "rental_of_day": True,
                 "rental_of_hour": True,
                 "rental_price_month": 2000,
+                "rental_price_week": 800,
                 "rental_price_day": 200,
                 "rental_price_hour": 20,
             }
         )
         # check service products of product A
-        check_hour = check_day = check_month = False
-        self.assertEqual(len(self.productA.rental_service_ids), 3)
+        check_hour = check_day = check_month = check_week = False
+        self.assertEqual(len(self.productA.rental_service_ids), 4)
         for p in self.productA.rental_service_ids:
             if p.uom_id == self.uom_month:
                 self.assertEqual(p.lst_price, 1000)
@@ -147,11 +151,14 @@ class TestRentalPricelist(RentalStockCommon):
             if p.uom_id == self.uom_hour:
                 self.assertEqual(p.lst_price, 10)
                 check_hour = True
-        self.assertTrue(check_hour and check_day and check_month)
+            if p.uom_id == self.uom_week:
+                self.assertEqual(p.lst_price, 400)
+                check_week = True
+        self.assertTrue(check_hour and check_day and check_month and check_week)
 
         # check service products of product B
-        check_hour = check_day = check_month = False
-        self.assertEqual(len(self.productB.rental_service_ids), 3)
+        check_hour = check_day = check_month = check_week = False
+        self.assertEqual(len(self.productB.rental_service_ids), 4)
         for p in self.productB.rental_service_ids:
             if p.uom_id == self.uom_month:
                 self.assertEqual(p.lst_price, 2000)
@@ -162,7 +169,10 @@ class TestRentalPricelist(RentalStockCommon):
             if p.uom_id == self.uom_hour:
                 self.assertEqual(p.lst_price, 20)
                 check_hour = True
-        self.assertTrue(check_hour and check_day and check_month)
+            if p.uom_id == self.uom_week:
+                self.assertEqual(p.lst_price, 800)
+                check_week = True
+        self.assertTrue(check_hour and check_day and check_month and check_week)
 
     def test_01_rental_onchange_productA(self):
         """
@@ -190,7 +200,7 @@ class TestRentalPricelist(RentalStockCommon):
         # check uom domain
         check_uom_domain = False
         if "domain" in res and "product_uom" in res["domain"]:
-            self.assertEqual(len(res["domain"]["product_uom"][0][2]), 3)
+            self.assertEqual(len(res["domain"]["product_uom"][0][2]), 4)
             check_uom_domain = True
         self.assertTrue(check_uom_domain)
         line.onchange_rental()
@@ -298,6 +308,11 @@ class TestRentalPricelist(RentalStockCommon):
         #     45      80
         #     80      70
         #
+        #    Week    Price
+        #      1      400
+        #      4      350
+        #      9      300
+        #
         #    Month   Price
         #      1     1000
         #      2      900
@@ -352,6 +367,24 @@ class TestRentalPricelist(RentalStockCommon):
                 ],
             }
         )
+        self.productA.write(
+            {
+                "week_scale_pricelist_item_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "min_quantity": 4,
+                            "fixed_price": 350,
+                            "applied_on": "0_product_variant",
+                            "compute_price": "fixed",
+                            "product_id": self.productA.product_rental_week_id.id,
+                            "pricelist_id": self.productA.def_pricelist_id.id,
+                        },
+                    ),
+                ],
+            }
+        )
 
         # add item from pricelist
         item1 = self.env["product.pricelist.item"].create(
@@ -378,6 +411,18 @@ class TestRentalPricelist(RentalStockCommon):
         )
         item2._onchange_product_id()
         self.assertEqual(item2.month_item_id, self.productA)
+        item3 = self.env["product.pricelist.item"].create(
+            {
+                "applied_on": "0_product_variant",
+                "compute_price": "fixed",
+                "product_id": self.productA.product_rental_week_id.id,
+                "pricelist_id": self.productA.def_pricelist_id.id,
+                "min_quantity": 9,
+                "fixed_price": 300,
+            }
+        )
+        item3._onchange_product_id()
+        self.assertEqual(item3.week_item_id, self.productA)
 
         line = (
             self.env["sale.order.line"]
@@ -421,6 +466,18 @@ class TestRentalPricelist(RentalStockCommon):
         _run_sol_onchange_date(line, end_date=self.date_three_month_later)
         self.assertEqual(line.product_uom_qty, 3)
         self.assertEqual(line.price_unit, 800)
+
+        # check price of weeks
+        _run_sol_onchange_product_uom(line, self.uom_week)
+        _run_sol_onchange_date(line, end_date=self.tomorrow)
+        self.assertEqual(line.product_uom_qty, 1)
+        self.assertEqual(line.price_unit, 400)
+        _run_sol_onchange_date(line, end_date=self.date_28_day_later)  # check round
+        self.assertEqual(line.product_uom_qty, 5)
+        self.assertEqual(line.price_unit, 350)
+        _run_sol_onchange_date(line, end_date=self.date_63_day_later)  # check round
+        self.assertEqual(line.product_uom_qty, 10)
+        self.assertEqual(line.price_unit, 300)
 
     def test_04_check_rental_order_line_productD(self):
         """

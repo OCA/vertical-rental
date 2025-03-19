@@ -120,6 +120,16 @@ msgid "Define the default code of the monthly rental service by setting a suffix
 msgstr ""
 
 #. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_default_code_prefix_week
+msgid "Define the default code of the weekly rental service by setting a prefix code. The entire default code is built by adding the prefix code, the product's default code and the suffix code."
+msgstr ""
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_default_code_suffix_week
+msgid "Define the default code of the weekly rental service by setting a suffix code. The entire default code is built by adding the prefix code, the product's default code and the suffix code."
+msgstr ""
+
+#. module: rental_pricelist
 #: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_name_prefix_day
 msgid "Define the name of the daily rental service by setting a prefix. The entire name is built by adding the prefix, the product's name and the suffix."
 msgstr ""
@@ -150,6 +160,16 @@ msgid "Define the name of the monthly rental service by setting a suffix. The en
 msgstr ""
 
 #. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_name_prefix_week
+msgid "Define the name of the weekly rental service by setting a prefix. The entire name is built by adding the prefix, the product's name and the suffix."
+msgstr ""
+
+#. module: rental_pricelist
+#: model:ir.model.fields,help:rental_pricelist.field_res_company__rental_service_name_suffix_week
+msgid "Define the name of the weekly rental service by setting a suffix. The entire name is built by adding the prefix, the product's name and the suffix."
+msgstr ""
+
+#. module: rental_pricelist
 #: model:ir.model.fields,field_description:rental_pricelist.field_product_product__hour_scale_pricelist_item_ids
 msgid "Hour Scale Pricelist Items"
 msgstr ""
@@ -165,7 +185,7 @@ msgid "Hourly Rentals"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:199
+#: code:addons/rental_pricelist/models/sale.py:202
 #, python-format
 msgid "Missing \"Rental to Extend\" on the sale order line with rental service %s."
 msgstr ""
@@ -186,14 +206,14 @@ msgid "Monthly Rentals"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/product.py:145
-#: code:addons/rental_pricelist/models/product.py:158
+#: code:addons/rental_pricelist/models/product.py:178
+#: code:addons/rental_pricelist/models/product.py:191
 #, python-format
 msgid "No expected rental type (rental unit of measure) is found."
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:133
+#: code:addons/rental_pricelist/models/sale.py:136
 #, python-format
 msgid "Not enough stock!"
 msgstr ""
@@ -204,19 +224,19 @@ msgid "Number of TU"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:223
+#: code:addons/rental_pricelist/models/sale.py:226
 #, python-format
 msgid "On the \"new rental\" sale order line with product \"%s\", we should have a rental service product!"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:232
+#: code:addons/rental_pricelist/models/sale.py:235
 #, python-format
 msgid "On the sale order line with product %s you are trying to sell a rented product with a quantity (%s) that is different from the rented quantity (%s). This is not supported."
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:208
+#: code:addons/rental_pricelist/models/sale.py:211
 #, python-format
 msgid "On the sale order line with rental service %s, you are trying to extend a rental with a rental quantity (%s) that is different from the quantity of the original rental (%s). This is not supported."
 msgstr ""
@@ -252,6 +272,11 @@ msgid "Prefix of Rental Service Internal Reference (Month)"
 msgstr ""
 
 #. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_default_code_prefix_week
+msgid "Prefix of Rental Service Internal Reference (Week)"
+msgstr ""
+
+#. module: rental_pricelist
 #: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_name_prefix_day
 msgid "Prefix of Rental Service Name (Day)"
 msgstr ""
@@ -264,6 +289,11 @@ msgstr ""
 #. module: rental_pricelist
 #: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_name_prefix_month
 msgid "Prefix of Rental Service Name (Month)"
+msgstr ""
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_name_prefix_week
+msgid "Prefix of Rental Service Name (Week)"
 msgstr ""
 
 #. module: rental_pricelist
@@ -287,9 +317,15 @@ msgid "Price / Month"
 msgstr ""
 
 #. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__rental_price_week
+msgid "Price / Week"
+msgstr ""
+
+#. module: rental_pricelist
 #: model:ir.model.fields,help:rental_pricelist.field_product_product__rental_price_day
 #: model:ir.model.fields,help:rental_pricelist.field_product_product__rental_price_hour
 #: model:ir.model.fields,help:rental_pricelist.field_product_product__rental_price_month
+#: model:ir.model.fields,help:rental_pricelist.field_product_product__rental_price_week
 msgid "Price at which the product is sold to customers."
 msgstr ""
 
@@ -333,12 +369,18 @@ msgid "Rental Service (Month)"
 msgstr ""
 
 #. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_pricelist_item__week_item_id
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__product_rental_week_id
+msgid "Rental Service (Week)"
+msgstr ""
+
+#. module: rental_pricelist
 #: model_terms:ir.ui.view,arch_db:rental_pricelist.view_company_rental_service_form
 msgid "Rental Services"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/product.py:198
+#: code:addons/rental_pricelist/models/product.py:231
 #, python-format
 msgid "Rental of %s (%s)"
 msgstr ""
@@ -356,6 +398,11 @@ msgstr ""
 #. module: rental_pricelist
 #: model:ir.model.fields,field_description:rental_pricelist.field_product_product__rental_of_month
 msgid "Rented in months"
+msgstr ""
+
+#. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__rental_of_week
+msgid "Rented in weeks"
 msgstr ""
 
 #. module: rental_pricelist
@@ -394,6 +441,11 @@ msgid "Suffix of Rental Service Internal Reference (Month)"
 msgstr ""
 
 #. module: rental_pricelist
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_default_code_suffix_week
+msgid "Suffix of Rental Service Internal Reference (Week)"
+msgstr ""
+
+#. module: rental_pricelist
 #: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_name_suffix_day
 msgid "Suffix of Rental Service Name (Day)"
 msgstr ""
@@ -409,13 +461,18 @@ msgid "Suffix of Rental Service Name (Month)"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:324
+#: model:ir.model.fields,field_description:rental_pricelist.field_res_company__rental_service_name_suffix_week
+msgid "Suffix of Rental Service Name (Week)"
+msgstr ""
+
+#. module: rental_pricelist
+#: code:addons/rental_pricelist/models/sale.py:329
 #, python-format
 msgid "The product %s is not correctly configured."
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/product.py:118
+#: code:addons/rental_pricelist/models/product.py:147
 #, python-format
 msgid "The product has no related rental services."
 msgstr ""
@@ -431,7 +488,22 @@ msgid "Time"
 msgstr ""
 
 #. module: rental_pricelist
-#: code:addons/rental_pricelist/models/sale.py:134
+#: model:ir.model.fields,field_description:rental_pricelist.field_product_product__week_scale_pricelist_item_ids
+msgid "Week Scale Pricelist Items"
+msgstr ""
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.product_normal_form_view
+msgid "Weekly Basis"
+msgstr ""
+
+#. module: rental_pricelist
+#: model_terms:ir.ui.view,arch_db:rental_pricelist.view_company_rental_service_form
+msgid "Weekly Rentals"
+msgstr ""
+
+#. module: rental_pricelist
+#: code:addons/rental_pricelist/models/sale.py:137
 #, python-format
 msgid "You want to rent %.2f %s but you only have %.2f %s currently available on the stock location \"%s\"! Make sure that you get some units back in the meantime or re-supply the stock location \"%s\"."
 msgstr ""
