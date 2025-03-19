@@ -25,6 +25,7 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
         self.date_0111 = fields.Date.from_string("2021-01-11")
         self.date_0103 = fields.Date.from_string("2021-01-03")
         self.date_0112 = fields.Date.from_string("2021-01-12")
+        self.date_0131 = fields.Date.from_string("2021-01-31")
 
     def test_00_update_time_rental_order(self):
         # rental order
@@ -166,3 +167,16 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
             rental_2.in_move_id.date_expected,
             fields.Datetime.to_datetime(self.date_0112),
         )
+
+    def test_00_get_time_unit(self):
+        rental_order = self._create_rental_order(
+            self.partnerA.id, self.date_0101, self.date_0131
+        )
+        days = rental_order.order_line._get_number_of_time_unit()
+        rental_order.order_line.product_uom = self.uom_week
+        weeks = rental_order.order_line._get_number_of_time_unit()
+        rental_order.order_line.product_uom = self.uom_month
+        months = rental_order.order_line._get_number_of_time_unit()
+        self.assertEqual(days, 31)
+        self.assertEqual(weeks, 5)
+        self.assertEqual(months, 1)

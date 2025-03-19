@@ -1,6 +1,7 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
 import datetime
+from math import ceil
 
 from odoo import _, api, exceptions, fields, models
 from odoo.exceptions import ValidationError
@@ -204,10 +205,12 @@ class SaleOrderLine(models.Model):
     @api.model
     def _get_time_uom(self):
         uom_month = self.env.ref("rental_base.product_uom_month")
+        uom_week = self.env.ref("rental_base.product_uom_week")
         uom_day = self.env.ref("uom.product_uom_day")
         uom_hour = self.env.ref("uom.product_uom_hour")
         return {
             "month": uom_month,
+            "week": uom_week,
             "day": uom_day,
             "hour": uom_hour,
         }
@@ -226,6 +229,8 @@ class SaleOrderLine(models.Model):
             # https://www.checkyourmath.com/convert/time/days_months.php
             number = ((self.end_date - self.start_date).days + 1) / 30.4167
             number = float_round(number, precision_rounding=1)
+        elif self.product_uom.id == time_uoms["week"].id:
+            number = ceil(((self.end_date - self.start_date).days + 1) / 7)
         return number
 
     @api.multi
