@@ -111,8 +111,7 @@ Contributors
 
 - Alexis de Lattre <alexis.delattre@akretion.com>
 - Sodexis <dev@sodexis.com>
-- Danh Vo
-  <`https://github.com/danhvophuong\\> <https://github.com/danhvophuong\>>`__
+- Danh Vo <https://github.com/danhvophuong>
 - Kiril Vangelovski <kiril@lambda-is.com>
 - Chau Le <chaulb@trobz.com>
 

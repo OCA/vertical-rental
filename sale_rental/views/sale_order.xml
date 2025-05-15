@@ -19,18 +19,23 @@
             >
             <field
                     name="rental_type"
-                    attrs="{'invisible': [('rental', '=', False)], 'required': [('rental', '=', True)]}"
+                    readonly="state != 'draft'"
+                    invisible="not rental"
+                    required="rental"
                 />
             <field
                     name="extension_rental_id"
                     options="{'no_quick_create': True, 'no_create_edit': True}"
-                    attrs="{'invisible': [('rental_type', '!=', 'rental_extension')], 'required': [('rental_type', '=', 'rental_extension')]}"
+                    readonly="state != 'draft'"
+                    invisible="rental_type != 'rental_extension'"
+                    required="rental_type == 'rental_extension'"
                     domain="[('rental_product_id', '=', product_id), ('state', 'in', ('ordered', 'out')), ('company_id', '=', company_id)]"
                 />
             <field
                     name="sell_rental_id"
+                    readonly="state != 'draft'"
                     options="{'no_quick_create': True, 'no_create_edit': True}"
-                    attrs="{'invisible': [('can_sell_rental', '=', False)]}"
+                    invisible="not can_sell_rental"
                     domain="[('rented_product_id', '=', product_id), ('state', '=', 'out'), ('company_id', '=', company_id)]"
                 />
             <field name="rental" invisible="1" />
@@ -39,7 +44,9 @@
         <label for="product_uom_qty" position="before">
             <field
                     name="rental_qty"
-                    attrs="{'invisible': [('rental', '=', False)], 'required': [('rental', '=', True)]}"
+                    readonly="state != 'draft'"
+                    invisible="not rental"
+                    required="rental"
                 />
         </label>
         <xpath expr="//field[@name='order_line']/tree" position="attributes">
