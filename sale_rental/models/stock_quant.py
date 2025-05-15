@@ -17,7 +17,7 @@ class StockInventory(models.Model):
             ("product.product_product_20", 46),
             ("product.product_product_25", 2),
         ]
-        for (product_xmlid, qty) in products:
+        for product_xmlid, qty in products:
             product = self.env.ref(product_xmlid)
             self.with_context(inventory_mode=True).create(
                 {
