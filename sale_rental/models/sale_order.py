@@ -25,7 +25,8 @@ class SaleOrder(models.Model):
         res = super().action_cancel()
         for order in self:
             for line in order.order_line.filtered(
-                lambda l: l.rental_type == "rental_extension" and l.extension_rental_id
+                lambda lin: lin.rental_type == "rental_extension"
+                and lin.extension_rental_id
             ):
                 initial_end_date = line.extension_rental_id.end_date
                 line.extension_rental_id.in_move_id.write(
@@ -43,15 +44,11 @@ class SaleOrderLine(models.Model):
     can_sell_rental = fields.Boolean(string="Can Sell from Rental")
     rental_type = fields.Selection(
         [("new_rental", "New Rental"), ("rental_extension", "Rental Extension")],
-        readonly=True,
-        states={"draft": [("readonly", False)]},
     )
     extension_rental_id = fields.Many2one(
         "sale.rental",
         string="Rental to Extend",
         check_company=True,
-        readonly=True,
-        states={"draft": [("readonly", False)]},
     )
     rental_qty = fields.Float(
         string="Rental Quantity",
@@ -64,8 +61,6 @@ class SaleOrderLine(models.Model):
         "sale.rental",
         string="Rental to Sell",
         check_company=True,
-        readonly=True,
-        states={"draft": [("readonly", False)]},
     )
 
     _sql_constraints = [
