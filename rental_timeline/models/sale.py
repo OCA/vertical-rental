@@ -3,7 +3,8 @@
 import functools
 import operator
 
-from odoo import _, api, exceptions, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class SaleOrderLine(models.Model):
@@ -15,15 +16,6 @@ class SaleOrderLine(models.Model):
         compute="_compute_timeline_ids",
     )
 
-    rental_type = fields.Selection(
-        states={
-            "draft": [("readonly", False)],
-            "sent": [("readonly", False)],
-            "sale": [("readonly", False)],
-        }
-    )
-
-    @api.multi
     def _compute_timeline_ids(self):
         for line in self:
             domain = [
@@ -32,7 +24,6 @@ class SaleOrderLine(models.Model):
             ]
             line.timeline_ids = self.env["product.timeline"].search(domain)
 
-    @api.multi
     def _prepare_timeline_vals(self):
         self.ensure_one()
         return {
@@ -47,7 +38,6 @@ class SaleOrderLine(models.Model):
             "click_res_id": self.order_id.id,
         }
 
-    @api.multi
     def _create_product_timeline(self):
         self.ensure_one()
         if self.product_id.rented_product_id:
@@ -55,24 +45,25 @@ class SaleOrderLine(models.Model):
                 vals = self._prepare_timeline_vals()
                 self.env["product.timeline"].create(vals)
 
-    @api.multi
     def _reset_timeline(self, vals):
         for line in self:
             if not line.rental:
                 continue
             if line.product_id.rented_product_id:
                 if not line.timeline_ids:
-                    raise exceptions.UserError(
+                    raise UserError(
                         _(
-                            "The order line with rental product '%s' "
+                            f"The order line with rental product "
+                            f"'{line.product_id.rented_product_id}' "
                             "does not have timeline objects."
                         )
-                        % line.product_id.rented_product_id
                     )
                 update_date_start_later = False
-                start_timelines = sorted(line.timeline_ids, key=lambda l: l.date_start)
+                start_timelines = sorted(
+                    line.timeline_ids, key=lambda lin: lin.date_start
+                )
                 end_timelines = sorted(
-                    line.timeline_ids, key=lambda l: l.date_end, reverse=True
+                    line.timeline_ids, key=lambda lin: lin.date_end, reverse=True
                 )
                 if vals.get("start_date", False) and start_timelines:
                     if start_timelines[0].date_end < fields.Datetime.to_datetime(
@@ -86,33 +77,34 @@ class SaleOrderLine(models.Model):
                 if update_date_start_later:
                     start_timelines[0].date_start = vals["start_date"]
                 if vals.get("product_id", False):
-                    timelines = sorted(line.timeline_ids, key=lambda l: l.product_id)
+                    timelines = sorted(
+                        line.timeline_ids, key=lambda lin: lin.product_id
+                    )
                     product = self.env["product.product"].browse(vals["product_id"])
                     timelines[0].product_id = product.rented_product_id.id
                 if vals.get("name", False):
-                    timelines = sorted(line.timeline_ids, key=lambda l: l.name)
+                    timelines = sorted(line.timeline_ids, key=lambda lin: lin.name)
                     timelines[0].order_name = vals["name"]
             else:
-                raise exceptions.UserError(
+                raise UserError(
                     _(
-                        "The order line with ID '%s' of order '%s' "
+                        f"The order line with ID '{line.id}' of order "
+                        f"'{line.order_id.name}' "
                         "does not have a rental product."
                     )
-                    % (line.id, line.order_id.name)
                 )
 
-    @api.multi
     def _timeline_recompute_fields(self):
         for line in self:
             line.timeline_ids._compute_fields()
 
-    @api.model
-    def create(self, vals):
-        res = super().create(vals)
-        res._create_product_timeline()
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        sales = super().create(vals_list)
+        for sale in sales:
+            sale._create_product_timeline()
+        return sales
 
-    @api.multi
     def write(self, vals):
         res = super().write(vals)
         keys = {"start_date", "end_date", "product_id", "name"}
@@ -146,14 +138,13 @@ class SaleOrderLine(models.Model):
                     line.order_id.state not in ("draft", "sent")
                     and "rental_type" in vals
                 ):
-                    raise exceptions.UserError(
+                    raise UserError(
                         _(
                             "You are not allowed to change the 'rental type' "
                             "in an order line of a confirmed order.\n\n"
-                            "Order: %s\n"
-                            "Line with product: '%s'"
+                            f"Order: {line.order_id.name}\n"
+                            f"Line with product: '{line.product_id.display_name}'"
                         )
-                        % (line.order_id.name, line.product_id.display_name)
                     )
             reset_lines._reset_timeline(vals)
         keys = set(self.env["product.timeline"]._get_depends_fields("sale.order.line"))
@@ -161,7 +152,6 @@ class SaleOrderLine(models.Model):
             self._timeline_recompute_fields()
         return res
 
-    @api.multi
     def unlink(self):
         res = super().unlink()
         domain = [
@@ -171,10 +161,9 @@ class SaleOrderLine(models.Model):
         self.env["product.timeline"].search(domain).unlink()
         return res
 
-    @api.multi
     def update_start_end_date(self, date_start, date_end):
         # update dates
-        super().update_start_end_date(date_start, date_end)
+        res = super().update_start_end_date(date_start, date_end)
         for line in self:
             line._reset_timeline(
                 {
@@ -182,12 +171,12 @@ class SaleOrderLine(models.Model):
                     "end_date": fields.Datetime.to_datetime(date_end),
                 }
             )
+        return res
 
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    @api.multi
     def write(self, vals):
         res = super().write(vals)
         keys = {"partner_id", "partner_shipping_id", "name"}
@@ -197,21 +186,19 @@ class SaleOrder(models.Model):
                     line._timeline_recompute_fields()
         return res
 
-    @api.multi
     def action_cancel(self):
         """
         Delete all timeline objects when cancelling sale order.
         """
         for order in self:
             for line in order.order_line.filtered(
-                lambda l: l.rental_type == "rental_extension"
-                or l.rental_type == "new_rental"
+                lambda lin: lin.rental_type == "rental_extension"
+                or lin.rental_type == "new_rental"
             ):
                 line.timeline_ids.unlink()
         res = super().action_cancel()
         return res
 
-    @api.multi
     def action_draft(self):
         """
         Recreate the timeline objects when setting sale order to draft state.
@@ -222,7 +209,6 @@ class SaleOrder(models.Model):
                 line._create_product_timeline()
         return res
 
-    @api.multi
     def action_confirm(self):
         """
         Update timeline type of timeline objects when confirming the sale order.
@@ -232,15 +218,14 @@ class SaleOrder(models.Model):
         }
         for order in self:
             for line in order.order_line.filtered(
-                lambda l: l.rental_type == "rental_extension"
-                or l.rental_type == "new_rental"
+                lambda lin: lin.rental_type == "rental_extension"
+                or lin.rental_type == "new_rental"
             ):
                 line.timeline_ids.write(values)
                 line.timeline_ids._compute_fields()
         res = super().action_confirm()
         return res
 
-    @api.multi
     def unlink(self):
         ids = functools.reduce(operator.iconcat, [i.order_line.ids for i in self], [])
         if ids:
