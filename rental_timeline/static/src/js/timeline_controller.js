@@ -1,4 +1,4 @@
-odoo.define("rental_timeline.RentalTimelineController", function(require) {
+odoo.define("rental_timeline.RentalTimelineController", function (require) {
     "use strict";
 
     var dialogs = require("web.view_dialogs");
@@ -10,7 +10,7 @@ odoo.define("rental_timeline.RentalTimelineController", function(require) {
             onGroupDoubleClick: "_onGroupDoubleClick",
         }),
 
-        _onGroupClick: function(event) {
+        _onGroupClick: function (event) {
             var groupField = this.renderer.grouped_by;
 
             return this.do_action({
@@ -25,7 +25,7 @@ odoo.define("rental_timeline.RentalTimelineController", function(require) {
             });
         },
 
-        _onGroupDoubleClick: function(event) {
+        _onGroupDoubleClick: function (event) {
             var groupField = this.renderer.grouped_by;
             if (
                 this.renderer.last_group_bys[0] !== "product_categ_id" &&
@@ -47,7 +47,7 @@ odoo.define("rental_timeline.RentalTimelineController", function(require) {
             });
         },
 
-        _onUpdate: function(event) {
+        _onUpdate: function (event) {
             var self = this;
             this.renderer = event.data.renderer;
             var item = event.data.item;
@@ -63,7 +63,7 @@ odoo.define("rental_timeline.RentalTimelineController", function(require) {
                 context: this.getSession().user_context,
                 title: title,
                 view_id: Number(this.open_popup_action),
-                on_saved: function() {
+                on_saved: function () {
                     self.write_completed();
                 },
                 readonly: true,
