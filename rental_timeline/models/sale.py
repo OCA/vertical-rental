@@ -114,7 +114,7 @@ class SaleOrderLine(models.Model):
 
     @api.multi
     def write(self, vals):
-        res = super(SaleOrderLine, self).write(vals)
+        res = super().write(vals)
         keys = {"start_date", "end_date", "product_id", "name"}
         if keys.intersection(vals.keys()):
             rental = vals.get("rental", False)
@@ -163,7 +163,7 @@ class SaleOrderLine(models.Model):
 
     @api.multi
     def unlink(self):
-        res = super(SaleOrderLine, self).unlink()
+        res = super().unlink()
         domain = [
             ("res_model", "=", self._name),
             ("res_id", "in", self.ids),
@@ -174,7 +174,7 @@ class SaleOrderLine(models.Model):
     @api.multi
     def update_start_end_date(self, date_start, date_end):
         # update dates
-        super(SaleOrderLine, self).update_start_end_date(date_start, date_end)
+        super().update_start_end_date(date_start, date_end)
         for line in self:
             line._reset_timeline(
                 {
@@ -208,7 +208,7 @@ class SaleOrder(models.Model):
                 or l.rental_type == "new_rental"
             ):
                 line.timeline_ids.unlink()
-        res = super(SaleOrder, self).action_cancel()
+        res = super().action_cancel()
         return res
 
     @api.multi
@@ -216,7 +216,7 @@ class SaleOrder(models.Model):
         """
         Recreate the timeline objects when setting sale order to draft state.
         """
-        res = super(SaleOrder, self).action_draft()
+        res = super().action_draft()
         for order in self:
             for line in order.order_line:
                 line._create_product_timeline()
@@ -237,7 +237,7 @@ class SaleOrder(models.Model):
             ):
                 line.timeline_ids.write(values)
                 line.timeline_ids._compute_fields()
-        res = super(SaleOrder, self).action_confirm()
+        res = super().action_confirm()
         return res
 
     @api.multi
@@ -249,4 +249,4 @@ class SaleOrder(models.Model):
                 ("res_id", "in", ids),
             ]
             self.env["product.timeline"].search(domain).unlink()
-        return super(SaleOrder, self).unlink()
+        return super().unlink()
