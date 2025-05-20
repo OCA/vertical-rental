@@ -1,4 +1,4 @@
-odoo.define("rental_timeline.RentalTimelineView", function(require) {
+odoo.define("rental_timeline.RentalTimelineView", function (require) {
     "use strict";
 
     var core = require("web.core");
