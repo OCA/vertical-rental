@@ -1,5 +1,5 @@
 /* global vis, py */
-odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
+odoo.define("rental_timeline.RentalTimelineRenderer", function (require) {
     "use strict";
 
     var _TimelineRenderer = require("web_timeline.TimelineRenderer");
@@ -19,7 +19,7 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
          * @private
          * @returns {Array}
          */
-        split_groups: function(events, group_bys) {
+        split_groups: function (events, group_bys) {
             if (group_bys.length === 0) {
                 return events;
             }
@@ -28,11 +28,11 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
             var self = this;
             // Groups.push({id: -1, content: _t('-')});
 
-            _.each(events, function(event) {
+            _.each(events, function (event) {
                 var product_group_name = event[_.first(["product_id"])];
                 if (product_group_name) {
                     if (product_group_name instanceof Array) {
-                        let group = _.find(groups, function(existing_group) {
+                        let group = _.find(groups, function (existing_group) {
                             return _.isEqual(existing_group.id, product_group_name[0]);
                         });
 
@@ -63,19 +63,20 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                 if (group_bys[0] === "product_categ_id") {
                     var group_categs = [];
 
-                    _.each(events, function(event) {
+                    _.each(events, function (event) {
                         var group_name = event[_.first(group_bys)];
 
                         if (group_name) {
                             if (group_name instanceof Array) {
-                                let group = _.find(group_categs, function(
-                                    existing_group
-                                ) {
-                                    return _.isEqual(
-                                        existing_group.content,
-                                        group_name[1]
-                                    );
-                                });
+                                let group = _.find(
+                                    group_categs,
+                                    function (existing_group) {
+                                        return _.isEqual(
+                                            existing_group.content,
+                                            group_name[1]
+                                        );
+                                    }
+                                );
 
                                 if (_.isUndefined(group)) {
                                     var tooltip = null;
@@ -89,7 +90,7 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                                     }
 
                                     const nested_groups = [];
-                                    _.each(events, function(event_p) {
+                                    _.each(events, function (event_p) {
                                         if (
                                             event_p.product_categ_name ===
                                             event.product_categ_name
@@ -126,18 +127,19 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                 } else if (group_bys[0] === "order_name") {
                     var group_order_names = [];
 
-                    _.each(events, function(event) {
+                    _.each(events, function (event) {
                         var group_name = event[_.first(group_bys)];
                         if (group_name) {
                             if (group_name) {
-                                let group = _.find(group_order_names, function(
-                                    existing_group
-                                ) {
-                                    return _.isEqual(
-                                        existing_group.content,
-                                        group_name
-                                    );
-                                });
+                                let group = _.find(
+                                    group_order_names,
+                                    function (existing_group) {
+                                        return _.isEqual(
+                                            existing_group.content,
+                                            group_name
+                                        );
+                                    }
+                                );
                                 if (_.isUndefined(group)) {
                                     var tooltip = null;
                                     if (self.qweb.has_template("tooltip-item-group")) {
@@ -149,7 +151,7 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                                         );
                                     }
                                     const nested_groups = [];
-                                    _.each(events, function(event_o) {
+                                    _.each(events, function (event_o) {
                                         if (event_o.order_name === event.order_name) {
                                             if (
                                                 !nested_groups.includes(
@@ -187,18 +189,19 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                 } else if (group_bys[0] === "partner_id") {
                     var group_partners = [];
 
-                    _.each(events, function(event) {
+                    _.each(events, function (event) {
                         var group_name = event[_.first(group_bys)];
                         if (group_name) {
                             if (group_name instanceof Array) {
-                                let group = _.find(group_partners, function(
-                                    existing_group
-                                ) {
-                                    return _.isEqual(
-                                        existing_group.content,
-                                        group_name[1]
-                                    );
-                                });
+                                let group = _.find(
+                                    group_partners,
+                                    function (existing_group) {
+                                        return _.isEqual(
+                                            existing_group.content,
+                                            group_name[1]
+                                        );
+                                    }
+                                );
 
                                 if (_.isUndefined(group)) {
                                     var tooltip = null;
@@ -212,7 +215,7 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                                     }
 
                                     const nested_groups = [];
-                                    _.each(events, function(event_p) {
+                                    _.each(events, function (event_p) {
                                         if (
                                             event_p.partner_id[1] ===
                                             event.partner_id[1]
@@ -268,8 +271,8 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
          * @private
          * @returns {[groups, layer_groups]}
          */
-        generate_sub_groups: function(groups, layer_groups, group_by) {
-            var ids = groups.map(group => {
+        generate_sub_groups: function (groups, layer_groups, group_by) {
+            var ids = groups.map((group) => {
                 return group.id;
             });
             var max_id = Math.max(...ids);
@@ -283,7 +286,8 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                                 layer_groups[j].nestedGroups[m]
                             ) {
                                 const group = groups.find(
-                                    elem => elem.id === layer_groups[j].nestedGroups[m]
+                                    (elem) =>
+                                        elem.id === layer_groups[j].nestedGroups[m]
                                 );
                                 const newGroup = Object.assign({}, group);
                                 newGroup.original_id = newGroup.id;
@@ -313,7 +317,7 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
          * @private
          * @returns {Object}
          */
-        event_data_transform: function(evt) {
+        event_data_transform: function (evt) {
             var self = this;
             var date_start = new moment();
             var date_stop = null;
@@ -344,9 +348,7 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
             }
 
             if (!date_stop && date_delay) {
-                date_stop = moment(date_start)
-                    .add(date_delay, "hours")
-                    .toDate();
+                date_stop = moment(date_start).add(date_delay, "hours").toDate();
             }
 
             var group = evt.product_id;
@@ -368,7 +370,7 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
             if (self.arch.attrs.color_field !== undefined) {
                 color = evt[self.arch.attrs.color_field];
             } else if (self.arch.attrs.color_field === undefined) {
-                _.each(self.colors, function(col) {
+                _.each(self.colors, function (col) {
                     if (py.eval(`'${evt[col.field]}' ${col.opt} '${col.value}'`)) {
                         color = col.color;
                     }
@@ -406,7 +408,7 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
             return r;
         },
 
-        init_timeline: function() {
+        init_timeline: function () {
             var self = this;
             var util = vis.util;
             is_default_product_id = false;
@@ -430,12 +432,12 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
 
             this.timeline.on("doubleClick", self.on_group_double_click);
             // This.timeline.on('click', self.on_group_click);
-            this.timeline.on("click", function(props) {
+            this.timeline.on("click", function (props) {
                 props.event.preventDefault();
             });
 
             // Turn off the internal hammer tap event listener
-            this.timeline.off("changed").on("changed", function() {
+            this.timeline.off("changed").on("changed", function () {
                 this.options.orientation = {
                     item: "top",
                     axis: "top",
@@ -448,12 +450,12 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                 );
             });
 
-            (function(_create, setData) {
-                vis.timeline.components.Group.prototype.setData = function(data) {
+            (function (_create, setData) {
+                vis.timeline.components.Group.prototype.setData = function (data) {
                     setData.apply(this, [data]);
                     this.copy_data = data;
                 };
-                vis.timeline.components.Group.prototype._create = function() {
+                vis.timeline.components.Group.prototype._create = function () {
                     _create.apply(this);
                     this.popup = null;
                     this.dom.label.addEventListener(
@@ -469,7 +471,9 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                         this._onMouseMove.bind(this)
                     );
                 };
-                vis.timeline.components.Group.prototype._onMouseOver = function(event) {
+                vis.timeline.components.Group.prototype._onMouseOver = function (
+                    event
+                ) {
                     if (this.copy_data.tooltip === null) return;
                     if (this.popup === null)
                         this.popup = new Popup(this.itemSet.body.dom.root, "flip");
@@ -485,13 +489,15 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                     );
                     this.popup.show();
                 };
-                vis.timeline.components.Group.prototype._onMouseOut = function(event) {
+                vis.timeline.components.Group.prototype._onMouseOut = function (event) {
                     if (this.popup !== null) {
                         this.popup.hide();
                     }
                     console.log(event);
                 };
-                vis.timeline.components.Group.prototype._onMouseMove = function(event) {
+                vis.timeline.components.Group.prototype._onMouseMove = function (
+                    event
+                ) {
                     if (this.popup) {
                         if (!this.popup.hidden) {
                             var container = this.itemSet.body.dom.centerContainer;
@@ -513,11 +519,11 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                 vis.timeline.components.Group.prototype.setData
             );
 
-            (function(_onUpdateItem) {
+            (function (_onUpdateItem) {
                 // We set the option add=false, so we must overwrite the function _onUpdateItem
                 // because in the function _onUpdateItem is a check if add is true
                 // now we set add to true, call the function and set add back to false
-                vis.timeline.components.ItemSet.prototype._onUpdateItem = function(
+                vis.timeline.components.ItemSet.prototype._onUpdateItem = function (
                     item
                 ) {
                     var add = this.options.editable.add;
@@ -527,29 +533,30 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                 };
             })(vis.timeline.components.ItemSet.prototype._onUpdateItem);
 
-            (function(_repaintDragCenter) {
+            (function (_repaintDragCenter) {
                 // We set the option updateTime=false, so we must overwrite the function _onUpdateItem
                 // because in the function _onUpdateItem is a check if updateTime is true
                 // now we set updateTime to true, call the function and set updateTime back to false
-                vis.timeline.components.items.Item.prototype._repaintDragCenter = function() {
-                    var updateTime = this.options.editable.updateTime;
-                    this.options.editable.updateTime = true;
-                    _repaintDragCenter.apply(this);
-                    this.options.editable.updateTime = updateTime;
+                vis.timeline.components.items.Item.prototype._repaintDragCenter =
+                    function () {
+                        var updateTime = this.options.editable.updateTime;
+                        this.options.editable.updateTime = true;
+                        _repaintDragCenter.apply(this);
+                        this.options.editable.updateTime = updateTime;
 
-                    //                     If(this.selected && !this.dom.dragCenter && false){
-                    //                         hammer.off('tap');
-                    //                         hammer.off('doubletap');
-                    //                         hammer.on('tap', function(event){
-                    //                             //event.stopPropagation();
-                    //                             me.parent.itemSet._onUpdateItem(me);
-                    //                             me.parent.itemSet.body.emitter.emit('click', {
-                    //                                 event: event,
-                    //                                 item: me.id
-                    //                             });
-                    //                         });
-                    //                     }
-                };
+                        //                     If(this.selected && !this.dom.dragCenter && false){
+                        //                         hammer.off('tap');
+                        //                         hammer.off('doubletap');
+                        //                         hammer.on('tap', function(event){
+                        //                             //event.stopPropagation();
+                        //                             me.parent.itemSet._onUpdateItem(me);
+                        //                             me.parent.itemSet.body.emitter.emit('click', {
+                        //                                 event: event,
+                        //                                 item: me.id
+                        //                             });
+                        //                         });
+                        //                     }
+                    };
             })(vis.timeline.components.items.Item.prototype._repaintDragCenter);
         },
 
@@ -559,11 +566,11 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
          * @param {ClickEvent} e
          * @private
          */
-        on_group_double_click: function(e) {
+        on_group_double_click: function (e) {
             if (e.what === "group-label" && e.group !== -1) {
                 this._trigger(
                     e,
-                    function() {
+                    function () {
                         // Do nothing
                     },
                     "onGroupDoubleClick"
@@ -580,7 +587,7 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
          * @param {Boolean} adjust_window
          * @private
          */
-        on_data_loaded_2: function(events, group_bys, x2x, adjust_window) {
+        on_data_loaded_2: function (events, group_bys, x2x, adjust_window) {
             var self = this;
             var data = [];
             var groups = [];
@@ -603,10 +610,10 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
             ) {
                 this.grouped_by = group_bys;
 
-                _.each(events, function(event) {
+                _.each(events, function (event) {
                     if (event[self.date_start]) {
                         if (x2x) {
-                            _.each(event[group_bys], function(gr) {
+                            _.each(event[group_bys], function (gr) {
                                 var x2x_object = jQuery.extend({}, event);
                                 x2x_object[group_bys] = [gr];
                                 // Creating a UNIQUE id with [id]_[gr].
@@ -624,10 +631,10 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
                 group_categ_again++;
             } else {
                 this.grouped_by = "product_id";
-                _.each(events, function(event) {
+                _.each(events, function (event) {
                     if (event[self.date_start]) {
                         if (x2x) {
-                            _.each(event.product_id, function(gr) {
+                            _.each(event.product_id, function (gr) {
                                 var x2x_object = jQuery.extend({}, event);
                                 x2x_object.product_id = [gr];
                                 // Creating a UNIQUE id with [id]_[gr].
@@ -653,7 +660,7 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
 
             if (group_bys[0] === "partner_id") {
                 for (let i = 0; i < groups.length; i++) {
-                    data.forEach(item => {
+                    data.forEach((item) => {
                         if (!("nestedGroups" in groups[i])) {
                             // If(item.group === groups[i].id && !_.isEqual(item.evt.partner_id, groups[i].partner_id)){
                             //     if(i +1 < groups.length) {
@@ -683,7 +690,7 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
 
             if (group_bys[0] === "order_name") {
                 for (let i = 0; i < groups.length; i++) {
-                    data.forEach(item => {
+                    data.forEach((item) => {
                         if (!("nestedGroups" in groups[i])) {
                             // If(item.group === groups[i].id && item.evt.order_name !== groups[i].order_name){
                             //     if(i +1 < groups.length) {
@@ -717,31 +724,31 @@ odoo.define("rental_timeline.RentalTimelineRenderer", function(require) {
             }
         },
 
-        _do_nothing: function() {
+        _do_nothing: function () {
             console.log("click event is fired");
         },
 
-        _onTodayClicked: function() {
+        _onTodayClicked: function () {
             this._scaleCurrentWindow(1, "days", "day");
         },
 
-        _onScaleDayClicked: function() {
+        _onScaleDayClicked: function () {
             this._scaleCurrentWindow(1, "days", "now");
         },
 
-        _onScaleWeekClicked: function() {
+        _onScaleWeekClicked: function () {
             this._scaleCurrentWindow(7, "days", "now");
         },
 
-        _onScaleMonthClicked: function() {
+        _onScaleMonthClicked: function () {
             this._scaleCurrentWindow(1, "months", "now");
         },
 
-        _onScaleYearClicked: function() {
+        _onScaleYearClicked: function () {
             this._scaleCurrentWindow(1, "years", "now");
         },
 
-        _scaleCurrentWindow: function(
+        _scaleCurrentWindow: function (
             factor,
             time_unit = "hours",
             startOf = "current_window"

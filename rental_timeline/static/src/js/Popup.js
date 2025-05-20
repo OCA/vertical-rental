@@ -1,4 +1,4 @@
-odoo.define("rental_timeline.Popup", function() {
+odoo.define("rental_timeline.Popup", function () {
     "use strict";
     /**
      * Popup is a class to create a popup window with some text
