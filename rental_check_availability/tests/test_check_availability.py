@@ -3,6 +3,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields
+from odoo.fields import Command
 
 from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
 from odoo.addons.rental_pricelist.tests.test_rental_pricelist import (
@@ -17,6 +18,7 @@ class TestRentalCheckAvailability(RentalStockCommon):
 
         # Product Created A
         ProductObj = self.env["product.product"]
+        ProductPricelist = self.env["product.pricelist"]
         self.productA = ProductObj.create(
             {
                 "name": "Product A",
@@ -35,29 +37,31 @@ class TestRentalCheckAvailability(RentalStockCommon):
         self.date_25_day_later = self.today + relativedelta(days=25)
         self.date_27_day_later = self.today + relativedelta(days=27)
         self.date_30_day_later = self.today + relativedelta(days=30)
+        self.pricelist_id = ProductPricelist.create(
+            {
+                "name": "Pricelist A",
+                "item_ids": [Command.create({"product_id": self.productA.id})],
+            }
+        )
 
     def create_rental_order(self, start_date, end_date, qty):
         rental_order = (
             self.env["sale.order"]
             .with_context(
-                {
-                    "default_type_id": self.rental_sale_type.id,
-                }
+                default_type_id=self.rental_sale_type.id,
             )
             .create(
                 {
                     "warehouse_id": self.warehouse0.id,
                     "partner_id": self.partnerA.id,
-                    "pricelist_id": self.env.ref("product.list0").id,
+                    "pricelist_id": self.pricelist_id.id,
                 }
             )
         )
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
-                    "type_id": self.rental_sale_type.id,
-                }
+                type_id=self.rental_sale_type.id,
             )
             .new(
                 {
@@ -85,8 +89,8 @@ class TestRentalCheckAvailability(RentalStockCommon):
         # RO 6  (qty: 1)              5 --------- 15 (none)
         expected_warning = {
             "title": "Not enough stock!",
-            "message": "You want to rent 3.00 Units but you only "
-            "have 2.00 Units available in the selected period.",
+            "message": "You want to rent 3.0 Units but you only "
+            "2.0 Units available in the selected period.",
         }
         # create some quantity of productA (qty: 4)
         self.env["stock.quant"]._update_available_quantity(

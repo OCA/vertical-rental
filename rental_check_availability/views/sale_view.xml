@@ -16,11 +16,7 @@
                     icon="fa-list-alt"
                     class="oe_inline"
                     title="View concurrent Order/Quotation(s)"
-                    attrs="{'invisible': [
-                                   '|',
-                                   ('concurrent_orders','=', 'none'),
-                                   ('concurrent_orders','=', False),
-                               ]}"
+                    invisible="concurrent_orders in ('none', False)"
                 />
             </xpath>
         </field>
