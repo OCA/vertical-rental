@@ -88,7 +88,7 @@ class ProductProduct(models.Model):
             return super()._get_rental_service_uom(rental_type)
 
     def write(self, vals):
-        res = super(ProductProduct, self).write(vals)
+        res = super().write(vals)
         for p in self:
             # Create service product automatically
             if vals.get("rental_of_interval", False):
