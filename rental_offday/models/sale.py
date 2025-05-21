@@ -227,4 +227,4 @@ class SaleOrderLine(models.Model):
             time_uoms = self._get_time_uom()
             if self.product_uom.id != time_uoms["day"].id:
                 self.fixed_offday_type = "none"
-        return super(SaleOrderLine, self).product_uom_change()
+        return super().product_uom_change()
