@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 
 class TestRentalOffDay(TransactionCase):
     def setUp(self):
-        super(TestRentalOffDay, self).setUp()
+        super().setUp()
 
         product = self.env["product.product"].create(
             {
