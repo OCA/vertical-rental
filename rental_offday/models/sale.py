@@ -222,9 +222,9 @@ class SaleOrderLine(models.Model):
             self.add_additional_offdays = False
 
     @api.onchange("product_uom", "product_uom_qty")
-    def product_uom_change(self):
+    def _onchange_product_uom(self):
         if self.product_uom:
             time_uoms = self._get_time_uom()
             if self.product_uom.id != time_uoms["day"].id:
                 self.fixed_offday_type = "none"
-        return super().product_uom_change()
+        return super()._onchange_product_uom()

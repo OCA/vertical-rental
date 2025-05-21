@@ -7,20 +7,19 @@
         <field name="inherit_id" ref="rental_base.view_order_form" />
         <field name="arch" type="xml">
             <xpath
-                expr="//group[@id='rental_times']//label[@for='product_uom_qty']"
+                expr="//group[@id='rental_times']//field[@name='product_uom_qty']"
                 position="before"
             >
-                <label
-                    for="offday_number"
-                    string="Off-Time"
-                    attrs="{'invisible': [('show_offday', '=', False)]}"
-                />
-                <div attrs="{'invisible': [('show_offday', '=', False)]}">
-                    <field name="offday_number" class="oe_inline" /> Day(s)
+                <div invisible="not show_offday">
+                    <field
+                        name="offday_number"
+                        class="oe_inline"
+                        string="Off-Time"
+                    /> Day(s)
                 </div>
             </xpath>
             <xpath expr="//field[@name='order_line']//form" position="inside">
-                <notebook attrs="{'invisible': [('show_offday', '=', False)]}">
+                <notebook invisible="not show_offday">
                     <page name="offdays" string="Off-Days">
                         <field name="show_offday" invisible="1" />
                         <group>
