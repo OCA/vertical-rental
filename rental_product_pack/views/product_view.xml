@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
         <record id="product_template_form_view" model="ir.ui.view">
             <field name="name">product.template.pack.form</field>
@@ -11,9 +10,9 @@
                     </group>
                 </page>
                 <page name="page_pack" position="attributes">
-                    <attribute name="attrs">
-                        {'invisible': ['&amp;', ('used_pack_line_count', '=', 0), ('pack_ok', '=', False)]}
-                    </attribute>
+                    <attribute
+                    name="invisible"
+                >used_pack_line_count == 0 and not pack_ok</attribute>
                 </page>
             </field>
         </record>
@@ -24,16 +23,9 @@
             <field name="inherit_id" ref="product.product_template_only_form_view" />
             <field name="arch" type="xml">
                 <page name="page_pack" position="attributes">
-                    <attribute name="attrs">
-                        {'invisible': [
-                            '|',
-                            ('product_variant_count', '>', 1),
-                            '&amp;',
-                                ('used_pack_line_count', '=', 0),
-                                ('pack_ok', '=', False)
-                            ]
-                        }
-                    </attribute>
+                    <attribute
+                    name="invisible"
+                >product_variant_count &gt; 1 or (used_pack_line_count == 0 and not pack_ok)</attribute>
                 </page>
                 <page name="page_pack" position="inside">
                     <group name="group_found_pack">
@@ -42,7 +34,7 @@
                                 <field
                                 name="used_in_pack_line_ids"
                                 nolabel="1"
-                                attrs="{'readonly': [('id', '=', False)]}"
+                                readonly="not id"
                             />
                             </group>
                         </group>
