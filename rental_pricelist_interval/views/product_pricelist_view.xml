@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="product_pricelist_view" model="ir.ui.view">
+        <field name="name">product.pricelist.form</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view" />
+        <field name="arch" type="xml">
+            <field name="country_group_ids" position="after">
+                <field name="is_interval_pricelist" />
+            </field>
+        </field>
+    </record>
+
+</odoo>
