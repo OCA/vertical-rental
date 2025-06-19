@@ -7,8 +7,6 @@
         <field name="priority">112</field> <!--Priority greater than 100-->
         <field name="inherit_id" ref="product.product_normal_form_view" />
         <field name="arch" type="xml">
-            <!-- Use of position=replace: It is necessary to adjust view design -->
-            <group name="rental-product" position="replace" />
             <xpath expr="//notebook" position="inside">
                 <page
                     name="rental_price"
@@ -27,6 +25,7 @@
                                 name="product_rental_month_id"
                                 groups="base.group_no_one"
                             />
+                            <field name="product_rental_month_id" invisible="1" />
                             <strong
                                 colspan="2"
                                 attrs="{'invisible': [('product_rental_month_id', '=', False)]}"
@@ -73,6 +72,7 @@
                                 name="product_rental_day_id"
                                 groups="base.group_no_one"
                             />
+                            <field name="product_rental_day_id" invisible="1" />
                             <strong
                                 colspan="2"
                                 attrs="{'invisible': [('product_rental_day_id', '=', False)]}"
@@ -120,6 +120,7 @@
                                 name="product_rental_week_id"
                                 groups="base.group_no_one"
                             />
+                            <field name="product_rental_week_id" invisible="1" />
                             <strong
                                 colspan="2"
                                 attrs="{'invisible': [('product_rental_week_id', '=', False)]}"
@@ -166,6 +167,7 @@
                                 name="product_rental_hour_id"
                                 groups="base.group_no_one"
                             />
+                            <field name="product_rental_hour_id" invisible="1" />
                             <strong
                                 colspan="2"
                                 attrs="{'invisible': [('product_rental_hour_id', '=', False)]}"
@@ -205,18 +207,6 @@
                     </group>
                 </page>
             </xpath>
-        </field>
-    </record>
-
-    <!-- ProductTemplate -->
-    <record id="product_template_only_form_view" model="ir.ui.view">
-        <field name="name">view.product.template.form</field>
-        <field name="model">product.template</field>
-        <field name="priority">111</field> <!--Priority greater than 100-->
-        <field name="inherit_id" ref="product.product_template_only_form_view" />
-        <field name="arch" type="xml">
-            <!-- Use of position=replace: It is necessary to adjust view design -->
-            <group name="rental-product-template" position="replace" />
         </field>
     </record>
 </odoo>

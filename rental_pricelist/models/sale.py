@@ -262,9 +262,7 @@ class SaleOrderLine(models.Model):
 
     @api.onchange("product_id")
     def product_id_change(self):
-        res = super(SaleOrderLine, self).product_id_change()
-        if res is None:
-            res = {}
+        res = {}
         # ported from v12 we need this domain of product_uom
         if self.product_id:
             res["domain"] = {
@@ -292,7 +290,6 @@ class SaleOrderLine(models.Model):
                             key
                         )
                         break
-        return super(SaleOrderLine, self).product_uom_change()
 
     @api.onchange("start_date", "end_date", "product_uom")
     def onchange_start_end_date(self):
