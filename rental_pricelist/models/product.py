@@ -137,16 +137,18 @@ class ProductProduct(models.Model):
             if product.rented_product_id:
                 if product.type != "service":
                     raise ValidationError(
-                        _("The rental product '%s' must be of type 'Service'.")
-                        % product.name
+                        _(
+                            "The rental product '%(name)s' must be of type 'Service'."
+                            % {"name": product.name}
+                        )
                     )
                 if not product.must_have_dates:
                     raise ValidationError(
                         _(
-                            "The rental product '%s' must have the option "
+                            "The rental product '%(name)s' must have the option "
                             "'Must Have Start and End Dates' checked."
                         )
-                        % product.name
+                        % {"name": product.name}
                     )
 
     @api.model
@@ -248,7 +250,10 @@ class ProductProduct(models.Model):
         uom = self._get_rental_service_uom(rental_type)
         values = {
             "hw_product_id": product.id,
-            "name": _("Rental of %s (%s)") % (product.name, uom.name),
+            "name": _(
+                "Rental of %(product)s (%(uom)s)"
+                % {"product": product.name, "uom": uom.name}
+            ),
             "categ_id": product.categ_id.id,
             "copy_image": True,
             "default_code": "RENT-%s-%s" % (rental_type.upper(), product.default_code),

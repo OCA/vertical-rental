@@ -62,17 +62,25 @@ def _run_sol_onchange_rental(line, rental):
 class TestRentalPricelist(RentalStockCommon):
     def setUp(self):
         super().setUp()
+        self.uom_week = self.env.ref("rental_base.product_uom_week")
+        self.analytic_plan = self.env["account.analytic.plan"].create(
+            {
+                "name": "Analytic Plan",
+            }
+        )
 
         self.analytic_account_A = self.env["account.analytic.account"].create(
             {
                 "name": "Analytic Account A",
                 "code": "100001",
+                "plan_id": self.analytic_plan.id,
             }
         )
         self.analytic_account_B = self.env["account.analytic.account"].create(
             {
                 "name": "Analytic Account B",
                 "code": "100002",
+                "plan_id": self.analytic_plan.id,
             }
         )
 
@@ -144,11 +152,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.date_three_month_later = self.today + relativedelta(months=3)
         self.rental_order = (
             self.env["sale.order"]
-            .with_context(
-                {
-                    "default_type_id": self.rental_sale_type.id,
-                }
-            )
+            .with_context(default_type_id=self.rental_sale_type.id)
             .create(
                 {
                     "partner_id": self.partnerA.id,
@@ -247,11 +251,7 @@ class TestRentalPricelist(RentalStockCommon):
         """
         line = (
             self.env["sale.order.line"]
-            .with_context(
-                {
-                    "type_id": self.rental_sale_type.id,
-                }
-            )
+            .with_context(type_id=self.rental_sale_type.id)
             .new(
                 {
                     "order_id": self.rental_order.id,
@@ -307,11 +307,7 @@ class TestRentalPricelist(RentalStockCommon):
         )
         line = (
             self.env["sale.order.line"]
-            .with_context(
-                {
-                    "type_id": self.rental_sale_type.id,
-                }
-            )
+            .with_context(type_id=self.rental_sale_type.id)
             .new(
                 {
                     "order_id": self.rental_order.id,
@@ -492,11 +488,7 @@ class TestRentalPricelist(RentalStockCommon):
 
         line = (
             self.env["sale.order.line"]
-            .with_context(
-                {
-                    "type_id": self.rental_sale_type.id,
-                }
-            )
+            .with_context(type_id=self.rental_sale_type.id)
             .new(
                 {
                     "order_id": self.rental_order.id,
@@ -552,9 +544,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
-                    "type_id": self.rental_sale_type.id,
-                }
+                type_id=self.rental_sale_type.id,
             )
             .new(
                 {
@@ -645,9 +635,7 @@ class TestRentalPricelist(RentalStockCommon):
         rental_order = (
             self.env["sale.order"]
             .with_context(
-                {
-                    "default_type_id": self.rental_sale_type.id,
-                }
+                default_type_id=self.rental_sale_type.id,
             )
             .create(
                 {
@@ -659,9 +647,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
-                    "type_id": self.rental_sale_type.id,
-                }
+                type_id=self.rental_sale_type.id,
             )
             .new(
                 {
