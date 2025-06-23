@@ -22,6 +22,7 @@
                         name="product_rental_interval_id"
                         groups="base.group_no_one"
                     />
+                    <field name="product_rental_interval_id" invisible="1" />
                     <strong colspan="1" class="oe_inline">Bulk Prices</strong>
                     <button
                         name="action_reset_rental_price_interval_items"

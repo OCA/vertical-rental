@@ -73,7 +73,50 @@ class SaleOrderLine(models.Model):
                         % product.rental_interval_max
                     )
 
+    def _get_pricelist_price(self):
+        res = super()._get_pricelist_price()
+        # use number_of_time_unit instead of product_uom_qty
+        if self.order_id.pricelist_id and self.order_id.partner_id:
+            if (
+                self.product_id.rented_product_id
+                and self.order_id.pricelist_id.is_interval_pricelist
+            ):
+                pricelist_rule = self.pricelist_item_id
+                order_date = self._get_order_date() or fields.Date.today()
+                product = self.product_id.with_context(**self._get_product_price_context())
+                qty = self.number_of_time_unit
+                uom = self.product_uom or self.product_id.uom_id
+                currency = self.currency_id or self.order_id.company_id.currency_id
+
+                res = pricelist_rule._compute_price(
+                    product, qty, uom, order_date, currency=currency)
+        return res
+
+    #(override) function _compute_pricelist_item_id from module sale
+    # use number_of_time_unit instead of product_uom_qty
+    @api.depends('product_id', 'product_uom', 'product_uom_qty')
+    def _compute_pricelist_item_id(self):
+        for line in self:
+            if not line.product_id or line.display_type or not line.order_id.pricelist_id:
+                line.pricelist_item_id = False
+            else:
+                qty = line.product_uom_qty or 1.0
+                if self.order_id.pricelist_id and self.order_id.partner_id:
+                    if (
+                        self.product_id.rented_product_id
+                        and self.order_id.pricelist_id.is_interval_pricelist
+                    ):
+                        qty = self.number_of_time_unit
+                line.pricelist_item_id = line.order_id.pricelist_id._get_product_rule(
+                    line.product_id,
+                    qty,
+                    uom=line.product_uom,
+                    date=line._get_order_date(),
+                )
+
     def _update_interval_price(self):
+        # product_uom_qty is always the same as rental_qty
+        # calculation of price_unit is based on number_of_time_unit
         self.ensure_one()
         if self.order_id.pricelist_id and self.order_id.partner_id:
             if (
@@ -94,7 +137,7 @@ class SaleOrderLine(models.Model):
                 self.price_unit = self.env[
                     "account.tax"
                 ]._fix_tax_included_price_company(
-                    self._get_display_price(product),
+                    self._get_display_price(),
                     product.taxes_id,
                     self.tax_id,
                     self.company_id,
