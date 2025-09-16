@@ -177,6 +177,17 @@ class SaleOrderLine(models.Model):
         ]
         self.env["procurement.group"].run(procurements)
 
+    def _create_sale_rental(self, order_line):
+        existing_rental = self.env["sale.rental"].search(
+            [
+                ("start_order_line_id", "=", order_line.id),
+            ],
+            limit=1,
+        )
+
+        if not existing_rental:
+            self.env["sale.rental"].create(order_line._prepare_rental())
+
     def _action_launch_stock_rule(self, previous_product_uom_qty=False):
         errors = []
         for line in self:
@@ -199,7 +210,7 @@ class SaleOrderLine(models.Model):
                 except UserError as error:
                     errors.append(error.name)
 
-                self.env["sale.rental"].create(line._prepare_rental())
+                self._create_sale_rental(line)
 
             elif (
                 line.rental_type == "rental_extension"
