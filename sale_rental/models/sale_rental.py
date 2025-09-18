@@ -5,6 +5,8 @@
 
 import logging
 
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
 
 logger = logging.getLogger(__name__)
@@ -222,3 +224,58 @@ class SaleRental(models.Model):
         readonly=True,
         store=True,
     )
+
+    def _get_reminder_days(self):
+        try:
+            reminder_days = (
+                self.env["ir.config_parameter"]
+                .sudo()
+                .get_param("sale_rental.reminder_days")
+            )
+            return int(reminder_days or 0)
+        except (TypeError, ValueError, OverflowError):
+            return 0
+
+    @api.model
+    def cron_send_return_reminders(self):
+        """Send reminder emails X days before end_date."""
+        send_reminder = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("sale_rental.send_return_reminder")
+        )
+        if not send_reminder or send_reminder == "False":
+            return
+
+        reminder_days = self._get_reminder_days()
+
+        today = fields.Date.today()
+        target_date = today + relativedelta(days=reminder_days)
+
+        domain = [
+            ("state", "in", ["out", "sell_progress"]),
+            ("end_date", "=", target_date),
+            ("partner_id", "!=", False),
+        ]
+
+        rentals = self.search(domain)
+        if not rentals:
+            return
+
+        template = self.env.ref(
+            "sale_rental.mail_template_rental_return_reminder",
+            raise_if_not_found=False,
+        )
+        if not template:
+            logger.warning(
+                "Email template your_module.mail_template_rental_return_reminder not found."
+            )
+            return
+
+        for rental in rentals:
+            try:
+                template.send_mail(rental.id, force_send=True)
+            except Exception as e:
+                logger.exception(
+                    "Failed to send return reminder for rental %s: %s", rental.id, e
+                )
