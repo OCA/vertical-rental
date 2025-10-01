@@ -162,6 +162,18 @@
     </field>
 </record>
 
+<record id="sale_rental_graph" model="ir.ui.view">
+    <field name="name">sale.rental.graph</field>
+    <field name="model">sale.rental</field>
+    <field name="arch" type="xml">
+        <graph string="Rentals" type="bar" stacked="True">
+            <field name="start_date" type="row" interval="month" />
+            <field name="state" type="row" />
+            <field name="rental_qty" type="measure" />
+        </graph>
+    </field>
+</record>
+
 <record id="sale_rental_pivot" model="ir.ui.view">
     <field name="name">sale.rental.pivot</field>
     <field name="model">sale.rental</field>
@@ -197,7 +209,7 @@
 <record id="sale_rental_action" model="ir.actions.act_window">
     <field name="name">Rentals</field>
     <field name="res_model">sale.rental</field>
-    <field name="view_mode">tree,form,calendar,pivot</field>
+    <field name="view_mode">tree,form,graph,calendar,,pivot</field>
 </record>
 
 <menuitem
