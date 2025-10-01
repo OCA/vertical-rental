@@ -175,12 +175,29 @@
 </record>
 
 
-
+<record id="sale_rental_calendar" model="ir.ui.view">
+    <field name="name">sale.rental.calendar</field>
+    <field name="model">sale.rental</field>
+    <field name="arch" type="xml">
+        <calendar
+                string="Rental Schedule"
+                date_start="start_date"
+                date_stop="end_date"
+                mode="month"
+                create="0"
+                color="partner_id"
+            >
+            <field name="partner_id" />
+            <field name="rented_product_id" />
+            <field name="state" />
+        </calendar>
+    </field>
+</record>
 
 <record id="sale_rental_action" model="ir.actions.act_window">
     <field name="name">Rentals</field>
     <field name="res_model">sale.rental</field>
-    <field name="view_mode">tree,form,pivot</field>
+    <field name="view_mode">tree,form,calendar,pivot</field>
 </record>
 
 <menuitem
