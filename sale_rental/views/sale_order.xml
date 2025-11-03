@@ -1,0 +1,58 @@
+<!--
+  Copyright 2014-2021 Akretion (http://www.akretion.com/)
+  @author Alexis de Lattre <alexis.delattre@akretion.com>
+  Copyright 2016-2021 Sodexis
+  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+
+
+<record id="view_order_form" model="ir.ui.view">
+    <field name="name">sale_rental.view_order_form</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale_start_end_dates.view_order_form" />
+    <field name="arch" type="xml">
+        <xpath
+        expr="//field[@name='order_line']/list//field[@name='start_date']"
+        position="before"
+        >            
+            <field
+            name="rental_type"
+            column_invisible="not parent.is_rental_line"
+            required="rental"
+            readonly="state != 'draft'"
+            />
+            <field
+            name="extension_rental_id"
+                    options="{'no_quick_create': True, 'no_create_edit': True}"
+                    column_invisible="parent.is_of_rental_type != 'rental_extension'"
+                    required="rental_type =='rental_extension'"
+                    readonly="state != 'draft'"
+                    domain="[('rental_product_id', '=', product_id), ('state', 'in', ('ordered', 'out')), ('company_id', '=', company_id)]"
+                    />
+                    <field
+                    name="sell_rental_id"
+                    options="{'no_quick_create': True, 'no_create_edit': True}"
+                    column_invisible="parent.is_can_sell_rental == False"
+                    readonly="state != 'draft'"
+                    domain="[('rented_product_id', '=', product_id), ('state', '=', 'out'), ('company_id', '=', company_id)]"
+                    />  
+                    <field name="can_sell_rental" column_invisible="1" />
+                    <field name="rental" column_invisible="1" />
+        </xpath>
+        <label for="product_uom_qty" position="before">
+            <field
+                    name="rental_qty"
+                    column_invisible="not parent.is_rental_line"
+                    required="rental"
+                    readonly="state != 'draft'"
+                />
+        </label>
+        <xpath expr="//field[@name='order_line']/list" position="attributes">
+            <attribute name="editable" />
+        </xpath>
+    </field>
+</record>
+
+
+</odoo>
