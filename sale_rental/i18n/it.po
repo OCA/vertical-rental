@@ -1,0 +1,680 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * sale_rental
+#
+# Translators:
+# OCA Transbot <transbot@odoo-community.org>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-23 01:51+0000\n"
+"PO-Revision-Date: 2025-04-08 09:24+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
+"Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10.4\n"
+
+#. module: sale_rental
+#: model:ir.model.fields,help:sale_rental.field_sale_rental__in_state
+#: model:ir.model.fields,help:sale_rental.field_sale_rental__out_state
+#: model:ir.model.fields,help:sale_rental.field_sale_rental__sell_state
+msgid ""
+"* New: When the stock move is created and not yet confirmed.\n"
+"* Waiting Another Move: This state can be seen when a move is waiting for "
+"another one, for example in a chained flow.\n"
+"* Waiting Availability: This state is reached when the procurement "
+"resolution is not straight forward. It may need the scheduler to run, a "
+"component to be manufactured...\n"
+"* Available: When products are reserved, it is set to 'Available'.\n"
+"* Done: When the shipment is processed, the state is 'Done'."
+msgstr ""
+"* Nuovo: quando il movimento di magazzino è creato ma non ancora confermato."
+"\n"
+"* Attesa altro movimento: questo stato si attiva quando un movimento è in "
+"attesa dI un altro, per esempio in un flusso concatenato.\n"
+"* Attesa disponibilità: questo stato viene raggiunto quando il completamento "
+"dell'approvvigionamento non è semplice. Richiede l'esecuzione della "
+"schedulazione, la lavorazione di un componente...\n"
+"* Disponibile: quando i prodotti sono prenotati, è impostato a 'Disponibile'."
+"\n"
+"* Eseguito: quando la spedizione viene elaborata, lo stato è 'Eseguito'."
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+#: selection:sale.rental,state:0
+msgid "Back In"
+msgstr "Rientro"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__can_sell_rental
+msgid "Can Sell from Rental"
+msgstr "Vendita da noleggio"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/stock.py:46
+#, python-format
+msgid "Can't find any generic 'Rent' route."
+msgstr "Impossibile trovare un percorso 'Noleggio' generico."
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/stock.py:57
+#, python-format
+msgid "Can't find any generic 'Sell Rented Product' route."
+msgstr "Impossibile trovare un percorso 'Vendita prodotto noleggiato' generico."
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.create_rental_product_form
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: sale_rental
+#: selection:sale.rental,state:0
+msgid "Cancelled"
+msgstr "Annullata"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/sale_order.py:172
+#, python-format
+msgid "Cannot sell the rental {} because it has not been delivered"
+msgstr ""
+"Impossibile vendere il prodotto noleggiato {} perché non ancora consegnato"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__copy_image
+msgid "Copy Product Image"
+msgstr "Copia immagine del prodotto"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.create_rental_product_form
+msgid "Create"
+msgstr "Crea"
+
+#. module: sale_rental
+#: model:ir.actions.act_window,name:sale_rental.create_rental_product_action
+#: model_terms:ir.ui.view,arch_db:sale_rental.create_rental_product_form
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_normal_form_view
+msgid "Create Rental Service"
+msgstr "Crea servizio di noleggio"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_create_rental_product
+msgid "Create the Rental Service Product"
+msgstr "Crea il prodotto per il servizio di noleggio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__create_uid
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__create_date
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__partner_id
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: sale_rental
+#: model:product.product,uom_name:sale_rental.rent_consu_delivery_01
+#: model:product.product,uom_name:sale_rental.rent_product_product_20
+#: model:product.product,uom_name:sale_rental.rent_product_product_25
+#: model:product.template,uom_name:sale_rental.rent_consu_delivery_01_product_template
+#: model:product.template,uom_name:sale_rental.rent_product_product_20_product_template
+#: model:product.template,uom_name:sale_rental.rent_product_product_25_product_template
+msgid "Day(s)"
+msgstr "Giorno(i)"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__default_code
+msgid "Default Code"
+msgstr "Codice predefinito"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_tree
+msgid "Delivery"
+msgstr "Consegna"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_picking_id
+msgid "Delivery Order"
+msgstr "Ordine di consegna"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__display_name
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__end_date
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_tree
+msgid "End Date"
+msgstr "Data fine"
+
+#. module: sale_rental
+#: model:ir.model.fields,help:sale_rental.field_sale_rental__end_date
+msgid ""
+"End Date of the Rental (extensions included),         taking into account "
+"all the extensions sold to the customer."
+msgstr ""
+"Data di fine del noleggio (estensioni incluse),         tenendo conto di "
+"tutte le estensioni vendute al cliente."
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Group By"
+msgstr "Raggruppa per"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__id
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__id
+msgid "ID"
+msgstr "ID"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_state
+msgid "In Move State"
+msgstr "In stato movimento"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_move_id
+msgid "Incoming Move"
+msgstr "Movimento in arrivo"
+
+#. module: sale_rental
+#: model:ir.model.fields,help:sale_rental.field_sale_order_line__rental_qty
+#: model:ir.model.fields,help:sale_rental.field_sale_rental__rental_qty
+msgid "Indicate the number of items that will be rented."
+msgstr "Indica il numero di oggetti che verranno noleggiati."
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_stock_inventory
+msgid "Inventory"
+msgstr "Inventario"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product____last_update
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental____last_update
+msgid "Last Modified on"
+msgstr "Ultima modifica il"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__write_uid
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__write_date
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/sale_order.py:69
+#, python-format
+msgid ""
+"Missing 'Rental to Extend' on the sale order line with rental service {}"
+msgstr ""
+"Manca 'Noleggio da estendere' nella riga ordine di vendita con il servizio "
+"di noleggio {}"
+
+#. module: sale_rental
+#: selection:sale.order.line,rental_type:0
+msgid "New Rental"
+msgstr "Nuovo noleggio"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/sale_order.py:225
+#, python-format
+msgid "Not enough stock !"
+msgstr "Giacenza non sufficiente!"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/sale_order.py:85
+#, python-format
+msgid ""
+"On the 'new rental' sale order line with product '{}', we should have a "
+"rental service product !"
+msgstr ""
+"Nella riga 'nuovo noleggio' dell'ordine di vendita con il prodotto '{}', è "
+"necessario avere un prodotto di tipo servizio noleggio!"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/sale_order.py:102
+#, python-format
+msgid ""
+"On the sale order line with product {} you are trying to sell a rented "
+"product with a quantity ({}) that is different from the rented quantity "
+"({}). This is not supported."
+msgstr ""
+"Nell'ordine di vendita per il prodotto {} si sta tentando di vendere un "
+"prodotto noleggiato con quantità ({}) che è diversa da quella noleggiata ({})"
+". Questo non è previsto."
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/sale_order.py:91
+#, python-format
+msgid ""
+"On the sale order line with product '{}' the Product Quantity ({}) should be "
+"the number of days ({}) multiplied by the Rental Quantity ({})."
+msgstr ""
+"Nell'ordine di vendita con il prodotto '{}' la quantità ({}) sarà il numero "
+"di giorni ({}) moltiplicata per la quantità noleggiata ({})."
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/sale_order.py:74
+#, python-format
+msgid ""
+"On the sale order line with rental service {}, you are trying to extend a "
+"rental with a rental quantity ({}) that is different from the quantity of "
+"the original rental ({}). This is not supported."
+msgstr ""
+"Nell'ordine di vendita con il prodotto {}, si sta cercando di estendere un "
+"noleggio con un quantità ({}) che e' diversa dalla quantità prevista in "
+"origine ({}). Questo non e' previsto."
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+#: selection:sale.rental,state:0
+msgid "Ordered"
+msgstr "Ordinato"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+#: selection:sale.rental,state:0
+msgid "Out"
+msgstr "Fuori"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_state
+msgid "Out Move State"
+msgstr "Stato movimento fuori"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_move_id
+msgid "Outgoing Move"
+msgstr "Movimento uscita"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_view_location_id
+msgid "Parent Rental"
+msgstr "Noleggio padre"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_product_product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__categ_id
+msgid "Product Category"
+msgstr "Categoria prodotto"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__hw_product_id
+msgid "Product to Rent"
+msgstr "Prodotto da noleggiare"
+
+#. module: sale_rental
+#: code:addons/sale_rental/wizard/create_rental_product.py:26
+#, python-format
+msgid "RENT-{}"
+msgstr "NOLEGGIO - {}"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_picking_id
+msgid "Receipt"
+msgstr "Ricevuta"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_product_product__rented_product_id
+msgid "Related Rented Product"
+msgstr "Prodotto noleggiato collegato"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/stock.py:43
+#: model:stock.route,name:sale_rental.route_warehouse0_rental
+#, python-format
+msgid "Rent"
+msgstr "Noleggiare"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/stock.py:122
+#: model:ir.model,name:sale_rental.model_sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:sale_rental.view_warehouse
+#, python-format
+msgid "Rental"
+msgstr "Noleggio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_allowed
+msgid "Rental Allowed"
+msgstr "Noleggio possibile"
+
+#. module: sale_rental
+#: selection:sale.order.line,rental_type:0
+msgid "Rental Extension"
+msgstr "Estensione noleggio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__extension_order_line_ids
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+msgid "Rental Extensions"
+msgstr "Estensioni noleggio"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/stock.py:137
+#: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_in_location_id
+#, python-format
+msgid "Rental In"
+msgstr "Ingresso noleggio"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/stock.py:152
+#: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_out_location_id
+#, python-format
+msgid "Rental Out"
+msgstr "Uscita noleggio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__sale_price_per_day
+msgid "Rental Price per Day"
+msgstr "Prezzo giornaliero noleggio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__rental_qty
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rental_qty
+msgid "Rental Quantity"
+msgstr "Quantità noleggio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_route_id
+msgid "Rental Route"
+msgstr "Percorso noleggio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__start_order_id
+msgid "Rental SO"
+msgstr "OV noleggio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__start_order_line_id
+msgid "Rental SO Line"
+msgstr "Riga OV noleggio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rental_product_id
+msgid "Rental Service"
+msgstr "Servizio noleggio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__name
+msgid "Rental Service Name"
+msgstr "Nome servizio noleggio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_product_product__rental_service_ids
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_normal_form_view
+msgid "Rental Services"
+msgstr "Servizi noleggio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__rental_type
+msgid "Rental Type"
+msgstr "Tipo noleggio"
+
+#. module: sale_rental
+#: code:addons/sale_rental/wizard/create_rental_product.py:23
+#, python-format
+msgid "Rental of a {}"
+msgstr "Noleggio di un {}"
+
+#. module: sale_rental
+#: model:product.product,name:sale_rental.rent_product_product_25
+#: model:product.template,name:sale_rental.rent_product_product_25_product_template
+msgid "Rental of one Acoustic Bloc Screens"
+msgstr "Noleggio di uno schermo assorbimento acustico"
+
+#. module: sale_rental
+#: model:product.product,name:sale_rental.rent_product_product_20
+#: model:product.template,name:sale_rental.rent_product_product_20_product_template
+msgid "Rental of one Flipover"
+msgstr "Noleggio di una lavagna a fogli"
+
+#. module: sale_rental
+#: model:product.product,name:sale_rental.rent_consu_delivery_01
+#: model:product.template,name:sale_rental.rent_consu_delivery_01_product_template
+msgid "Rental of one Three-Seat Sofa"
+msgstr "Noleggio di un divano a tre posti"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__extension_rental_id
+msgid "Rental to Extend"
+msgstr "Noleggio da estendere"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__sell_rental_id
+msgid "Rental to Sell"
+msgstr "Noleggio da vendere"
+
+#. module: sale_rental
+#: model:ir.actions.act_window,name:sale_rental.sale_rental_action
+#: model:ir.ui.menu,name:sale_rental.sale_rental_menu
+msgid "Rentals"
+msgstr "Noleggi"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rented_product_id
+msgid "Rented Product"
+msgstr "Prodotto noleggiato"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_tree
+msgid "Return"
+msgstr "Rientro"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_sale_order
+msgid "Sale Order"
+msgstr "Ordine di vendita"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Riga ordine di vendita"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_tree
+msgid "Sales Rentals"
+msgstr "Noleggi vendite"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Search Rentals"
+msgstr "Cerca noleggi"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_picking_id
+msgid "Sell Delivery Order"
+msgstr "Ordine consegna della vendita"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_state
+msgid "Sell Move State"
+msgstr "Stato movimento della vendita"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/stock.py:52
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_order_line_ids
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+#: model:stock.route,name:sale_rental.route_warehouse0_sell_rented_product
+#, python-format
+msgid "Sell Rented Product"
+msgstr "Prodotto noleggiato della vendita"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__sell_rented_product_route_id
+msgid "Sell Rented Product Route"
+msgstr "Percorso vendita prodotto noleggiato"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+#: selection:sale.rental,state:0
+msgid "Sell in progress"
+msgstr "Vendita in corso"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_move_id
+msgid "Selling Move"
+msgstr "Movimento vendita"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+msgid "Selling Order Line"
+msgstr "Riga ordine di vendita"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+#: selection:sale.rental,state:0
+msgid "Sold"
+msgstr "Venduto"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__start_date
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Start Date"
+msgstr "Data inizio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__state
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "State"
+msgstr "Stato"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_stock_rule
+msgid "Stock Rule"
+msgstr "Regola di giacenza"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/stock.py:60
+#, python-format
+msgid "The Rental Input stock location is not set on the warehouse {}"
+msgstr ""
+"L'ubicazione di magazzino ingresso noleggio non è impostata nel magazzino {}"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/stock.py:64
+#, python-format
+msgid "The Rental Output stock location is not set on the warehouse {}"
+msgstr ""
+"L'ubicazione di magazzino uscita noleggio non è impostata nel magazzino {}"
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/sale_order.py:267
+#, python-format
+msgid ""
+"The Rental Service of the Rental Extension you just selected is '{}' and "
+"it's not the same as the Product currently selected in this Sale Order Line."
+msgstr ""
+"Il servizio noleggio dell'estensione noleggio selezionato è '{}' che è "
+"diverso dal prodotto attualmente selezionato nella riga ordine di vendita."
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/product.py:28
+#, python-format
+msgid "The rental product '{}' must be of type 'Service'."
+msgstr "Il prodotto di noleggio '{}' deve essere di tipo 'Servizio'."
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/product.py:32
+#, python-format
+msgid ""
+"The rental product '{}' must have the option 'Must Have Start and End Dates' "
+"checked."
+msgstr ""
+"Il prodotto noleggio '{}' deve avere l'opzione 'Deve avere una data di "
+"inizio e di fine' selezionata."
+
+#. module: sale_rental
+#: sql_constraint:sale.order.line:0
+msgid "The rental quantity must be positive or null."
+msgstr "La quantità di noleggio deve essere positiva o nulla."
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/product.py:39
+#, python-format
+msgid "The unit of measure of the rental product '{}' must be 'Day'."
+msgstr "L'unità di misura per il prodotto '{}' deve essere \"Giorno\"."
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+msgid "Total"
+msgstr "Totale"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+msgid "Unit of Measure"
+msgstr "Unità di misura"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_stock_warehouse
+msgid "Warehouse"
+msgstr "Magazzino"
+
+#. module: sale_rental
+#: model:ir.model.fields,help:sale_rental.field_sale_rental__partner_id
+msgid "You can find a customer by its Name, TIN, Email or Internal Reference."
+msgstr ""
+"Si può trovare un cliente in base al suo nome, P.IVA, e-mail o riferimento "
+"interno."
+
+#. module: sale_rental
+#: code:addons/sale_rental/models/sale_order.py:226
+#, python-format
+msgid ""
+"You want to rent %.2f {} but you only have %.2f {} currently available on "
+"the stock location '{}' ! Make sure that you get some units back in the mean "
+"time or re-supply the stock location '{}'."
+msgstr ""
+"Si vuole noleggiare %.2f {} ma sono disponibili solo %.2f {} nell'ubicazione "
+"di magazzino '{}'. Nel frattempo assicurarsi il rientro di alcune unità o "
+"procedere al rifornimento dell'ubicazione di magazzino '{}'."
+
+#. module: sale_rental
+#: model:product.product,weight_uom_name:sale_rental.rent_consu_delivery_01
+#: model:product.product,weight_uom_name:sale_rental.rent_product_product_20
+#: model:product.product,weight_uom_name:sale_rental.rent_product_product_25
+#: model:product.template,weight_uom_name:sale_rental.rent_consu_delivery_01_product_template
+#: model:product.template,weight_uom_name:sale_rental.rent_product_product_20_product_template
+#: model:product.template,weight_uom_name:sale_rental.rent_product_product_25_product_template
+msgid "kg"
+msgstr "kg"
+
+#~ msgid "Rental of one Laptop E5023"
+#~ msgstr "Rental of one Laptop E5023"
+
+#~ msgid "Rental of one iPad Mini"
+#~ msgstr "Rental of one iPad Mini"
