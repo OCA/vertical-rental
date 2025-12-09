@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_picking_form_inherit_rental_sign" model="ir.ui.view">
+        <field name="name">stock.picking.form.rental.sign</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='button_validate'][1]" position="before">
+                <button
+                    name="action_staff_sign_delivery"
+                    string="Add Deliveryman's Signature"
+                    type="object"
+                    class="oe_highlight"
+                    invisible="picking_type_code != 'outgoing'
+                        or not is_rental_invoice
+                        or state not in ['confirmed', 'assigned', 'waiting']
+                        or delivery_staff_signed"
+                />
+
+                <button
+                    name="action_customer_sign_delivery"
+                    string="Add Customer's Signature"
+                    type="object"
+                    class="oe_highlight"
+                    invisible="(
+                        picking_type_code != 'outgoing' and not delivery_sign_request_id)
+                        or delivery_customer_signed
+                    "
+                />
+
+                <button
+                    name="action_staff_sign_receipt"
+                    string="Add Staff's Signature"
+                    type="object"
+                    class="oe_highlight"
+                    invisible="picking_type_code != 'incoming' or not is_rental_invoice or state not in ['confirmed', 'assigned', 'waiting'] or return_staff_signed"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
