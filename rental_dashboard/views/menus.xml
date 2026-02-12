@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Main Menu -->
+    <menuitem id="menu_rental_root"
+              name="Rentals"
+              sequence="50"
+              web_icon="rental_dashboard,static/description/icon.png"/>
+
+    <!-- Dashboard Menu - Custom OWL Component -->
+    <menuitem id="menu_rental_dashboard"
+              name="Dashboard"
+              parent="menu_rental_root"
+              action="rental_dashboard_action_client"
+              sequence="10"/>
+
+</odoo>
