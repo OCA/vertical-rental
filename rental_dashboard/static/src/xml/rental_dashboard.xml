@@ -1,22 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="rental_dashboard.RentalDashboard" owl="1">
         <div class="rental-dashboard d-flex h-100">
             <!-- Left Sidebar -->
-            <div class="rental-sidebar border-end bg-white p-3" style="width: 320px; min-width: 320px; overflow-y: auto;">
+            <div
+                class="rental-sidebar border-end bg-white p-3"
+                style="width: 320px; min-width: 320px; overflow-y: auto;"
+            >
                 <!-- Create Rental Button -->
-                <button class="btn w-50 mb-4"
-                        style="background-color: cornflowerblue; color: white;"
-                        t-on-click="openCreateModal">
-                    <i class="fa fa-plus me-2"/>Create rental
+                <button
+                    class="btn w-50 mb-4"
+                    style="background-color: cornflowerblue; color: white;"
+                    t-on-click="openCreateModal"
+                >
+                    <i class="fa fa-plus me-2" />Create rental
                 </button>
 
                 <!-- Search Section -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="mb-0 fw-bold">Search rentals</h6>
-                    <a href="#" class="text-muted small" t-on-click.prevent="clearFilters">
-                        <i class="fa fa-times me-1"/>Clear filters
+                    <a
+                        href="#"
+                        class="text-muted small"
+                        t-on-click.prevent="clearFilters"
+                    >
+                        <i class="fa fa-times me-1" />Clear filters
                     </a>
                 </div>
 
@@ -26,8 +35,11 @@
                     <select class="form-select" t-on-change="onLocationChange">
                         <option value="">Select a location</option>
                         <t t-foreach="state.locations" t-as="loc" t-key="loc.id">
-                            <option t-att-value="loc.id" t-att-selected="state.selectedLocation === loc.id">
-                                <t t-esc="loc.name"/>
+                            <option
+                                t-att-value="loc.id"
+                                t-att-selected="state.selectedLocation === loc.id"
+                            >
+                                <t t-esc="loc.name" />
                             </option>
                         </t>
                     </select>
@@ -37,31 +49,49 @@
                 <div class="mb-3">
                     <label class="form-label small text-muted">Dates</label>
                     <div class="date-range-picker position-relative">
-                        <div class="form-control d-flex align-items-center justify-content-between cursor-pointer"
-                             t-on-click="toggleDatePicker">
+                        <div
+                            class="form-control d-flex align-items-center justify-content-between cursor-pointer"
+                            t-on-click="toggleDatePicker"
+                        >
                             <span t-if="state.dateFrom and state.dateTo">
-                                <t t-esc="formatDateRange()"/>
+                                <t t-esc="formatDateRange()" />
                             </span>
                             <span t-else="" class="text-muted">Select dates</span>
-                            <i class="fa fa-calendar"/>
+                            <i class="fa fa-calendar" />
                         </div>
                         <!-- Date picker dropdown -->
-                        <div t-if="state.showDatePicker" class="date-picker-dropdown position-absolute bg-white border rounded shadow-sm p-3 mt-1" style="z-index: 1000; width: 100%;">
+                        <div
+                            t-if="state.showDatePicker"
+                            class="date-picker-dropdown position-absolute bg-white border rounded shadow-sm p-3 mt-1"
+                            style="z-index: 1000; width: 100%;"
+                        >
                             <div class="mb-2">
                                 <label class="form-label small">From</label>
-                                <input type="date" class="form-control"
-                                       t-att-value="state.dateFrom"
-                                       t-on-change="onDateFromChange"/>
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    t-att-value="state.dateFrom"
+                                    t-on-change="onDateFromChange"
+                                />
                             </div>
                             <div class="mb-2">
                                 <label class="form-label small">To</label>
-                                <input type="date" class="form-control"
-                                       t-att-value="state.dateTo"
-                                       t-on-change="onDateToChange"/>
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    t-att-value="state.dateTo"
+                                    t-on-change="onDateToChange"
+                                />
                             </div>
                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-sm btn-outline-secondary" t-on-click="clearDateFilter">Clear</button>
-                                <button class="btn btn-sm btn-primary" t-on-click="applyDateFilter">Apply</button>
+                                <button
+                                    class="btn btn-sm btn-outline-secondary"
+                                    t-on-click="clearDateFilter"
+                                >Clear</button>
+                                <button
+                                    class="btn btn-sm btn-primary"
+                                    t-on-click="applyDateFilter"
+                                >Apply</button>
                             </div>
                         </div>
                     </div>
@@ -69,75 +99,112 @@
 
                 <!-- Show Available Only -->
                 <div class="form-check mb-4">
-                    <input type="checkbox" class="form-check-input" id="showAvailable"
-                           t-att-checked="state.showAvailableOnly"
-                           t-on-change="onShowAvailableChange"/>
-                    <label class="form-check-label" for="showAvailable">Show available only</label>
+                    <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="showAvailable"
+                        t-att-checked="state.showAvailableOnly"
+                        t-on-change="onShowAvailableChange"
+                    />
+                    <label
+                        class="form-check-label"
+                        for="showAvailable"
+                    >Show available only</label>
                 </div>
 
                 <!-- Products List -->
                 <div class="products-list">
                     <t t-foreach="filteredProducts" t-as="product" t-key="product.id">
-                        <div t-att-class="'product-card border rounded p-2 mb-2 ' +
+                        <div
+                            t-att-class="'product-card border rounded p-2 mb-2 ' +
                              (isProductSelected(product.id) ? 'border-primary bg-primary-subtle' : 'bg-light') +
                              (product.qty_available === 0 ? ' product-unavailable' : '')"
-                             t-on-click="() => product.qty_available > 0 &amp;&amp; this.onProductSelect(product.id)">
+                            t-on-click="() => product.qty_available > 0 &amp;&amp; this.onProductSelect(product.id)"
+                        >
                             <div class="d-flex align-items-start">
                                 <!-- Checkbox -->
-                                <input type="checkbox" class="form-check-input me-2 mt-1"
-                                       t-att-checked="isProductSelected(product.id)"
-                                       t-att-disabled="product.qty_available === 0"
-                                       t-on-click.stop="() => product.qty_available > 0 &amp;&amp; this.onProductSelect(product.id)"/>
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input me-2 mt-1"
+                                    t-att-checked="isProductSelected(product.id)"
+                                    t-att-disabled="product.qty_available === 0"
+                                    t-on-click.stop="() => product.qty_available > 0 &amp;&amp; this.onProductSelect(product.id)"
+                                />
 
                                 <!-- Color dot -->
-                                <span class="product-color-dot me-2 mt-1" t-att-style="getProductColorStyle(product)"/>
+                                <span
+                                    class="product-color-dot me-2 mt-1"
+                                    t-att-style="getProductColorStyle(product)"
+                                />
 
                                 <div class="flex-grow-1">
                                     <!-- Availability Badge -->
-                                    <span t-att-class="'badge rounded-pill mt-1 float-end ' + getAvailabilityClass(product)">
-                                        <i class="fa fa-check me-1" t-if="product.qty_available > 0"/>
-                                        <i class="fa fa-times me-1" t-if="product.qty_available === 0"/>
-                                        <t t-esc="getAvailabilityText(product)"/>
+                                    <span
+                                        t-att-class="'badge rounded-pill mt-1 float-end ' + getAvailabilityClass(product)"
+                                    >
+                                        <i
+                                            class="fa fa-check me-1"
+                                            t-if="product.qty_available > 0"
+                                        />
+                                        <i
+                                            class="fa fa-times me-1"
+                                            t-if="product.qty_available === 0"
+                                        />
+                                        <t t-esc="getAvailabilityText(product)" />
                                     </span>
 
                                     <!-- Product Name -->
                                     <div class="fw-semibold">
-                                        <t t-esc="product.name"/>
+                                        <t t-esc="product.name" />
                                     </div>
 
                                     <!-- Stock: available / total -->
                                     <div class="mt-1 small text-muted">
-                                        <i class="fa fa-cubes me-1"/>
-                                        <t t-esc="product.qty_available"/> available
-                                        <span class="text-muted"> / <t t-esc="product.qty_total"/> total</span>
+                                        <i class="fa fa-cubes me-1" />
+                                        <t t-esc="product.qty_available" /> available
+                                        <span class="text-muted"> / <t
+                                                t-esc="product.qty_total"
+                                            /> total</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </t>
 
-                    <div t-if="filteredProducts.length === 0" class="text-muted text-center py-4">
+                    <div
+                        t-if="filteredProducts.length === 0"
+                        class="text-muted text-center py-4"
+                    >
                         No products found
                     </div>
                 </div>
 
                 <!-- Rent Button (shows when products are selected) -->
                 <div t-if="state.selectedProducts.length > 0" class="mt-3">
-                    <button class="btn btn-outline-dark w-100 py-2" t-on-click="openCreateModal">
+                    <button
+                        class="btn btn-outline-dark w-100 py-2"
+                        t-on-click="openCreateModal"
+                    >
                         Rent
                     </button>
                 </div>
             </div>
 
             <!-- Right Calendar Area - Embedded Calendar -->
-            <div class="rental-calendar flex-grow-1" style="overflow: hidden;" t-ref="calendarContainer">
+            <div
+                class="rental-calendar flex-grow-1"
+                style="overflow: hidden;"
+                t-ref="calendarContainer"
+            >
                 <t t-if="calendarProps">
-                    <View t-key="state.calendarKey" t-props="calendarProps"/>
+                    <View t-key="state.calendarKey" t-props="calendarProps" />
                 </t>
                 <t t-else="">
-                    <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                    <div
+                        class="d-flex align-items-center justify-content-center h-100 bg-light"
+                    >
                         <div class="text-center">
-                            <i class="fa fa-spinner fa-spin fa-3x text-muted mb-3"/>
+                            <i class="fa fa-spinner fa-spin fa-3x text-muted mb-3" />
                             <p class="text-muted">Loading calendar...</p>
                         </div>
                     </div>
@@ -148,26 +215,38 @@
         <!-- Tooltip is managed by plain DOM in JS to avoid OWL re-renders -->
 
         <!-- Create/Edit Rental Modal -->
-        <div t-if="state.showModal" class="rental-modal-backdrop" t-on-click="closeModal">
+        <div
+            t-if="state.showModal"
+            class="rental-modal-backdrop"
+            t-on-click="closeModal"
+        >
             <div class="rental-modal" t-on-click.stop="">
 
                 <!-- Created Success State -->
                 <t t-if="state.modalMode === 'created'">
                     <div class="text-center py-5">
-                        <i class="fa fa-check-circle text-success fa-4x mb-3"/>
+                        <i class="fa fa-check-circle text-success fa-4x mb-3" />
                         <h4 class="fw-bold mb-4">Rental Order Created</h4>
                         <div class="d-flex justify-content-center gap-3">
-                            <button class="btn btn-outline-primary px-4" t-on-click="openCreatedOrder">
-                                <i class="fa fa-external-link me-2"/>View Sale Order
+                            <button
+                                class="btn btn-outline-primary px-4"
+                                t-on-click="openCreatedOrder"
+                            >
+                                <i class="fa fa-external-link me-2" />View Sale Order
                             </button>
-                            <button class="btn btn-primary px-4" t-on-click="confirmCreatedOrder">
-                                <i class="fa fa-check me-2"/>Confirm Order
+                            <button
+                                class="btn btn-primary px-4"
+                                t-on-click="confirmCreatedOrder"
+                            >
+                                <i class="fa fa-check me-2" />Confirm Order
                             </button>
                         </div>
                         <div class="mt-4">
-                            <button class="btn btn-outline-secondary px-4 py-2 rounded-pill shadow-sm"
-                                    t-on-click="closeModal">
-                                <i class="fa fa-times me-2 text-danger"/>Close
+                            <button
+                                class="btn btn-outline-secondary px-4 py-2 rounded-pill shadow-sm"
+                                t-on-click="closeModal"
+                            >
+                                <i class="fa fa-times me-2 text-danger" />Close
                             </button>
                         </div>
                     </div>
@@ -183,13 +262,15 @@
                             <t t-else="">New Rental Order</t>
                         </h4>
                         <t t-if="state.modalMode === 'edit' and state.modalData.state">
-                            <span t-att-class="'badge ' + getStatusBadgeClass(state.modalData.state)">
-                                <t t-esc="getStatusLabel(state.modalData.state)"/>
+                            <span
+                                    t-att-class="'badge ' + getStatusBadgeClass(state.modalData.state)"
+                                >
+                                <t t-esc="getStatusLabel(state.modalData.state)" />
                             </span>
                         </t>
                     </div>
                     <button class="btn btn-link text-dark p-0" t-on-click="closeModal">
-                        <i class="fa fa-times fa-lg"/>
+                        <i class="fa fa-times fa-lg" />
                     </button>
                 </div>
 
@@ -201,8 +282,11 @@
                         <select class="form-select" t-on-change="onModalLocationChange">
                             <option value="">Select warehouse</option>
                             <t t-foreach="state.locations" t-as="loc" t-key="loc.id">
-                                <option t-att-value="loc.id" t-att-selected="state.modalData.locationId === loc.id">
-                                    <t t-esc="loc.name"/>
+                                <option
+                                        t-att-value="loc.id"
+                                        t-att-selected="state.modalData.locationId === loc.id"
+                                    >
+                                    <t t-esc="loc.name" />
                                 </option>
                             </t>
                         </select>
@@ -212,16 +296,36 @@
                     <div class="col-md-3">
                         <label class="form-label small text-muted">Customer</label>
                         <div class="position-relative">
-                            <input type="text" class="form-control"
-                                   placeholder="Search customer..."
-                                   t-att-value="state.modalData.customerSearch"
-                                   t-on-input="onCustomerSearch"/>
-                            <i class="fa fa-search position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); color: #6c757d;"/>
-                            <div t-if="state.customers.length > 0" class="position-absolute bg-white border rounded shadow-sm w-100 mt-1" style="z-index: 1001; max-height: 200px; overflow-y: auto;">
-                                <t t-foreach="state.customers" t-as="customer" t-key="customer.id">
-                                    <div class="p-2 cursor-pointer customer-option" t-on-click="() => this.selectCustomer(customer)">
-                                        <div><t t-esc="customer.name"/></div>
-                                        <small class="text-muted" t-if="customer.email"><t t-esc="customer.email"/></small>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Search customer..."
+                                    t-att-value="state.modalData.customerSearch"
+                                    t-on-input="onCustomerSearch"
+                                />
+                            <i
+                                    class="fa fa-search position-absolute"
+                                    style="right: 12px; top: 50%; transform: translateY(-50%); color: #6c757d;"
+                                />
+                            <div
+                                    t-if="state.customers.length > 0"
+                                    class="position-absolute bg-white border rounded shadow-sm w-100 mt-1"
+                                    style="z-index: 1001; max-height: 200px; overflow-y: auto;"
+                                >
+                                <t
+                                        t-foreach="state.customers"
+                                        t-as="customer"
+                                        t-key="customer.id"
+                                    >
+                                    <div
+                                            class="p-2 cursor-pointer customer-option"
+                                            t-on-click="() => this.selectCustomer(customer)"
+                                        >
+                                        <div><t t-esc="customer.name" /></div>
+                                        <small
+                                                class="text-muted"
+                                                t-if="customer.email"
+                                            ><t t-esc="customer.email" /></small>
                                     </div>
                                 </t>
                             </div>
@@ -231,17 +335,23 @@
                     <!-- Start Date -->
                     <div class="col-md-3">
                         <label class="form-label small text-muted">Start date</label>
-                        <input type="date" class="form-control"
-                               t-att-value="state.modalData.startDate"
-                               t-on-change="onModalStartDateChange"/>
+                        <input
+                                type="date"
+                                class="form-control"
+                                t-att-value="state.modalData.startDate"
+                                t-on-change="onModalStartDateChange"
+                            />
                     </div>
 
                     <!-- End Date -->
                     <div class="col-md-3">
                         <label class="form-label small text-muted">End date</label>
-                        <input type="date" class="form-control"
-                               t-att-value="state.modalData.endDate"
-                               t-on-change="onModalEndDateChange"/>
+                        <input
+                                type="date"
+                                class="form-control"
+                                t-att-value="state.modalData.endDate"
+                                t-on-change="onModalEndDateChange"
+                            />
                     </div>
                 </div>
 
@@ -256,7 +366,7 @@
                     <div class="col-1">Qty</div>
                     <div class="col-2">Price/Unit</div>
                     <div class="col-1 text-end">Total</div>
-                    <div class="col-1"></div>
+                    <div class="col-1" />
                 </div>
 
                 <!-- Lines -->
@@ -264,39 +374,71 @@
                     <div class="row mb-2 align-items-center">
                         <!-- Equipment (rental service product) -->
                         <div class="col-3">
-                            <select class="form-select form-select-sm" t-on-change="(ev) => this.onLineProductChange(line, ev)">
+                            <select
+                                    class="form-select form-select-sm"
+                                    t-on-change="(ev) => this.onLineProductChange(line, ev)"
+                                >
                                 <option value="">Select equipment</option>
-                                <t t-foreach="state.modalProducts" t-as="product" t-key="product.id">
-                                    <option t-att-value="product.id" t-att-selected="line.productId === product.id">
-                                        <t t-esc="product.name"/>
+                                <t
+                                        t-foreach="state.modalProducts"
+                                        t-as="product"
+                                        t-key="product.id"
+                                    >
+                                    <option
+                                            t-att-value="product.id"
+                                            t-att-selected="line.productId === product.id"
+                                        >
+                                        <t t-esc="product.name" />
                                     </option>
                                 </t>
                             </select>
-                            <small class="text-success d-block" t-if="line.available > 0">
-                                <i class="fa fa-check"/> <t t-esc="line.available"/> avail.
+                            <small
+                                    class="text-success d-block"
+                                    t-if="line.available > 0"
+                                >
+                                <i class="fa fa-check" /> <t
+                                        t-esc="line.available"
+                                    /> avail.
                             </small>
                             <small class="text-danger d-block" t-else="">
-                                <i class="fa fa-times"/> Unavailable
+                                <i class="fa fa-times" /> Unavailable
                             </small>
                         </div>
 
                         <!-- Rental Type -->
                         <div class="col-2">
-                            <select class="form-select form-select-sm"
-                                    t-on-change="(ev) => this.onLineRentalTypeChange(line, ev)">
-                                <option value="new_rental" t-att-selected="line.rentalType === 'new_rental'">New Rental</option>
-                                <option value="rental_extension" t-att-selected="line.rentalType === 'rental_extension'">Extension</option>
+                            <select
+                                    class="form-select form-select-sm"
+                                    t-on-change="(ev) => this.onLineRentalTypeChange(line, ev)"
+                                >
+                                <option
+                                        value="new_rental"
+                                        t-att-selected="line.rentalType === 'new_rental'"
+                                    >New Rental</option>
+                                <option
+                                        value="rental_extension"
+                                        t-att-selected="line.rentalType === 'rental_extension'"
+                                    >Extension</option>
                             </select>
                         </div>
 
                         <!-- Rental Period -->
                         <div class="col-2">
-                            <select class="form-select form-select-sm"
-                                    t-on-change="(ev) => this.onLineRentalPeriodChange(line, ev)">
+                            <select
+                                    class="form-select form-select-sm"
+                                    t-on-change="(ev) => this.onLineRentalPeriodChange(line, ev)"
+                                >
 <!--                                <option value="" disabled="1">Period</option>-->
-                                <t t-foreach="getLineAvailablePeriods(line)" t-as="period" t-key="period.id">
-                                    <option t-att-value="period.id" t-att-selected="line.rentalPeriodId === period.id">
-                                        <t t-esc="period.name"/>
+                                <t
+                                        t-foreach="getLineAvailablePeriods(line)"
+                                        t-as="period"
+                                        t-key="period.id"
+                                    >
+                                    <option
+                                            t-att-value="period.id"
+                                            t-att-selected="line.rentalPeriodId === period.id"
+                                        >
+                                        <t t-esc="period.name" />
                                     </option>
                                 </t>
                             </select>
@@ -304,31 +446,43 @@
 
                         <!-- Rental Qty -->
                         <div class="col-1">
-                            <input type="number" class="form-control form-control-sm text-center" min="1" step="1"
-                                   t-att-value="line.rentalQty"
-                                   t-on-change="(ev) => this.onLineRentalQtyChange(line, ev)"/>
+                            <input
+                                    type="number"
+                                    class="form-control form-control-sm text-center"
+                                    min="1"
+                                    step="1"
+                                    t-att-value="line.rentalQty"
+                                    t-on-change="(ev) => this.onLineRentalQtyChange(line, ev)"
+                                />
                         </div>
 
                         <!-- Price Unit -->
                         <div class="col-2">
                             <div class="input-group input-group-sm">
                                 <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" step="0.01"
-                                       t-att-value="line.priceUnit.toFixed(2)"
-                                       t-on-change="(ev) => this.onLinePriceUnitChange(line, ev)"/>
+                                <input
+                                        type="number"
+                                        class="form-control"
+                                        step="0.01"
+                                        t-att-value="line.priceUnit.toFixed(2)"
+                                        t-on-change="(ev) => this.onLinePriceUnitChange(line, ev)"
+                                    />
                             </div>
                         </div>
 
                         <!-- Total -->
                         <div class="col-1 text-end fw-semibold small">
-                            <t t-esc="formatCurrency(getLineTotal(line))"/>
+                            <t t-esc="formatCurrency(getLineSubtotal(line))" />
                         </div>
 
                         <!-- Delete -->
                         <div class="col-1 text-center">
-                            <button class="btn btn-link text-danger p-0" t-on-click="() => this.removeLine(line.id)"
-                                    t-att-disabled="state.modalData.lines.length === 1">
-                                <i class="fa fa-trash"/>
+                            <button
+                                    class="btn btn-link text-danger p-0"
+                                    t-on-click="() => this.removeLine(line.id)"
+                                    t-att-disabled="state.modalData.lines.length === 1"
+                                >
+                                <i class="fa fa-trash" />
                             </button>
                         </div>
                     </div>
@@ -337,7 +491,7 @@
                 <!-- Add Line Button -->
                 <div class="mb-4">
                     <a href="#" class="text-primary" t-on-click.prevent="addLine">
-                        <i class="fa fa-plus me-1"/>Add more equipment
+                        <i class="fa fa-plus me-1" />Add more equipment
                     </a>
                 </div>
 
@@ -346,7 +500,7 @@
                     <div class="col-md-4">
                         <div class="d-flex justify-content-between fw-bold fs-5">
                             <span>Total</span>
-                            <span><t t-esc="formatCurrency(modalTotal)"/></span>
+                            <span><t t-esc="formatCurrency(modalSubtotal)" /></span>
                         </div>
                     </div>
                 </div>
@@ -354,17 +508,26 @@
                 <!-- Modal Footer -->
                 <div class="d-flex justify-content-between">
                     <div class="d-flex gap-2" t-if="state.modalMode === 'edit'">
-                        <button class="btn btn-outline-primary px-3" t-on-click="openEditingOrder">
-                            <i class="fa fa-external-link me-2"/>View Order
+                        <button
+                                class="btn btn-outline-primary px-3"
+                                t-on-click="openEditingOrder"
+                            >
+                            <i class="fa fa-external-link me-2" />View Order
                         </button>
-                        <button class="btn btn-success px-3" t-on-click="confirmEditingOrder"
-                                t-att-disabled="state.modalData.state !== 'draft'">
-                            <i class="fa fa-check me-2"/>Confirm Order
+                        <button
+                                class="btn btn-success px-3"
+                                t-on-click="confirmEditingOrder"
+                                t-att-disabled="state.modalData.state !== 'draft'"
+                            >
+                            <i class="fa fa-check me-2" />Confirm Order
                         </button>
                     </div>
-                    <div t-else=""/>
+                    <div t-else="" />
                     <div class="d-flex gap-2">
-                        <button class="btn btn-outline-secondary px-4" t-on-click="closeModal">Cancel</button>
+                        <button
+                                class="btn btn-outline-secondary px-4"
+                                t-on-click="closeModal"
+                            >Cancel</button>
                         <button class="btn btn-primary px-4" t-on-click="confirmRental">
                             <t t-if="state.modalMode === 'edit'">Save Changes</t>
                             <t t-else="">Create Order</t>
