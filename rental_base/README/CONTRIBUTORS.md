@@ -1,0 +1,4 @@
+- elego Software Solutions GmbH
+- [Binhex](http://www.binhex.cloud):
+  - Adasat Torres de León \<a.torres@binhex.cloud\>
+  - Zuzanna Elzbieta Szalaty Szalaty \<zuzanna@binhex.cloud\>
