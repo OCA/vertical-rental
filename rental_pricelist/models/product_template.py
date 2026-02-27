@@ -1,6 +1,7 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.api import onchange
 
 
 class ProductTemplate(models.Model):
@@ -72,6 +73,19 @@ class ProductTemplate(models.Model):
         copy=False,
     )
 
+    """
+        This field defines which product.product is associated with the product.template
+        and obtains the data necessary for Rental.
+    """
+    product_value_ids = fields.Many2many(
+        "product.product", compute="_compute_product_value_ids", store=True
+    )
+    product_related_id = fields.Many2one(
+        "product.product",
+        domain="[('id','in',product_value_ids)]",
+        help="Defines the product associated with the product template.",
+    )
+
     month_scale_pricelist_item_ids = fields.One2many(
         comodel_name="product.pricelist.item",
         inverse_name="month_item_tmpl_id",
@@ -97,27 +111,14 @@ class ProductTemplate(models.Model):
         copy=False,
     )
 
-    """
-        This field defines which product.product is associated with the product.template
-        and obtains the data necessary for Rental.
-    """
-    product_value_ids = fields.Many2many(
-        "product.product", compute="_compute_product_value_ids", store=True
-    )
-    product_related_id = fields.Many2one(
-        "product.product",
-        domain="[('id','in',product_value_ids)]",
-        help="Defines the product associated with the product template.",
-    )
-
     def _default_pricelist(self):
-        # TODO change default pricelist if country group exist
-        return self.env.ref("product.list0").id
+        return self.env["product.pricelist"].search(
+            [("company_id", "=", self.env.company.id)], limit=1
+        )
 
     def _get_product_by_template(self, limit=1000):
-        product_tmpl_id = self._origin.id if hasattr(self, "_origin") else self.id
         product_ids = self.env["product.product"].search_read(
-            domain=[["product_tmpl_id", "=", product_tmpl_id]],
+            domain=[["product_tmpl_id", "=", self.id or self.id.origin]],
             fields=["id"],
             limit=limit,
         )
@@ -133,7 +134,7 @@ class ProductTemplate(models.Model):
                     product_tmpl_id.product_related_id = product_id[0]["id"]
         return product_tmpl_ids
 
-    @api.onchange("rental_of_month", "rental_of_day", "rental_of_hour")
+    @onchange("rental_of_month", "rental_of_day", "rental_of_hour")
     def onchange_rental_of_month_day_hour(self):
         if (
             self.rental_of_month or self.rental_of_day or self.rental_of_hour
@@ -142,7 +143,7 @@ class ProductTemplate(models.Model):
             if product_id:
                 self.product_related_id = product_id[0]["id"]
 
-    @api.depends("product_related_id", "rental")
+    @api.depends("product_related_id")
     def _compute_product_value_ids(self):
         for product_tmpl in self:
             self.product_value_ids = [

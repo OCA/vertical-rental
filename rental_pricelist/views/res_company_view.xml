@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="view_company_rental_service_form" model="ir.ui.view">
         <field name="name">res.company.form</field>
