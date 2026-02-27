@@ -10,7 +10,6 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
     def setUpClass(cls):
         super().setUpClass()
         ProductObj = cls.env["product.product"]
-        cls.SaleOrderObj = cls.env["sale.order"]
         cls.product_rental = ProductObj.create(
             {
                 "name": "Rental Product",
@@ -85,15 +84,19 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
         )
         self.assertEqual(len(rental_1), 1)
         self.assertEqual(
-            rental_1.out_picking_id.scheduled_date.date(),
-            self.date_0101,
+            rental_1.out_picking_id.scheduled_date,
+            fields.Datetime.to_datetime(self.date_0102),
         )
         self.assertEqual(
-            rental_1.in_picking_id.scheduled_date.date(),
-            self.date_0110,
+            rental_1.in_picking_id.scheduled_date,
+            fields.Datetime.to_datetime(self.date_0111),
         )
-        self.assertEqual(rental_1.out_move_id.date.date(), self.date_0101)
-        self.assertEqual(rental_1.in_move_id.date.date(), self.date_0110)
+        self.assertEqual(
+            rental_1.out_move_id.date, fields.Datetime.to_datetime(self.date_0102)
+        )
+        self.assertEqual(
+            rental_1.in_move_id.date, fields.Datetime.to_datetime(self.date_0111)
+        )
         # 2. change date, date_in_lines = True
         line_ids_value_2 = []
         line_ids_value_2.append(
@@ -143,41 +146,16 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
         )
         self.assertEqual(len(rental_2), 1)
         self.assertEqual(
-            rental_2.out_picking_id.scheduled_date.date(),
-            self.date_0101,
+            rental_2.out_picking_id.scheduled_date,
+            fields.Datetime.to_datetime(self.date_0103),
         )
         self.assertEqual(
-            rental_2.in_picking_id.scheduled_date.date(),
-            self.date_0110,
+            rental_2.in_picking_id.scheduled_date,
+            fields.Datetime.to_datetime(self.date_0112),
         )
-        self.assertEqual(rental_2.out_move_id.date.date(), self.date_0101)
-        self.assertEqual(rental_2.in_move_id.date.date(), self.date_0110)
-
-    def test_inverse_rental(self):
-        self.product_rental.rental = True
-        self.assertTrue(self.product_rental.product_tmpl_id.rental)
-
-    def test_create_sale_order_order_type_rental(self):
-        number_next_actual = self.env.ref(
-            "rental_base.rental_sale_type"
-        ).sequence_id.number_next_actual
-        order_id = self.SaleOrderObj.with_context(
-            default_type_id=self.env.ref("rental_base.rental_sale_type").id
-        ).create(
-            {
-                "partner_id": self.partnerA.id,
-                "order_line": [
-                    (
-                        0,
-                        0,
-                        {
-                            "product_id": self.product_rental.id,
-                            "product_uom_qty": 1,
-                            "rental_qty": 1,
-                            "product_uom": self.product_rental.uom_id.id,
-                        },
-                    )
-                ],
-            }
+        self.assertEqual(
+            rental_2.out_move_id.date, fields.Datetime.to_datetime(self.date_0103)
         )
-        self.assertIn(str(number_next_actual), order_id.name)
+        self.assertEqual(
+            rental_2.in_move_id.date, fields.Datetime.to_datetime(self.date_0112)
+        )

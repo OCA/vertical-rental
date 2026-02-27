@@ -72,18 +72,20 @@ class RentalStockCommon(common.TransactionCase):
         return Move.create(move_values)
 
     @classmethod
-    def _create_rental_order(cls, partner_id, date_start, date_end, qty=1):
+    def _create_rental_order(
+        cls, partner_id, date_start, date_end, qty=1, product=False
+    ):
         """
         Create a Rental Order with Product (self.service_rental)
         """
         date_qty = (date_end - date_start).days + 1
+        product_id = cls.service_rental.id if not product else product.id
         rental_order = cls.env["sale.order"].create(
             {
                 "type_id": cls.rental_sale_type.id,
                 "partner_id": partner_id,
                 "partner_invoice_id": partner_id,
                 "partner_shipping_id": partner_id,
-                "pricelist_id": cls.env.ref("product.list0").id,
                 "picking_policy": "direct",
                 "warehouse_id": cls.warehouse0.id,
                 "order_line": [
@@ -92,7 +94,7 @@ class RentalStockCommon(common.TransactionCase):
                         0,
                         {
                             "name": "Service for Rental",
-                            "product_id": cls.service_rental.id,
+                            "product_id": product_id,
                             "rental": True,
                             "rental_type": "new_rental",
                             "rental_qty": qty,

@@ -72,29 +72,6 @@ class SaleOrderLine(models.Model):
         related="product_id.rented_product_id.uom_id",
     )
 
-    start_date = fields.Date(
-        states={
-            "draft": [("readonly", False)],
-            "sent": [("readonly", False)],
-            "sale": [("readonly", False)],
-        }
-    )
-
-    end_date = fields.Date(
-        states={
-            "draft": [("readonly", False)],
-            "sent": [("readonly", False)],
-            "sale": [("readonly", False)],
-        }
-    )
-
-    rental = fields.Boolean(compute="_compute_rental", store=True)
-
-    @api.depends("product_id")
-    def _compute_rental(self):
-        for line in self:
-            line.rental = line.product_id.rental
-
     @api.constrains(
         "rental_type",
         "extension_rental_id",
@@ -253,10 +230,11 @@ class SaleOrderLine(models.Model):
 
     def write(self, values):
         """
-        Both fields start_date and end_date were made editable in state draft, sent and sale,
-        in order to allow the creation of new sale order lines with start and end dates.
-        However, it is forbidden to write the dates of already existing sale order lines.
-        To update these existing line, the method 'update_start_end_date' should be called.
+        Both fields start_date and end_date were made editable in state draft, sent and
+        sale, in order to allow the creation of new sale order lines with start and end
+        dates. However, it is forbidden to write the dates of already existing sale
+        order lines. To update these existing line, the method 'update_start_end_date'
+        should be called.
         :param values: dictionary
         :return: Boolean
         """

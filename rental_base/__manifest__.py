@@ -2,12 +2,13 @@
 
 {
     "name": "Rental Base",
-    "version": "16.0.1.0.0",
+    "version": "17.0.1.0.0",
     "category": "Rental",
     "summary": "Manage Rental of Products",
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/vertical-rental",
     "depends": [
+        "base",
         "account",
         "product_analytic",
         "sale",
@@ -25,7 +26,7 @@
         "wizard/update_sale_line_date_view.xml",
         "views/res_config_settings_view.xml",
         "views/stock_picking_views.xml",
-        "views/product_views.xml",
+        "views/product_template_views.xml",
         "views/menu_view.xml",
         "views/sale_view.xml",
     ],
