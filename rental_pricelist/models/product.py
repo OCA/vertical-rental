@@ -391,7 +391,7 @@ class ProductProduct(models.Model):
         self.rental_service_ids.write(service_vals)
 
     def write(self, vals):
-        res = super(ProductProduct, self).write(vals)
+        res = super().write(vals)
         for p in self:
             # Create service product automatically
             if vals.get("rental_of_month", False):
