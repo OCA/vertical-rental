@@ -17,24 +17,28 @@ Rental Pricelist
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fvertical--rental-lightgray.png?logo=github
-    :target: https://github.com/OCA/vertical-rental/tree/16.0/rental_pricelist
+    :target: https://github.com/OCA/vertical-rental/tree/17.0/rental_pricelist
     :alt: OCA/vertical-rental
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/vertical-rental-16-0/vertical-rental-16-0-rental_pricelist
+    :target: https://translation.odoo-community.org/projects/vertical-rental-17-0/vertical-rental-17-0-rental_pricelist
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/vertical-rental&target_branch=16.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/vertical-rental&target_branch=17.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-*This file has been generated on 2022-05-04-12-21-41. Changes to it will be overwritten.*
+*This file has been generated on 2022-05-04-12-21-41. Changes to it will
+be overwritten.*
 
-Enables the user to define different rental prices with time uom (Month, Day and Hour).
+Enables the user to define different rental prices with time uom (Month,
+Day and Hour).
 
-Rental prices are usually scaled prices based on a time unit, typically day, sometimes months or hour.
-This modules integrates the standard Odoo pricelists into rental use cases and allows the user an
-easy way to specify the prices in a product tab as well as to use all the enhanced pricelist features.
+Rental prices are usually scaled prices based on a time unit, typically
+day, sometimes months or hour. This modules integrates the standard Odoo
+pricelists into rental use cases and allows the user an easy way to
+specify the prices in a product tab as well as to use all the enhanced
+pricelist features.
 
 **Table of contents**
 
@@ -45,45 +49,55 @@ Usage
 =====
 
 Create a rentable product:
- * Go to Rentals > Configuration > Settings.
- * Please activate the checkbox for using 'Product Variants'.
- * Go to Rentals > Products > Products.
- * Create a new storable product.
- * Active the checkbox 'Can be Rented'.
 
- Configure the naming of rental services:
- * Go to Settings > Users & Companies > Companies.
- * To to page 'Rental Services'.
- * Configure the rental service names by providing a prefix and suffix for the name and default code.
+- Go to Rentals > Configuration > Settings.
+- Please activate the checkbox for using 'Product Variants'.
+- Go to Rentals > Products > Products.
+- Create a new storable product.
+- Active the checkbox 'Can be Rented'.
 
- Create the rental services:
- * Go to the previously created rentable storable product.
- * Go to page 'Rental Price'.
- * Activate the boolean fields for hourly, daily or monthly rental as needed.
- * Save the product, which creates the related rental services for the given time units.
- * Add a usual price for one hour, one day or one month.
- * Add bulk prices, e.g. one day costs 300 €, 7 days 290 €, 21 days 250 €, and so on.
+Configure the naming of rental services: \* Go to Settings > Users &
+Companies > Companies. \* To to page 'Rental Services'. \* Configure the
+rental service names by providing a prefix and suffix for the name and
+default code.
 
-Hint: The (bulk) prices are added in the product form view of the storable, rentable product
-but are actually used for its related rental services!
+Create the rental services: \* Go to the previously created rentable
+storable product. \* Go to page 'Rental Price'. \* Activate the boolean
+fields for hourly, daily or monthly rental as needed. \* Save the
+product, which creates the related rental services for the given time
+units. \* Add a usual price for one hour, one day or one month. \* Add
+bulk prices, e.g. one day costs 300 €, 7 days 290 €, 21 days 250 €, and
+so on.
+
+Hint: The (bulk) prices are added in the product form view of the
+storable, rentable product but are actually used for its related rental
+services!
 
 Create a rental order:
- * Go to Rentals > Customer > Rental Quotations.
- * Create a new order and choose the type 'Rental Order'.
- * Choose the storable rental product (not the rental service!).
- * Choose the rental time unit, which actually loads the correct related rental service.
- * Set the quantity to rent out one or several storable rentable products.
- * Choose start and end date.
- * Confirm the order.
- * Check out the two deliveries, one for outgoing and one for incoming delivery.
+
+- Go to Rentals > Customer > Rental Quotations.
+- Create a new order and choose the type 'Rental Order'.
+- Choose the storable rental product (not the rental service!).
+- Choose the rental time unit, which actually loads the correct related
+  rental service.
+- Set the quantity to rent out one or several storable rentable
+  products.
+- Choose start and end date.
+- Confirm the order.
+- Check out the two deliveries, one for outgoing and one for incoming
+  delivery.
 
 Please also see the usage section of sale_rental and rental_base module.
 
 Changelog
 =========
 
-- 8d191ff7 2022-04-10 15:41:16 +0200 wagner@elegosoft.com  add missing/lost documentation (issue #4516)
-- 4509f78a 2022-02-23 20:48:33 +0100 wagner@elegosoft.com  (origin/feature_4516_add_files_ported_from_v12_v14, feature_4516_add_files_ported_from_v12_v14) add files ported to v14 by cpatel and khanhbui (issue #4516)
+- 8d191ff7 2022-04-10 15:41:16 +0200 wagner@elegosoft.com add
+  missing/lost documentation (issue #4516)
+- 4509f78a 2022-02-23 20:48:33 +0100 wagner@elegosoft.com
+  (origin/feature_4516_add_files_ported_from_v12_v14,
+  feature_4516_add_files_ported_from_v12_v14) add files ported to v14 by
+  cpatel and khanhbui (issue #4516)
 
 Bug Tracker
 ===========
@@ -91,7 +105,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/vertical-rental/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/vertical-rental/issues/new?body=module:%20rental_pricelist%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/vertical-rental/issues/new?body=module:%20rental_pricelist%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -99,17 +113,17 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * elego Software Solutions GmbH
 
 Contributors
-~~~~~~~~~~~~
+------------
 
 elego Software Solutions GmbH, Odoo Community Association (OCA)
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
 This module is maintained by the OCA.
 
@@ -121,6 +135,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/vertical-rental <https://github.com/OCA/vertical-rental/tree/16.0/rental_pricelist>`_ project on GitHub.
+This module is part of the `OCA/vertical-rental <https://github.com/OCA/vertical-rental/tree/17.0/rental_pricelist>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
