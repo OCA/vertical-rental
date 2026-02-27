@@ -13,23 +13,19 @@ Part of rental-vertical See LICENSE file for full copyright and licensing detail
                 >By changing the start and end dates of order lines, the dates are also updated in the timeline,the related stock pickings and contracts, if available.
                 Attention: The ordered quantities are not updated!</p>
                 <group name="main">
-                    <field
-                        name="date_start"
-                        attrs="{'invisible': [('date_in_line', '=', True)]}"
-                    />
-                    <field
-                        name="date_end"
-                        attrs="{'invisible': [('date_in_line', '=', True)]}"
-                    />
+                    <field name="date_start" invisible="date_in_line" />
+                    <field name="date_end" invisible="date_in_line" />
                     <field name="date_in_line" />
                     <field name="all_line" />
                     <field
                         name="from_line"
-                        attrs="{'invisible': [('all_line', '=', True)], 'required': [('all_line', '=', False)]}"
+                        invisible="all_line"
+                        required="all_line == False"
                     />
                     <field
                         name="to_line"
-                        attrs="{'invisible': [('all_line', '=', True)], 'required': [('all_line', '=', False)]}"
+                        invisible="all_line"
+                        required="all_line == False"
                     />
                 </group>
                 <field name="line_ids" no_label="1">
