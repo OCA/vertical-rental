@@ -32,17 +32,49 @@
                 <!-- Location Filter -->
                 <div class="mb-3">
                     <label class="form-label small text-muted">Location</label>
-                    <select class="form-select" t-on-change="onLocationChange">
-                        <option value="">Select a location</option>
-                        <t t-foreach="state.locations" t-as="loc" t-key="loc.id">
-                            <option
-                                t-att-value="loc.id"
-                                t-att-selected="state.selectedLocation === loc.id"
+                    <div class="position-relative">
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Search location..."
+                            t-att-value="state.locationSearch"
+                            t-on-input="onLocationSearchInput"
+                            t-on-focus="onLocationSearchFocus"
+                            t-on-blur="onLocationSearchBlur"
+                        />
+                        <i
+                            class="fa fa-search position-absolute"
+                            style="right: 12px; top: 50%; transform: translateY(-50%); color: #6c757d;"
+                        />
+                        <div
+                            t-if="state.locationDropdownOpen and state.locationResults.length > 0"
+                            class="position-absolute bg-white border rounded shadow-sm w-100 mt-1"
+                            style="z-index: 1001; max-height: 220px; overflow-y: auto;"
+                        >
+                            <t
+                                t-foreach="state.locationResults"
+                                t-as="loc"
+                                t-key="loc.id"
                             >
-                                <t t-esc="loc.name" />
-                            </option>
-                        </t>
-                    </select>
+                                <div
+                                    class="p-2 cursor-pointer customer-option"
+                                    t-on-click="() => this.selectLocation(loc)"
+                                >
+                                    <t t-esc="loc.name" />
+                                </div>
+                            </t>
+                            <div
+                                t-if="state.locationHasMore"
+                                class="border-top text-center p-2"
+                            >
+                                <a
+                                    href="#"
+                                    class="small text-primary"
+                                    t-on-click.prevent="loadMoreLocations"
+                                >Search more...</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Date Range Filter -->
@@ -53,48 +85,80 @@
                             class="form-control d-flex align-items-center justify-content-between cursor-pointer"
                             t-on-click="toggleDatePicker"
                         >
-                            <span t-if="state.dateFrom and state.dateTo">
+                            <span t-if="state.dateFrom or state.dateTo" class="small">
                                 <t t-esc="formatDateRange()" />
                             </span>
                             <span t-else="" class="text-muted">Select dates</span>
                             <i class="fa fa-calendar" />
                         </div>
-                        <!-- Date picker dropdown -->
+                        <!-- Calendar dropdown -->
                         <div
                             t-if="state.showDatePicker"
                             class="date-picker-dropdown position-absolute bg-white border rounded shadow-sm p-3 mt-1"
                             style="z-index: 1000; width: 100%;"
                         >
-                            <div class="mb-2">
-                                <label class="form-label small">From</label>
-                                <input
-                                    type="date"
-                                    class="form-control"
-                                    t-att-value="state.dateFrom"
-                                    t-on-change="onDateFromChange"
-                                />
+                            <!-- Month navigation -->
+                            <div
+                                class="d-flex justify-content-between align-items-center mb-2"
+                            >
+                                <button
+                                    class="btn btn-sm btn-link text-dark p-1"
+                                    t-on-click.stop="prevMonth"
+                                ><i class="fa fa-chevron-left" /></button>
+                                <span class="fw-bold small">
+                                    <t t-esc="getCalendarMonthLabel()" />
+                                </span>
+                                <button
+                                    class="btn btn-sm btn-link text-dark p-1"
+                                    t-on-click.stop="nextMonth"
+                                ><i class="fa fa-chevron-right" /></button>
                             </div>
-                            <div class="mb-2">
-                                <label class="form-label small">To</label>
-                                <input
-                                    type="date"
-                                    class="form-control"
-                                    t-att-value="state.dateTo"
-                                    t-on-change="onDateToChange"
-                                />
+                            <!-- Day grid -->
+                            <div class="rdp-grid">
+                                <t
+                                    t-foreach="['Su','Mo','Tu','We','Th','Fr','Sa']"
+                                    t-as="wday"
+                                    t-key="wday"
+                                >
+                                    <div class="rdp-cell rdp-weekday"><t
+                                            t-esc="wday"
+                                        /></div>
+                                </t>
+                                <t
+                                    t-foreach="getCalendarDays()"
+                                    t-as="cell"
+                                    t-key="cell.key"
+                                >
+                                    <div
+                                        t-att-class="getCalendarDayClass(cell)"
+                                        t-on-click.stop="() => this.onCalendarDayClick(cell)"
+                                        t-on-mouseenter="() => this.onCalendarDayHover(cell)"
+                                    >
+                                        <span t-if="cell.day"><t
+                                                t-esc="cell.day"
+                                            /></span>
+                                    </div>
+                                </t>
                             </div>
-                            <div class="d-flex justify-content-end gap-2">
+                            <!-- Clear -->
+                            <div class="d-flex justify-content-end mt-2">
                                 <button
                                     class="btn btn-sm btn-outline-secondary"
-                                    t-on-click="clearDateFilter"
+                                    t-on-click.stop="clearDateFilter"
                                 >Clear</button>
-                                <button
-                                    class="btn btn-sm btn-primary"
-                                    t-on-click="applyDateFilter"
-                                >Apply</button>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Apply Search Button -->
+                <div class="mb-3">
+                    <button
+                        t-att-class="'btn w-100 ' + (state.filtersChanged ? 'btn-primary' : 'd-none')"
+                        t-on-click="applySearch"
+                    >
+                        <i class="fa fa-search me-2" />Apply search
+                    </button>
                 </div>
 
                 <!-- Show Available Only -->
@@ -212,8 +276,6 @@
             </div>
         </div>
 
-        <!-- Tooltip is managed by plain DOM in JS to avoid OWL re-renders -->
-
         <!-- Create/Edit Rental Modal -->
         <div
             t-if="state.showModal"
@@ -263,7 +325,8 @@
                         </h4>
                         <t t-if="state.modalMode === 'edit' and state.modalData.state">
                             <span
-                                    t-att-class="'badge ' + getStatusBadgeClass(state.modalData.state)"
+                                    style="padding: 4px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; display: inline-block;"
+                                    t-att-style="getStatusBadgeStyle(state.modalData.state)"
                                 >
                                 <t t-esc="getStatusLabel(state.modalData.state)" />
                             </span>
@@ -279,17 +342,48 @@
                     <!-- Location (Warehouse) -->
                     <div class="col-md-3">
                         <label class="form-label small text-muted">Warehouse</label>
-                        <select class="form-select" t-on-change="onModalLocationChange">
-                            <option value="">Select warehouse</option>
-                            <t t-foreach="state.locations" t-as="loc" t-key="loc.id">
-                                <option
-                                        t-att-value="loc.id"
-                                        t-att-selected="state.modalData.locationId === loc.id"
+                        <div class="position-relative">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Search warehouse..."
+                                    t-att-value="state.modalData.locationSearch"
+                                    t-on-input="onModalLocationSearchInput"
+                                    t-on-focus="onModalLocationSearchFocus"
+                                />
+                            <i
+                                    class="fa fa-search position-absolute"
+                                    style="right: 12px; top: 50%; transform: translateY(-50%); color: #6c757d;"
+                                />
+                            <div
+                                    t-if="state.modalLocationResults.length > 0"
+                                    class="position-absolute bg-white border rounded shadow-sm w-100 mt-1"
+                                    style="z-index: 1001; max-height: 220px; overflow-y: auto;"
+                                >
+                                <t
+                                        t-foreach="state.modalLocationResults"
+                                        t-as="loc"
+                                        t-key="loc.id"
                                     >
-                                    <t t-esc="loc.name" />
-                                </option>
-                            </t>
-                        </select>
+                                    <div
+                                            class="p-2 cursor-pointer customer-option"
+                                            t-on-click="() => this.selectModalLocation(loc)"
+                                        >
+                                        <t t-esc="loc.name" />
+                                    </div>
+                                </t>
+                                <div
+                                        t-if="state.modalLocationHasMore"
+                                        class="border-top text-center p-2"
+                                    >
+                                    <a
+                                            href="#"
+                                            class="small text-primary"
+                                            t-on-click.prevent="loadMoreModalLocations"
+                                        >Search more...</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Customer -->
@@ -302,6 +396,7 @@
                                     placeholder="Search customer..."
                                     t-att-value="state.modalData.customerSearch"
                                     t-on-input="onCustomerSearch"
+                                    t-on-focus="onCustomerSearchFocus"
                                 />
                             <i
                                     class="fa fa-search position-absolute"
@@ -310,7 +405,7 @@
                             <div
                                     t-if="state.customers.length > 0"
                                     class="position-absolute bg-white border rounded shadow-sm w-100 mt-1"
-                                    style="z-index: 1001; max-height: 200px; overflow-y: auto;"
+                                    style="z-index: 1001; max-height: 220px; overflow-y: auto;"
                                 >
                                 <t
                                         t-foreach="state.customers"
@@ -328,6 +423,16 @@
                                             ><t t-esc="customer.email" /></small>
                                     </div>
                                 </t>
+                                <div
+                                        t-if="state.customerHasMore"
+                                        class="border-top text-center p-2"
+                                    >
+                                    <a
+                                            href="#"
+                                            class="small text-primary"
+                                            t-on-click.prevent="loadMoreCustomers"
+                                        >Search more...</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -374,24 +479,44 @@
                     <div class="row mb-2 align-items-center">
                         <!-- Equipment (rental service product) -->
                         <div class="col-3">
-                            <select
-                                    class="form-select form-select-sm"
-                                    t-on-change="(ev) => this.onLineProductChange(line, ev)"
-                                >
-                                <option value="">Select equipment</option>
-                                <t
-                                        t-foreach="state.modalProducts"
-                                        t-as="product"
-                                        t-key="product.id"
+                            <div class="position-relative">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-sm"
+                                        placeholder="Search equipment..."
+                                        t-att-value="line.productSearch"
+                                        t-on-input="(ev) => this.onLineProductSearchInput(line, ev)"
+                                        t-on-focus="() => this.onLineProductSearchFocus(line)"
+                                    />
+                                <div
+                                        t-if="line.productResults.length > 0"
+                                        class="position-absolute bg-white border rounded shadow-sm w-100 mt-1"
+                                        style="z-index: 1001; max-height: 220px; overflow-y: auto;"
                                     >
-                                    <option
-                                            t-att-value="product.id"
-                                            t-att-selected="line.productId === product.id"
+                                    <t
+                                            t-foreach="line.productResults"
+                                            t-as="product"
+                                            t-key="product.id"
                                         >
-                                        <t t-esc="product.name" />
-                                    </option>
-                                </t>
-                            </select>
+                                        <div
+                                                class="p-2 cursor-pointer customer-option small"
+                                                t-on-click="() => this.selectLineProduct(line, product)"
+                                            >
+                                            <t t-esc="product.name" />
+                                        </div>
+                                    </t>
+                                    <div
+                                            t-if="line.productHasMore"
+                                            class="border-top text-center p-2"
+                                        >
+                                        <a
+                                                href="#"
+                                                class="small text-primary"
+                                                t-on-click.prevent="() => this.loadMoreLineProducts(line)"
+                                            >Search more...</a>
+                                    </div>
+                                </div>
+                            </div>
                             <small
                                     class="text-success d-block"
                                     t-if="line.available > 0"
@@ -400,7 +525,10 @@
                                         t-esc="line.available"
                                     /> avail.
                             </small>
-                            <small class="text-danger d-block" t-else="">
+                            <small
+                                    class="text-danger d-block"
+                                    t-if="line.productId and line.available === 0"
+                                >
                                 <i class="fa fa-times" /> Unavailable
                             </small>
                         </div>
@@ -428,7 +556,6 @@
                                     class="form-select form-select-sm"
                                     t-on-change="(ev) => this.onLineRentalPeriodChange(line, ev)"
                                 >
-<!--                                <option value="" disabled="1">Period</option>-->
                                 <t
                                         t-foreach="getLineAvailablePeriods(line)"
                                         t-as="period"
@@ -486,6 +613,49 @@
                             </button>
                         </div>
                     </div>
+
+                    <!-- Extension rental picker (only for rental_extension type) -->
+                    <div t-if="line.rentalType === 'rental_extension'" class="row mb-2">
+                        <div class="col-1 text-end small text-muted pt-1">Extends</div>
+                        <div class="col-11 position-relative">
+                            <input
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    placeholder="Search rental to extend..."
+                                    t-att-value="line.extensionRentalSearch"
+                                    t-on-input="(ev) => this.onLineExtensionSearchInput(line, ev)"
+                                    t-on-focus="() => this.onLineExtensionSearchFocus(line)"
+                                />
+                            <div
+                                    t-if="line.extensionRentalResults.length > 0"
+                                    class="position-absolute bg-white border rounded shadow-sm mt-1"
+                                    style="z-index: 1001; max-height: 220px; overflow-y: auto; left: 12px; right: 0;"
+                                >
+                                <t
+                                        t-foreach="line.extensionRentalResults"
+                                        t-as="rental"
+                                        t-key="rental.id"
+                                    >
+                                    <div
+                                            class="p-2 cursor-pointer customer-option small"
+                                            t-on-click="() => this.selectLineExtension(line, rental)"
+                                        >
+                                        <t t-esc="rental.name" />
+                                    </div>
+                                </t>
+                                <div
+                                        t-if="line.extensionRentalHasMore"
+                                        class="border-top text-center p-2"
+                                    >
+                                    <a
+                                            href="#"
+                                            class="small text-primary"
+                                            t-on-click.prevent="() => this.loadMoreLineExtensions(line)"
+                                        >Search more...</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </t>
 
                 <!-- Add Line Button -->
@@ -515,9 +685,8 @@
                             <i class="fa fa-external-link me-2" />View Order
                         </button>
                         <button
-                                class="btn btn-success px-3"
+                                t-att-class="'btn btn-success px-3' + (state.modalData.state !== 'draft' ? ' d-none' : '')"
                                 t-on-click="confirmEditingOrder"
-                                t-att-disabled="state.modalData.state !== 'draft'"
                             >
                             <i class="fa fa-check me-2" />Confirm Order
                         </button>
@@ -528,7 +697,10 @@
                                 class="btn btn-outline-secondary px-4"
                                 t-on-click="closeModal"
                             >Cancel</button>
-                        <button class="btn btn-primary px-4" t-on-click="confirmRental">
+                        <button
+                                t-att-class="'btn btn-primary px-4' + (state.modalMode === 'edit' and state.modalData.state !== 'draft' ? ' d-none' : '')"
+                                t-on-click="confirmRental"
+                            >
                             <t t-if="state.modalMode === 'edit'">Save Changes</t>
                             <t t-else="">Create Order</t>
                         </button>

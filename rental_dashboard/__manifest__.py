@@ -21,5 +21,6 @@
     },
     "installable": True,
     "application": True,
-    "license": "LGPL-3",
+    "license": "AGPL-3",
+    "website": "https://github.com/OCA/vertical-rental",
 }

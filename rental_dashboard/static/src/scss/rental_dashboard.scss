@@ -42,6 +42,71 @@
             .date-picker-dropdown {
                 left: 0;
                 right: 0;
+
+                .rdp-grid {
+                    display: grid;
+                    grid-template-columns: repeat(7, 1fr);
+                    gap: 1px;
+                }
+
+                .rdp-cell {
+                    aspect-ratio: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 0.82rem;
+                    user-select: none;
+                    border-radius: 50%;
+
+                    &.rdp-weekday {
+                        color: #6c757d;
+                        font-weight: 600;
+                        font-size: 0.75rem;
+                    }
+
+                    &.rdp-day {
+                        cursor: pointer;
+
+                        &:hover:not(.rdp-in-range):not(.rdp-hover-range) {
+                            background-color: #e9ecef;
+                        }
+                    }
+
+                    &.rdp-in-range {
+                        background-color: #0d6efd;
+                        color: white;
+                        border-radius: 0;
+                    }
+
+                    &.rdp-in-range.rdp-range-start {
+                        border-radius: 50% 0 0 50%;
+                    }
+
+                    &.rdp-in-range.rdp-range-end {
+                        border-radius: 0 50% 50% 0;
+                    }
+
+                    &.rdp-in-range.rdp-range-start.rdp-range-end {
+                        border-radius: 50%;
+                    }
+
+                    &.rdp-hover-range {
+                        background-color: rgba(13, 110, 253, 0.15);
+                        border-radius: 0;
+                    }
+
+                    &.rdp-hover-range.rdp-hover-start {
+                        border-radius: 50% 0 0 50%;
+                    }
+
+                    &.rdp-hover-range.rdp-hover-end {
+                        border-radius: 0 50% 50% 0;
+                    }
+
+                    &.rdp-hover-range.rdp-hover-start.rdp-hover-end {
+                        border-radius: 50%;
+                    }
+                }
             }
         }
     }

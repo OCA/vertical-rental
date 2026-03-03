@@ -78,21 +78,25 @@ class ProductProduct(models.Model):
 
         rental_in_set = set(rental_in_ids)
 
-        # Stock at rental locations
-        quants = self.env["stock.quant"].search_read(
+        # Stock at rental locations — aggregate in SQL
+        quant_groups = self.env["stock.quant"].read_group(
             [("location_id", "in", all_location_ids), ("quantity", ">", 0)],
-            ["product_id", "quantity", "location_id"],
+            ["product_id", "location_id", "quantity:sum"],
+            ["product_id", "location_id"],
+            lazy=False,
         )
         rental_in_qty = {}
         total_qty = {}
-        for q in quants:
-            pid = q["product_id"][0]
-            qty = q["quantity"]
+        for g in quant_groups:
+            if not g.get("product_id"):
+                continue
+            pid = g["product_id"][0]
+            qty = g["quantity"]
             total_qty[pid] = total_qty.get(pid, 0) + qty
-            if q["location_id"][0] in rental_in_set:
+            if g["location_id"][0] in rental_in_set:
                 rental_in_qty[pid] = rental_in_qty.get(pid, 0) + qty
 
-        # Committed rental quantities
+        # Committed rental quantities — aggregate in SQL
         rental_domain = [("state", "=", "ordered")]
         if rental_in_ids:
             rental_domain.append(("out_picking_id.location_id", "in", rental_in_ids))
@@ -100,13 +104,16 @@ class ProductProduct(models.Model):
             rental_domain.append(("start_datetime", "<=", date_to or date_from))
         if date_to:
             rental_domain.append(("end_datetime", ">=", date_from or date_to))
-        rentals = self.env["sale.rental"].search_read(
-            rental_domain, ["rented_product_id", "rental_qty"]
+        rental_groups = self.env["sale.rental"].read_group(
+            rental_domain,
+            ["rented_product_id", "rental_qty:sum"],
+            ["rented_product_id"],
         )
-        committed_qty = {}
-        for r in rentals:
-            pid = r["rented_product_id"][0]
-            committed_qty[pid] = committed_qty.get(pid, 0) + r["rental_qty"]
+        committed_qty = {
+            g["rented_product_id"][0]: g["rental_qty"]
+            for g in rental_groups
+            if g.get("rented_product_id")
+        }
 
         # Products with rental services
         domain = [("rental_service_ids", "!=", False)]
@@ -137,12 +144,14 @@ class ProductProduct(models.Model):
         return products
 
     @api.model
-    def get_rental_modal_products(self, location_id=None):
+    def get_rental_modal_products(self, location_id=None, date_from=None, date_to=None):
         """Return service products with availability and pricings for the modal.
 
         Replaces 4+ separate JS RPC calls with a single one.
         Includes batch-loaded pricing data so the JS never needs
         separate pricing lookups.
+        date_from/date_to (YYYY-MM-DD) filter committed rentals to those that
+        overlap the booking period, matching sidebar availability logic.
         """
         if location_id:
             rental_in_ids = [location_id]
@@ -155,27 +164,40 @@ class ProductProduct(models.Model):
         if not rental_in_ids:
             return []
 
-        # Stock at rental_in locations
-        quants = self.env["stock.quant"].search_read(
+        # Stock at rental_in locations — aggregate in SQL
+        quant_groups = self.env["stock.quant"].read_group(
             [("location_id", "in", rental_in_ids), ("quantity", ">", 0)],
-            ["product_id", "quantity"],
+            ["product_id", "quantity:sum"],
+            ["product_id"],
         )
-        rental_in_qty = {}
-        for q in quants:
-            pid = q["product_id"][0]
-            rental_in_qty[pid] = rental_in_qty.get(pid, 0) + q["quantity"]
+        rental_in_qty = {
+            g["product_id"][0]: g["quantity"]
+            for g in quant_groups
+            if g.get("product_id")
+        }
 
-        # Committed rentals
+        # Committed rentals overlapping the selected date range — aggregate in SQL
         rental_domain = [("state", "=", "ordered")]
         if rental_in_ids:
             rental_domain.append(("out_picking_id.location_id", "in", rental_in_ids))
-        rentals = self.env["sale.rental"].search_read(
-            rental_domain, ["rented_product_id", "rental_qty"]
+        if date_from:
+            rental_domain.append(
+                ("start_datetime", "<=", (date_to or date_from) + " 23:59:59")
+            )
+        if date_to:
+            rental_domain.append(
+                ("end_datetime", ">=", (date_from or date_to) + " 00:00:00")
+            )
+        rental_groups = self.env["sale.rental"].read_group(
+            rental_domain,
+            ["rented_product_id", "rental_qty:sum"],
+            ["rented_product_id"],
         )
-        committed_qty = {}
-        for r in rentals:
-            pid = r["rented_product_id"][0]
-            committed_qty[pid] = committed_qty.get(pid, 0) + r["rental_qty"]
+        committed_qty = {
+            g["rented_product_id"][0]: g["rental_qty"]
+            for g in rental_groups
+            if g.get("rented_product_id")
+        }
 
         # Physical products with rental services
         physical_domain = [("rental_service_ids", "!=", False)]
@@ -256,17 +278,19 @@ class ProductProduct(models.Model):
         if not requested_qty:
             return []
 
-        # Stock at location
-        quants = self.env["stock.quant"].search_read(
+        # Stock at location — aggregate in SQL
+        quant_groups = self.env["stock.quant"].read_group(
             [("location_id", "=", location_id), ("quantity", ">", 0)],
-            ["product_id", "quantity"],
+            ["product_id", "quantity:sum"],
+            ["product_id"],
         )
-        rental_in_qty = {}
-        for q in quants:
-            pid = q["product_id"][0]
-            rental_in_qty[pid] = rental_in_qty.get(pid, 0) + q["quantity"]
+        rental_in_qty = {
+            g["product_id"][0]: g["quantity"]
+            for g in quant_groups
+            if g.get("product_id")
+        }
 
-        # Committed rentals overlapping date range
+        # Committed rentals overlapping date range — aggregate in SQL
         rental_domain = [
             ("state", "=", "ordered"),
             ("out_picking_id.location_id", "=", location_id),
@@ -276,25 +300,36 @@ class ProductProduct(models.Model):
         if exclude_order_id:
             rental_domain.append(("start_order_id", "!=", exclude_order_id))
 
-        rentals = self.env["sale.rental"].search_read(
-            rental_domain, ["rented_product_id", "rental_qty"]
+        rental_groups = self.env["sale.rental"].read_group(
+            rental_domain,
+            ["rented_product_id", "rental_qty:sum"],
+            ["rented_product_id"],
         )
-        committed_qty = {}
-        for r in rentals:
-            pid = r["rented_product_id"][0]
-            committed_qty[pid] = committed_qty.get(pid, 0) + r["rental_qty"]
+        committed_qty = {
+            g["rented_product_id"][0]: g["rental_qty"]
+            for g in rental_groups
+            if g.get("rented_product_id")
+        }
 
+        # Batch-load products only for those with insufficient availability
         errors = []
-        for physical_id, req_qty in requested_qty.items():
-            avail = max(
-                0,
-                rental_in_qty.get(physical_id, 0) - committed_qty.get(physical_id, 0),
-            )
-            if req_qty > avail:
-                product = self.browse(physical_id)
+        error_ids = [
+            pid
+            for pid, req_qty in requested_qty.items()
+            if req_qty > max(0, rental_in_qty.get(pid, 0) - committed_qty.get(pid, 0))
+        ]
+        if error_ids:
+            products_by_id = {p.id: p for p in self.browse(error_ids)}
+            for physical_id in error_ids:
+                req_qty = requested_qty[physical_id]
+                avail = max(
+                    0,
+                    rental_in_qty.get(physical_id, 0)
+                    - committed_qty.get(physical_id, 0),
+                )
                 errors.append(
                     "%s: requested %s, available %s"
-                    % (product.display_name, req_qty, avail)
+                    % (products_by_id[physical_id].display_name, req_qty, avail)
                 )
 
         return errors

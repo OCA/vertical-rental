@@ -1,21 +1,23 @@
 /** @odoo-module **/
 
-import {registry} from "@web/core/registry";
-import {useService} from "@web/core/utils/hooks";
 import {
     Component,
-    useState,
-    onWillStart,
     onMounted,
+    onWillStart,
     onWillUnmount,
     useRef,
+    useState,
 } from "@odoo/owl";
 import {View} from "@web/views/view";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
 
 export class RentalDashboard extends Component {
     setup() {
         this.orm = useService("orm");
         this.action = useService("action");
+        this.notification = useService("notification");
+        this.ui = useService("ui");
         this.viewService = useService("view");
 
         this.calendarRef = useRef("calendarContainer");
@@ -23,6 +25,10 @@ export class RentalDashboard extends Component {
         this.state = useState({
             // Filters
             selectedLocation: null,
+            locationSearch: "",
+            locationResults: [],
+            locationHasMore: false,
+            locationDropdownOpen: false,
             dateFrom: null,
             dateTo: null,
             showDatePicker: false,
@@ -34,12 +40,29 @@ export class RentalDashboard extends Component {
             warehouses: [],
             products: [],
             modalProducts: [],
+            modalLocationResults: [],
+            modalLocationHasMore: false,
             customers: [],
+            customerHasMore: false,
             rentalPeriods: [],
 
             // Calendar key for re-render
             calendarKey: 0,
             viewLoaded: false,
+            filtersChanged: false,
+
+            // Applied filters — only update on applySearch / clearFilters
+            appliedLocation: null,
+            appliedDateFrom: null,
+            appliedDateTo: null,
+            appliedProducts: [],
+
+            // Date range picker calendar state
+            calendarViewYear: new Date().getFullYear(),
+            calendarViewMonth: new Date().getMonth(),
+            // "from" | "to"
+            datePickerStep: "from",
+            hoverDate: null,
 
             // Modal state
             showModal: false,
@@ -48,6 +71,7 @@ export class RentalDashboard extends Component {
             createdOrderId: null,
             modalData: {
                 locationId: null,
+                locationSearch: "",
                 customerId: null,
                 customerSearch: "",
                 startDate: null,
@@ -56,6 +80,19 @@ export class RentalDashboard extends Component {
                 lines: [],
             },
         });
+
+        // Pin env.config.getDisplayName to the base action name ("Rental Dashboard").
+        // CalendarController builds its title as `getDisplayName() + " (Month Year)"`.
+        // Without this, each navigation/remount reads the already-modified name and
+        // appends another month, producing "Rental Dashboard (Feb) (March) (Feb) ...".
+        if (this.env.config?.getDisplayName) {
+            const baseName = this.env.config.getDisplayName();
+            this.env.config.getDisplayName = () => baseName;
+        }
+
+        // Cached calendar props — rebuilt only in onMounted and applySearch so
+        // the View child never receives a new object reference from unrelated renders.
+        this._calendarPropsCache = null;
 
         // Bind event handlers once (for proper removeEventListener)
         this.onCalendarClick = this.onCalendarClick.bind(this);
@@ -72,6 +109,26 @@ export class RentalDashboard extends Component {
         this.dragStartDate = null;
         this.dragEndDate = null;
         this._isDraggingCalendar = false;
+
+        // Debounced search handlers (prevent RPC on every keystroke)
+        this._debouncedLocationSearch = this._debounce(async (search) => {
+            const {results, hasMore} = await this._searchLocations(search);
+            this.state.locationResults = results;
+            this.state.locationHasMore = hasMore;
+        });
+        this._debouncedModalLocationSearch = this._debounce(async (search) => {
+            const {results, hasMore} = await this._searchLocations(search);
+            this.state.modalLocationResults = results;
+            this.state.modalLocationHasMore = hasMore;
+        });
+        this._debouncedCustomerSearch = this._debounce(async (search) => {
+            const {results, hasMore} = await this._searchCustomers(search);
+            this.state.customers = results;
+            this.state.customerHasMore = hasMore;
+        });
+        this._debouncedRefreshCalendar = this._debounce(() => {
+            this._refreshCalendar();
+        }, 150);
 
         // ── Lifecycle ──
 
@@ -95,6 +152,7 @@ export class RentalDashboard extends Component {
             this._setupCalendarObserver();
             this._setupDialogObserver();
             this.state.viewLoaded = true;
+            this._calendarPropsCache = this._buildCalendarProps();
         });
 
         onWillUnmount(() => {
@@ -129,6 +187,17 @@ export class RentalDashboard extends Component {
             if (this.tooltipTimeout) clearTimeout(this.tooltipTimeout);
             if (this.highlightDebounce) clearTimeout(this.highlightDebounce);
         });
+    }
+
+    _debounce(fn, delay = 300) {
+        let timer = null;
+        return (...args) => {
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(() => {
+                timer = null;
+                fn(...args);
+            }, delay);
+        };
     }
 
     // ── Setup helpers (extracted from onMounted for readability) ──
@@ -284,7 +353,7 @@ export class RentalDashboard extends Component {
             ev.stopPropagation();
             ev.preventDefault();
             const recordId = this._getRecordIdFromEvent(eventEl);
-            if (recordId) this.openEditModal(parseInt(recordId));
+            if (recordId) this.openEditModal(parseInt(recordId, 10));
         }
     }
 
@@ -315,7 +384,7 @@ export class RentalDashboard extends Component {
             this.orm
                 .searchRead(
                     "sale.order.line",
-                    [["id", "=", parseInt(recordId)]],
+                    [["id", "=", parseInt(recordId, 10)]],
                     [
                         "id",
                         "product_id",
@@ -408,9 +477,9 @@ export class RentalDashboard extends Component {
             "get_rental_products",
             [],
             {
-                location_id: this.state.selectedLocation,
-                date_from: this.state.dateFrom,
-                date_to: this.state.dateTo,
+                location_id: this.state.appliedLocation,
+                date_from: this.state.appliedDateFrom,
+                date_to: this.state.appliedDateTo,
             }
         );
         this.state.products = products;
@@ -423,7 +492,11 @@ export class RentalDashboard extends Component {
             "product.product",
             "get_rental_modal_products",
             [],
-            {location_id: this.state.modalData.locationId}
+            {
+                location_id: this.state.modalData.locationId,
+                date_from: this.state.modalData.startDate || null,
+                date_to: this.state.modalData.endDate || null,
+            }
         );
     }
 
@@ -435,50 +508,123 @@ export class RentalDashboard extends Component {
         return products;
     }
 
-    get calendarDomain() {
+    _buildCalendarProps() {
         const domain = [
             ["rental", "=", true],
             ["state", "not in", ["cancel"]],
         ];
-
-        if (this.state.selectedLocation) {
+        if (this.state.appliedLocation) {
             const loc = this.state.locations.find(
-                (l) => l.id === this.state.selectedLocation
+                (l) => l.id === this.state.appliedLocation
             );
             if (loc) domain.push(["order_id.warehouse_id", "=", loc.warehouse_id]);
         }
-        if (this.state.dateFrom)
-            domain.push(["end_datetime", ">=", this.state.dateFrom]);
-        if (this.state.dateTo) domain.push(["start_datetime", "<=", this.state.dateTo]);
-        if (this.state.selectedProducts.length > 0) {
+        if (this.state.appliedDateFrom)
+            domain.push(["end_datetime", ">=", this.state.appliedDateFrom]);
+        if (this.state.appliedDateTo)
+            domain.push(["start_datetime", "<=", this.state.appliedDateTo]);
+        if (this.state.appliedProducts.length > 0) {
             domain.push([
                 "product_id.rented_product_id",
                 "in",
-                this.state.selectedProducts,
+                this.state.appliedProducts,
             ]);
         }
-        return domain;
-    }
-
-    get calendarProps() {
-        if (!this.state.viewLoaded) return null;
         return {
             resModel: "sale.order.line",
             type: "calendar",
-            domain: this.calendarDomain,
+            domain,
             context: this.props.context || {},
             display: {},
         };
     }
 
+    get calendarProps() {
+        if (!this.state.viewLoaded) return null;
+        return this._calendarPropsCache;
+    }
+
     // ── Filter actions ──
 
-    async onLocationChange(ev) {
-        const value = ev.target.value;
-        this.state.selectedLocation = value ? parseInt(value) : null;
+    async _searchLocations(search, limit = 20) {
+        const domain = [["rental_allowed", "=", true]];
+        if (search) domain.push(["rental_in_location_id.name", "ilike", search]);
+        const warehouses = await this.orm.searchRead(
+            "stock.warehouse",
+            domain,
+            ["id", "name", "rental_in_location_id", "rental_out_location_id"],
+            {limit}
+        );
+        const results = warehouses
+            .filter((wh) => wh.rental_in_location_id)
+            .map((wh) => ({
+                id: wh.rental_in_location_id[0],
+                name: wh.rental_in_location_id[1],
+                display_name: wh.name,
+                warehouse_id: wh.id,
+                rental_out_location_id: wh.rental_out_location_id
+                    ? wh.rental_out_location_id[0]
+                    : null,
+            }));
+        return {results, hasMore: warehouses.length === limit};
+    }
+
+    async _searchCustomers(search, limit = 20) {
+        const domain = search
+            ? ["|", ["name", "ilike", search], ["email", "ilike", search]]
+            : [["customer_rank", ">", 0]];
+        const partners = await this.orm.searchRead(
+            "res.partner",
+            domain,
+            ["id", "name", "email"],
+            {limit}
+        );
+        return {results: partners, hasMore: partners.length === limit};
+    }
+
+    onLocationSearchInput(ev) {
+        const search = ev.target.value;
+        this.state.locationSearch = search;
+        if (!search) {
+            this.state.selectedLocation = null;
+            this.state.selectedProducts = [];
+            this.state.filtersChanged = true;
+        }
+        this._debouncedLocationSearch(search);
+    }
+
+    async onLocationSearchFocus() {
+        this.state.locationDropdownOpen = true;
+        if (this.state.locationResults.length === 0) {
+            const {results, hasMore} = await this._searchLocations(
+                this.state.locationSearch
+            );
+            this.state.locationResults = results;
+            this.state.locationHasMore = hasMore;
+        }
+    }
+
+    onLocationSearchBlur() {
+        // Delay so a click on a dropdown item registers before the dropdown closes
+        setTimeout(() => {
+            this.state.locationDropdownOpen = false;
+        }, 200);
+    }
+
+    async loadMoreLocations() {
+        const {results} = await this._searchLocations(this.state.locationSearch, 100);
+        this.state.locationResults = results;
+        this.state.locationHasMore = false;
+    }
+
+    selectLocation(loc) {
+        this.state.selectedLocation = loc.id;
+        this.state.locationSearch = loc.name;
+        this.state.locationResults = [];
+        this.state.locationHasMore = false;
+        this.state.locationDropdownOpen = false;
         this.state.selectedProducts = [];
-        await this.loadProducts();
-        this._refreshCalendar();
+        this.state.filtersChanged = true;
     }
 
     onShowAvailableChange(ev) {
@@ -492,52 +638,193 @@ export class RentalDashboard extends Component {
         } else {
             this.state.selectedProducts.push(productId);
         }
-        this._refreshCalendar();
+        this.state.filtersChanged = true;
     }
 
     isProductSelected(productId) {
         return this.state.selectedProducts.includes(productId);
     }
 
-    async clearFilters() {
+    clearFilters() {
         this.state.selectedLocation = null;
+        this.state.locationSearch = "";
+        this.state.locationResults = [];
+        this.state.locationHasMore = false;
+        this.state.locationDropdownOpen = false;
         this.state.dateFrom = null;
         this.state.dateTo = null;
         this.state.showDatePicker = false;
+        this.state.datePickerStep = "from";
+        this.state.hoverDate = null;
         this.state.showAvailableOnly = false;
         this.state.selectedProducts = [];
+        this.state.filtersChanged = true;
+    }
+
+    async applySearch() {
+        this.state.appliedLocation = this.state.selectedLocation;
+        this.state.appliedDateFrom = this.state.dateFrom;
+        this.state.appliedDateTo = this.state.dateTo;
+        this.state.appliedProducts = [...this.state.selectedProducts];
+        this.state.filtersChanged = false;
+        this._calendarPropsCache = this._buildCalendarProps();
         await this.loadProducts();
-        this._refreshCalendar();
+        this._debouncedRefreshCalendar();
+        setTimeout(() => this.applyDateRangeHighlight(), 500);
     }
 
     // ── Date filter ──
 
     toggleDatePicker() {
+        if (!this.state.showDatePicker) {
+            const ref = this.state.dateFrom || null;
+            const d = ref ? new Date(ref + "T00:00:00") : new Date();
+            this.state.calendarViewYear = d.getFullYear();
+            this.state.calendarViewMonth = d.getMonth();
+            this.state.datePickerStep = "from";
+            this.state.hoverDate = null;
+        }
         this.state.showDatePicker = !this.state.showDatePicker;
+    }
+
+    prevMonth() {
+        if (this.state.calendarViewMonth === 0) {
+            this.state.calendarViewMonth = 11;
+            this.state.calendarViewYear--;
+        } else {
+            this.state.calendarViewMonth--;
+        }
+    }
+
+    nextMonth() {
+        if (this.state.calendarViewMonth === 11) {
+            this.state.calendarViewMonth = 0;
+            this.state.calendarViewYear++;
+        } else {
+            this.state.calendarViewMonth++;
+        }
+    }
+
+    getCalendarMonthLabel() {
+        const months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ];
+        return `${months[this.state.calendarViewMonth]} ${this.state.calendarViewYear}`;
+    }
+
+    getCalendarDays() {
+        const year = this.state.calendarViewYear;
+        const month = this.state.calendarViewMonth;
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const cells = [];
+        for (let i = 0; i < firstDay; i++) {
+            cells.push({key: `empty-${i}`, day: null, date: null});
+        }
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(
+                d
+            ).padStart(2, "0")}`;
+            cells.push({key: dateStr, day: d, date: dateStr});
+        }
+        return cells;
+    }
+
+    _applyRangeClasses(classes, date, from, to) {
+        if (from && to) {
+            if (date >= from && date <= to) classes.push("rdp-in-range");
+            if (date === from) classes.push("rdp-range-start");
+            if (date === to) classes.push("rdp-range-end");
+        } else if (from && !to) {
+            if (date === from)
+                classes.push("rdp-in-range", "rdp-range-start", "rdp-range-end");
+        }
+    }
+
+    _applyHoverClasses(classes, date, from, to, hover, step) {
+        if (step !== "to" || !from || !hover || to) return;
+        const start = from <= hover ? from : hover;
+        const end = from <= hover ? hover : from;
+        if (date >= start && date <= end) classes.push("rdp-hover-range");
+        if (date === start) classes.push("rdp-hover-start");
+        if (date === end) classes.push("rdp-hover-end");
+    }
+
+    getCalendarDayClass(cell) {
+        if (!cell.date) return "rdp-cell rdp-empty";
+        const classes = ["rdp-cell", "rdp-day"];
+        const {
+            dateFrom: from,
+            dateTo: to,
+            hoverDate: hover,
+            datePickerStep: step,
+        } = this.state;
+        const date = cell.date;
+        this._applyRangeClasses(classes, date, from, to);
+        this._applyHoverClasses(classes, date, from, to, hover, step);
+        return classes.join(" ");
+    }
+
+    onCalendarDayClick(cell) {
+        if (!cell.date) return;
+        if (this.state.datePickerStep === "from") {
+            this.state.dateFrom = cell.date;
+            this.state.dateTo = null;
+            this.state.hoverDate = null;
+            this.state.datePickerStep = "to";
+            this.state.filtersChanged = true;
+        } else {
+            if (cell.date < this.state.dateFrom) {
+                this.state.dateTo = this.state.dateFrom;
+                this.state.dateFrom = cell.date;
+            } else {
+                this.state.dateTo = cell.date;
+            }
+            this.state.datePickerStep = "from";
+            this.state.hoverDate = null;
+            this.state.showDatePicker = false;
+            this.state.filtersChanged = true;
+        }
+    }
+
+    onCalendarDayHover(cell) {
+        if (this.state.datePickerStep === "to") {
+            this.state.hoverDate = cell.date;
+        }
     }
 
     onDateFromChange(ev) {
         this.state.dateFrom = ev.target.value || null;
+        this.state.filtersChanged = true;
     }
 
     onDateToChange(ev) {
         this.state.dateTo = ev.target.value || null;
+        this.state.filtersChanged = true;
     }
 
-    async applyDateFilter() {
+    applyDateFilter() {
         this.state.showDatePicker = false;
-        this._refreshCalendar();
-        await this.loadProducts();
-        setTimeout(() => this.applyDateRangeHighlight(), 500);
     }
 
-    async clearDateFilter() {
+    clearDateFilter() {
         this.state.dateFrom = null;
         this.state.dateTo = null;
         this.state.showDatePicker = false;
-        this._refreshCalendar();
-        await this.loadProducts();
-        this.applyDateRangeHighlight();
+        this.state.datePickerStep = "from";
+        this.state.hoverDate = null;
+        this.state.filtersChanged = true;
     }
 
     applyDateRangeHighlight() {
@@ -574,13 +861,17 @@ export class RentalDashboard extends Component {
     }
 
     formatDateRange() {
-        if (!this.state.dateFrom || !this.state.dateTo) return "";
-        const from = new Date(this.state.dateFrom);
-        const to = new Date(this.state.dateTo);
-        const diffDays = Math.ceil(Math.abs(to - from) / (1000 * 60 * 60 * 24)) + 1;
-        const fmt = (d) =>
-            `${d.getMonth() + 1}/${d.getDate()}/${String(d.getFullYear()).slice(-2)}`;
-        return `${fmt(from)} - ${fmt(to)} (${diffDays} days)`;
+        const fmt = (dateStr) => {
+            const d = new Date(dateStr + "T00:00:00");
+            const m = String(d.getMonth() + 1).padStart(2, "0");
+            const day = String(d.getDate()).padStart(2, "0");
+            return `${m}/${day}/${d.getFullYear()}`;
+        };
+        if (this.state.dateFrom && this.state.dateTo) {
+            return `${fmt(this.state.dateFrom)} - ${fmt(this.state.dateTo)}`;
+        }
+        if (this.state.dateFrom) return fmt(this.state.dateFrom);
+        return "";
     }
 
     // ── Calendar helpers ──
@@ -595,8 +886,12 @@ export class RentalDashboard extends Component {
     async openCreateModal() {
         this.state.modalMode = "create";
         this.state.editingOrderId = null;
+        const selectedLoc = this.state.locations.find(
+            (l) => l.id === this.state.selectedLocation
+        );
         this.state.modalData = {
             locationId: this.state.selectedLocation,
+            locationSearch: selectedLoc ? selectedLoc.name : "",
             customerId: null,
             customerSearch: "",
             startDate: this.state.dateFrom || this._formatDateForInput(new Date()),
@@ -627,6 +922,8 @@ export class RentalDashboard extends Component {
                 lines.push({
                     id: Date.now() + Math.random(),
                     productId: service.id,
+                    productSearch: service.name,
+                    productResults: [],
                     rentalType: "new_rental",
                     rentalPeriodId,
                     availablePeriodIds,
@@ -646,8 +943,12 @@ export class RentalDashboard extends Component {
     async openCreateModalWithDates(startDate, endDate) {
         this.state.modalMode = "create";
         this.state.editingOrderId = null;
+        const selectedLoc = this.state.locations.find(
+            (l) => l.id === this.state.selectedLocation
+        );
         this.state.modalData = {
             locationId: this.state.selectedLocation,
+            locationSearch: selectedLoc ? selectedLoc.name : "",
             customerId: null,
             customerSearch: "",
             startDate,
@@ -687,6 +988,7 @@ export class RentalDashboard extends Component {
             this.state.editingOrderId = order.id;
             this.state.modalData = {
                 locationId: location_id,
+                locationSearch: loc ? loc.name : "",
                 customerId: order.partner_id[0],
                 customerSearch: order.partner_id[1],
                 startDate: firstLine?.start_datetime
@@ -712,7 +1014,20 @@ export class RentalDashboard extends Component {
                 return {
                     id: line.id,
                     productId: serviceProductId,
+                    productSearch: modalProduct
+                        ? modalProduct.name
+                        : line.product_id[1] || "",
+                    productResults: [],
+                    productHasMore: false,
                     rentalType: line.rental_type,
+                    extensionRentalId: line.extension_rental_id
+                        ? line.extension_rental_id[0]
+                        : null,
+                    extensionRentalSearch: line.extension_rental_id
+                        ? line.extension_rental_id[1]
+                        : "",
+                    extensionRentalResults: [],
+                    extensionRentalHasMore: false,
                     rentalPeriodId: line.rental_period_id
                         ? line.rental_period_id[0]
                         : null,
@@ -729,7 +1044,6 @@ export class RentalDashboard extends Component {
             this.state.showModal = true;
         } catch (error) {
             console.error("Error loading sale order:", error);
-            alert("Error loading rental data. Please try again.");
         }
     }
 
@@ -739,7 +1053,14 @@ export class RentalDashboard extends Component {
         return {
             id: Date.now() + Math.random(),
             productId: null,
+            productSearch: "",
+            productResults: [],
+            productHasMore: false,
             rentalType: "new_rental",
+            extensionRentalId: null,
+            extensionRentalSearch: "",
+            extensionRentalResults: [],
+            extensionRentalHasMore: false,
             rentalPeriodId: null,
             availablePeriodIds: [],
             rentalQty: 1,
@@ -753,56 +1074,70 @@ export class RentalDashboard extends Component {
         this.state.createdOrderId = null;
     }
 
-    openEditingOrder() {
+    async openEditingOrder() {
         if (!this.state.editingOrderId) return;
-        this.action.doAction({
-            type: "ir.actions.act_window",
-            res_model: "sale.order",
-            res_id: this.state.editingOrderId,
-            views: [[false, "form"]],
-            target: "current",
-        });
+        this.ui.block();
+        try {
+            await this.action.doAction({
+                type: "ir.actions.act_window",
+                res_model: "sale.order",
+                res_id: this.state.editingOrderId,
+                views: [[false, "form"]],
+                target: "current",
+            });
+        } finally {
+            this.ui.unblock();
+        }
     }
 
     async confirmEditingOrder() {
         if (!this.state.editingOrderId) return;
+        this.ui.block();
         try {
             await this.orm.call("sale.order", "action_confirm", [
                 this.state.editingOrderId,
             ]);
             this.state.modalData.state = "sale";
-            this._refreshCalendar();
+            this._debouncedRefreshCalendar();
             await this.loadProducts();
         } catch (error) {
             console.error("Error confirming order:", error);
-            alert("Error confirming order. Please try again.");
+        } finally {
+            this.ui.unblock();
         }
     }
 
-    openCreatedOrder() {
+    async openCreatedOrder() {
         if (!this.state.createdOrderId) return;
-        this.action.doAction({
-            type: "ir.actions.act_window",
-            res_model: "sale.order",
-            res_id: this.state.createdOrderId,
-            views: [[false, "form"]],
-            target: "current",
-        });
+        this.ui.block();
+        try {
+            await this.action.doAction({
+                type: "ir.actions.act_window",
+                res_model: "sale.order",
+                res_id: this.state.createdOrderId,
+                views: [[false, "form"]],
+                target: "current",
+            });
+        } finally {
+            this.ui.unblock();
+        }
     }
 
     async confirmCreatedOrder() {
         if (!this.state.createdOrderId) return;
+        this.ui.block();
         try {
             await this.orm.call("sale.order", "action_confirm", [
                 this.state.createdOrderId,
             ]);
             this.state.showModal = false;
             this.state.createdOrderId = null;
-            this._refreshCalendar();
+            this._debouncedRefreshCalendar();
             await this.loadProducts();
         } catch (error) {
             console.error("Error confirming order:", error);
-            alert("Error confirming order. Please try again.");
+        } finally {
+            this.ui.unblock();
         }
     }
 
@@ -812,32 +1147,71 @@ export class RentalDashboard extends Component {
 
     // ── Modal: field handlers ──
 
-    async onModalLocationChange(ev) {
-        this.state.modalData.locationId = ev.target.value
-            ? parseInt(ev.target.value)
-            : null;
-        await this.loadModalProducts();
+    onModalLocationSearchInput(ev) {
+        const search = ev.target.value;
+        this.state.modalData.locationSearch = search;
+        if (!search) this.state.modalData.locationId = null;
+        this._debouncedModalLocationSearch(search);
     }
 
-    async onCustomerSearch(ev) {
+    async onModalLocationSearchFocus() {
+        if (this.state.modalLocationResults.length === 0) {
+            const {results, hasMore} = await this._searchLocations(
+                this.state.modalData.locationSearch
+            );
+            this.state.modalLocationResults = results;
+            this.state.modalLocationHasMore = hasMore;
+        }
+    }
+
+    async loadMoreModalLocations() {
+        const {results} = await this._searchLocations(
+            this.state.modalData.locationSearch,
+            100
+        );
+        this.state.modalLocationResults = results;
+        this.state.modalLocationHasMore = false;
+    }
+
+    selectModalLocation(loc) {
+        this.state.modalData.locationId = loc.id;
+        this.state.modalData.locationSearch = loc.name;
+        this.state.modalLocationResults = [];
+        this.state.modalLocationHasMore = false;
+        this.loadModalProducts();
+    }
+
+    async onCustomerSearchFocus() {
+        if (this.state.customers.length === 0) {
+            const {results, hasMore} = await this._searchCustomers(
+                this.state.modalData.customerSearch
+            );
+            this.state.customers = results;
+            this.state.customerHasMore = hasMore;
+        }
+    }
+
+    onCustomerSearch(ev) {
         const search = ev.target.value;
         this.state.modalData.customerSearch = search;
-        if (search.length >= 2) {
-            this.state.customers = await this.orm.searchRead(
-                "res.partner",
-                ["|", ["name", "ilike", search], ["email", "ilike", search]],
-                ["id", "name", "email"],
-                {limit: 10}
-            );
-        } else {
-            this.state.customers = [];
-        }
+        if (!search) this.state.modalData.customerId = null;
+        this._debouncedCustomerSearch(search);
+    }
+
+    async loadMoreCustomers() {
+        const {results} = await this._searchCustomers(
+            this.state.modalData.customerSearch,
+            100
+        );
+        this.state.customers = results;
+        this.state.customerHasMore = false;
     }
 
     selectCustomer(customer) {
         this.state.modalData.customerId = customer.id;
         this.state.modalData.customerSearch = customer.name;
         this.state.customers = [];
+        this.state.customerHasMore = false;
     }
 
     onModalStartDateChange(ev) {
@@ -850,12 +1224,12 @@ export class RentalDashboard extends Component {
 
     // ── Modal: line handlers (now synchronous — no RPC calls) ──
 
-    onLineProductChange(line, ev) {
-        const productId = ev.target.value ? parseInt(ev.target.value) : null;
+    _applyLineProduct(line, productId) {
         line.productId = productId;
         line.availablePeriodIds = [];
         line.rentalPeriodId = null;
         line.priceUnit = 0;
+        line.available = 0;
 
         if (productId) {
             const product = this.state.modalProducts.find((p) => p.id === productId);
@@ -873,6 +1247,48 @@ export class RentalDashboard extends Component {
         }
     }
 
+    _filterLineProducts(line, search, limit = 20) {
+        const all = search
+            ? this.state.modalProducts.filter((p) =>
+                  p.name.toLowerCase().includes(search.toLowerCase())
+              )
+            : this.state.modalProducts;
+        return {results: all.slice(0, limit), hasMore: all.length > limit};
+    }
+
+    onLineProductSearchInput(line, ev) {
+        const search = ev.target.value;
+        line.productSearch = search;
+        if (!search) this._applyLineProduct(line, null);
+        const {results, hasMore} = this._filterLineProducts(line, search);
+        line.productResults = results;
+        line.productHasMore = hasMore;
+    }
+
+    onLineProductSearchFocus(line) {
+        if (line.productResults.length === 0) {
+            const {results, hasMore} = this._filterLineProducts(
+                line,
+                line.productSearch
+            );
+            line.productResults = results;
+            line.productHasMore = hasMore;
+        }
+    }
+
+    loadMoreLineProducts(line) {
+        const {results} = this._filterLineProducts(line, line.productSearch, 100);
+        line.productResults = results;
+        line.productHasMore = false;
+    }
+
+    selectLineProduct(line, product) {
+        line.productSearch = product.name;
+        line.productResults = [];
+        line.productHasMore = false;
+        this._applyLineProduct(line, product.id);
+    }
+
     getLineAvailablePeriods(line) {
         if (!line.availablePeriodIds || line.availablePeriodIds.length === 0) return [];
         return this.state.rentalPeriods.filter((p) =>
@@ -882,10 +1298,76 @@ export class RentalDashboard extends Component {
 
     onLineRentalTypeChange(line, ev) {
         line.rentalType = ev.target.value || "new_rental";
+        // Clear extension selection when switching away from extension type
+        if (line.rentalType !== "rental_extension") {
+            line.extensionRentalId = null;
+            line.extensionRentalSearch = "";
+            line.extensionRentalResults = [];
+        }
+    }
+
+    // ── Extension rental typeahead ──
+
+    async _searchRentals(productId, search, limit = 20) {
+        const domain = [
+            ["rental_product_id", "=", productId],
+            ["state", "in", ["ordered", "out"]],
+        ];
+        const results = await this.orm.call(
+            "sale.rental",
+            "name_search",
+            [search || ""],
+            {
+                args: domain,
+                limit: limit + 1,
+            }
+        );
+        const hasMore = results.length > limit;
+        return {
+            results: results.slice(0, limit).map(([id, name]) => ({id, name})),
+            hasMore,
+        };
+    }
+
+    async onLineExtensionSearchFocus(line) {
+        if (!line.productId) return;
+        const {results, hasMore} = await this._searchRentals(line.productId, "");
+        line.extensionRentalResults = results;
+        line.extensionRentalHasMore = hasMore;
+    }
+
+    async onLineExtensionSearchInput(line, ev) {
+        const search = ev.target.value;
+        line.extensionRentalSearch = search;
+        if (!search) {
+            line.extensionRentalId = null;
+        }
+        if (!line.productId) return;
+        const {results, hasMore} = await this._searchRentals(line.productId, search);
+        line.extensionRentalResults = results;
+        line.extensionRentalHasMore = hasMore;
+    }
+
+    selectLineExtension(line, rental) {
+        line.extensionRentalId = rental.id;
+        line.extensionRentalSearch = rental.name;
+        line.extensionRentalResults = [];
+        line.extensionRentalHasMore = false;
+    }
+
+    async loadMoreLineExtensions(line) {
+        if (!line.productId) return;
+        const {results, hasMore} = await this._searchRentals(
+            line.productId,
+            line.extensionRentalSearch,
+            100
+        );
+        line.extensionRentalResults = results;
+        line.extensionRentalHasMore = hasMore;
     }
 
     onLineRentalPeriodChange(line, ev) {
-        line.rentalPeriodId = ev.target.value ? parseInt(ev.target.value) : null;
+        line.rentalPeriodId = ev.target.value ? parseInt(ev.target.value, 10) : null;
         if (line.productId && line.rentalPeriodId) {
             line.priceUnit = this._computePriceUnit(
                 line.productId,
@@ -969,64 +1451,70 @@ export class RentalDashboard extends Component {
         const data = this.state.modalData;
 
         if (!data.locationId) {
-            alert("Please select a location");
+            this.notification.add("Please select a location", {type: "warning"});
             return;
         }
         if (!data.customerId) {
-            alert("Please select a customer");
+            this.notification.add("Please select a customer", {type: "warning"});
             return;
         }
         if (!data.startDate || !data.endDate) {
-            alert("Please select start and end dates");
+            this.notification.add("Please select start and end dates", {
+                type: "warning",
+            });
             return;
         }
 
         const validLines = data.lines.filter((l) => l.productId && l.rentalQty > 0);
         if (validLines.length === 0) {
-            alert("Please add at least one equipment with a rental service configured");
+            this.notification.add(
+                "Please add at least one equipment with a rental service configured",
+                {type: "warning"}
+            );
             return;
         }
 
         const loc = this.state.locations.find((l) => l.id === data.locationId);
         if (!loc) {
-            alert("Invalid location");
-            return;
-        }
-
-        // Server-side availability check (1 RPC replaces 2)
-        const availErrors = await this.orm.call(
-            "product.product",
-            "check_rental_availability",
-            [
-                data.locationId,
-                data.startDate,
-                data.endDate,
-                validLines.map((l) => ({
-                    product_id: l.productId,
-                    rental_qty: l.rentalQty,
-                })),
-                this.state.modalMode === "edit" ? this.state.editingOrderId : null,
-            ]
-        );
-        if (availErrors.length > 0) {
-            alert("Insufficient availability:\n\n" + availErrors.join("\n"));
+            this.notification.add("Invalid location", {type: "warning"});
             return;
         }
 
         const startDatetime = data.startDate + " 00:00:00";
         const endDatetime = data.endDate + " 00:00:00";
-        const numberOfDays = this._getNumberOfDays();
+        const diffHours = this._getDiffHours();
 
-        const lineVals = validLines.map((line) => ({
-            product_id: line.productId,
-            rental_type: line.rentalType,
-            rental_qty: line.rentalQty,
-            rental_period_id: line.rentalPeriodId,
-            start_datetime: startDatetime,
-            end_datetime: endDatetime,
-            product_uom_qty: line.rentalQty * numberOfDays,
-            price_unit: line.priceUnit,
-        }));
+        const lineVals = validLines.map((line) => {
+            // Mirror Python's formula (sale_order.py line 145):
+            //   product_uom_qty = rental_qty * number_of_days
+            // where number_of_days = duration * hours_per_unit / 24
+            // and duration is stored with digits="Product Unit of Measure" (2 dp).
+            // e.g. 8 days / weekly (168 h):   duration=1.14, number_of_days=7.98
+            // e.g. 28 days / monthly (730 h): duration=0.92, number_of_days=27.9833...
+            const period = this.state.rentalPeriods.find(
+                (p) => p.id === line.rentalPeriodId
+            );
+            const hoursPerUnit = period ? period.hours_per_unit : 24;
+            // "Product Unit of Measure" precision
+            const duration = parseFloat((diffHours / hoursPerUnit).toFixed(2));
+            const numberOfDays = (duration * hoursPerUnit) / 24;
+            // Exact, no extra rounding — matches Python line 145
+            const uomQty = line.rentalQty * numberOfDays;
+            return {
+                product_id: line.productId,
+                rental_type: line.rentalType,
+                extension_rental_id:
+                    line.rentalType === "rental_extension"
+                        ? line.extensionRentalId || false
+                        : false,
+                rental_qty: line.rentalQty,
+                rental_period_id: line.rentalPeriodId,
+                start_datetime: startDatetime,
+                end_datetime: endDatetime,
+                product_uom_qty: uomQty,
+                price_unit: line.priceUnit,
+            };
+        });
 
         const orderVals = {
             partner_id: data.customerId,
@@ -1034,7 +1522,31 @@ export class RentalDashboard extends Component {
             lines: lineVals,
         };
 
+        this.ui.block();
         try {
+            // Server-side availability check (1 RPC replaces 2)
+            const availErrors = await this.orm.call(
+                "product.product",
+                "check_rental_availability",
+                [
+                    data.locationId,
+                    data.startDate,
+                    data.endDate,
+                    validLines.map((l) => ({
+                        product_id: l.productId,
+                        rental_qty: l.rentalQty,
+                    })),
+                    this.state.modalMode === "edit" ? this.state.editingOrderId : null,
+                ]
+            );
+            if (availErrors.length > 0) {
+                this.notification.add(
+                    "Insufficient availability:\n\n" + availErrors.join("\n"),
+                    {type: "warning"}
+                );
+                return;
+            }
+
             if (this.state.modalMode === "edit" && this.state.editingOrderId) {
                 // Single RPC replaces N+3 calls
                 await this.orm.call("sale.order.line", "update_rental_order", [
@@ -1051,7 +1563,7 @@ export class RentalDashboard extends Component {
                 this.state.createdOrderId = orderId;
             }
 
-            this._refreshCalendar();
+            this._debouncedRefreshCalendar();
             await this.loadProducts();
 
             if (this.state.modalMode === "create" && this.state.createdOrderId) {
@@ -1061,7 +1573,8 @@ export class RentalDashboard extends Component {
             }
         } catch (error) {
             console.error("Error saving rental:", error);
-            alert("Error saving rental. Please try again.");
+        } finally {
+            this.ui.unblock();
         }
     }
 
@@ -1102,15 +1615,15 @@ export class RentalDashboard extends Component {
         return `background-color: ${colors[product.rental_color || 0]};`;
     }
 
-    getStatusBadgeClass(state) {
-        const classes = {
-            draft: "bg-secondary",
-            sent: "bg-info",
-            sale: "bg-primary",
-            done: "bg-success",
-            cancel: "bg-danger",
+    getStatusBadgeStyle(state) {
+        const styles = {
+            draft: "background-color:#e9ecef;color:#495057;",
+            sent: "background-color:#cff4fc;color:#055160;",
+            sale: "background-color:#d1e7dd;color:#0f5132;",
+            done: "background-color:#198754;color:#ffffff;",
+            cancel: "background-color:#f8d7da;color:#842029;",
         };
-        return classes[state] || "bg-secondary";
+        return styles[state] || "background-color:#dee2e6;color:#212529;";
     }
 
     getStatusLabel(state) {
@@ -1122,20 +1635,6 @@ export class RentalDashboard extends Component {
             cancel: "Cancelled",
         };
         return labels[state] || state;
-    }
-
-    async openCalendar() {
-        this.action.doAction({
-            type: "ir.actions.act_window",
-            name: "Rental Calendar",
-            res_model: "sale.order.line",
-            views: [
-                [false, "calendar"],
-                [false, "form"],
-            ],
-            target: "current",
-            domain: [["rental", "=", true]],
-        });
     }
 }
 

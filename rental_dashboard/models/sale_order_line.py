@@ -62,6 +62,7 @@ class SaleOrderLine(models.Model):
                 "product_id": line["product_id"],
                 "rental": True,
                 "rental_type": line.get("rental_type", "new_rental"),
+                "extension_rental_id": line.get("extension_rental_id") or False,
                 "rental_qty": line["rental_qty"],
                 "rental_period_id": line.get("rental_period_id"),
                 "start_datetime": line["start_datetime"],
@@ -104,6 +105,7 @@ class SaleOrderLine(models.Model):
                 "product_id": line["product_id"],
                 "rental": True,
                 "rental_type": line.get("rental_type", "new_rental"),
+                "extension_rental_id": line.get("extension_rental_id") or False,
                 "rental_qty": line["rental_qty"],
                 "rental_period_id": line.get("rental_period_id"),
                 "start_datetime": line["start_datetime"],
@@ -139,6 +141,7 @@ class SaleOrderLine(models.Model):
                 "id",
                 "product_id",
                 "rental_type",
+                "extension_rental_id",
                 "rental_period_id",
                 "rental_qty",
                 "price_unit",
@@ -155,9 +158,20 @@ class SaleOrderLine(models.Model):
             else None
         )
 
-        # Get modal products with pricings for this location
+        # Get modal products with pricings for this location, filtered by order dates
+        first_line = rental_lines[0] if rental_lines else None
+        date_from = (
+            str(first_line["start_datetime"]).split(" ")[0]
+            if first_line and first_line.get("start_datetime")
+            else None
+        )
+        date_to = (
+            str(first_line["end_datetime"]).split(" ")[0]
+            if first_line and first_line.get("end_datetime")
+            else None
+        )
         modal_products = self.env["product.product"].get_rental_modal_products(
-            location_id
+            location_id, date_from=date_from, date_to=date_to
         )
 
         return {
