@@ -209,7 +209,7 @@
 <record id="sale_rental_action" model="ir.actions.act_window">
     <field name="name">Rentals</field>
     <field name="res_model">sale.rental</field>
-    <field name="view_mode">tree,form,graph,calendar,,pivot</field>
+    <field name="view_mode">tree,form,calendar,graph,pivot</field>
 </record>
 
 <menuitem
