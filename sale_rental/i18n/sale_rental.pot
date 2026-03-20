@@ -468,6 +468,7 @@ msgstr ""
 #. module: sale_rental
 #: model:ir.actions.act_window,name:sale_rental.sale_rental_action
 #: model:ir.ui.menu,name:sale_rental.sale_rental_menu
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_graph
 msgid "Rentals"
 msgstr ""
 
