@@ -11,6 +11,19 @@
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_normal_form_view" />
         <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    type="object"
+                    name="action_view_rental_pricing"
+                    class="oe_stat_button"
+                    icon="fa-money"
+                >
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Rental<br />Pricing</span>
+                    </div>
+                </button>
+            </div>
+
             <group name="sale" position="inside">
                 <label
                     for="rented_product_id"
@@ -45,6 +58,19 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_only_form_view" />
         <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    type="object"
+                    name="action_view_rental_pricing"
+                    class="oe_stat_button"
+                    icon="fa-money"
+                >
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Rental<br />Pricing</span>
+                    </div>
+                </button>
+            </div>
+
             <group name="sale" position="inside">
                 <label
                     for="rented_product_tmpl_id"

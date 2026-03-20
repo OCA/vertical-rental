@@ -4,6 +4,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+from datetime import datetime, time
+
+from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 
@@ -27,8 +30,8 @@ class SaleRental(models.Model):
             name = "[{}] {} - {} > {} ({})".format(
                 rental.partner_id.display_name,
                 rental.rented_product_id.display_name,
-                rental.start_date,
-                rental.end_date,
+                rental.start_datetime or "",
+                rental.end_datetime or "",
                 rental._fields["state"].convert_to_export(rental.state, rental),
             )
             res.append((rental.id, name))
@@ -82,31 +85,32 @@ class SaleRental(models.Model):
             rental.sell_move_id = sell_move
 
     @api.depends(
-        "extension_order_line_ids.end_date",
+        "extension_order_line_ids.end_datetime",
         "extension_order_line_ids.state",
-        "start_order_line_id.end_date",
+        "start_order_line_id.end_datetime",
     )
-    def _compute_end_date(self):
+    def _compute_end_datetime(self):
         for rental in self:
-            end_date = False
+            end_datetime = False
             if rental.start_order_line_id:
-                end_date = rental.start_order_line_id.end_date
-
+                end_datetime = rental.start_order_line_id.end_datetime
             for extension in rental.extension_order_line_ids:
                 if (
                     extension.state in ("sale", "done")
-                    and end_date
-                    and extension.end_date
-                    and extension.end_date > end_date
+                    and extension.end_datetime
+                    and (not end_datetime or extension.end_datetime > end_datetime)
                 ):
-                    end_date = extension.end_date
-            rental.end_date = end_date
+                    end_datetime = extension.end_datetime
+            rental.end_datetime = end_datetime
 
     start_order_line_id = fields.Many2one(
         "sale.order.line", string="Rental SO Line", readonly=True
     )
-    start_date = fields.Date(
-        related="start_order_line_id.start_date", readonly=True, store=True
+    start_datetime = fields.Datetime(
+        string="From",
+        related="start_order_line_id.start_datetime",
+        readonly=True,
+        store=True,
     )
     rental_product_id = fields.Many2one(
         "product.product",
@@ -203,8 +207,9 @@ class SaleRental(models.Model):
         string="Sell Delivery Order",
         readonly=True,
     )
-    end_date = fields.Date(
-        compute="_compute_end_date",
+    end_datetime = fields.Datetime(
+        string="To",
+        compute="_compute_end_datetime",
         store=True,
         help="End Date of the Rental (extensions included), \
         taking into account all the extensions sold to the customer.",
@@ -221,4 +226,124 @@ class SaleRental(models.Model):
         compute="_compute_move_and_state",
         readonly=True,
         store=True,
+    )
+
+    in_stock = fields.Float(
+        related="rented_product_id.qty_available",
+        string="In Stock",
+        readonly=True,
+        store=True,
+    )
+
+    company_currency_id = fields.Many2one(
+        "res.currency",
+        related="company_id.currency_id",
+        string="Currency",
+        readonly=True,
+    )
+
+    revenue = fields.Monetary(
+        related="start_order_line_id.price_subtotal",
+        currency_field="company_currency_id",
+        string="Revenue",
+        readonly=True,
+        store=True,
+    )
+
+    def _get_reminder_days(self):
+        try:
+            reminder_days = (
+                self.env["ir.config_parameter"]
+                .sudo()
+                .get_param("sale_rental.reminder_days")
+            )
+            return int(reminder_days or 0)
+        except (TypeError, ValueError, OverflowError):
+            return 0
+
+    @api.model
+    def cron_send_return_reminders(self):
+        """Send reminder emails X days before end_date."""
+        reminder_days = self._get_reminder_days()
+
+        today = fields.Date.today()
+        target_date = today + relativedelta(days=reminder_days)
+
+        target_dt_start = datetime.combine(target_date, time.min)
+        target_dt_end = datetime.combine(target_date, time.max)
+
+        domain = [
+            ("state", "in", ["out", "sell_progress"]),
+            ("end_datetime", ">=", target_dt_start),
+            ("end_datetime", "<=", target_dt_end),
+            ("partner_id", "!=", False),
+        ]
+
+        rentals = self.search(domain)
+        if not rentals:
+            return
+
+        template = self.env.ref(
+            "sale_rental.mail_template_rental_return_reminder",
+            raise_if_not_found=False,
+        )
+        if not template:
+            logger.warning(
+                "Email template your_module.mail_template_rental_return_reminder not found."
+            )
+            return
+
+        for rental in rentals:
+            try:
+                template.send_mail(rental.id, force_send=True)
+            except Exception as e:
+                logger.exception(
+                    "Failed to send return reminder for rental %s: %s", rental.id, e
+                )
+
+    @api.depends("out_move_id.date", "in_move_id.date")
+    def _compute_actual_rental_hours(self):
+        for rental in self:
+            if rental.out_move_id and rental.out_move_id.date:
+                start = fields.Datetime.from_string(rental.out_move_id.date)
+                if rental.in_move_id and rental.in_move_id.date:
+                    end = fields.Datetime.from_string(rental.in_move_id.date)
+                else:
+                    end = fields.Datetime.now()
+                rental.actual_rental_hours = (end - start).total_seconds() / 3600
+            else:
+                rental.actual_rental_hours = 0.0
+
+    actual_rental_hours = fields.Float(
+        compute="_compute_actual_rental_hours",
+        store=True,
+    )
+
+    @api.depends("start_datetime", "end_datetime")
+    def _compute_available_hours(self):
+        for rental in self:
+            if rental.start_datetime and rental.end_datetime:
+                start = fields.Datetime.from_string(rental.start_datetime)
+                end = fields.Datetime.from_string(rental.end_datetime)
+                rental.available_hours = (end - start).total_seconds() / 3600
+            else:
+                rental.available_hours = 0.0
+
+    available_hours = fields.Float(
+        compute="_compute_available_hours",
+        store=True,
+    )
+
+    @api.depends("actual_rental_hours", "available_hours")
+    def _compute_utilization_rate(self):
+        for rental in self:
+            if rental.available_hours > 0:
+                rental.utilization_rate = (
+                    rental.actual_rental_hours / rental.available_hours
+                ) * 100
+            else:
+                rental.utilization_rate = 0
+
+    utilization_rate = fields.Float(
+        compute="_compute_utilization_rate", string="Utilization Rate (%)", store=True
     )

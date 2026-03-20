@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+  <record id="view_product_rental_pricing_tree" model="ir.ui.view">
+    <field name="name">product.rental.pricing.tree</field>
+    <field name="model">product.rental.pricing</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="product_id" options="{'no_create_edit': True}" />
+        <field name="period_id" />
+        <field
+                    name="price"
+                    widget="monetary"
+                    options="{'currency_field': 'currency_id'}"
+                />
+        <field name="currency_id" />
+        <field name="company_id" groups="base.group_multi_company" />
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_product_rental_pricing_form" model="ir.ui.view">
+    <field name="name">product.rental.pricing.form</field>
+    <field name="model">product.rental.pricing</field>
+    <field name="arch" type="xml">
+      <form string="Rental Pricing">
+        <sheet>
+          <group>
+            <group>
+              <field
+                                name="product_id"
+                                options="{'no_create_edit': True}"
+                                domain="[('type','=','service'),
+                            ('must_have_dates','=',True),
+                            ('rented_product_id','!=',False)]"
+                            />
+              <field name="period_id" />
+            </group>
+            <group>
+              <field
+                                name="price"
+                                widget="monetary"
+                                options="{'currency_field': 'currency_id'}"
+                            />
+              <field name="currency_id" />
+              <field name="company_id" groups="base.group_multi_company" />
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_product_rental_pricing_search" model="ir.ui.view">
+    <field name="name">product.rental.pricing.search</field>
+    <field name="model">product.rental.pricing</field>
+    <field name="arch" type="xml">
+      <search string="Search Rental Pricing">
+        <field name="product_id" />
+        <field name="period_id" />
+        <field name="company_id" groups="base.group_multi_company" />
+        <group expand="0" string="Group By">
+          <filter
+                        string="This Product"
+                        name="this_product"
+                        domain="[('product_id', '=', context.get('active_id'))]"
+                    />
+          <filter
+                        string="Product"
+                        name="group_product"
+                        context="{'group_by':'product_id'}"
+                    />
+          <filter
+                        string="Period"
+                        name="group_period"
+                        context="{'group_by':'period_id'}"
+                    />
+          <filter
+                        string="Company"
+                        name="group_company"
+                        context="{'group_by':'company_id'}"
+                        groups="base.group_multi_company"
+                    />
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="action_product_rental_pricing" model="ir.actions.act_window">
+        <field name="name">Rental Pricing</field>
+        <field name="res_model">product.rental.pricing</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+  <menuitem
+        id="menu_rental_pricing"
+        parent="sale.product_menu_catalog"
+        action="action_product_rental_pricing"
+        sequence="12"
+    />
+</odoo>

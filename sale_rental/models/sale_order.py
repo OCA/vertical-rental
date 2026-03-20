@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_compare
+from odoo.tools import float_compare, float_is_zero
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ class SaleOrder(models.Model):
             for line in order.order_line.filtered(
                 lambda l: l.rental_type == "rental_extension" and l.extension_rental_id
             ):
-                initial_end_date = line.extension_rental_id.end_date
+                initial_end_date = line.extension_rental_id.end_datetime
                 line.extension_rental_id.in_move_id.write(
                     {
                         "date": initial_end_date,
@@ -67,6 +67,44 @@ class SaleOrderLine(models.Model):
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
+    start_datetime = fields.Datetime(
+        string="From",
+        states={"draft": [("readonly", False)], "sent": [("readonly", False)]},
+    )
+    end_datetime = fields.Datetime(
+        string="To",
+        states={"draft": [("readonly", False)], "sent": [("readonly", False)]},
+    )
+    rental_period_id = fields.Many2one(
+        "rental.period",
+        string="Rental Period",
+        required=True,
+        default=lambda self: self.env.ref(
+            "sale_rental.rental_period_day", raise_if_not_found=False
+        ),
+        states={"draft": [("readonly", False)]},
+    )
+    available_rental_period_ids = fields.Many2many(
+        "rental.period",
+        string="Available Rental Periods",
+        compute="_compute_available_rental_periods",
+        store=False,
+    )
+    duration = fields.Float(
+        digits="Product Unit of Measure",
+        compute="_compute_duration",
+        store=True,
+        help="Calculated from From/To in selected period's UoM.",
+    )
+    number_of_days = fields.Float(
+        string="Number of Days",
+        compute="_compute_number_of_days",
+        store=True,
+        help="Derived from duration (converted to days). "
+        "Used for product quantity = rental_qty * number_of_days.",
+    )
+    pricing_hint = fields.Char(compute="_compute_pricing_hint")
+    must_have_dates = fields.Boolean(related="product_id.must_have_dates")
 
     _sql_constraints = [
         (
@@ -76,14 +114,185 @@ class SaleOrderLine(models.Model):
         )
     ]
 
+    @api.depends("start_datetime", "end_datetime", "rental_period_id")
+    def _compute_duration(self):
+        for line in self:
+            duration = 0.0
+            if line.start_datetime and line.end_datetime and line.rental_period_id:
+                if line.end_datetime < line.start_datetime:
+                    raise ValidationError(_("End time must be after start time."))
+                delta = fields.Datetime.to_datetime(
+                    line.end_datetime
+                ) - fields.Datetime.to_datetime(line.start_datetime)
+                diff_hours = delta.total_seconds() / 3600.0
+                hours_per_unit = line.rental_period_id.hours_per_unit or 1.0
+                duration = diff_hours / hours_per_unit
+
+            line.duration = max(duration, 0.0)
+
+    @api.depends("duration", "rental_period_id")
+    def _compute_number_of_days(self):
+        for line in self:
+            if not line.duration or not line.rental_period_id:
+                line.number_of_days = 0.0
+                continue
+
+            hours_per_unit = line.rental_period_id.hours_per_unit or 1.0
+            total_hours = line.duration * hours_per_unit
+            line.number_of_days = total_hours / 24.0
+
+    @api.onchange("rental_qty", "number_of_days", "product_id", "rental_type")
+    def _onchange_set_product_uom_qty_from_rental(self):
+        for line in self:
+            if (
+                line.rental_type in ("new_rental", "rental_extension")
+                and line.product_id
+                and line.product_id.rented_product_id
+            ):
+                line.product_uom_qty = line.rental_qty * line.number_of_days
+
+    def _prepare_invoice_line(self, **optional_values):
+        self.ensure_one()
+        res = super()._prepare_invoice_line(**optional_values)
+        if not self.display_type and self.must_have_dates:
+            res.update({"start_date": self.start_date, "end_date": self.end_date})
+        return res
+
+    @api.depends("start_datetime")
+    def _compute_start_date(self):
+        for line in self:
+            start_date = False
+            if line.start_datetime:
+                dt = fields.Datetime.context_timestamp(line, line.start_datetime)
+                start_date = dt.date() if hasattr(dt, "date") else False
+
+            line.start_date = start_date
+
+    @api.depends("end_datetime")
+    def _compute_end_date(self):
+        for line in self:
+            end_date = False
+            if line.end_datetime:
+                dt = fields.Datetime.context_timestamp(line, line.end_datetime)
+                end_date = dt.date() if hasattr(dt, "date") else False
+
+            line.end_date = end_date
+
+    @api.depends(
+        "product_id",
+        "product_id.rental_pricing_ids",
+        "product_id.rental_pricing_ids.period_id",
+    )
+    def _compute_available_rental_periods(self):
+        for line in self:
+            periods = (
+                line.product_id.rental_pricing_ids.mapped("period_id").ids
+                if line.product_id
+                else []
+            )
+            line.available_rental_period_ids = [(6, 0, periods)]
+
+    @api.onchange("product_id", "rental", "rental_type")
+    def _onchange_prefill_dates(self):
+        for line in self:
+            if line.rental and line.product_id.must_have_dates:
+                if not line.start_datetime and line.order_id.default_start_date:
+                    line.start_datetime = line.order_id.default_start_date
+                if not line.end_datetime and line.order_id.default_end_date:
+                    line.end_datetime = line.order_id.default_end_date
+
+    @api.depends(
+        "product_id",
+        "rental",
+        "rental_qty",
+        "rental_period_id",
+        "duration",
+        "number_of_days",
+        "order_id.company_id",
+        "order_id.currency_id",
+    )
+    def _compute_pricing_hint(self):
+        for line in self:
+            pricing_hint = False
+            if (
+                line.product_id
+                and line.rental
+                and line.rental_period_id
+                and line.duration > 0
+            ):
+                company = (
+                    line.order_id.company_id if line.order_id else self.env.company
+                )
+                currency = (
+                    line.order_id.currency_id
+                    if line.order_id
+                    else self.env.company.currency_id
+                )
+                total = line.product_id._get_rental_price_for_duration(
+                    period=line.rental_period_id,
+                    duration=line.duration,
+                    company=company,
+                    currency=currency,
+                )
+                base = line.product_id._get_rental_price_for_period(
+                    line.rental_period_id,
+                    company=company,
+                    currency=currency,
+                )
+                total_with_qty = total * line.rental_qty
+
+                pricing_hint = _(
+                    "Base: %(base).2f per %(period)s · Qty: %(qty).0f "
+                    "· Duration: %(dur).3f %(period)s → Total = %(total).2f",
+                    base=base,
+                    qty=line.rental_qty,
+                    period=line.rental_period_id.name,
+                    dur=line.duration,
+                    total=total_with_qty,
+                )
+            line.pricing_hint = pricing_hint
+
+    @api.depends(
+        "product_id",
+        "rental",
+        "rental_qty",
+        "rental_period_id",
+        "duration",
+        "number_of_days",
+        "order_id.company_id",
+        "order_id.currency_id",
+    )
+    def _compute_price_unit(self):
+        res = super()._compute_price_unit()
+
+        for line in self:
+            if not (
+                line.product_id
+                and line.rental
+                and line.rental_period_id
+                and line.duration > 0
+            ):
+                continue
+
+            total = line.product_id._get_rental_price_for_duration(
+                period=line.rental_period_id,
+                duration=line.duration,
+                company=line.order_id.company_id,
+                currency=line.order_id.currency_id,
+            )
+
+            line.price_unit = total / line.number_of_days
+
+        return res
+
     @api.constrains(
         "rental_type",
         "extension_rental_id",
-        "start_date",
-        "end_date",
         "rental_qty",
         "product_uom_qty",
         "product_id",
+        "start_datetime",
+        "end_datetime",
     )
     def _check_sale_line_rental(self):
         for line in self:
@@ -116,7 +325,15 @@ class SaleOrderLine(models.Model):
                             "'{}', we should have a rental service product !"
                         ).format(line.product_id.display_name)
                     )
-                if line.product_uom_qty != line.rental_qty * line.number_of_days:
+
+                expected = line.rental_qty * line.number_of_days
+                rounding = line.product_uom.rounding if line.product_uom else 0.01
+                if (
+                    float_compare(
+                        line.product_uom_qty, expected, precision_rounding=rounding
+                    )
+                    != 0
+                ):
                     raise ValidationError(
                         _(
                             "On the sale order line with product '%(name)s' "
@@ -129,21 +346,20 @@ class SaleOrderLine(models.Model):
                             rental_qty=line.rental_qty,
                         )
                     )
-                # the module sale_start_end_dates checks that, when we have
-                # must_have_dates, we have start + end dates
-            elif line.sell_rental_id:
-                if line.product_uom_qty != line.sell_rental_id.rental_qty:
+                if not line.product_uom or float_is_zero(
+                    line.product_uom_qty, precision_rounding=line.product_uom.rounding
+                ):
+                    raise ValidationError(_("Quantity (items) must be greater than 0."))
+
+                if not line.product_uom or float_is_zero(
+                    line.product_uom_qty, precision_rounding=line.product_uom.rounding
+                ):
                     raise ValidationError(
-                        _(
-                            "On the sale order line with product %(name)s "
-                            "you are trying to sell a rented product with a "
-                            "quantity (%(uom_qty)s) that is different from the rented "
-                            "quantity (%(rental_qty)s). This is not supported.",
-                            name=line.product_id.display_name,
-                            uom_qty=line.product_uom_qty,
-                            rental_qty=line.sell_rental_id.rental_qty,
-                        )
+                        _("Duration/Quantity must be greater than 0.")
                     )
+
+                if line.duration <= 0:
+                    raise ValidationError(_("Duration must be greater than 0."))
 
     def _prepare_rental(self):
         self.ensure_one()
@@ -154,7 +370,7 @@ class SaleOrderLine(models.Model):
             "company_id": self.order_id.company_id,
             "group_id": group,
             "sale_line_id": self.id,
-            "date_planned": self.start_date,
+            "date_planned": self.start_datetime,
             "route_ids": self.route_id or self.order_id.warehouse_id.rental_route_id,
             "warehouse_id": self.order_id.warehouse_id or False,
             "partner_id": self.order_id.partner_shipping_id.id,
@@ -176,6 +392,17 @@ class SaleOrderLine(models.Model):
             )
         ]
         self.env["procurement.group"].run(procurements)
+
+    def _create_sale_rental(self, order_line):
+        existing_rental = self.env["sale.rental"].search(
+            [
+                ("start_order_line_id", "=", order_line.id),
+            ],
+            limit=1,
+        )
+
+        if not existing_rental:
+            self.env["sale.rental"].create(order_line._prepare_rental())
 
     def _action_launch_stock_rule(self, previous_product_uom_qty=False):
         errors = []
@@ -199,7 +426,7 @@ class SaleOrderLine(models.Model):
                 except UserError as error:
                     errors.append(error.name)
 
-                self.env["sale.rental"].create(line._prepare_rental())
+                self._create_sale_rental(line)
 
             elif (
                 line.rental_type == "rental_extension"
@@ -207,7 +434,7 @@ class SaleOrderLine(models.Model):
                 and line.extension_rental_id
                 and line.extension_rental_id.in_move_id
             ):
-                end_datetime = fields.Datetime.to_datetime(line.end_date)
+                end_datetime = line.end_datetime
                 line.extension_rental_id.in_move_id.write(
                     {
                         "date": end_datetime,
@@ -326,14 +553,23 @@ class SaleOrderLine(models.Model):
                         "Product currently selected in this Sale Order Line."
                     ).format(self.extension_rental_id.rental_product_id.display_name)
                 )
-            initial_end_date = self.extension_rental_id.end_date
-            self.start_date = initial_end_date + relativedelta(days=1)
+
+            self.product_uom_qty = (
+                self.extension_rental_id.start_order_line_id.product_uom_qty
+            )
+
+            initial_end_datetime = self.extension_rental_id.end_datetime
+            if initial_end_datetime:
+                self.start_datetime = initial_end_datetime + relativedelta(seconds=1)
+
             self.rental_qty = self.extension_rental_id.rental_qty
 
     @api.onchange("sell_rental_id")
     def sell_rental_id_change(self):
         if self.sell_rental_id:
-            self.product_uom_qty = self.sell_rental_id.rental_qty
+            self.product_uom_qty = (
+                self.sell_rental_id.start_order_line_id.product_uom_qty
+            )
 
     @api.onchange("rental_qty", "number_of_days", "product_id")
     def rental_qty_number_of_days_change(self):

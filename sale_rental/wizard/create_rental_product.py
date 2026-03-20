@@ -42,12 +42,6 @@ class CreateRentalProduct(models.TransientModel):
     )
     name = fields.Char(string="Rental Service Name", required=True)
     default_code = fields.Char()
-    sale_price_per_day = fields.Float(
-        string="Rental Price per Day",
-        required=True,
-        digits="Product Price",
-        default=1.0,
-    )
     categ_id = fields.Many2one(
         "product.category", string="Product Category", required=True
     )
@@ -55,14 +49,10 @@ class CreateRentalProduct(models.TransientModel):
 
     @api.model
     def _prepare_rental_product(self):
-        day_uom_id = self.env.ref("uom.product_uom_day").id
         vals = {
             "type": "service",
             "sale_ok": True,
             "purchase_ok": False,
-            "uom_id": day_uom_id,
-            "uom_po_id": day_uom_id,
-            "list_price": self.sale_price_per_day,
             "name": self.name,
             "default_code": self.default_code,
             "rented_product_id": self.hw_product_id.id,

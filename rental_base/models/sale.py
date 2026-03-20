@@ -193,19 +193,18 @@ class SaleOrderLine(models.Model):
             number = float_round(number, precision_rounding=1)
         return number
 
-    def update_start_end_date(self, date_start, date_end):
+    def update_start_end_date(self, start_datetime, end_datetime):
         for line in self:
             # update sale order lines
             update_date_start_later = False
-            if date_start > line.end_date:
+            if start_datetime > line.start_datetime:
                 update_date_start_later = True
             else:
-                line.with_context(allow_write=True).start_date = date_start
-            line.with_context(allow_write=True).end_date = date_end
+                line.with_context(allow_write=True).start_datetime = start_datetime
+            line.with_context(allow_write=True).end_datetime = end_datetime
             if update_date_start_later:
-                line.with_context(allow_write=True).start_date = date_start
-            datetime_start = fields.Datetime.to_datetime(date_start)
-            datetime_end = fields.Datetime.to_datetime(date_end)
+                line.with_context(allow_write=True).start_datetime = start_datetime
+
             # update rental
             if line.rental:
                 rentals = self.env["sale.rental"].search(
@@ -216,10 +215,10 @@ class SaleOrderLine(models.Model):
                         ("in_move_id.state", "!=", "cancel"),
                     ]
                 )
-                if rentals and date_start:
+                if rentals and start_datetime:
                     rental = rentals[0]
                     date_move_out = fields.Date.to_date(rental.out_move_id.date)
-                    if date_start != date_move_out:
+                    if start_datetime != date_move_out:
                         if rental.out_move_id.state not in [
                             "draft",
                             "confirmed",
@@ -232,11 +231,11 @@ class SaleOrderLine(models.Model):
                                 )
                                 % {"state": rental.out_move_id.state}
                             )
-                        rental.out_move_id.date = datetime_start
-                if rentals and date_end:
+                        rental.out_move_id.date = start_datetime.date
+                if rentals and end_datetime:
                     rental = rentals[0]
                     date_move_in = fields.Date.to_date(rental.in_move_id.date)
-                    if date_end != date_move_in:
+                    if end_datetime.date != date_move_in:
                         if rental.in_move_id.state not in [
                             "draft",
                             "confirmed",
@@ -249,7 +248,7 @@ class SaleOrderLine(models.Model):
                                 )
                                 % {"state": rental.in_move_id.state}
                             )
-                        rental.in_move_id.date = datetime_end
+                        rental.in_move_id.date = end_datetime.date
 
     def write(self, values):
         """

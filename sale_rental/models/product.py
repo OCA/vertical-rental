@@ -20,10 +20,50 @@ class ProductProduct(models.Model):
     rental_service_ids = fields.One2many(
         "product.product", "rented_product_id", string="Related Rental Services"
     )
+    rental_pricing_ids = fields.One2many(
+        "product.rental.pricing", "product_id", string="Rental Pricings"
+    )
 
-    @api.constrains("rented_product_id", "must_have_dates", "type", "uom_id")
+    def _get_rental_price_for_period(self, period, company=None, currency=None):
+        self.ensure_one()
+        if not period:
+            return 0.0
+
+        rec = self.rental_pricing_ids.filtered(lambda r: r.period_id.id == period.id)[
+            :1
+        ]
+        if not rec:
+            return 0.0
+        price = rec.price
+        from_currency = rec.currency_id
+
+        to_currency = currency or (company or self.env.company).currency_id
+        if from_currency != to_currency:
+            price = from_currency._convert(
+                from_amount=price,
+                to_currency=to_currency,
+                company=company or self.env.company,
+                date=fields.Date.context_today(self),
+            )
+        return price
+
+    def _get_rental_price_for_duration(
+        self, period, duration, company=None, currency=None
+    ):
+        self.ensure_one()
+        if not period or duration <= 0:
+            return 0.0
+        base = self._get_rental_price_for_period(
+            period, company=company, currency=currency
+        )
+        if not base:
+            return 0.0
+
+        amount = base * duration
+        return amount
+
+    @api.constrains("rented_product_id", "must_have_dates", "type")
     def _check_rental(self):
-        day_uom = self.env.ref("uom.product_uom_day")
         for product in self:
             if product.rented_product_id:
                 if product.type != "service":
@@ -39,15 +79,24 @@ class ProductProduct(models.Model):
                             "'Must Have Start and End Dates' checked."
                         ).format(product.name)
                     )
-                # In the future, we would like to support all time UoMs
-                # but it is more complex and requires additionnal developments
-                if product.uom_id != day_uom:
-                    raise ValidationError(
-                        _(
-                            "The unit of measure of the rental product '{}' must "
-                            "be 'Day'."
-                        ).format(product.name)
-                    )
+
+    def action_view_rental_pricing(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id(
+            "sale_rental.action_product_rental_pricing"
+        )
+
+        ctx = dict(self.env.context or {})
+        ctx.update(
+            {
+                "active_id": self.id,
+                "active_model": "product.product",
+                "search_default_this_product": 1,
+            }
+        )
+        action["context"] = ctx
+
+        return action
 
 
 class ProductTemplate(models.Model):
@@ -82,3 +131,22 @@ class ProductTemplate(models.Model):
                 template.product_variant_ids.rented_product_id = (
                     template.rented_product_tmpl_id.product_variant_ids[0].id
                 )
+
+    def action_view_rental_pricing(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id(
+            "sale_rental.action_product_rental_pricing"
+        )
+        product_ids = self.product_variant_ids.ids
+        action["domain"] = [("product_id", "in", product_ids)]
+
+        ctx = dict(self.env.context or {})
+        ctx.update(
+            {
+                "active_id": product_ids[0],
+                "active_model": "product.product",
+                "search_default_this_product": 1,
+            }
+        )
+        action["context"] = ctx
+        return action

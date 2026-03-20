@@ -30,8 +30,8 @@
                         <field name="rental_qty" />
                     </group>
                     <group name="main-right">
-                        <field name="start_date" />
-                        <field name="end_date" />
+                        <field name="start_datetime" />
+                        <field name="end_datetime" />
                         <field name="start_order_line_id" />
                         <field name="company_id" groups="base.group_multi_company" />
                     </group>
@@ -55,8 +55,8 @@
                                 <field name="order_id" />
                                 <field name="order_partner_id" />
                                 <field name="name" />
-                                <field name="start_date" />
-                                <field name="end_date" />
+                                <field name="start_datetime" />
+                                <field name="end_datetime" />
                                 <field name="product_uom_qty" />
                                 <field
                                         name="product_uom"
@@ -92,9 +92,9 @@
             <field name="partner_id" />
             <field name="rented_product_id" />
             <field name="rental_qty" />
-            <field name="start_date" />
+            <field name="start_datetime" />
             <field name="out_state" string="Delivery" />
-            <field name="end_date" string="End Date" />
+            <field name="end_datetime" string="End Date" />
             <field name="in_state" string="Return" />
             <field name="sell_state" optional="hide" />
             <field
@@ -148,14 +148,14 @@
                         context="{'group_by': 'state'}"
                     />
                 <filter
-                        name="start_date_groupby"
+                        name="start_datetime_groupby"
                         string="Start Date"
-                        context="{'group_by': 'start_date'}"
+                        context="{'group_by': 'start_datetime'}"
                     />
                 <filter
-                        name="end_date_groupby"
+                        name="end_datetime_groupby"
                         string="End Date"
-                        context="{'group_by': 'end_date'}"
+                        context="{'group_by': 'end_datetime'}"
                     />
             </group>
         </search>
@@ -167,7 +167,7 @@
     <field name="model">sale.rental</field>
     <field name="arch" type="xml">
         <graph string="Rentals" type="bar" stacked="True">
-            <field name="start_date" type="row" interval="month" />
+            <field name="start_datetime" type="row" interval="month" />
             <field name="state" type="row" />
             <field name="rental_qty" type="measure" />
         </graph>
@@ -180,7 +180,7 @@
     <field name="arch" type="xml">
         <pivot>
             <field name="rented_product_id" type="row" />
-            <field name="start_date" interval="month" type="col" />
+            <field name="start_datetime" interval="month" type="col" />
             <field name="rental_qty" type="measure" />
         </pivot>
     </field>
@@ -193,8 +193,8 @@
     <field name="arch" type="xml">
         <calendar
                 string="Rental Schedule"
-                date_start="start_date"
-                date_stop="end_date"
+                date_start="start_datetime"
+                date_stop="end_datetime"
                 mode="month"
                 create="0"
                 color="partner_id"
@@ -209,14 +209,74 @@
 <record id="sale_rental_action" model="ir.actions.act_window">
     <field name="name">Rentals</field>
     <field name="res_model">sale.rental</field>
-    <field name="view_mode">tree,form,graph,calendar,,pivot</field>
+    <field name="view_mode">tree,form,graph,calendar,pivot</field>
 </record>
 
 <menuitem
         id="sale_rental_menu"
         parent="sale.sale_order_menu"
         action="sale_rental_action"
-        sequence="2"
+        sequence="10"
     />
 
+    <record id="view_rental_report_by_product_pivot" model="ir.ui.view">
+        <field name="name">sale.rental.report.by.product.pivot</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <pivot string="By Product">
+                <field name="rented_product_id" type="row" string="Product" />
+                <field name="in_stock" type="measure" string="In Stock" />
+                <field name="revenue" type="measure" string="Revenue (Period)" />
+                <field
+                    name="utilization_rate"
+                    type="measure"
+                    string="Utilization Rate (%)"
+                />
+                <field name="rental_qty" type="measure" string="Units Rented" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_rental_report_by_time_pivot" model="ir.ui.view">
+        <field name="name">sale.rental.report.by.time.pivot</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <pivot string="By Time (Month)">
+                <field
+                    name="start_datetime"
+                    type="row"
+                    interval="month"
+                    string="Month"
+                />
+                <field
+                    name="actual_rental_hours"
+                    type="measure"
+                    string="Total Rental Hours"
+                />
+                <field
+                    name="utilization_rate"
+                    type="measure"
+                    string="Utilization Rate (%)"
+                />
+                <field name="revenue" type="measure" string="Revenue" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_rental_report_by_customer_pivot" model="ir.ui.view">
+        <field name="name">sale.rental.report.by.customer.pivot</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <pivot string="By Customer">
+                <field name="partner_id" type="row" string="Customer" />
+                <field name="rental_qty" type="measure" string="Products Rented" />
+                <field
+                    name="actual_rental_hours"
+                    type="measure"
+                    string="Rental Duration (hrs)"
+                />
+                <field name="revenue" type="measure" string="Revenue Contribution" />
+            </pivot>
+        </field>
+    </record>
 </odoo>

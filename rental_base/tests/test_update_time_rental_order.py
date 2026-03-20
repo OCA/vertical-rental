@@ -47,8 +47,8 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
                     "sequence": 1,
                     "order_line_id": line.id,
                     "change": False,
-                    "date_start": line.start_date,
-                    "date_end": line.end_date,
+                    "start_datetime": line.start_datetime,
+                    "end_datetime": line.end_datetime,
                     "product_id": line.product_id.id,
                 },
             )
@@ -64,8 +64,8 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
             .create(
                 {
                     "order_id": rental_order_1.id,
-                    "date_start": self.date_0102,
-                    "date_end": self.date_0111,
+                    "start_datetime": self.date_0102,
+                    "end_datetime": self.date_0111,
                     "date_in_line": False,
                     "all_line": True,
                     "line_ids": line_ids_value_1,
@@ -104,8 +104,8 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
                     "sequence": 1,
                     "order_line_id": line.id,
                     "change": False,
-                    "date_start": self.date_0103,
-                    "date_end": self.date_0112,
+                    "start_datetime": self.date_0103,
+                    "end_datetime": self.date_0112,
                     "product_id": line.product_id.id,
                 },
             )
@@ -121,8 +121,8 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
             .create(
                 {
                     "order_id": rental_order_1.id,
-                    "date_start": line.start_date,
-                    "date_end": line.end_date,
+                    "start_datetime": line.start_datetime,
+                    "end_datetime": line.end_datetime,
                     "date_in_line": True,
                     "all_line": True,
                     "line_ids": line_ids_value_2,
@@ -166,18 +166,19 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
         ).create(
             {
                 "partner_id": self.partnerA.id,
-                "order_line": [
-                    (
-                        0,
-                        0,
-                        {
-                            "product_id": self.product_rental.id,
-                            "product_uom_qty": 1,
-                            "rental_qty": 1,
-                            "product_uom": self.product_rental.uom_id.id,
-                        },
-                    )
-                ],
             }
         )
+        line = self.env["sale.order.line"].create(
+            {
+                "order_id": order_id.id,
+                "product_id": self.product_rental.id,
+                "product_uom_qty": 1,
+                "rental_qty": 1,
+                "product_uom": self.product_rental.uom_id.id,
+                "price_unit": 0.0,
+            }
+        )
+        line._compute_duration()
+        line._compute_number_of_days()
+        line._compute_price_unit()
         self.assertIn(str(number_next_actual), order_id.name)

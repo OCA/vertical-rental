@@ -409,13 +409,14 @@ ul.auto-toc {
 <li>extend an existing rental: the incoming shipment will be postponed to the end date of the extension.</li>
 </ul>
 <p>In a sale order line, if you select a product that has a corresponding rental service, you can decide to sell the rented product that the customer already has. If the sale order is confirmed, the incoming shipment will be cancelled and a new delivery order will be created with a stock move from <em>Rental Out</em> to <em>Customers</em>.</p>
+<p>You can configure Rental Periods under Sales ▸ Configuration ▸ Rental Period. A rental period defines the unit of time (Hour, Day, Week, Month, …) with its conversion into hours. These periods are used to compute rental duration.</p>
+<p>You can configure Rental Pricing under Sales ▸ Products ▸ Rental Pricing. For each rental service product, you define a price per rental period. When you create a rental order line, the system selects the period, computes the duration from the dates, and applies the corresponding rental price. If a product has no price defined for the selected period, the system will warn the user.</p>
 </div>
 <div class="section" id="known-issues-roadmap">
 <h2><a class="toc-backref" href="#toc-entry-3">Known issues / Roadmap</a></h2>
 <p>This module has the following limitations:</p>
 <ul class="simple">
 <li>No support for planning/agenda of the rented products (i.e. you can’t rely on this module to check your capacity to rent a product for the selected dates when you create a quote)</li>
-<li>The unit of measure of the rental services must be <em>Day</em> (the rental per hour / per week / per month is not supported for the moment)</li>
 </ul>
 </div>
 <div class="section" id="bug-tracker">
@@ -442,6 +443,7 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <li>Sodexis &lt;<a class="reference external" href="mailto:dev&#64;sodexis.com">dev&#64;sodexis.com</a>&gt;</li>
 <li>Danh Vo &lt;<a class="reference external" href="https://github.com/danhvophuong">https://github.com/danhvophuong</a>&gt;</li>
 <li>Kiril Vangelovski &lt;<a class="reference external" href="mailto:kiril&#64;lambda-is.com">kiril&#64;lambda-is.com</a>&gt;</li>
+<li>Chau Le &lt;<a class="reference external" href="mailto:chaulb&#64;trobz.com">chaulb&#64;trobz.com</a>&gt;</li>
 </ul>
 </div>
 <div class="section" id="maintainers">
