@@ -406,6 +406,11 @@ msgid "Rental SO Line"
 msgstr ""
 
 #. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_calendar
+msgid "Rental Schedule"
+msgstr ""
+
+#. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rental_product_id
 msgid "Rental Service"
 msgstr ""
