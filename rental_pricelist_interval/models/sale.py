@@ -94,7 +94,7 @@ class SaleOrderLine(models.Model):
                 self.price_unit = self.env[
                     "account.tax"
                 ]._fix_tax_included_price_company(
-                    self._get_display_price(product),
+                    self._get_display_price(),
                     product.taxes_id,
                     self.tax_id,
                     self.company_id,
@@ -111,29 +111,29 @@ class SaleOrderLine(models.Model):
             res = super()._get_product_rental_uom_ids()
         return res
 
-    @api.onchange("product_id")
-    def product_id_change(self):
+    @api.onchange("product_id", "rental_qty")
+    def rental_product_id_change(self):
+        res = super().rental_product_id_change()
+        self._update_interval_price()
         uom_interval = self.env.ref("rental_pricelist_interval.product_uom_interval")
-        res = super().product_id_change()
         if (
             self.order_id.pricelist_id.is_interval_pricelist
             and self.product_id
             and self.product_id.rented_product_id
             and self.product_id.rented_product_id.rental_of_interval
         ):
-            if self.rental and "domain" in res and "product_uom" in res["domain"]:
+            if (
+                self.rental
+                and res
+                and "domain" in res
+                and "product_uom" in res["domain"]
+            ):
                 del res["domain"]["product_uom"]
                 if self.display_product_id.rental:
                     uom_ids = [uom_interval.id]
                     res["domain"]["product_uom"] = [("id", "in", uom_ids)]
                     if self.product_uom.id not in uom_ids:
                         self.product_uom = uom_ids[0]
-        return res
-
-    @api.onchange("product_id", "rental_qty")
-    def rental_product_id_change(self):
-        res = super().rental_product_id_change()
-        self._update_interval_price()
         return res
 
     @api.onchange("rental_qty", "number_of_time_unit", "product_id")
@@ -143,14 +143,14 @@ class SaleOrderLine(models.Model):
         return res
 
     @api.onchange("product_uom", "product_uom_qty")
-    def product_uom_change(self):
-        res = super().product_uom_change()
+    def _onchange_product_uom(self):
+        res = super()._onchange_product_uom()
         self._update_interval_price()
         return res
 
     @api.onchange("start_date", "end_date", "product_uom")
-    def onchange_start_end_date(self):
-        res = super().onchange_start_end_date()
+    def _onchange_start_end_date(self):
+        res = super()._onchange_start_end_date()
         if self.start_date and self.end_date:
             self._update_interval_price()
         return res

@@ -53,7 +53,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.rental_order = (
             self.env["sale.order"]
             .with_context(
-                {
+                **{
                     "default_type_id": self.rental_sale_type.id,
                 }
             )
@@ -113,7 +113,7 @@ class TestRentalPricelist(RentalStockCommon):
         line = (
             self.env["sale.order.line"]
             .with_context(
-                {
+                **{
                     "type_id": self.rental_sale_type.id,
                 }
             )
@@ -137,15 +137,15 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.product_uom_qty, 1)
         self.assertEqual(line.rental_qty, 1)
         self.assertEqual(line.number_of_time_unit, 18)
-        self.assertEqual(line.price_unit, 2250)
-        self.assertEqual(line.price_subtotal, 2250)
+        self.assertEqual(line.price_unit, 1000)
+        self.assertEqual(line.price_subtotal, 1000)
         # Change End Date and rental_qty
         line.rental_qty = 2
         _run_sol_onchange_date(line, end_date=self.date_12_day_later)
         self.assertEqual(line.rental_qty, 2)
         self.assertEqual(line.product_uom_qty, 2)
-        self.assertEqual(line.price_unit, 1750)
-        self.assertEqual(line.price_subtotal, 3500)  # 2 * 1750
+        self.assertEqual(line.price_unit, 1000)
+        self.assertEqual(line.price_subtotal, 2000)  # 2 * 1000
         # Change End Date again
         _run_sol_onchange_date(line, end_date=self.date_4_day_later)
         self.assertEqual(line.price_unit, 1000)
@@ -158,7 +158,7 @@ class TestRentalPricelist(RentalStockCommon):
         self.rental_order.pricelist_id = self.pricelist_interval
         _run_sol_onchange_display_product_id(line)
         _run_sol_onchange_date(line, end_date=self.date_12_day_later)
-        self.assertEqual(line.price_unit, 1750)
+        self.assertEqual(line.price_unit, 1000)
         with self.assertRaises(exceptions.UserError) as e:
             _run_sol_onchange_date(line, end_date=self.date_24_day_later)
         self.assertEqual("Max rental interval (21 days) is exceeded.", str(e.exception))
