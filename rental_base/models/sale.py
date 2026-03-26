@@ -1,5 +1,6 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 import datetime
+from math import ceil
 
 from odoo import _, api, exceptions, fields, models
 from odoo.exceptions import ValidationError
@@ -18,6 +19,11 @@ class SaleOrder(models.Model):
     default_end_date = fields.Date(
         compute="_compute_default_end_date",
         readonly=False,
+        store=True,
+    )
+
+    is_rental_order = fields.Boolean(
+        compute="_compute_is_rental_order",
         store=True,
     )
 
@@ -53,6 +59,19 @@ class SaleOrder(models.Model):
                     }
                 )
 
+    @api.depends("type_id")
+    def _compute_is_rental_order(self):
+        try:
+            rental_type = self.sudo().env.ref("rental_base.rental_sale_type")
+        except ValueError:
+            for order in self:
+                order.is_rental_order = False
+            return
+        for order in self:
+            order.is_rental_order = False
+            if order.type_id.id == rental_type.id:
+                order.is_rental_order = True
+
     def unlink(self):
         for rec in self:
             rentals = self.env["sale.rental"].search(
@@ -87,13 +106,6 @@ class SaleOrderLine(models.Model):
             "sale": [("readonly", False)],
         }
     )
-
-    rental = fields.Boolean(compute="_compute_rental", store=True)
-
-    @api.depends("product_id")
-    def _compute_rental(self):
-        for line in self:
-            line.rental = line.product_id.rental
 
     @api.constrains(
         "rental_type",
@@ -160,6 +172,26 @@ class SaleOrderLine(models.Model):
                         }
                     )
 
+    # use this field to show the widget radio for field rental
+    order_type = fields.Selection(
+        selection=[("normal", "Normal"), ("rental", "Rental")],
+        compute="_compute_order_type",
+        inverse="_inverse_order_type",
+    )
+
+    @api.depends("rental")
+    def _compute_order_type(self):
+        for rec in self:
+            rec.order_type = "rental" if rec.rental else "normal"
+
+    def _inverse_order_type(self):
+        for rec in self:
+            rec.rental = rec.order_type == "rental"
+
+    @api.onchange("order_type")
+    def _onchange_order_type(self):
+        self.rental = self.order_type == "rental"
+
     def _prepare_invoice_line(self, **optional_values):
         self.ensure_one()
         res = super()._prepare_invoice_line(**optional_values)
@@ -170,10 +202,12 @@ class SaleOrderLine(models.Model):
     @api.model
     def _get_time_uom(self):
         uom_month = self.env.ref("rental_base.product_uom_month")
+        uom_week = self.env.ref("rental_base.product_uom_week")
         uom_day = self.env.ref("uom.product_uom_day")
         uom_hour = self.env.ref("uom.product_uom_hour")
         return {
             "month": uom_month,
+            "week": uom_week,
             "day": uom_day,
             "hour": uom_hour,
         }
@@ -191,6 +225,8 @@ class SaleOrderLine(models.Model):
             # https://www.checkyourmath.com/convert/time/days_months.php
             number = ((self.end_date - self.start_date).days + 1) / 30.4167
             number = float_round(number, precision_rounding=1)
+        elif self.product_uom.id == time_uoms["week"].id:
+            number = ceil(((self.end_date - self.start_date).days + 1) / 7)
         return number
 
     def update_start_end_date(self, date_start, date_end):

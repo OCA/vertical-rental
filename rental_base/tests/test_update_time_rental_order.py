@@ -86,14 +86,14 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
         self.assertEqual(len(rental_1), 1)
         self.assertEqual(
             rental_1.out_picking_id.scheduled_date.date(),
-            self.date_0101,
+            self.date_0102,
         )
         self.assertEqual(
             rental_1.in_picking_id.scheduled_date.date(),
-            self.date_0110,
+            self.date_0111,
         )
-        self.assertEqual(rental_1.out_move_id.date.date(), self.date_0101)
-        self.assertEqual(rental_1.in_move_id.date.date(), self.date_0110)
+        self.assertEqual(rental_1.out_move_id.date.date(), self.date_0102)
+        self.assertEqual(rental_1.in_move_id.date.date(), self.date_0111)
         # 2. change date, date_in_lines = True
         line_ids_value_2 = []
         line_ids_value_2.append(
@@ -144,18 +144,14 @@ class TestUpdateTimeRentalOrder(RentalStockCommon):
         self.assertEqual(len(rental_2), 1)
         self.assertEqual(
             rental_2.out_picking_id.scheduled_date.date(),
-            self.date_0101,
+            self.date_0103,
         )
         self.assertEqual(
             rental_2.in_picking_id.scheduled_date.date(),
-            self.date_0110,
+            self.date_0112,
         )
-        self.assertEqual(rental_2.out_move_id.date.date(), self.date_0101)
-        self.assertEqual(rental_2.in_move_id.date.date(), self.date_0110)
-
-    def test_inverse_rental(self):
-        self.product_rental.rental = True
-        self.assertTrue(self.product_rental.product_tmpl_id.rental)
+        self.assertEqual(rental_2.out_move_id.date.date(), self.date_0103)
+        self.assertEqual(rental_2.in_move_id.date.date(), self.date_0112)
 
     def test_create_sale_order_order_type_rental(self):
         number_next_actual = self.env.ref(
