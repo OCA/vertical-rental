@@ -25,7 +25,9 @@ msgid ""
 "Order: %(order)s\n"
 "Line with product: '%(product)s'\n"
 "\n"
-"Please use instead the button 'Update Times' in the order to correctly update the order line's times, its timeline entry, contract and its stock moves and pickings as required."
+"Please use instead the button 'Update Times' in the order to correctly "
+"update the order line's times, its timeline entry, contract and its stock "
+"moves and pickings as required."
 msgstr ""
 "\n"
 "Ordine: %(order)s\n"
@@ -38,22 +40,23 @@ msgstr ""
 
 #. module: rental_base
 #: model_terms:ir.ui.view,arch_db:rental_base.sale_start_end_dates
-msgid "<i class=\"fa fa-long-arrow-right\" aria-label=\"Arrow icon\" title=\"Arrow\"/>"
+msgid ""
+"<i class=\"fa fa-long-arrow-right\" aria-label=\"Arrow icon\" "
+"title=\"Arrow\"/>"
 msgstr ""
-"<i class=\"fa fa-long-arrow-right\" aria-label=\"Icona freccia\" title="
-"\"Freccia\"/>"
+"<i class=\"fa fa-long-arrow-right\" aria-label=\"Icona freccia\" "
+"title=\"Freccia\"/>"
 
 #. module: rental_base
 #. odoo-python
 #: code:addons/rental_base/wizard/update_sale_line_date.py:0
-#: code:addons/rental_base/wizard/update_sale_line_date.py:0
 #, python-format
 msgid ""
-"<li>%(name)s: %(start_date)s - %(end_date)s->%(date_start)s - "
-"%(date_end)s</li>"
+"<li>%(name)s: %(start_date)s - %(end_date)s->%(date_start)s - %(date_end)s</"
+"li>"
 msgstr ""
-"<li>%(name)s: %(start_date)s - %(end_date)s->%(date_start)s - "
-"%(date_end)s</li>"
+"<li>%(name)s: %(start_date)s - %(end_date)s->%(date_start)s - %(date_end)s</"
+"li>"
 
 #. module: rental_base
 #. odoo-python
@@ -95,7 +98,9 @@ msgstr "Attributi"
 #. module: rental_base
 #: model_terms:ir.ui.view,arch_db:rental_base.update_sale_line_date_form
 msgid ""
-"By changing the start and end dates of order lines, the dates are also updated in the timeline,the related stock pickings and contracts, if available.\n"
+"By changing the start and end dates of order lines, the dates are also "
+"updated in the timeline,the related stock pickings and contracts, if "
+"available.\n"
 "                Attention: The ordered quantities are not updated!"
 msgstr ""
 "Modificando le date di inizio e fine delle righe d'ordine, le date vengono "
@@ -256,8 +261,7 @@ msgstr "ID"
 
 #. module: rental_base
 #: model:ir.model.fields,help:rental_base.field_update_sale_line_date__all_line
-msgid ""
-"If set, all order lines of this order are updated with the given dates."
+msgid "If set, all order lines of this order are updated with the given dates."
 msgstr ""
 "Se impostato, tutte le righe di questo ordine vengono aggiornate con le date "
 "specificate."
@@ -272,8 +276,8 @@ msgstr ""
 #. module: rental_base
 #: model:ir.model.fields,help:rental_base.field_update_sale_line_date__from_line
 msgid ""
-"In order to update one or several order lines, please set a number referring"
-" to the first order line that should to be changed."
+"In order to update one or several order lines, please set a number referring "
+"to the first order line that should to be changed."
 msgstr ""
 "Per aggiornare una o più righe d'ordine, impostare un numero che faccia "
 "riferimento alla prima riga d'ordine che si desidera modificare."
@@ -281,8 +285,8 @@ msgstr ""
 #. module: rental_base
 #: model:ir.model.fields,help:rental_base.field_update_sale_line_date__to_line
 msgid ""
-"In order to update one or several order lines, please set a number referring"
-" to the last order line that should to be changed."
+"In order to update one or several order lines, please set a number referring "
+"to the last order line that should to be changed."
 msgstr ""
 "Per aggiornare una o più righe d'ordine, impostare un numero che faccia "
 "riferimento all'ultima riga d'ordine che si desidera modificare."
@@ -321,6 +325,11 @@ msgid "Invoicing"
 msgstr "Fatturazione"
 
 #. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_sale_order__is_rental_order
+msgid "Is Rental Order"
+msgstr ""
+
+#. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date____last_update
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line____last_update
 msgid "Last Modified on"
@@ -355,6 +364,16 @@ msgid "Month(s)"
 msgstr "Mese(i)"
 
 #. module: rental_base
+#: model:ir.model.fields.selection,name:rental_base.selection__sale_order_line__order_type__normal
+msgid "Normal"
+msgstr ""
+
+#. module: rental_base
+#: model_terms:ir.ui.view,arch_db:rental_base.view_sales_order_filter
+msgid "Normal Order"
+msgstr ""
+
+#. module: rental_base
 #. odoo-python
 #: code:addons/rental_base/models/sale.py:0
 #, python-format
@@ -370,9 +389,9 @@ msgstr ""
 #: code:addons/rental_base/models/sale.py:0
 #, python-format
 msgid ""
-"On the sale order line with product %(name)s you are trying to sell a rented"
-" product with a quantity (%(qty)s) that is different from the rented "
-"quantity (%(sell_rental_qty)s). This is not supported."
+"On the sale order line with product %(name)s you are trying to sell a rented "
+"product with a quantity (%(qty)s) that is different from the rented quantity "
+"(%(sell_rental_qty)s). This is not supported."
 msgstr ""
 "Nella riga dell'ordine di vendita con il prodotto %(name)s stai tentando di "
 "vendere un prodotto noleggiato con una quantità (%(qty)s) diversa dalla "
@@ -425,6 +444,7 @@ msgid "Order Reference"
 msgstr "Riferimento ordine"
 
 #. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_sale_order_line__order_type
 #: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
 msgid "Order Type"
 msgstr "Tipo ordine"
@@ -475,11 +495,6 @@ msgid "Product Unit of Measure"
 msgstr "Unità di misura del prodotto"
 
 #. module: rental_base
-#: model:ir.model,name:rental_base.model_product_product
-msgid "Product Variant"
-msgstr "Variante prodotto"
-
-#. module: rental_base
 #: model:ir.actions.act_window,name:rental_base.view_rental_product_action
 msgid "Product Variants"
 msgstr "Varianti prodotto"
@@ -497,13 +512,14 @@ msgid "Quotations"
 msgstr "Preventivi"
 
 #. module: rental_base
-#: model:ir.model.fields,field_description:rental_base.field_sale_order_line__rental
+#: model:ir.model.fields.selection,name:rental_base.selection__sale_order_line__order_type__rental
 #: model_terms:ir.ui.view,arch_db:rental_base.res_config_settings_view_form
 msgid "Rental"
 msgstr "Noleggio"
 
 #. module: rental_base
 #: model:sale.order.type,name:rental_base.rental_sale_type
+#: model_terms:ir.ui.view,arch_db:rental_base.view_sales_order_filter
 msgid "Rental Order"
 msgstr "Ordine di noleggio"
 
@@ -558,6 +574,11 @@ msgstr "Ordine di vendita"
 #: model:ir.model,name:rental_base.model_sale_order_line
 msgid "Sales Order Line"
 msgstr "Riga ordine di vendita"
+
+#. module: rental_base
+#: model:res.groups,name:rental_base.group_rental_menu
+msgid "See Rental Menu"
+msgstr ""
 
 #. module: rental_base
 #: model:ir.model,name:rental_base.model_ir_sequence
@@ -634,6 +655,11 @@ msgid "Vendors"
 msgstr "Fornitori"
 
 #. module: rental_base
+#: model:uom.uom,name:rental_base.product_uom_week
+msgid "Week(s)"
+msgstr ""
+
+#. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__wizard_id
 msgid "Wizard"
 msgstr "Procedura guidata"
@@ -648,8 +674,8 @@ msgstr "Procedura guidata per aggiornare le date delle righe ordine di vendita"
 #: code:addons/rental_base/models/sale.py:0
 #, python-format
 msgid ""
-"You are not allowed to change the 'end date' in an order line of a confirmed"
-" order."
+"You are not allowed to change the 'end date' in an order line of a confirmed "
+"order."
 msgstr ""
 "Non si è autorizzati a modificare la \"data di fine\" in una riga di un "
 "ordine confermato."
@@ -664,3 +690,6 @@ msgid ""
 msgstr ""
 "Non si è autorizzati a modificare la \"data di inizio\" in una riga di un "
 "ordine confermato."
+
+#~ msgid "Product Variant"
+#~ msgstr "Variante prodotto"

@@ -18,49 +18,52 @@ msgstr ""
 "X-Generator: Weblate 4.3.2\n"
 
 #. module: rental_base
+#. odoo-python
 #: code:addons/rental_base/models/sale.py:0
 #, python-format
 msgid ""
 "\n"
-"Order: %s\n"
-"Line with product: '%s'\n"
+"Order: %(order)s\n"
+"Line with product: '%(product)s'\n"
 "\n"
 "Please use instead the button 'Update Times' in the order to correctly "
 "update the order line's times, its timeline entry, contract and its stock "
 "moves and pickings as required."
 msgstr ""
-"\n"
-"Order: %s\n"
-"Ligne avec produit: '%s'\n"
-"\n"
-"Veuillez utiliser à la place le bouton « Mettre à jour la période » dans la "
-"commande pour mettre à jour correctement la période de la ligne de commande, "
-"sa saisie de la chronologie, son contrat et ses mouvements de stock et "
-"prélèvements, le cas échéant."
-
-#. module: rental_base
-#: code:addons/rental_base/wizard/update_sale_line_date.py:0
-#, fuzzy, python-format
-msgid "<li>%s: %s - %s -> %s - %s</li>"
-msgstr "<li>%s: %s - %s -> %s - %s</li>"
-
-#. module: rental_base
-#: code:addons/rental_base/wizard/update_sale_line_date.py:0
-#, python-format
-msgid "<li>(All lines): %s - %s -> %s - %s</li>"
-msgstr "<li>(Toutes les lignes): %s - %s -> %s - %s</li>"
-
-#. module: rental_base
-#: code:addons/rental_base/wizard/update_sale_line_date.py:0
-#, python-format
-msgid "<li>(Lines: %s - %s): %s - %s -> %s - %s</li>"
-msgstr "<li>(Lignes: %s - %s): %s - %s -> %s - %s</li>"
 
 #. module: rental_base
 #: model_terms:ir.ui.view,arch_db:rental_base.sale_start_end_dates
-msgid "<span class=\"o_form_label font-weight-bold\">Service Period</span>"
+msgid ""
+"<i class=\"fa fa-long-arrow-right\" aria-label=\"Arrow icon\" "
+"title=\"Arrow\"/>"
 msgstr ""
-"<span class=\"o_form_label font-weight-bold\">Période de service</span>"
+
+#. module: rental_base
+#. odoo-python
+#: code:addons/rental_base/wizard/update_sale_line_date.py:0
+#, python-format
+msgid ""
+"<li>%(name)s: %(start_date)s - %(end_date)s->%(date_start)s - %(date_end)s</"
+"li>"
+msgstr ""
+
+#. module: rental_base
+#. odoo-python
+#: code:addons/rental_base/wizard/update_sale_line_date.py:0
+#, python-format
+msgid ""
+"<li>(All lines): %(default_start_date)s -%(default_end_date)s-> "
+"%(date_start)s - %(date_end)s</li>"
+msgstr ""
+
+#. module: rental_base
+#. odoo-python
+#: code:addons/rental_base/wizard/update_sale_line_date.py:0
+#, python-format
+msgid ""
+"<li>(Lines: %(from_line)s - %(to_line)s): %(default_start_date)s - "
+"%(default_end_date)s -> %(date_start)s - %(date_end)s</li>"
+msgstr ""
 
 #. module: rental_base
 #: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
@@ -164,15 +167,15 @@ msgid "Date End"
 msgstr "Date de fin"
 
 #. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__date_in_line
+msgid "Date In Line"
+msgstr ""
+
+#. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__date_start
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__date_start
 msgid "Date Start"
 msgstr "Date de début"
-
-#. module: rental_base
-#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__date_in_line
-msgid "Date in Lines"
-msgstr "Date en lignes"
 
 #. module: rental_base
 #: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
@@ -223,10 +226,6 @@ msgid "Details for updating sale order line dates"
 msgstr "Détails pour la mise à jour des dates de ligne de commande client"
 
 #. module: rental_base
-#: model:ir.model.fields,field_description:rental_base.field_ir_sequence__display_name
-#: model:ir.model.fields,field_description:rental_base.field_product_template__display_name
-#: model:ir.model.fields,field_description:rental_base.field_sale_order__display_name
-#: model:ir.model.fields,field_description:rental_base.field_sale_order_line__display_name
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__display_name
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__display_name
 msgid "Display Name"
@@ -243,10 +242,6 @@ msgid "From"
 msgstr "À partir de"
 
 #. module: rental_base
-#: model:ir.model.fields,field_description:rental_base.field_ir_sequence__id
-#: model:ir.model.fields,field_description:rental_base.field_product_template__id
-#: model:ir.model.fields,field_description:rental_base.field_sale_order__id
-#: model:ir.model.fields,field_description:rental_base.field_sale_order_line__id
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__id
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__id
 msgid "ID"
@@ -292,14 +287,12 @@ msgid "Incoming Deliveries"
 msgstr "Livraisons entrantes"
 
 #. module: rental_base
+#. odoo-python
 #: code:addons/rental_base/models/sale.py:0
 #, python-format
 msgid ""
-"Incoming shipment is in state %s. You cannot "
-"change                                         the end date anymore."
+"Incoming shipment is in state %s. You cannot change the end date anymore."
 msgstr ""
-"L'envoi entrant est dans l'état %s. Vous ne pouvez plus "
-"modifier                                         la date de fin."
 
 #. module: rental_base
 #: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
@@ -318,10 +311,11 @@ msgid "Invoicing"
 msgstr "Facturation"
 
 #. module: rental_base
-#: model:ir.model.fields,field_description:rental_base.field_ir_sequence____last_update
-#: model:ir.model.fields,field_description:rental_base.field_product_template____last_update
-#: model:ir.model.fields,field_description:rental_base.field_sale_order____last_update
-#: model:ir.model.fields,field_description:rental_base.field_sale_order_line____last_update
+#: model:ir.model.fields,field_description:rental_base.field_sale_order__is_rental_order
+msgid "Is Rental Order"
+msgstr ""
+
+#. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date____last_update
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line____last_update
 msgid "Last Modified on"
@@ -340,13 +334,13 @@ msgid "Last Updated on"
 msgstr "Dernière mise à jour le"
 
 #. module: rental_base
+#. odoo-python
 #: code:addons/rental_base/models/sale.py:0
 #, python-format
 msgid ""
-"Missing \"Rental to Extend\" on the sale order line with rental service %s."
+"Missing \"Rental to Extend\" on the sale order line with rental service "
+"%(name)s."
 msgstr ""
-"\"Location à prolonger\" manquante sur la ligne de commande de vente avec le "
-"service de location %s."
 
 #. module: rental_base
 #: model:uom.uom,name:rental_base.product_uom_month
@@ -354,38 +348,44 @@ msgid "Month(s)"
 msgstr "Mois"
 
 #. module: rental_base
-#: code:addons/rental_base/models/sale.py:0
-#, python-format
-msgid ""
-"On the \"new rental\" sale order line with product \"%s\", we should have a "
-"rental service product!"
+#: model:ir.model.fields.selection,name:rental_base.selection__sale_order_line__order_type__normal
+msgid "Normal"
 msgstr ""
-"Sur la ligne de commande de vente \"nouvelle location\" avec le produit \"%s"
-"\", nous devrions avoir un produit de service de location !"
 
 #. module: rental_base
-#: code:addons/rental_base/models/sale.py:0
-#, python-format
-msgid ""
-"On the sale order line with product %s you are trying to sell a rented "
-"product with a quantity (%s) that is different from the rented quantity "
-"(%s). This is not supported."
+#: model_terms:ir.ui.view,arch_db:rental_base.view_sales_order_filter
+msgid "Normal Order"
 msgstr ""
-"Sur la ligne de commande client avec le produit %s, vous essayez de vendre "
-"un produit loué avec une quantité (%s) différente de la quantité louée (%s). "
-"Ceci n'est pas pris en charge."
 
 #. module: rental_base
+#. odoo-python
 #: code:addons/rental_base/models/sale.py:0
 #, python-format
 msgid ""
-"On the sale order line with rental service %s, you are trying to extend a "
-"rental with a rental quantity (%s) that is different from the quantity of "
-"the original rental (%s). This is not supported."
+"On the \"new rental\" sale order line with product \"%(name)s\", we should "
+"have a rental service product!"
 msgstr ""
-"Sur la ligne de commande de vente avec service de location %s, vous essayez "
-"de prolonger une location avec une quantité de location (%s) différente de "
-"la quantité de la location d'origine (%s). Ceci n'est pas pris en charge."
+
+#. module: rental_base
+#. odoo-python
+#: code:addons/rental_base/models/sale.py:0
+#, python-format
+msgid ""
+"On the sale order line with product %(name)s you are trying to sell a rented "
+"product with a quantity (%(qty)s) that is different from the rented quantity "
+"(%(sell_rental_qty)s). This is not supported."
+msgstr ""
+
+#. module: rental_base
+#. odoo-python
+#: code:addons/rental_base/models/sale.py:0
+#, python-format
+msgid ""
+"On the sale order line with rental service %(name)s ,you are trying to "
+"extend a rental with a rental quantity (%(rental_qty)s) that is different "
+"from the quantity of the original rental (%(ext_rental_qty)s). This is not "
+"supported."
+msgstr ""
 
 #. module: rental_base
 #: model_terms:ir.actions.act_window,help:rental_base.action_rental_orders
@@ -396,6 +396,11 @@ msgid ""
 msgstr ""
 "Une fois le devis confirmé, il devient une commande client.<br> Vous pourrez "
 "créer une facture et encaisser le paiement."
+
+#. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__order_id
+msgid "Order"
+msgstr ""
 
 #. module: rental_base
 #: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
@@ -413,6 +418,7 @@ msgid "Order Reference"
 msgstr "Référence de la commande"
 
 #. module: rental_base
+#: model:ir.model.fields,field_description:rental_base.field_sale_order_line__order_type
 #: model_terms:ir.ui.view,arch_db:rental_base.view_order_form
 msgid "Order Type"
 msgstr "Type de commande"
@@ -435,14 +441,13 @@ msgid "Outgoing Deliveries"
 msgstr "Livraisons sortantes"
 
 #. module: rental_base
+#. odoo-python
 #: code:addons/rental_base/models/sale.py:0
 #, python-format
 msgid ""
-"Outgoing shipment is in state %s. You cannot "
-"change                                         the start date anymore."
+"Outgoing shipment is in state %(state)s. You cannot change the start date "
+"anymore."
 msgstr ""
-"L'expédition sortante est à l'état %s. Vous ne pouvez plus "
-"modifier                                         la date de début."
 
 #. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__line_ids
@@ -450,15 +455,11 @@ msgid "Positions"
 msgstr "Positions"
 
 #. module: rental_base
+#: model:ir.model,name:rental_base.model_product_template
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__product_id
 #: model_terms:ir.ui.view,arch_db:rental_base.res_config_settings_view_form
 msgid "Product"
 msgstr "Produit"
-
-#. module: rental_base
-#: model:ir.model,name:rental_base.model_product_template
-msgid "Product Template"
-msgstr "Modèle de produit"
 
 #. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_sale_order_line__rental_qty_uom
@@ -483,12 +484,14 @@ msgid "Quotations"
 msgstr "Devis"
 
 #. module: rental_base
+#: model:ir.model.fields.selection,name:rental_base.selection__sale_order_line__order_type__rental
 #: model_terms:ir.ui.view,arch_db:rental_base.res_config_settings_view_form
 msgid "Rental"
 msgstr "Location"
 
 #. module: rental_base
 #: model:sale.order.type,name:rental_base.rental_sale_type
+#: model_terms:ir.ui.view,arch_db:rental_base.view_sales_order_filter
 msgid "Rental Order"
 msgstr "Commande de location"
 
@@ -535,11 +538,6 @@ msgid "Rentals"
 msgstr "Locations"
 
 #. module: rental_base
-#: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date__order_id
-msgid "Sale Order"
-msgstr "Bon de commande"
-
-#. module: rental_base
 #: model:ir.model,name:rental_base.model_sale_order
 msgid "Sales Order"
 msgstr "Bon de commande"
@@ -548,6 +546,11 @@ msgstr "Bon de commande"
 #: model:ir.model,name:rental_base.model_sale_order_line
 msgid "Sales Order Line"
 msgstr "Ligne de commande client"
+
+#. module: rental_base
+#: model:res.groups,name:rental_base.group_rental_menu
+msgid "See Rental Menu"
+msgstr ""
 
 #. module: rental_base
 #: model:ir.model,name:rental_base.model_ir_sequence
@@ -572,6 +575,7 @@ msgid "Start Date"
 msgstr "Date de début"
 
 #. module: rental_base
+#. odoo-python
 #: code:addons/rental_base/wizard/update_sale_line_date.py:0
 #, python-format
 msgid "The value in 'To' is less then the value in 'From'."
@@ -593,6 +597,7 @@ msgid "Update"
 msgstr "Mettre à jour"
 
 #. module: rental_base
+#. odoo-python
 #: code:addons/rental_base/wizard/update_sale_line_date.py:0
 #, python-format
 msgid "Update Date of Sale Order Lines<lu>"
@@ -622,6 +627,11 @@ msgid "Vendors"
 msgstr "Fournisseurs"
 
 #. module: rental_base
+#: model:uom.uom,name:rental_base.product_uom_week
+msgid "Week(s)"
+msgstr ""
+
+#. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__wizard_id
 msgid "Wizard"
 msgstr ""
@@ -632,6 +642,7 @@ msgid "Wizard for updating sale order line dates"
 msgstr "Assistant de mise à jour des dates des lignes de commande client"
 
 #. module: rental_base
+#. odoo-python
 #: code:addons/rental_base/models/sale.py:0
 #, python-format
 msgid ""
@@ -642,6 +653,7 @@ msgstr ""
 "commande d'une commande confirmée."
 
 #. module: rental_base
+#. odoo-python
 #: code:addons/rental_base/models/sale.py:0
 #, python-format
 msgid ""
@@ -651,7 +663,102 @@ msgstr ""
 "Vous n'êtes pas autorisé à modifier la « date de début » dans une ligne de "
 "commande d'une commande confirmée."
 
-#. module: rental_base
-#: model_terms:ir.ui.view,arch_db:rental_base.sale_start_end_dates
-msgid "to"
-msgstr "à"
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "Order: %s\n"
+#~ "Line with product: '%s'\n"
+#~ "\n"
+#~ "Please use instead the button 'Update Times' in the order to correctly "
+#~ "update the order line's times, its timeline entry, contract and its stock "
+#~ "moves and pickings as required."
+#~ msgstr ""
+#~ "\n"
+#~ "Order: %s\n"
+#~ "Ligne avec produit: '%s'\n"
+#~ "\n"
+#~ "Veuillez utiliser à la place le bouton « Mettre à jour la période » dans "
+#~ "la commande pour mettre à jour correctement la période de la ligne de "
+#~ "commande, sa saisie de la chronologie, son contrat et ses mouvements de "
+#~ "stock et prélèvements, le cas échéant."
+
+#, fuzzy, python-format
+#~ msgid "<li>%s: %s - %s -> %s - %s</li>"
+#~ msgstr "<li>%s: %s - %s -> %s - %s</li>"
+
+#, python-format
+#~ msgid "<li>(All lines): %s - %s -> %s - %s</li>"
+#~ msgstr "<li>(Toutes les lignes): %s - %s -> %s - %s</li>"
+
+#, python-format
+#~ msgid "<li>(Lines: %s - %s): %s - %s -> %s - %s</li>"
+#~ msgstr "<li>(Lignes: %s - %s): %s - %s -> %s - %s</li>"
+
+#~ msgid "<span class=\"o_form_label font-weight-bold\">Service Period</span>"
+#~ msgstr ""
+#~ "<span class=\"o_form_label font-weight-bold\">Période de service</span>"
+
+#~ msgid "Date in Lines"
+#~ msgstr "Date en lignes"
+
+#, python-format
+#~ msgid ""
+#~ "Incoming shipment is in state %s. You cannot "
+#~ "change                                         the end date anymore."
+#~ msgstr ""
+#~ "L'envoi entrant est dans l'état %s. Vous ne pouvez plus "
+#~ "modifier                                         la date de fin."
+
+#, python-format
+#~ msgid ""
+#~ "Missing \"Rental to Extend\" on the sale order line with rental service "
+#~ "%s."
+#~ msgstr ""
+#~ "\"Location à prolonger\" manquante sur la ligne de commande de vente avec "
+#~ "le service de location %s."
+
+#, python-format
+#~ msgid ""
+#~ "On the \"new rental\" sale order line with product \"%s\", we should have "
+#~ "a rental service product!"
+#~ msgstr ""
+#~ "Sur la ligne de commande de vente \"nouvelle location\" avec le produit "
+#~ "\"%s\", nous devrions avoir un produit de service de location !"
+
+#, python-format
+#~ msgid ""
+#~ "On the sale order line with product %s you are trying to sell a rented "
+#~ "product with a quantity (%s) that is different from the rented quantity "
+#~ "(%s). This is not supported."
+#~ msgstr ""
+#~ "Sur la ligne de commande client avec le produit %s, vous essayez de "
+#~ "vendre un produit loué avec une quantité (%s) différente de la quantité "
+#~ "louée (%s). Ceci n'est pas pris en charge."
+
+#, python-format
+#~ msgid ""
+#~ "On the sale order line with rental service %s, you are trying to extend a "
+#~ "rental with a rental quantity (%s) that is different from the quantity of "
+#~ "the original rental (%s). This is not supported."
+#~ msgstr ""
+#~ "Sur la ligne de commande de vente avec service de location %s, vous "
+#~ "essayez de prolonger une location avec une quantité de location (%s) "
+#~ "différente de la quantité de la location d'origine (%s). Ceci n'est pas "
+#~ "pris en charge."
+
+#, python-format
+#~ msgid ""
+#~ "Outgoing shipment is in state %s. You cannot "
+#~ "change                                         the start date anymore."
+#~ msgstr ""
+#~ "L'expédition sortante est à l'état %s. Vous ne pouvez plus "
+#~ "modifier                                         la date de début."
+
+#~ msgid "Product Template"
+#~ msgstr "Modèle de produit"
+
+#~ msgid "Sale Order"
+#~ msgstr "Bon de commande"
+
+#~ msgid "to"
+#~ msgstr "à"
