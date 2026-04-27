@@ -4,6 +4,13 @@ from odoo import _, api, exceptions, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare
 
+RENTAL_UOM_MAP = [
+    ("rental_of_day", "day", "product_rental_day_id"),
+    ("rental_of_week", "week", "product_rental_week_id"),
+    ("rental_of_month", "month", "product_rental_month_id"),
+    ("rental_of_hour", "hour", "product_rental_hour_id"),
+]
+
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
@@ -49,26 +56,26 @@ class SaleOrderLine(models.Model):
 
     def _set_product_id(self):
         self.ensure_one()
-        if self.rental and self.display_product_id:
-            time_uoms = self._get_time_uom()
-            if self.display_product_id.rental_of_day:
-                self.product_uom = time_uoms["day"]
-                self.product_id = self.display_product_id.product_rental_day_id
-            elif self.display_product_id.rental_of_month:
-                self.product_uom = time_uoms["month"]
-                self.product_id = self.display_product_id.product_rental_month_id
-            elif self.display_product_id.rental_of_week:
-                self.product_uom = time_uoms["week"]
-                self.product_id = self.display_product_id.product_rental_week_id
-            elif self.display_product_id.rental_of_hour:
-                self.product_uom = time_uoms["hour"]
-                self.product_id = self.display_product_id.product_rental_hour_id
-            else:
-                self.rental = False
-                self.product_id = self.display_product_id
-                # raise exceptions.UserError(_('The product has no related rental services.'))
-        elif not self.rental and self.display_product_id:
+
+        if not self.display_product_id:
+            return
+
+        if not self.rental:
             self.product_id = self.display_product_id
+            return
+
+        time_uoms = self._get_time_uom()
+        product = self.display_product_id
+
+        for flag, unit, field in RENTAL_UOM_MAP:
+            if getattr(product, flag):
+                self.product_uom = time_uoms[unit]
+                self.product_id = getattr(product, field)
+                return
+
+        # fallback
+        self.rental = False
+        self.product_id = product
 
     @api.onchange("display_product_id")
     def onchange_display_product_id(self):
@@ -246,17 +253,15 @@ class SaleOrderLine(models.Model):
 
     def _get_product_rental_uom_ids(self):
         self.ensure_one()
+
         time_uoms = self._get_time_uom()
-        uom_ids = []
-        if self.display_product_id.rental_of_month:
-            uom_ids.append(time_uoms["month"].id)
-        if self.display_product_id.rental_of_week:
-            uom_ids.append(time_uoms["week"].id)
-        if self.display_product_id.rental_of_day:
-            uom_ids.append(time_uoms["day"].id)
-        if self.display_product_id.rental_of_hour:
-            uom_ids.append(time_uoms["hour"].id)
-        return uom_ids
+        product = self.display_product_id
+
+        return [
+            time_uoms[uom].id
+            for flag, uom, field in RENTAL_UOM_MAP
+            if getattr(product, flag, False)
+        ]
 
     @api.onchange("product_id")
     def product_id_change(self):
@@ -319,12 +324,15 @@ class SaleOrder(models.Model):
     def _check_rental_order_line(self):
         for order in self:
             for line in order.order_line:
-                if line.rental and line.product_id:
-                    if line.product_id.type != "service":
-                        raise exceptions.UserError(
-                            _("The product %s is not correctly configured.")
-                            % line.product_id.name
-                        )
+                if (
+                    line.rental
+                    and line.product_id
+                    and line.product_id.type != "service"
+                ):
+                    raise exceptions.UserError(
+                        _("The product %s is not correctly configured.")
+                        % line.product_id.name
+                    )
 
     def action_confirm(self):
         self._check_rental_order_line()
