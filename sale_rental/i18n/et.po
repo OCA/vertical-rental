@@ -34,6 +34,40 @@ msgid ""
 msgstr ""
 
 #. module: sale_rental
+#: model:mail.template,body_html:sale_rental.mail_template_rental_return_reminder
+msgid ""
+"<div>\n"
+"            <p>Hello <t t-out=\"object.partner_id.name or 'Customer'\"></t>,"
+"</p>\n"
+"            <p>This is a friendly reminder that your rented item\n"
+"                <strong><t t-out=\"object.rented_product_id.display_name\"></"
+"t></strong>\n"
+"                is due for return on <strong><t t-out=\"object.end_date\"></"
+"t></strong>.\n"
+"            </p>\n"
+"\n"
+"            <p><strong>Rental details</strong></p>\n"
+"            <ul>\n"
+"                <li>Customer: <t t-out=\"object.partner_id.display_name\"></"
+"t></li>\n"
+"                <li>Rental service: <t t-"
+"out=\"object.rental_product_id.display_name\"></t></li>\n"
+"                <li>Start date: <t t-out=\"object.start_date\"></t></li>\n"
+"                <li>Return date: <t t-out=\"object.end_date\"></t></li>\n"
+"                <li>Quantity: <t t-out=\"object.rental_qty\"></t></li>\n"
+"                <li>SO: <t t-out=\"object.start_order_id.name or ''\"></t></"
+"li>\n"
+"            </ul>\n"
+"\n"
+"            <p>If you have any questions or need an extension, please reply "
+"to this email.</p>\n"
+"            <p>Best regards,<br><t t-out=\"object.company_id.name\"></t></"
+"p>\n"
+"        </div>\n"
+"      "
+msgstr ""
+
+#. module: sale_rental
 #: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__in
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 msgid "Back In"
@@ -79,6 +113,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__company_id
 msgid "Company"
 msgstr "Ettevõte"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__copy_image
@@ -336,6 +375,13 @@ msgid "Related Rented Product"
 msgstr ""
 
 #. module: sale_rental
+#: model:mail.template,subject:sale_rental.mail_template_rental_return_reminder
+msgid ""
+"Reminder: Return of {{object.rented_product_id.display_name}} on "
+"{{format_date(object.end_date)}}"
+msgstr ""
+
+#. module: sale_rental
 #. odoo-python
 #: code:addons/sale_rental/models/stock_warehouse.py:0
 #: model:stock.route,name:sale_rental.route_warehouse0_rental
@@ -396,6 +442,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__rental_qty
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rental_qty
 msgid "Rental Quantity"
+msgstr ""
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_res_config_settings__reminder_days
+msgid "Rental Reminder Days"
+msgstr ""
+
+#. module: sale_rental
+#: model:ir.actions.server,name:sale_rental.ir_cron_rental_return_reminder_ir_actions_server
+#: model:ir.cron,cron_name:sale_rental.ir_cron_rental_return_reminder
+#: model:mail.template,name:sale_rental.mail_template_rental_return_reminder
+msgid "Rental Return Reminder"
 msgstr ""
 
 #. module: sale_rental
@@ -494,6 +552,11 @@ msgid "Return"
 msgstr ""
 
 #. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.res_config_settings_view_form_sale_rental
+msgid "Sale Rental"
+msgstr ""
+
+#. module: sale_rental
 #: model:ir.model,name:sale_rental.model_sale_order
 msgid "Sales Order"
 msgstr ""
@@ -552,6 +615,17 @@ msgstr ""
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
 msgid "Selling Order Line"
+msgstr ""
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_res_config_settings__send_return_reminder
+msgid "Send Return Reminders"
+msgstr ""
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.res_config_settings_view_form_sale_rental
+msgid ""
+"Send an email reminder to customers before their rental is due for return."
 msgstr ""
 
 #. module: sale_rental
