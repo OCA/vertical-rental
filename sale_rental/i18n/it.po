@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-23 01:51+0000\n"
-"PO-Revision-Date: 2025-04-08 09:24+0000\n"
+"PO-Revision-Date: 2026-04-30 10:45+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. module: sale_rental
 #: model:ir.model.fields,help:sale_rental.field_sale_rental__in_state
@@ -77,6 +77,37 @@ msgid ""
 "        </div>\n"
 "      "
 msgstr ""
+"<div>\n"
+"            <p>Salve <t t-out=\"object.partner_id.name or 'Cliente'\"></t>,</"
+"p>\n"
+"            <p>ti ricordiamo che l'articolo che hai noleggiato\n"
+"                <strong><t t-out=\"object.rented_product_id.display_name\"></"
+"t></strong>\n"
+"                deve essere restituito il <strong><t t-"
+"out=\"object.end_date\"></t></strong>.\n"
+"            </p>\n"
+"\n"
+"            <p><strong>Dettagli del noleggio</strong></p>\n"
+"            <ul>\n"
+"                <li>Cliente: <t t-out=\"object.partner_id.display_name\"></t>"
+"</li>\n"
+"                <li>Servizio di noleggio: <t t-"
+"out=\"object.rental_product_id.display_name\"></t></li>\n"
+"                <li>Data di inizio: <t t-out=\"object.start_date\"></t></li>"
+"\n"
+"                <li>Data di restituzione: <t t-out=\"object.end_date\"></t></"
+"li>\n"
+"                <li>Quantità: <t t-out=\"object.rental_qty\"></t></li>\n"
+"                <li>Ordine di vendita: <t t-out=\"object.start_order_id.name "
+"o ''\"></t></li>\n"
+"            </ul>\n"
+"\n"
+"            <p>Per qualsiasi domanda o per richiedere una proroga, si prega "
+"di rispondere a questo messaggio.</p> email.</p>\n"
+"            <p>Cordiali saluti,<br><t t-out=\"object.company_id.name\"></t></"
+"p>\n"
+"        </div>\n"
+"      "
 
 #. module: sale_rental
 #: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__in
@@ -130,7 +161,7 @@ msgstr "Azienda"
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Impostazioni configurazione"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__copy_image
@@ -298,6 +329,9 @@ msgid ""
 "product with a quantity (%(uom_qty)s) that is different from the rented "
 "quantity (%(rental_qty)s). This is not supported."
 msgstr ""
+"Nella riga dell'ordine di vendita con il prodotto %(name)s stai tentando di "
+"vendere un prodotto noleggiato con una quantità (%(uom_qty)s) diversa dalla "
+"quantità noleggiata (%(rental_qty)s). Questa operazione non è supportata."
 
 #. module: sale_rental
 #. odoo-python
@@ -308,6 +342,9 @@ msgid ""
 "(%(uom_qty)s) should be the number of days (%(days)s) multiplied by the "
 "Rental Quantity (%(rental_qty)s)."
 msgstr ""
+"Nella riga dell'ordine di vendita con il prodotto '%(name)s', la quantità "
+"del prodotto (%(uom_qty)s) deve essere pari al numero di giorni (%(days)s) "
+"moltiplicato per la quantità di noleggio (%(rental_qty)s)."
 
 #. module: sale_rental
 #. odoo-python
@@ -318,6 +355,10 @@ msgid ""
 "extend a rental with a rental quantity %(qty)s that is different from the "
 "quantity of the original rental %(rental_qty)s. This is not supported."
 msgstr ""
+"Nella riga dell'ordine di vendita con il servizio di noleggio %(name)s, si "
+"sta tentando di estendere un noleggio con una quantità di noleggio %(qty)s "
+"diversa dalla quantità del noleggio originale %(rental_qty)s. Questa "
+"operazione non è supportata."
 
 #. module: sale_rental
 #: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__ordered
@@ -359,7 +400,7 @@ msgstr "Categoria prodotto"
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Variante prodotto"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__hw_product_id
@@ -369,7 +410,7 @@ msgstr "Prodotto da noleggiare"
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_stock_quant
 msgid "Quants"
-msgstr ""
+msgstr "Quanti"
 
 #. module: sale_rental
 #. odoo-python
@@ -386,7 +427,7 @@ msgstr "Ricevuta"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_product_product__rental_service_ids
 msgid "Related Rental Services"
-msgstr ""
+msgstr "Servizio noleggio collegato"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_product_product__rented_product_id
@@ -399,6 +440,8 @@ msgid ""
 "Reminder: Return of {{object.rented_product_id.display_name}} on "
 "{{format_date(object.end_date)}}"
 msgstr ""
+"Promemoria: restituzione di {{object.rented_product_id.display_name}} il {"
+"{format_date(object.end_date)}}"
 
 #. module: sale_rental
 #. odoo-python
@@ -466,14 +509,14 @@ msgstr "Quantità noleggio"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_res_config_settings__reminder_days
 msgid "Rental Reminder Days"
-msgstr ""
+msgstr "Giorni promemoria noleggio"
 
 #. module: sale_rental
 #: model:ir.actions.server,name:sale_rental.ir_cron_rental_return_reminder_ir_actions_server
 #: model:ir.cron,cron_name:sale_rental.ir_cron_rental_return_reminder
 #: model:mail.template,name:sale_rental.mail_template_rental_return_reminder
 msgid "Rental Return Reminder"
-msgstr ""
+msgstr "Promemoria restituzione noleggio"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_route_id
@@ -493,7 +536,7 @@ msgstr "Riga OV noleggio"
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_calendar
 msgid "Rental Schedule"
-msgstr ""
+msgstr "Pianificazione noleggio"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rental_product_id
@@ -573,12 +616,12 @@ msgstr "Rientro"
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.res_config_settings_view_form_sale_rental
 msgid "Sale Rental"
-msgstr ""
+msgstr "Noleggio vendita"
 
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Ordine di vendita"
 
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_sale_order_line
@@ -639,13 +682,15 @@ msgstr "Riga ordine di vendita"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_res_config_settings__send_return_reminder
 msgid "Send Return Reminders"
-msgstr ""
+msgstr "Invia promemoria restituzioni"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.res_config_settings_view_form_sale_rental
 msgid ""
 "Send an email reminder to customers before their rental is due for return."
 msgstr ""
+"Invia una e-mail di promemoria della restituzione al cliente prima che il "
+"noleggio sia scaduto."
 
 #. module: sale_rental
 #: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__sold
@@ -747,7 +792,7 @@ msgstr "Magazzino"
 #: code:addons/sale_rental/wizard/create_rental_product.py:0
 #, python-format
 msgid "Wrong active_model. Should never happen."
-msgstr ""
+msgstr "Modello active_model errato. Non dovrebbe mai accadere."
 
 #. module: sale_rental
 #. odoo-python
@@ -759,6 +804,10 @@ msgid ""
 "'%(rental_name)s' ! Make sure that you get some units back in the mean time "
 "or re-supply the stock location '%(rental_name)s'."
 msgstr ""
+"Si desidera noleggiare %(rental_qty).2f %(uom_name)s ma al momento si ha "
+"solo %(available_qty).2f %(uom_name)s disponibili nella posizione di "
+"magazzino '%(rental_name)s'! Assicurasi di recuperare alcune unità nel "
+"frattempo o di rifornire la posizione di magazzino '%(rental_name)s'."
 
 #~ msgid "Day(s)"
 #~ msgstr "Giorno(i)"
