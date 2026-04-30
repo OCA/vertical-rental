@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2026-01-11 15:55+0000\n"
+"PO-Revision-Date: 2026-04-30 10:45+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. module: rental_base
 #. odoo-python
@@ -327,7 +327,7 @@ msgstr "Fatturazione"
 #. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_sale_order__is_rental_order
 msgid "Is Rental Order"
-msgstr ""
+msgstr "È un ordine noleggio"
 
 #. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date____last_update
@@ -366,12 +366,12 @@ msgstr "Mese(i)"
 #. module: rental_base
 #: model:ir.model.fields.selection,name:rental_base.selection__sale_order_line__order_type__normal
 msgid "Normal"
-msgstr ""
+msgstr "Normale"
 
 #. module: rental_base
 #: model_terms:ir.ui.view,arch_db:rental_base.view_sales_order_filter
 msgid "Normal Order"
-msgstr ""
+msgstr "Ordine normale"
 
 #. module: rental_base
 #. odoo-python
@@ -578,7 +578,7 @@ msgstr "Riga ordine di vendita"
 #. module: rental_base
 #: model:res.groups,name:rental_base.group_rental_menu
 msgid "See Rental Menu"
-msgstr ""
+msgstr "Visualizza menu noleggio"
 
 #. module: rental_base
 #: model:ir.model,name:rental_base.model_ir_sequence
@@ -657,7 +657,7 @@ msgstr "Fornitori"
 #. module: rental_base
 #: model:uom.uom,name:rental_base.product_uom_week
 msgid "Week(s)"
-msgstr ""
+msgstr "Settimana(e)"
 
 #. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_update_sale_line_date_line__wizard_id
