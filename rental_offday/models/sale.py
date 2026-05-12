@@ -74,41 +74,27 @@ class SaleOrderLine(models.Model):
 
     @api.model
     def is_weekend(self, date):
-        if isinstance(date, str):
-            date = fields.Date.from_string(date)
         if time.strptime(date.strftime("%Y-%m-%d"), "%Y-%m-%d").tm_wday in (5, 6):
             return True
         return False
 
     @api.model
     def get_rental_offdays(self, date_from, date_to):
-        if isinstance(date_from, str):
-            date_from = fields.Date.from_string(date_from)
-        if isinstance(date_to, str):
-            date_to = fields.Date.from_string(date_to)
         weekends = []
         res = {
             "weekends": weekends,
         }
-        if not date_from or not date_to:
-            return res
-        if date_from > date_to:
-            if self._context.get("no_warning", False):
-                return res
-            else:
-                raise exceptions.Warning(
-                    _("The start date must be anterior to the end date.")
-                )
-        date_first = date_from
-        date_last = date_to
-        date_next = date_first
-        while date_next <= date_last:
-            if self.is_weekend(date_next):
-                weekends.append(date_next)
-            date_next = date_next + timedelta(days=1)
-        res = {
-            "weekends": weekends,
-        }
+        if date_from and date_to and date_from <= date_to:
+            date_first = date_from
+            date_last = date_to
+            date_next = date_first
+            while date_next <= date_last:
+                if self.is_weekend(date_next):
+                    weekends.append(date_next)
+                date_next = date_next + timedelta(days=1)
+            res = {
+                "weekends": weekends,
+            }
         return res
 
     @api.onchange("fixed_offday_type", "start_date", "end_date")
@@ -128,8 +114,8 @@ class SaleOrderLine(models.Model):
             for day in self.add_offday_ids:
                 if day.date < self.start_date or day.date > self.end_date:
                     raise exceptions.UserError(
-                        _('The off-day "%s" is not between %s and %s.')
-                        % (day.date, self.start_date, self.end_date)
+                        _('The off-day "%(date)s" is not between %(sd)s and %(ed)s.')
+                        % {"date": day.date, "sd": self.start_date, "ed": self.end_date}
                     )
 
     # Override function in sale_rental
@@ -155,19 +141,22 @@ class SaleOrderLine(models.Model):
                     continue
                 if day.date < self.start_date or day.date > self.end_date:
                     raise exceptions.UserError(
-                        _('The off-day "%s" is not between %s and %s.')
-                        % (day.date, self.start_date, self.end_date)
+                        _('The off-day "%(date)s" is not between %(sd)s and %(ed)s.')
+                        % {"date": day.date, "sd": self.start_date, "ed": self.end_date}
                     )
                 if day.date in [d.date for d in self.fixed_offday_ids]:
                     raise exceptions.UserError(
-                        _('The off-day "%s" was already created as fixed off-day.')
-                        % day.date
+                        _(
+                            'The off-day "%(date)s" was already created as fixed off-day.'
+                        )
+                        % {"date": day.date}
                     )
                 if day.date not in dates:
                     dates.append(day.date)
                 else:
                     raise exceptions.UserError(
-                        _('You have already created the off-day "%s".') % day.date
+                        _('You have already created the off-day "%(date)s".')
+                        % {"date": day.date}
                     )
 
     @api.onchange("add_additional_offdays")
@@ -183,12 +172,14 @@ class SaleOrderLine(models.Model):
             if self.offday_date_start < self.start_date:
                 date_min_str = fields.Date.to_string(self.start_date)
                 raise exceptions.UserError(
-                    _("You cannot add an off day earlier than %s.") % date_min_str
+                    _("You cannot add an off day earlier than %(dms)s.")
+                    % {"dms": date_min_str}
                 )
             if self.offday_date_end > self.end_date:
                 date_max_str = fields.Date.to_string(self.end_date)
                 raise exceptions.UserError(
-                    _("You cannot add an off day later than %s.") % date_max_str
+                    _("You cannot add an off day later than %(dms)s.")
+                    % {"dms": date_max_str}
                 )
             if self.offday_date_end < self.offday_date_start:
                 raise exceptions.UserError(
