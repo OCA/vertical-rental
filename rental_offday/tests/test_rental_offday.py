@@ -120,8 +120,8 @@ class TestRentalOffDay(TransactionCase):
                 {
                     "add_offday_ids": [
                         (
-                            1,
-                            self.sale_order_line.add_offday_ids[0].id,
+                            0,
+                            0,
                             {
                                 "date": date_before_start,
                                 "name": "Additional off-day before rental period.",
@@ -133,8 +133,12 @@ class TestRentalOffDay(TransactionCase):
             self.sale_order_line.onchange_add_offday_ids()
         self.assertEqual(
             str(e.exception),
-            _('The off-day "%s" is not between %s and %s.')
-            % (date_before_start, self.date_start, self.date_end),
+            _('The off-day "%(dbs)s" is not between %(date_start)s and %(date_end)s.')
+            % {
+                "dbs": date_before_start,
+                "date_start": self.date_start,
+                "date_end": self.date_end,
+            },
         )
 
         # Add 'good' additional off-day
@@ -143,8 +147,8 @@ class TestRentalOffDay(TransactionCase):
             {
                 "add_offday_ids": [
                     (
-                        1,
-                        self.sale_order_line.add_offday_ids[0].id,
+                        0,
+                        0,
                         {
                             "date": date_additional_offday,
                             "name": "Additional off-day.",

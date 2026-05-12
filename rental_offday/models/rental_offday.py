@@ -24,7 +24,6 @@ class RentalOffday(models.Model):
     )
 
     date = fields.Date(
-        string="Date",
         required=True,
     )
 
@@ -47,5 +46,6 @@ class RentalOffday(models.Model):
             lines = self.search_count(domain)
             if lines:
                 raise exceptions.ValidationError(
-                    _('You have already created the off-day "%s".') % line.date
+                    _('You have already created the off-day "%(date)s".')
+                    % {"date": line.date}
                 )

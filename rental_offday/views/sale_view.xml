@@ -26,7 +26,7 @@
                         <group>
                             <group string="Fixed Off Days">
                                 <field name="fixed_offday_type" />
-                                <field name="fixed_offday_ids" nolabel="1" colspan="3">
+                                <field name="fixed_offday_ids" nolabel="1" colspan="2">
                                     <tree>
                                         <field name="date" />
                                         <field name="name" />
@@ -34,30 +34,31 @@
                                 </field>
                             </group>
                             <group string="Additional Off Days">
-                                <div
-                                    name="additional_offday_period"
-                                    colspan="3"
-                                    class="oe_edit_only"
-                                >
-                                    <span>From &amp;nbsp;</span>
+                                <label for="offday_date_start" string="Dates" />
+                                <div class="o_row">
+                                    <span class="text-muted">From</span>
                                     <field
-                                        class="oe_inline"
                                         name="offday_date_start"
-                                        nolabel="1"
-                                    />
-                                    <span>&amp;nbsp; to &amp;nbsp;</span>
-                                    <field
                                         class="oe_inline"
-                                        name="offday_date_end"
-                                        nolabel="1"
+                                        widget="daterange"
+                                        options="{'related_end_date': 'offday_date_end'}"
                                     />
+                                    <span class="text-muted">To</span>
+                                    <field
+                                        name="offday_date_end"
+                                        class="oe_inline"
+                                        widget="daterange"
+                                        options="{'related_end_date': 'offday_date_start'}"
+                                    />
+                                </div>
+                                <div name="add_additional_offday_period">
                                     <strong>&amp;nbsp; OK? &amp;nbsp;</strong>
                                     <field
                                         class="oe_inline"
                                         name="add_additional_offdays"
                                     />
                                 </div>
-                                <field name="add_offday_ids" nolabel="1">
+                                <field name="add_offday_ids" nolabel="1" colspan="2">
                                     <tree editable="bottom">
                                         <field name="date" />
                                         <field name="name" />
