@@ -22,7 +22,8 @@ class StockMove(models.Model):
                     [
                         ("picking_id", "=", self.picking_id.id),
                         ("product_id", "=", line.product_id.id),
-                    ]
+                    ],
+                    limit=1,
                 )
                 if move and not line.product_id.pack_ok:
                     move.product_uom_qty += qty
