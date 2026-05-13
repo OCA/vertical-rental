@@ -2,7 +2,7 @@
 
 {
     "name": "Rental Product Pack",
-    "version": "14.0.1.0.1",
+    "version": "16.0.1.0.0",
     "category": "Rental",
     "summary": "Manage rentals with product packs",
     "usage": """
