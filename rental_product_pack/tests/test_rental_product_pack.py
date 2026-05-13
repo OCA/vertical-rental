@@ -61,11 +61,11 @@ class TestRentalProductPack(RentalStockCommon):
         for picking in self.rental_order.picking_ids:
             if picking.picking_type_id == self.picking_type_out:
                 self.picking_out = picking
-                self.assertEqual(len(picking.move_lines), 3)
+                self.assertEqual(len(picking.move_ids), 3)
             if picking.picking_type_id == self.picking_type_in:
                 self.picking_in = picking
-                self.assertEqual(len(picking.move_lines), 3)
-        for move in self.picking_out.move_lines:
+                self.assertEqual(len(picking.move_ids), 3)
+        for move in self.picking_out.move_ids:
             if move.product_id == self.productA:
                 self.assertEqual(move.product_qty, 1)
                 self.moveDestId_A = move.move_dest_ids[0]
@@ -75,7 +75,7 @@ class TestRentalProductPack(RentalStockCommon):
             elif move.product_id == self.productC:
                 self.assertEqual(move.product_qty, 2)
                 self.moveDestId_C = move.move_dest_ids[0]
-        for move in self.picking_in.move_lines:
+        for move in self.picking_in.move_ids:
             if move.product_id == self.productA:
                 self.assertEqual(move.product_qty, 1)
                 self.assertEqual(self.moveDestId_A, move)
