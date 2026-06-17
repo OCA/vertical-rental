@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright 2014-2021 Akretion (http://www.akretion.com/)
+  @author Alexis de Lattre <alexis.delattre@akretion.com>
+  Copyright 2016-2021 Sodexis
+  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+    <record id="sale_rental_form" model="ir.ui.view">
+        <field name="name">sale.rental.form</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <form string="Sales Rentals" create="false" edit="false">
+                <header>
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="ordered,out,in"
+                    />
+                </header>
+                <sheet>
+                    <group name="main">
+                        <group name="main-left">
+                            <field name="start_order_id" readonly="True" />
+                            <field name="partner_id" readonly="True" />
+                            <field name="rented_product_id" />
+                            <field name="rental_product_id" readonly="True" />
+                            <field name="items_qty" readonly="True" />
+                        </group>
+                        <group name="main-right">
+                            <field name="start_datetime" />
+                            <field name="end_datetime" />
+                            <field name="start_order_line_id" />
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                                readonly="True"
+                            />
+                        </group>
+                    </group>
+                    <group name="transfer">
+                        <group name="stock_out" string="Delivery">
+                            <field name="out_picking_id" readonly="True" />
+                            <field name="out_move_id" readonly="True" />
+                            <field name="out_state" />
+                        </group>
+                        <group name="stock_in" string="Return">
+                            <field name="in_picking_id" readonly="True" />
+                            <field name="in_move_id" readonly="True" />
+                            <field name="in_state" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="extensions" string="Rental Extensions">
+                            <field
+                                name="extension_order_line_ids"
+                                readonly="True"
+                                nolabel="1"
+                            >
+                                <list>
+                                    <field name="order_id" />
+                                    <field name="order_partner_id" />
+                                    <field name="name" />
+                                    <field name="start_datetime" />
+                                    <field name="end_datetime" />
+                                    <field name="product_uom_qty" />
+                                    <field
+                                        name="product_uom_id"
+                                        string="Unit of Measure"
+                                        groups="uom.group_uom"
+                                    />
+                                    <field name="price_subtotal" sum="Total" />
+                                    <field name="state" readonly="True" />
+                                </list>
+                            </field>
+                        </page>
+                        <page name="sell" string="Sell Rented Product">
+                            <group name="sell_move_out">
+                                <field name="sell_move_id" readonly="True" />
+                                <field name="sell_state" readonly="True" />
+                                <field name="sell_picking_id" readonly="True" />
+                            </group>
+                            <separator string="Selling Order Line" />
+                            <field
+                                name="sell_order_line_ids"
+                                readonly="True"
+                                nolabel="1"
+                                colspan="2"
+                            />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="sale_rental_list" model="ir.ui.view">
+        <field name="name">sale.rental.list</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false">
+                <field name="start_order_id" optional="show" />
+                <field name="partner_id" />
+                <field name="rented_product_id" readonly="True" />
+                <field name="items_qty" readonly="True" />
+                <field name="start_datetime" readonly="True" />
+                <field name="out_state" string="Delivery" readonly="True" />
+                <field name="end_datetime" readonly="True" />
+                <field name="in_state" string="Return" readonly="True" />
+                <field name="sell_state" optional="hide" />
+                <field
+                    name="company_id"
+                    groups="base.group_multi_company"
+                    optional="hide"
+                />
+                <field
+                    name="state"
+                    widget="badge"
+                    readonly="True"
+                    decoration-success="state == 'in'"
+                    decoration-info="state == 'ordered'"
+                    decoration-warning="state == 'out'"
+                    decoration-muted="state == 'cancel'"
+                    decoration-danger="state == 'sold'"
+                />
+            </list>
+        </field>
+    </record>
+
+    <record id="sale_rental_search" model="ir.ui.view">
+        <field name="name">sale.rental.search</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <search string="Search Rentals">
+                <field name="start_order_id" />
+                <field name="partner_id" />
+                <field name="rented_product_id" />
+                <filter
+                    name="ordered"
+                    string="Ordered"
+                    domain="[('state', '=', 'ordered')]"
+                />
+                <filter name="out" string="Out" domain="[('state', '=', 'out')]" />
+                <filter
+                    name="sell_progress"
+                    string="Sell in progress"
+                    domain="[('state', '=', 'sell_progress')]"
+                />
+                <filter name="sold" string="Sold" domain="[('state', '=', 'sold')]" />
+                <filter name="in" string="Back In" domain="[('state', '=', 'in')]" />
+                <group string="Group By" name="groupby">
+                    <filter
+                        name="partner_groupby"
+                        string="Customer"
+                        context="{'group_by': 'partner_id'}"
+                    />
+                    <filter
+                        name="state_groupby"
+                        string="State"
+                        context="{'group_by': 'state'}"
+                    />
+                    <filter
+                        name="start_datetime_groupby"
+                        string="Start Date"
+                        context="{'group_by': 'start_datetime'}"
+                    />
+                    <filter
+                        name="end_datetime_groupby"
+                        string="End Date"
+                        context="{'group_by': 'end_datetime'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="sale_rental_graph" model="ir.ui.view">
+        <field name="name">sale.rental.graph</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <graph string="Rentals" type="bar" stacked="True">
+                <field name="start_datetime" type="row" interval="month" />
+                <field name="state" type="row" />
+                <field name="items_qty" type="measure" />
+            </graph>
+        </field>
+    </record>
+
+    <record id="sale_rental_pivot" model="ir.ui.view">
+        <field name="name">sale.rental.pivot</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="rented_product_id" type="row" />
+                <field name="start_datetime" interval="month" type="col" />
+                <field name="items_qty" type="measure" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="sale_rental_calendar" model="ir.ui.view">
+        <field name="name">sale.rental.calendar</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <calendar
+                string="Rental Schedule"
+                date_start="start_datetime"
+                date_stop="end_datetime"
+                mode="month"
+                create="0"
+                color="partner_id"
+            >
+                <field name="partner_id" />
+                <field name="rented_product_id" />
+                <field name="state" />
+            </calendar>
+        </field>
+    </record>
+
+    <record id="sale_rental_action" model="ir.actions.act_window">
+        <field name="name">Rentals</field>
+        <field name="res_model">sale.rental</field>
+        <field name="view_mode">list,form,graph,calendar,pivot</field>
+    </record>
+
+    <menuitem
+        id="sale_rental_menu"
+        parent="sale.sale_order_menu"
+        action="sale_rental_action"
+        sequence="25"
+        groups="sales_team.group_sale_salesman"
+    />
+
+    <record id="view_rental_report_by_product_pivot" model="ir.ui.view">
+        <field name="name">sale.rental.report.by.product.pivot</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <pivot string="By Product">
+                <field name="rented_product_id" type="row" string="Product" />
+                <field name="in_stock" type="measure" string="In Stock" />
+                <field name="revenue" type="measure" string="Revenue (Period)" />
+                <field
+                    name="utilization_rate"
+                    type="measure"
+                    string="Utilization Rate (%)"
+                />
+                <field name="items_qty" type="measure" string="Units Rented" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_rental_report_by_time_pivot" model="ir.ui.view">
+        <field name="name">sale.rental.report.by.time.pivot</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <pivot string="By Time (Month)">
+                <field
+                    name="start_datetime"
+                    type="row"
+                    interval="month"
+                    string="Month"
+                />
+                <field
+                    name="actual_rental_hours"
+                    type="measure"
+                    string="Total Rental Hours"
+                />
+                <field
+                    name="utilization_rate"
+                    type="measure"
+                    string="Utilization Rate (%)"
+                />
+                <field name="revenue" type="measure" string="Revenue" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_rental_report_by_customer_pivot" model="ir.ui.view">
+        <field name="name">sale.rental.report.by.customer.pivot</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <pivot string="By Customer">
+                <field name="partner_id" type="row" string="Customer" />
+                <field name="items_qty" type="measure" string="Products Rented" />
+                <field
+                    name="actual_rental_hours"
+                    type="measure"
+                    string="Rental Duration (hrs)"
+                />
+                <field name="revenue" type="measure" string="Revenue Contribution" />
+            </pivot>
+        </field>
+    </record>
+</odoo>

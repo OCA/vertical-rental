@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright 2014-2021 Akretion France (http://www.akretion.com/)
+  @author Alexis de Lattre <alexis.delattre@akretion.com>
+  Copyright 2016-2021 Sodexis
+  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo noupdate="1">
+    <record id="rent_consu_delivery_01" model="product.product">
+        <field name="name">Rental of one Three-Seat Sofa</field>
+        <field name="default_code">RENT-FURN_8999</field>
+        <field name="categ_id" ref="product.product_category_5" />
+        <field name="sale_ok" eval="True" />
+        <field name="purchase_ok" eval="False" />
+        <field name="list_price">0</field>
+        <field name="type">service</field>
+        <field name="uom_id" ref="uom.product_uom_unit" />
+        <field name="uom_po_id" ref="uom.product_uom_unit" />
+        <field name="must_have_dates" eval="True" />
+        <field name="rented_product_id" ref="product.consu_delivery_01" />
+        <!-- The 'stock' module sets it as type = 'product'
+         This XMLID is misleading -->
+    </record>
+
+    <record id="rent_product_product_20" model="product.product">
+        <field name="name">Rental of one Flipover</field>
+        <field name="default_code">RENT-FURN_9001</field>
+        <field name="categ_id" ref="product.product_category_5" />
+        <field name="sale_ok" eval="True" />
+        <field name="purchase_ok" eval="False" />
+        <field name="list_price">0</field>
+        <field name="type">service</field>
+        <field name="uom_id" ref="uom.product_uom_unit" />
+        <field name="uom_po_id" ref="uom.product_uom_unit" />
+        <field name="must_have_dates" eval="True" />
+        <field name="rented_product_id" ref="product.product_product_20" />
+    </record>
+
+    <record id="rent_product_product_25" model="product.product">
+        <field name="name">Rental of one Acoustic Bloc Screens</field>
+        <field name="default_code">RENT-FURN_6666</field>
+        <field name="categ_id" ref="product.product_category_5" />
+        <field name="sale_ok" eval="True" />
+        <field name="purchase_ok" eval="False" />
+        <field name="list_price">0</field>
+        <field name="type">service</field>
+        <field name="uom_id" ref="uom.product_uom_unit" />
+        <field name="uom_po_id" ref="uom.product_uom_unit" />
+        <field name="must_have_dates" eval="True" />
+        <field name="rented_product_id" ref="product.product_product_25" />
+    </record>
+
+    <!-- Sofa -->
+    <record id="pricing_sofa_day" model="product.rental.pricing">
+        <field name="product_id" ref="rent_consu_delivery_01" />
+        <field name="period_id" ref="sale_rental.rental_period_day" />
+        <field name="price">50.00</field>
+    </record>
+
+    <record id="pricing_sofa_week" model="product.rental.pricing">
+        <field name="product_id" ref="rent_consu_delivery_01" />
+        <field name="period_id" ref="sale_rental.rental_period_week" />
+        <field name="price">280.00</field>
+    </record>
+
+    <record id="pricing_sofa_month" model="product.rental.pricing">
+        <field name="product_id" ref="rent_consu_delivery_01" />
+        <field name="period_id" ref="sale_rental.rental_period_month" />
+        <field name="price">900.00</field>
+    </record>
+
+    <!-- Flipover -->
+    <record id="pricing_flipover_day" model="product.rental.pricing">
+        <field name="product_id" ref="rent_product_product_20" />
+        <field name="period_id" ref="sale_rental.rental_period_day" />
+        <field name="price">40.00</field>
+    </record>
+
+    <!-- Acoustic Bloc Screens -->
+    <record id="pricing_abs_day" model="product.rental.pricing">
+        <field name="product_id" ref="rent_product_product_25" />
+        <field name="period_id" ref="sale_rental.rental_period_day" />
+        <field name="price">60.00</field>
+    </record>
+
+    <!-- Create inventory on Rental In for these products -->
+    <function model="stock.quant" name="create_demo_and_validate" />
+</odoo>

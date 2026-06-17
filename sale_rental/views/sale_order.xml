@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale_rental.view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_start_end_dates.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='order_line']/form//field[@name='start_date']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/form//field[@name='end_date']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath
+                expr="//field[@name='order_line']/list//field[@name='start_date']"
+                position="attributes"
+            >
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/list//field[@name='end_date']"
+                position="attributes"
+            >
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/list//field[@name='number_of_days']"
+                position="attributes"
+            >
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath
+                expr="//field[@name='order_line']/form//field[@name='number_of_days']"
+                position="before"
+            >
+                <field
+                    name="rental_type"
+                    readonly="state != 'draft'"
+                    invisible="not rental"
+                    required="rental"
+                />
+
+                <field
+                    name="extension_rental_id"
+                    options="{'no_quick_create': True, 'no_create_edit': True}"
+                    readonly="state != 'draft'"
+                    invisible="rental_type != 'rental_extension'"
+                    required="rental_type == 'rental_extension'"
+                    domain="[('rental_product_id', '=', product_id), ('state', 'in', ('ordered', 'out')), ('company_id', '=', company_id)]"
+                />
+
+                <field
+                    name="rental_period_id"
+                    options="{'no_create_edit': False}"
+                    invisible="not must_have_dates"
+                    required="must_have_dates"
+                    domain="[('id','in', available_rental_period_ids)]"
+                />
+
+                <field
+                    name="start_datetime"
+                    invisible="not rental"
+                    required="rental"
+                    readonly="state not in ('draft','sent')"
+                />
+
+                <field
+                    name="end_datetime"
+                    invisible="not rental"
+                    required="rental"
+                    readonly="state not in ('draft','sent')"
+                />
+
+                <field
+                    name="sell_rental_id"
+                    readonly="state != 'draft'"
+                    options="{'no_quick_create': True, 'no_create_edit': True}"
+                    invisible="not can_sell_rental"
+                    domain="[('rented_product_id', '=', product_id), ('state', '=', 'out'), ('company_id', '=', company_id)]"
+                />
+            </xpath>
+
+            <xpath
+                expr="//field[@name='order_line']/form//label[@for='product_uom_qty']"
+                position="before"
+            >
+                <field name="rental_qty" invisible="not rental" required="rental" />
+                <field
+                    name="duration"
+                    readonly="1"
+                    invisible="not rental"
+                    required="rental"
+                />
+                <field
+                    name="pricing_hint"
+                    readonly="1"
+                    invisible="not rental"
+                    required="rental"
+                />
+            </xpath>
+
+            <xpath
+                expr="//field[@name='order_line']/list/field[@name='name']"
+                position="after"
+            >
+                <field name="rental_type" invisible="not rental" optional="hide" />
+                <field name="start_datetime" invisible="not rental" optional="show" />
+                <field name="end_datetime" invisible="not rental" optional="show" />
+                <field name="rental_period_id" invisible="not rental" optional="hide" />
+                <field name="duration" invisible="not rental" optional="hide" />
+                <field name="pricing_hint" invisible="not rental" optional="hide" />
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list" position="attributes">
+                <attribute name="editable" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

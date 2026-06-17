@@ -1,0 +1,43 @@
+<odoo noupdate="1">
+    <record id="mail_template_rental_return_reminder" model="mail.template">
+        <field name="name">Rental Return Reminder</field>
+        <field name="model_id" ref="model_sale_rental" />
+        <field
+            name="subject"
+        >Reminder: Return of {{object.rented_product_id.display_name}} on {{format_date(object.end_datetime)}}</field>
+        <field name="email_from">{{object.company_id.email or user.email}}</field>
+        <field name="email_to">{{object.partner_id.email or ''}}</field>
+        <field name="auto_delete" eval="True" />
+        <field name="body_html" type="html">
+            <div>
+                <p>Hello <t t-out="object.partner_id.name or 'Customer'" />,</p>
+                <p>This is a friendly reminder that your rented item
+                <strong>
+                    <t t-out="object.rented_product_id.display_name" />
+                </strong>
+                is due for return on <strong>
+                    <t t-out="object.end_datetime" />
+                </strong>.
+            </p>
+
+                <p>
+                    <strong>Rental details</strong>
+                </p>
+                <ul>
+                    <li>Customer: <t t-out="object.partner_id.display_name" /></li>
+                    <li>Rental service: <t
+                        t-out="object.rental_product_id.display_name"
+                    /></li>
+                    <li>Start date: <t t-out="object.start_datetime" /></li>
+                    <li>Return date: <t t-out="object.end_datetime" /></li>
+                    <li>Quantity: <t t-out="object.items_qty" /></li>
+                    <li>SO: <t t-out="object.start_order_id.name or ''" /></li>
+                </ul>
+
+                <p
+                >If you have any questions or need an extension, please reply to this email.</p>
+                <p>Best regards,<br /><t t-out="object.company_id.name" /></p>
+            </div>
+        </field>
+    </record>
+</odoo>
