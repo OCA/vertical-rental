@@ -24,6 +24,7 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [rental_base](rental_base/) | 16.0.1.0.1 |  | Manage Rental of Products
 [rental_pricelist](rental_pricelist/) | 16.0.1.0.1 |  | Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").
+[rental_product_pack](rental_product_pack/) | 16.0.1.0.0 |  | Manage rentals with product packs
 [sale_rental](sale_rental/) | 16.0.1.0.4 | <a href='https://github.com/alexis-via'><img src='https://github.com/alexis-via.png' width='32' height='32' style='border-radius:50%;' alt='alexis-via'/></a> | Manage Rental of Products
 
 [//]: # (end addons)
