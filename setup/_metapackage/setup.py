@@ -9,6 +9,7 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo-addon-rental_base>=16.0dev,<16.1dev',
+        'odoo-addon-rental_offday>=16.0dev,<16.1dev',
         'odoo-addon-rental_pricelist>=16.0dev,<16.1dev',
         'odoo-addon-rental_product_pack>=16.0dev,<16.1dev',
         'odoo-addon-sale_rental>=16.0dev,<16.1dev',
