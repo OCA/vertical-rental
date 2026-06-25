@@ -22,7 +22,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[rental_base](rental_base/) | 16.0.1.0.1 |  | Manage Rental of Products
+[rental_base](rental_base/) | 16.0.1.0.2 |  | Manage Rental of Products
 [rental_offday](rental_offday/) | 16.0.1.0.0 |  | Manage off-days in rentals on daily basis
 [rental_pricelist](rental_pricelist/) | 16.0.1.0.1 |  | Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").
 [rental_product_pack](rental_product_pack/) | 16.0.1.0.0 |  | Manage rentals with product packs
