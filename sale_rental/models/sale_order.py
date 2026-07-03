@@ -7,7 +7,7 @@ import logging
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 
@@ -53,8 +53,6 @@ class SaleOrderLine(models.Model):
     rental_qty = fields.Float(
         string="Rental Quantity",
         digits="Product Unit of Measure",
-        readonly=True,
-        states={"draft": [("readonly", False)]},
         help="Indicate the number of items that will be rented.",
     )
     sell_rental_id = fields.Many2one(
@@ -85,19 +83,21 @@ class SaleOrderLine(models.Model):
             if line.rental_type == "rental_extension":
                 if not line.extension_rental_id:
                     raise ValidationError(
-                        _(
+                        self.env._(
                             "Missing 'Rental to Extend' on the sale order line "
-                            "with rental service {}"
-                        ).format(line.product_id.display_name)
+                            "with rental service %(name)s",
+                            name=line.product_id.display_name,
+                        )
                     )
 
                 if line.rental_qty != line.extension_rental_id.rental_qty:
                     raise ValidationError(
-                        _(
+                        self.env._(
                             "On the sale order line with rental service %(name)s, "
                             "you are trying to extend a rental with a rental "
                             "quantity %(qty)s that is different from the quantity "
-                            "of the original rental %(rental_qty)s. This is not supported.",
+                            "of the original rental %(rental_qty)s. "
+                            "This is not supported.",
                             name=line.product_id.display_name,
                             qty=line.rental_qty,
                             rental_qty=line.extension_rental_id.rental_qty,
@@ -106,14 +106,15 @@ class SaleOrderLine(models.Model):
             if line.rental_type in ("new_rental", "rental_extension"):
                 if not line.product_id.rented_product_id:
                     raise ValidationError(
-                        _(
+                        self.env._(
                             "On the 'new rental' sale order line with product "
-                            "'{}', we should have a rental service product !"
-                        ).format(line.product_id.display_name)
+                            "'%(name)s', we should have a rental service product !",
+                            name=line.product_id.display_name,
+                        )
                     )
                 if line.product_uom_qty != line.rental_qty * line.number_of_days:
                     raise ValidationError(
-                        _(
+                        self.env._(
                             "On the sale order line with product '%(name)s' "
                             "the Product Quantity (%(uom_qty)s) should be the "
                             "number of days (%(days)s) "
@@ -129,7 +130,7 @@ class SaleOrderLine(models.Model):
             elif line.sell_rental_id:
                 if line.product_uom_qty != line.sell_rental_id.rental_qty:
                     raise ValidationError(
-                        _(
+                        self.env._(
                             "On the sale order line with product %(name)s "
                             "you are trying to sell a rented product with a "
                             "quantity (%(uom_qty)s) that is different from the rented "
@@ -222,10 +223,11 @@ class SaleOrderLine(models.Model):
             elif line.sell_rental_id:
                 if line.sell_rental_id.out_move_id.state != "done":
                     raise UserError(
-                        _(
-                            "Cannot sell the rental {} because it has "
-                            "not been delivered"
-                        ).format(line.sell_rental_id.display_name)
+                        self.env._(
+                            "Cannot sell the rental %(name)s because it has "
+                            "not been delivered",
+                            name=line.sell_rental_id.display_name,
+                        )
                     )
                 line.sell_rental_id.in_move_id._action_cancel()
 
@@ -282,13 +284,14 @@ class SaleOrderLine(models.Model):
                     )
                     if compare_qty == -1:
                         res["warning"] = {
-                            "title": _("Not enough stock !"),
-                            "message": _(
-                                "You want to rent %(rental_qty).2f  %(uom_name)s but you only "
-                                "have %(available_qty).2f %(uom_name)s currently "
-                                "available on the  stock location '%(rental_name)s' ! "
-                                "Make sure that you get some units back in the mean time or "
-                                "re-supply the stock location '%(rental_name)s'.",
+                            "title": self.env._("Not enough stock !"),
+                            "message": self.env._(
+                                "You want to rent %(rental_qty).2f  %(uom_name)s but "
+                                "you only have %(available_qty).2f %(uom_name)s "
+                                "currently available on the  stock location "
+                                "'%(rental_name)s' ! Make sure that you get some units "
+                                "back in the mean time or re-supply the stock "
+                                "location '%(rental_name)s'.",
                                 rental_qty=self.rental_qty,
                                 uom_name=product_uom.name,
                                 available_qty=in_location_available_qty,
@@ -326,11 +329,12 @@ class SaleOrderLine(models.Model):
         ):
             if self.extension_rental_id.rental_product_id != self.product_id:
                 raise UserError(
-                    _(
+                    self.env._(
                         "The Rental Service of the Rental Extension you just "
-                        "selected is '{}' and it's not the same as the "
-                        "Product currently selected in this Sale Order Line."
-                    ).format(self.extension_rental_id.rental_product_id.display_name)
+                        "selected is '%s' and it's not the same as the "
+                        "Product currently selected in this Sale Order Line.",
+                        self.extension_rental_id.rental_product_id.display_name,
+                    )
                 )
             initial_end_date = self.extension_rental_id.end_date
             self.start_date = initial_end_date + relativedelta(days=1)

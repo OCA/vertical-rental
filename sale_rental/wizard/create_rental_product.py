@@ -3,7 +3,7 @@
 # Copyright 2016-2021 Sodexis (http://sodexis.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -25,16 +25,16 @@ class CreateRentalProduct(models.TransientModel):
             assert len(hw_product_tmpl.product_variant_ids) == 1
             hw_product = hw_product_tmpl.product_variant_ids
         else:
-            raise UserError(_("Wrong active_model. Should never happen."))
+            raise UserError(self.env._("Wrong active_model. Should never happen."))
         hw_product = hw_product.with_context(display_default_code=False)
         res.update(
             {
                 "hw_product_id": hw_product.id,
-                "name": _("Rental of a {}").format(hw_product.display_name),
+                "name": self.env._("Rental of a %s", hw_product.display_name),
             }
         )
         if hw_product.default_code:
-            res["default_code"] = _("RENT-{}").format(hw_product.default_code)
+            res["default_code"] = self.env._("RENT-%s", hw_product.default_code)
         return res
 
     hw_product_id = fields.Many2one(
@@ -83,7 +83,7 @@ class CreateRentalProduct(models.TransientModel):
             "name": pp_obj._description,
             "type": "ir.actions.act_window",
             "res_model": pp_obj._name,
-            "view_mode": "form,tree,kanban",
+            "view_mode": "form,list,kanban",
             "nodestroy": False,  # Close the wizard pop-up
             "target": "current",
             "res_id": product.id,
