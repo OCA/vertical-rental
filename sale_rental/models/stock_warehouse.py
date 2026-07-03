@@ -5,7 +5,7 @@
 
 import logging
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 logger = logging.getLogger(__name__)
@@ -53,34 +53,38 @@ class StockWarehouse(models.Model):
         try:
             rental_route = self.env.ref("sale_rental.route_warehouse0_rental")
         except Exception:
-            rental_routes = route_obj.search([("name", "=", _("Rent"))])
+            rental_routes = route_obj.search([("name", "=", self.env._("Rent"))])
             rental_route = rental_routes and rental_routes[0] or False
         if not rental_route:
-            raise UserError(_("Can't find any generic 'Rent' route."))
+            raise UserError(self.env._("Can't find any generic 'Rent' route."))
         try:
             sell_rented_product_route = self.env.ref(
                 "sale_rental.route_warehouse0_sell_rented_product"
             )
         except Exception:
             sell_rented_product_routes = route_obj.search(
-                [("name", "=", _("Sell Rented Product"))]
+                [("name", "=", self.env._("Sell Rented Product"))]
             )
             sell_rented_product_route = (
                 sell_rented_product_routes and sell_rented_product_routes[0] or False
             )
         if not sell_rented_product_route:
-            raise UserError(_("Can't find any generic 'Sell Rented Product' route."))
+            raise UserError(
+                self.env._("Can't find any generic 'Sell Rented Product' route.")
+            )
         if not self.rental_in_location_id:
             raise UserError(
-                _(
-                    "The Rental Input stock location is not set on the " "warehouse {}"
-                ).format(self.name)
+                self.env._(
+                    "The Rental Input stock location is not set on the warehouse %s",
+                    self.name,
+                )
             )
         if not self.rental_out_location_id:
             raise UserError(
-                _(
-                    "The Rental Output stock location is not set on the " "warehouse {}"
-                ).format(self.name)
+                self.env._(
+                    "The Rental Output stock location is not set on the warehouse %s",
+                    self.name,
+                )
             )
         rental_pull_rule = {
             "name": self._format_rulename(
@@ -88,6 +92,7 @@ class StockWarehouse(models.Model):
             ),
             "location_src_id": self.rental_in_location_id.id,
             "location_dest_id": self.rental_out_location_id.id,
+            "location_dest_from_rule": True,
             "route_id": rental_route.id,
             "action": "pull",
             "picking_type_id": self.out_type_id.id,
@@ -149,7 +154,7 @@ class StockWarehouse(models.Model):
                             "company_id": self.company_id.id,
                         }
                     )
-                    slo.browse(view_loc.id).name = _("Rental")
+                    slo.browse(view_loc.id).name = self.env._("Rental")
                     logger.debug(
                         "New view rental stock location created ID %d", view_loc.id
                     )
@@ -171,7 +176,7 @@ class StockWarehouse(models.Model):
                             "company_id": self.company_id.id,
                         }
                     )
-                    slo.browse(in_loc.id).name = _("Rental In")
+                    slo.browse(in_loc.id).name = self.env._("Rental In")
                     logger.debug(
                         "New in rental stock location created ID %d", in_loc.id
                     )
@@ -193,7 +198,7 @@ class StockWarehouse(models.Model):
                             "company_id": self.company_id.id,
                         }
                     )
-                    slo.browse(out_loc.id).name = _("Rental Out")
+                    slo.browse(out_loc.id).name = self.env._("Rental Out")
                     logger.debug(
                         "New out rental stock location created ID %d", out_loc.id
                     )
