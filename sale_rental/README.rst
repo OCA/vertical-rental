@@ -1,7 +1,3 @@
-.. image:: https://odoo-community.org/readme-banner-image
-   :target: https://odoo-community.org/get-involved?utm_source=readme
-   :alt: Odoo Community Association
-
 ===========
 Sale Rental
 ===========
@@ -17,26 +13,26 @@ Sale Rental
 .. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
     :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/license-AGPL--3-blue.png
+.. |badge2| image:: https://img.shields.io/badge/licence-AGPL--3-blue.png
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fvertical--rental-lightgray.png?logo=github
-    :target: https://github.com/OCA/vertical-rental/tree/17.0/sale_rental
+    :target: https://github.com/OCA/vertical-rental/tree/18.0/sale_rental
     :alt: OCA/vertical-rental
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/vertical-rental-17-0/vertical-rental-17-0-sale_rental
+    :target: https://translation.odoo-community.org/projects/vertical-rental-18-0/vertical-rental-18-0-sale_rental
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/vertical-rental&target_branch=17.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/vertical-rental&target_branch=18.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
 With this module, you can rent products with Odoo. This module supports:
 
-- regular rentals.
-- rental extensions.
-- sale of rented products.
+-  regular rentals.
+-  rental extensions.
+-  sale of rented products.
 
 **Table of contents**
 
@@ -64,11 +60,11 @@ Usage
 In a sale order line (form view, not tree view), if you select a rental
 service, you can:
 
-- create a new rental with a start date and an end date: when the sale
-  order is confirmed, it will generate a delivery order and an incoming
-  shipment.
-- extend an existing rental: the incoming shipment will be postponed to
-  the end date of the extension.
+-  create a new rental with a start date and an end date: when the sale
+   order is confirmed, it will generate a delivery order and an incoming
+   shipment.
+-  extend an existing rental: the incoming shipment will be postponed to
+   the end date of the extension.
 
 In a sale order line, if you select a product that has a corresponding
 rental service, you can decide to sell the rented product that the
@@ -76,16 +72,26 @@ customer already has. If the sale order is confirmed, the incoming
 shipment will be cancelled and a new delivery order will be created with
 a stock move from *Rental Out* to *Customers*.
 
+You can configure Rental Periods under Sales ▸ Configuration ▸ Rental
+Period. A rental period defines the unit of time (Hour, Day, Week,
+Month, …) with its conversion into hours. These periods are used to
+compute rental duration.
+
+You can configure Rental Pricing under Sales ▸ Products ▸ Rental
+Pricing. For each rental service product, you define a price per rental
+period. When you create a rental order line, the system selects the
+period, computes the duration from the dates, and applies the
+corresponding rental price. If a product has no price defined for the
+selected period, the system will warn the user.
+
 Known issues / Roadmap
 ======================
 
 This module has the following limitations:
 
-- No support for planning/agenda of the rented products (i.e. you can't
-  rely on this module to check your capacity to rent a product for the
-  selected dates when you create a quote)
-- The unit of measure of the rental services must be *Day* (the rental
-  per hour / per week / per month is not supported for the moment)
+-  No support for planning/agenda of the rented products (i.e. you can't
+   rely on this module to check your capacity to rent a product for the
+   selected dates when you create a quote)
 
 Bug Tracker
 ===========
@@ -93,7 +99,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/vertical-rental/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/vertical-rental/issues/new?body=module:%20sale_rental%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/vertical-rental/issues/new?body=module:%20sale_rental%0Aversion:%2018.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -109,11 +115,12 @@ Authors
 Contributors
 ------------
 
-- Alexis de Lattre <alexis.delattre@akretion.com>
-- Sodexis <dev@sodexis.com>
-- Danh Vo <https://github.com/danhvophuong>
-- Kiril Vangelovski <kiril@lambda-is.com>
-- Chau Le <chaulb@trobz.com>
+-  Alexis de Lattre <alexis.delattre@akretion.com>
+-  Sodexis <dev@sodexis.com>
+-  Danh Vo
+   <`https://github.com/danhvophuong\\> <https://github.com/danhvophuong\>>`__
+-  Kiril Vangelovski <kiril@lambda-is.com>
+-  Chau Le <chaulb@trobz.com>
 
 Maintainers
 -----------
@@ -136,6 +143,6 @@ Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
 
 |maintainer-alexis-via| 
 
-This module is part of the `OCA/vertical-rental <https://github.com/OCA/vertical-rental/tree/17.0/sale_rental>`_ project on GitHub.
+This module is part of the `OCA/vertical-rental <https://github.com/OCA/vertical-rental/tree/18.0/sale_rental>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
