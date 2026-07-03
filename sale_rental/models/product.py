@@ -3,7 +3,7 @@
 # Copyright 2016-2021 Sodexis (http://sodexis.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -14,7 +14,7 @@ class ProductProduct(models.Model):
     rented_product_id = fields.Many2one(
         "product.product",
         string="Related Rented Product",
-        domain=[("type", "in", ("product", "consu"))],
+        domain=[("type", "=", "consu")],
     )
     # Link rented HW product -> rental service
     rental_service_ids = fields.One2many(
@@ -28,25 +28,28 @@ class ProductProduct(models.Model):
             if product.rented_product_id:
                 if product.type != "service":
                     raise ValidationError(
-                        _("The rental product '{}' must be of type 'Service'.").format(
-                            product.name
+                        self.env._(
+                            "The rental product '%s' must be of type 'Service'.",
+                            product.name,
                         )
                     )
                 if not product.must_have_dates:
                     raise ValidationError(
-                        _(
-                            "The rental product '{}' must have the option "
-                            "'Must Have Start and End Dates' checked."
-                        ).format(product.name)
+                        self.env._(
+                            "The rental product '%s' must have the option "
+                            "'Must Have Start and End Dates' checked.",
+                            product.name,
+                        )
                     )
                 # In the future, we would like to support all time UoMs
                 # but it is more complex and requires additionnal developments
                 if product.uom_id != day_uom:
                     raise ValidationError(
-                        _(
-                            "The unit of measure of the rental product '{}' must "
-                            "be 'Day'."
-                        ).format(product.name)
+                        self.env._(
+                            "The unit of measure of the rental product '%s' must "
+                            "be 'Day'.",
+                            product.name,
+                        )
                     )
 
 
@@ -70,8 +73,11 @@ class ProductTemplate(models.Model):
             lambda template: len(template.product_variant_ids) == 1
         )
         for template in unique_variants:
+            variant_id = template.product_variant_ids
             template.rented_product_tmpl_id = (
-                template.product_variant_ids.rented_product_id.product_tmpl_id.id
+                variant_id.rented_product_id.product_tmpl_id.id
+                if variant_id.rented_product_id
+                else False
             )
         for template in self - unique_variants:
             template.rented_product_tmpl_id = False

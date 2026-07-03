@@ -3,7 +3,6 @@ from unittest.mock import patch
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields
-from odoo.exceptions import UserError
 from odoo.tests import Form
 from odoo.tests.common import TransactionCase
 
@@ -45,12 +44,20 @@ class TestSaleRental(TransactionCase):
         self.assertEqual(sol.price_subtotal, 600)
         so.action_confirm()
 
-        self.assertEqual(len(so.picking_ids), 2)
+        self.assertEqual(len(so.picking_ids), 1)
         rental_out_pick = so.picking_ids.filtered(
             lambda p: p.location_id == self.rental_in_loc
             and p.location_dest_id == self.rental_out_loc
         )
         self.assertTrue(rental_out_pick)
+
+        rental_out_pick.move_ids.write({"quantity": 1, "picked": True})
+        rental_out_pick.action_confirm()
+        rental_out_pick.action_assign()
+        rental_out_pick.button_validate()
+
+        self.assertEqual(len(so.picking_ids), 2)
+
         rental_in_pick = so.picking_ids.filtered(
             lambda p: p.location_id == self.rental_out_loc
             and p.location_dest_id == self.rental_in_loc
@@ -75,14 +82,6 @@ class TestSaleRental(TransactionCase):
             "sell_rental_id": rental.id,
         }
         so2.write({"order_line": [(0, 0, line_vals)]})
-        sol = so2.order_line
-        # Raises an error because rented product is not sent yet
-        with self.assertRaises(UserError):
-            so2.action_confirm()
-        # Confirm the rental delivery and check the return which should
-        # be cancelled
-        rental_out_pick.action_assign()
-        rental_out_pick.button_validate()
         so2.action_confirm()
         self.assertEqual(rental_in_pick.state, "cancel")
 
@@ -125,7 +124,8 @@ class TestSaleRental(TransactionCase):
             and p.location_dest_id == self.rental_out_loc
         )
         rental_out_pick.action_assign()
-        rental_out_pick.action_set_quantities_to_reservation()
+        for move in rental_out_pick.move_ids:
+            move.write({"quantity": move.product_uom_qty, "picked": True})
         rental_out_pick.button_validate()
 
         rental = self.env["sale.rental"].search(
