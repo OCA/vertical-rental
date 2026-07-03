@@ -21,11 +21,10 @@
                 <sheet>
                     <group name="main">
                         <group name="main-left">
-                            <field name="start_order_id" />
-                            <field name="partner_id" />
-                            <field name="rented_product_id" />
-                            <field name="rental_product_id" />
-                            <field name="rental_qty" />
+                            <field name="start_order_id" readonly="True" />
+                            <field name="partner_id" readonly="True" />
+                            <field name="rental_product_id" readonly="True" />
+                            <field name="rental_qty" readonly="True" />
                         </group>
                         <group name="main-right">
                             <field name="start_date" />
@@ -39,20 +38,24 @@
                     </group>
                     <group name="transfer">
                         <group name="stock_out" string="Delivery">
-                            <field name="out_picking_id" />
-                            <field name="out_move_id" />
-                            <field name="out_state" />
+                            <field name="out_picking_id" readonly="True" />
+                            <field name="out_move_id" readonly="True" />
+                            <field name="out_state" readonly="True" />
                         </group>
                         <group name="stock_in" string="Return">
-                            <field name="in_picking_id" />
-                            <field name="in_move_id" />
-                            <field name="in_state" />
+                            <field name="in_picking_id" readonly="True" />
+                            <field name="in_move_id" readonly="True" />
+                            <field name="in_state" readonly="True" />
                         </group>
                     </group>
                     <notebook>
                         <page name="extensions" string="Rental Extensions">
-                            <field name="extension_order_line_ids" nolabel="1">
-                                <tree>
+                            <field
+                                name="extension_order_line_ids"
+                                readonly="True"
+                                nolabel="1"
+                            >
+                                <list>
                                     <field name="order_id" />
                                     <field name="order_partner_id" />
                                     <field name="name" />
@@ -66,17 +69,22 @@
                                     />
                                     <field name="price_subtotal" sum="Total" />
                                     <field name="state" />
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page name="sell" string="Sell Rented Product">
                             <group name="sell_move_out">
-                                <field name="sell_move_id" />
-                                <field name="sell_state" />
-                                <field name="sell_picking_id" />
+                                <field name="sell_move_id" readonly="True" />
+                                <field name="sell_state" readonly="True" />
+                                <field name="sell_picking_id" readonly="True" />
                             </group>
                             <separator string="Selling Order Line" />
-                            <field name="sell_order_line_ids" nolabel="1" colspan="2" />
+                            <field
+                                name="sell_order_line_ids"
+                                readonly="True"
+                                nolabel="1"
+                                colspan="2"
+                            />
                         </page>
                     </notebook>
                 </sheet>
@@ -88,15 +96,15 @@
         <field name="name">sale.rental.tree</field>
         <field name="model">sale.rental</field>
         <field name="arch" type="xml">
-            <tree create="false" edit="false">
+            <list create="false" edit="false">
                 <field name="start_order_id" optional="show" />
-                <field name="partner_id" />
-                <field name="rented_product_id" />
-                <field name="rental_qty" />
-                <field name="start_date" />
-                <field name="out_state" string="Delivery" />
-                <field name="end_date" string="End Date" />
-                <field name="in_state" string="Return" />
+                <field name="partner_id" readonly="True" />
+                <field name="rented_product_id" readonly="True" />
+                <field name="rental_qty" readonly="state != 'draft'" />
+                <field name="start_date" readonly="True" />
+                <field name="out_state" string="Delivery" readonly="True" />
+                <field name="end_date" string="End Date" readonly="True" />
+                <field name="in_state" string="Return" readonly="True" />
                 <field name="sell_state" optional="hide" />
                 <field
                     name="company_id"
@@ -112,7 +120,7 @@
                     decoration-muted="state == 'cancel'"
                     decoration-danger="state == 'sold'"
                 />
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -209,7 +217,7 @@
     <record id="sale_rental_action" model="ir.actions.act_window">
         <field name="name">Rentals</field>
         <field name="res_model">sale.rental</field>
-        <field name="view_mode">tree,form,calendar,graph,pivot</field>
+        <field name="view_mode">list,form,calendar,graph,pivot</field>
     </record>
 
     <menuitem
