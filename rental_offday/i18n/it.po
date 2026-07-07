@@ -6,113 +6,115 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2026-07-07 08:46+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. module: rental_offday
 #: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
 msgid "<span class=\"text-muted\">From</span>"
-msgstr ""
+msgstr "<span class=\"text-muted\">Dal</span>"
 
 #. module: rental_offday
 #: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
 msgid "<span class=\"text-muted\">To</span>"
-msgstr ""
+msgstr "<span class=\"text-muted\">Al</span>"
 
 #. module: rental_offday
 #: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
 msgid "<strong>&amp;nbsp; OK? &amp;nbsp;</strong>"
-msgstr ""
+msgstr "<strong>&amp;nbsp; OK? &amp;nbsp;</strong>"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__add_additional_offdays
 msgid "Add"
-msgstr ""
+msgstr "Aggiungi"
 
 #. module: rental_offday
 #: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
 msgid "Additional Off Days"
-msgstr ""
+msgstr "Giorni sospensione aggiuntivi"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__add_offday_ids
 msgid "Additional Off-Days"
-msgstr ""
+msgstr "Giorni sospensione aggiuntivi"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creato da"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creato il"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday__date
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #. module: rental_offday
 #: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
 msgid "Dates"
-msgstr ""
+msgstr "Date"
 
 #. module: rental_offday
 #: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
 msgid "Day(s)"
-msgstr ""
+msgstr "Giorno(i)"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday__name
 msgid "Description"
-msgstr ""
+msgstr "Descrizione"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nome visualizzato"
 
 #. module: rental_offday
 #: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
 msgid "Fixed Off Days"
-msgstr ""
+msgstr "Giorni sospensione fissati"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__fixed_offday_ids
 msgid "Fixed Off-Days"
-msgstr ""
+msgstr "Giorni sospensione fissati"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Ultima modifica il"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultimo aggiornamento di"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultimo aggiornamento il"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__offday_number
 msgid "Number of Off-Days"
-msgstr ""
+msgstr "Numero giorni sospensione"
 
 #. module: rental_offday
 #. odoo-python
@@ -120,56 +122,58 @@ msgstr ""
 #, python-format
 msgid "Off days' start date must be earlier than end date."
 msgstr ""
+"La data di inizio dei giorni di sospensione deve essere antecedente alla "
+"data di fine."
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__fixed_offday_type
 msgid "Off-Day Type"
-msgstr ""
+msgstr "Tipo sospensione"
 
 #. module: rental_offday
 #: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
 msgid "Off-Days"
-msgstr ""
+msgstr "Giorni sospensione"
 
 #. module: rental_offday
 #: model_terms:ir.ui.view,arch_db:rental_offday.view_order_form
 msgid "Off-Time"
-msgstr ""
+msgstr "Orario sospensione"
 
 #. module: rental_offday
 #: model:ir.model,name:rental_offday.model_rental_offday
 msgid "Off-days for daily rentals"
-msgstr ""
+msgstr "Giorni sospensione per noleggi giornalieri"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__offday_date_end
 msgid "Offday End Date"
-msgstr ""
+msgstr "Data fine giorni sospensione"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__offday_date_start
 msgid "Offday Start Date"
-msgstr ""
+msgstr "Data inizio giorni sospensione"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday__add_order_line_id
 msgid "Order Line (of additional off-day)"
-msgstr ""
+msgstr "Riga ordine (per giorni sospensione aggiuntivi)"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_rental_offday__fixed_order_line_id
 msgid "Order Line (of fixed off-day)"
-msgstr ""
+msgstr "Riga ordine (per giorni sospensione fissati)"
 
 #. module: rental_offday
 #: model:ir.model,name:rental_offday.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Riga ordine di vendita"
 
 #. module: rental_offday
 #: model:ir.model.fields,field_description:rental_offday.field_sale_order_line__show_offday
 msgid "Show Off-Days"
-msgstr ""
+msgstr "Visualizza giorni sospensione"
 
 #. module: rental_offday
 #. odoo-python
@@ -177,7 +181,7 @@ msgstr ""
 #: code:addons/rental_offday/models/sale.py:0
 #, python-format
 msgid "The off-day \"%(date)s\" is not between %(sd)s and %(ed)s."
-msgstr ""
+msgstr "Il giorno di sospensione \"%(date)s\" non è tra %(sd)s e %(ed)s."
 
 #. module: rental_offday
 #. odoo-python
@@ -185,6 +189,8 @@ msgstr ""
 #, python-format
 msgid "The off-day \"%(date)s\" was already created as fixed off-day."
 msgstr ""
+"Il giorno di sospensione \"%(date)s\" è già stato creato come giorno "
+"sospensione fisso."
 
 #. module: rental_offday
 #. odoo-python
@@ -192,6 +198,7 @@ msgstr ""
 #, python-format
 msgid "The off-day \"%(dbs)s\" is not between %(date_start)s and %(date_end)s."
 msgstr ""
+"Il giorno di sospensione \"%(dbs)s\" non è tra %(date_start)s e %(date_end)s."
 
 #. module: rental_offday
 #. odoo-python
@@ -199,6 +206,8 @@ msgstr ""
 #, python-format
 msgid "The off-day \"%s\" was already created as fixed off-day."
 msgstr ""
+"Il giorno di sospensione \"%s\" è già stato creato come giorno di "
+"sospensione fisso."
 
 #. module: rental_offday
 #: model:ir.model.fields,help:rental_offday.field_sale_order_line__offday_number
@@ -206,25 +215,30 @@ msgid ""
 "This is the number of days, the product is not used by the customer during the rental period.\n"
 "Fixed off-days, e.g. for the weekend, can be created automatically but you can also add manually more off-days."
 msgstr ""
+"Questo è il numero di giorni in cui il prodotto non viene utilizzato dal "
+"cliente durante il periodo di noleggio.\n"
+"I giorni di inattività fissi, ad esempio per il fine settimana, possono "
+"essere creati automaticamente, ma è anche possibile aggiungerne manualmente "
+"altri."
 
 #. module: rental_offday
 #: model:ir.model.fields.selection,name:rental_offday.selection__sale_order_line__fixed_offday_type__weekend
 msgid "Weekend"
-msgstr ""
+msgstr "Fine settimana"
 
 #. module: rental_offday
 #. odoo-python
 #: code:addons/rental_offday/models/sale.py:0
 #, python-format
 msgid "You cannot add an off day earlier than %(dms)s."
-msgstr ""
+msgstr "Non si può aggiungere un giorno fisso prima del %(dms)s."
 
 #. module: rental_offday
 #. odoo-python
 #: code:addons/rental_offday/models/sale.py:0
 #, python-format
 msgid "You cannot add an off day later than %(dms)s."
-msgstr ""
+msgstr "Non si può aggiungere un giorno fisso dopo il %(dms)s."
 
 #. module: rental_offday
 #. odoo-python
@@ -232,9 +246,9 @@ msgstr ""
 #: code:addons/rental_offday/models/sale.py:0
 #, python-format
 msgid "You have already created the off-day \"%(date)s\"."
-msgstr ""
+msgstr "Il giorno fisso \"%(date)s\" è già stato creato."
 
 #. module: rental_offday
 #: model:ir.model.fields.selection,name:rental_offday.selection__sale_order_line__fixed_offday_type__none
 msgid "none"
-msgstr ""
+msgstr "nessuno"
