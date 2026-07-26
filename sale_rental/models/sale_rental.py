@@ -225,6 +225,75 @@ class SaleRental(models.Model):
         store=True,
     )
 
+    in_stock = fields.Float(
+        related="rented_product_id.qty_available",
+        string="In Stock",
+        readonly=True,
+        store=True,
+    )
+
+    company_currency_id = fields.Many2one(
+        "res.currency",
+        related="company_id.currency_id",
+        string="Currency",
+        readonly=True,
+    )
+
+    revenue = fields.Monetary(
+        related="start_order_line_id.price_subtotal",
+        currency_field="company_currency_id",
+        string="Revenue",
+        readonly=True,
+        store=True,
+    )
+
+    @api.depends("out_move_id.date", "in_move_id.date")
+    def _compute_actual_rental_hours(self):
+        for rental in self:
+            if rental.out_move_id and rental.out_move_id.date:
+                start = fields.Datetime.from_string(rental.out_move_id.date)
+                if rental.in_move_id and rental.in_move_id.date:
+                    end = fields.Datetime.from_string(rental.in_move_id.date)
+                else:
+                    end = fields.Datetime.now()
+                rental.actual_rental_hours = (end - start).total_seconds() / 3600
+            else:
+                rental.actual_rental_hours = 0.0
+
+    actual_rental_hours = fields.Float(
+        compute="_compute_actual_rental_hours",
+        store=True,
+    )
+
+    @api.depends("start_date", "end_date")
+    def _compute_available_hours(self):
+        for rental in self:
+            if rental.start_date and rental.end_date:
+                start = fields.Datetime.from_string(rental.start_date)
+                end = fields.Datetime.from_string(rental.end_date)
+                rental.available_hours = (end - start).total_seconds() / 3600
+            else:
+                rental.available_hours = 0.0
+
+    available_hours = fields.Float(
+        compute="_compute_available_hours",
+        store=True,
+    )
+
+    @api.depends("actual_rental_hours", "available_hours")
+    def _compute_utilization_rate(self):
+        for rental in self:
+            if rental.available_hours > 0:
+                rental.utilization_rate = (
+                    rental.actual_rental_hours / rental.available_hours
+                ) * 100
+            else:
+                rental.utilization_rate = 0
+
+    utilization_rate = fields.Float(
+        compute="_compute_utilization_rate", string="Utilization Rate (%)", store=True
+    )
+
     def _get_reminder_days(self):
         try:
             reminder_days = (

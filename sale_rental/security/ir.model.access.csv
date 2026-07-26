@@ -4,3 +4,5 @@ access_sale_rental_stock_user,Read access on sale.rental to Stock User,model_sal
 access_sale_rental_manager,Full access on sale.rental to Sale Manager,model_sale_rental,sales_team.group_sale_manager,1,1,1,1
 access_create_rental_product_stock,Wizard create.rental.product for Stock manager,model_create_rental_product,stock.group_stock_manager,1,1,1,1
 access_create_rental_product_sale,Wizard create.rental.product for Sale manager,model_create_rental_product,sales_team.group_sale_manager,1,1,1,1
+access_rental_report_wizard,rental.report.wizard all,model_rental_report_wizard,sales_team.group_sale_salesman,1,1,1,1
+access_rental_report_dashboard,rental.report.dashboard all,model_rental_report_dashboard,sales_team.group_sale_salesman,1,0,1,0
