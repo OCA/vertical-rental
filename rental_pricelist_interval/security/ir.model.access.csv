@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rental_price_interval_rule,access_rental_price_interval_rule,model_rental_price_interval_rule,base.group_user,1,1,1,1
