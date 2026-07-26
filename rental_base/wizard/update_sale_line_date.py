@@ -1,5 +1,6 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
+
 from odoo import _, api, exceptions, fields, models
 
 
@@ -16,8 +17,8 @@ class UpdateSaleLineDateLine(models.TransientModel):
         comodel_name="sale.order.line",
         required=True,
     )
-    date_start = fields.Date()
-    date_end = fields.Date()
+    start_datetime = fields.Datetime(string="From")
+    end_datetime = fields.Datetime(string="To")
     product_id = fields.Many2one(comodel_name="product.product")
     change = fields.Boolean()
 
@@ -26,12 +27,8 @@ class UpdateSaleLineDate(models.TransientModel):
     _name = "update.sale.line.date"
     _description = "Wizard for updating sale order line dates"
 
-    date_start = fields.Date(
-        required=True,
-    )
-    date_end = fields.Date(
-        required=True,
-    )
+    start_datetime = fields.Datetime(required=True)
+    end_datetime = fields.Datetime(required=True)
     order_id = fields.Many2one(
         comodel_name="sale.order",
     )
@@ -86,7 +83,7 @@ class UpdateSaleLineDate(models.TransientModel):
         seq = 1
         line_ids_value = []
         for line in order.order_line:
-            if not line.start_date or not line.end_date:
+            if not line.start_datetime or not line.end_datetime:
                 continue
             line_ids_value.append(
                 (
@@ -96,8 +93,8 @@ class UpdateSaleLineDate(models.TransientModel):
                         "sequence": seq,
                         "order_line_id": line.id,
                         "change": False,
-                        "date_start": line.start_date,
-                        "date_end": line.end_date,
+                        "start_datetime": line.start_datetime,
+                        "end_datetime": line.end_datetime,
                         "product_id": line.product_id.id,
                     },
                 )
@@ -106,8 +103,8 @@ class UpdateSaleLineDate(models.TransientModel):
         res.update(
             {
                 "order_id": order.id,
-                "date_start": order.default_start_date,
-                "date_end": order.default_end_date,
+                "start_datetime": order.default_start_date,
+                "end_datetime": order.default_end_date,
                 "date_in_line": False,
                 "all_line": True,
                 "from_line": 1,
@@ -130,13 +127,13 @@ class UpdateSaleLineDate(models.TransientModel):
                         "%(date_start)s - %(date_end)s</li>"
                     ) % {
                         "name": line.order_line_id.product_id.name,
-                        "start_date": line.order_line_id.start_date,
-                        "end_date": line.order_line_id.end_date,
-                        "date_start": line.date_start,
-                        "date_end": line.date_end,
+                        "start_date": line.order_line_id.start_datetime,
+                        "end_date": line.order_line_id.end_datetime,
+                        "date_start": line.start_datetime,
+                        "date_end": line.end_datetime,
                     }
                     line.order_line_id.update_start_end_date(
-                        line.date_start, line.date_end
+                        line.start_datetime, line.end_datetime
                     )
             else:
                 message_body += _(
@@ -146,12 +143,12 @@ class UpdateSaleLineDate(models.TransientModel):
                 ) % {
                     "default_start_date": self.order_id.default_start_date,
                     "default_end_date": self.order_id.default_end_date,
-                    "date_start": self.date_start,
-                    "date_end": self.date_end,
+                    "date_start": self.start_datetime,
+                    "date_end": self.end_datetime,
                 }
                 self.order_id.order_line.filtered(
-                    lambda x: x.start_date and x.end_date
-                ).update_start_end_date(self.date_start, self.date_end)
+                    lambda x: x.start_datetime and x.end_datetime
+                ).update_start_end_date(self.start_datetime, self.end_datetime)
         else:
             if self.from_line > self.to_line:
                 raise exceptions.UserError(
@@ -165,13 +162,13 @@ class UpdateSaleLineDate(models.TransientModel):
                             "%(date_start)s - %(date_end)s</li>"
                         ) % {
                             "name": line.order_line_id.product_id.name,
-                            "start_date": line.order_line_id.start_date,
-                            "end_date": line.order_line_id.end_date,
-                            "date_start": line.date_start,
-                            "date_end": line.date_end,
+                            "start_date": line.order_line_id.start_datetime,
+                            "end_date": line.order_line_id.end_datetime,
+                            "date_start": line.start_datetime,
+                            "date_end": line.end_datetime,
                         }
                         line.order_line_id.update_start_end_date(
-                            line.date_start, line.date_end
+                            line.start_datetime, line.end_datetime
                         )
             else:
                 message_body += _(
@@ -183,13 +180,13 @@ class UpdateSaleLineDate(models.TransientModel):
                     "to_line": self.to_line,
                     "default_start_date": self.order_id.default_start_date,
                     "default_end_date": self.order_id.default_end_date,
-                    "date_start": self.date_start,
-                    "date_end": self.date_end,
+                    "date_start": self.start_datetime,
+                    "date_end": self.end_datetime,
                 }
                 for line in self.line_ids:
                     if self.from_line <= line.sequence <= self.to_line:
                         line.order_line_id.update_start_end_date(
-                            self.date_start, self.date_end
+                            self.start_datetime, self.end_datetime
                         )
         message_body += "</lu>"
         self.order_id.message_post(

@@ -14,11 +14,11 @@ Part of rental-vertical See LICENSE file for full copyright and licensing detail
                 Attention: The ordered quantities are not updated!</p>
                 <group name="main">
                     <field
-                        name="date_start"
+                        name="start_datetime"
                         attrs="{'invisible': [('date_in_line', '=', True)]}"
                     />
                     <field
-                        name="date_end"
+                        name="end_datetime"
                         attrs="{'invisible': [('date_in_line', '=', True)]}"
                     />
                     <field name="date_in_line" />
@@ -41,8 +41,8 @@ Part of rental-vertical See LICENSE file for full copyright and licensing detail
                     >
                         <field name="sequence" />
                         <field name="product_id" readonly="1" />
-                        <field name="date_start" />
-                        <field name="date_end" />
+                        <field name="start_datetime" />
+                        <field name="end_datetime" />
                         <field name="order_line_id" invisible="1" />
                         <field name="change" invisible="1" />
                     </tree>

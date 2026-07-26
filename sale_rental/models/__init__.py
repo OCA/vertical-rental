@@ -1,5 +1,7 @@
+from . import product_rental_pricing
 from . import product
 from . import res_config_settings
+from . import rental_period
 from . import sale_order
 from . import sale_rental
 from . import stock_warehouse

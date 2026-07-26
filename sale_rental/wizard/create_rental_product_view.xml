@@ -18,7 +18,6 @@
                 <field name="name" />
                 <field name="default_code" />
                 <field name="categ_id" />
-                <field name="sale_price_per_day" />
                 <field name="copy_image" />
             </group>
             <footer>

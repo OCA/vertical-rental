@@ -29,8 +29,8 @@ class SaleRental(models.Model):
             name = "[{}] {} - {} > {} ({})".format(
                 rental.partner_id.display_name,
                 rental.rented_product_id.display_name,
-                rental.start_date,
-                rental.end_date,
+                rental.start_datetime or "",
+                rental.end_datetime or "",
                 rental._fields["state"].convert_to_export(rental.state, rental),
             )
             res.append((rental.id, name))
@@ -84,31 +84,32 @@ class SaleRental(models.Model):
             rental.sell_move_id = sell_move
 
     @api.depends(
-        "extension_order_line_ids.end_date",
+        "extension_order_line_ids.end_datetime",
         "extension_order_line_ids.state",
-        "start_order_line_id.end_date",
+        "start_order_line_id.end_datetime",
     )
-    def _compute_end_date(self):
+    def _compute_end_datetime(self):
         for rental in self:
-            end_date = False
+            end_datetime = False
             if rental.start_order_line_id:
-                end_date = rental.start_order_line_id.end_date
-
+                end_datetime = rental.start_order_line_id.end_datetime
             for extension in rental.extension_order_line_ids:
                 if (
                     extension.state in ("sale", "done")
-                    and end_date
-                    and extension.end_date
-                    and extension.end_date > end_date
+                    and extension.end_datetime
+                    and (not end_datetime or extension.end_datetime > end_datetime)
                 ):
-                    end_date = extension.end_date
-            rental.end_date = end_date
+                    end_datetime = extension.end_datetime
+            rental.end_datetime = end_datetime
 
     start_order_line_id = fields.Many2one(
         "sale.order.line", string="Rental SO Line", readonly=True
     )
-    start_date = fields.Date(
-        related="start_order_line_id.start_date", readonly=True, store=True
+    start_datetime = fields.Datetime(
+        string="From",
+        related="start_order_line_id.start_datetime",
+        readonly=True,
+        store=True,
     )
     rental_product_id = fields.Many2one(
         "product.product",
@@ -205,8 +206,9 @@ class SaleRental(models.Model):
         string="Sell Delivery Order",
         readonly=True,
     )
-    end_date = fields.Date(
-        compute="_compute_end_date",
+    end_datetime = fields.Datetime(
+        string="To",
+        compute="_compute_end_datetime",
         store=True,
         help="End Date of the Rental (extensions included), \
         taking into account all the extensions sold to the customer.",

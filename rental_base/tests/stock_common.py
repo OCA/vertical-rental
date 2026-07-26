@@ -1,5 +1,7 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
+from datetime import datetime
+
 from odoo.tests import common
 
 
@@ -76,7 +78,11 @@ class RentalStockCommon(common.TransactionCase):
         """
         Create a Rental Order with Product (self.service_rental)
         """
+        start_dt = datetime.combine(date_start, datetime.min.time())
+        end_dt = datetime.combine(date_end, datetime.min.time())
+
         date_qty = (date_end - date_start).days + 1
+
         rental_order = cls.env["sale.order"].create(
             {
                 "type_id": cls.rental_sale_type.id,
@@ -86,24 +92,30 @@ class RentalStockCommon(common.TransactionCase):
                 "pricelist_id": cls.env.ref("product.list0").id,
                 "picking_policy": "direct",
                 "warehouse_id": cls.warehouse0.id,
-                "order_line": [
-                    (
-                        0,
-                        0,
-                        {
-                            "name": "Service for Rental",
-                            "product_id": cls.service_rental.id,
-                            "rental": True,
-                            "rental_type": "new_rental",
-                            "rental_qty": qty,
-                            "product_uom_qty": date_qty * qty,
-                            "start_date": date_start,
-                            "end_date": date_end,
-                            "price_unit": 100,
-                            "product_uom": cls.uom_day.id,
-                        },
-                    )
-                ],
             }
         )
+
+        line = cls.env["sale.order.line"].create(
+            {
+                "order_id": rental_order.id,
+                "name": "Service for Rental",
+                "product_id": cls.service_rental.id,
+                "product_uom": cls.uom_day.id,
+                "product_uom_qty": date_qty * qty,
+                "rental": True,
+                "rental_type": "new_rental",
+                "rental_qty": qty,
+                "start_datetime": start_dt,
+                "end_datetime": end_dt,
+                "rental_period_id": cls.env.ref("sale_rental.rental_period_day").id,
+                # bắt buộc để tránh NOT NULL crash
+                "price_unit": 100,
+            }
+        )
+
+        # giống cách TestSaleRental làm
+        line._compute_duration()
+        line._compute_number_of_days()
+        line._compute_price_unit()
+
         return rental_order

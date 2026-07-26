@@ -1,0 +1,33 @@
+<!-- data/rental_period_data.xml -->
+<odoo noupdate="1">
+    <record id="rental_period_hour" model="rental.period">
+        <field name="name">Hour</field>
+        <field name="code">HOUR</field>
+        <field name="hours_per_unit">1</field>
+        <field name="sequence">1</field>
+    </record>
+    <record id="rental_period_day" model="rental.period">
+        <field name="name">Day</field>
+        <field name="code">DAY</field>
+        <field name="hours_per_unit">24</field>
+        <field name="sequence">2</field>
+    </record>
+    <record id="rental_period_week" model="rental.period">
+        <field name="name">Week</field>
+        <field name="code">WEEK</field>
+        <field name="hours_per_unit">168</field>
+        <field name="sequence">3</field>
+    </record>
+    <record id="rental_period_month" model="rental.period">
+        <field name="name">Month</field>
+        <field name="code">MONTH</field>
+        <field name="hours_per_unit">730</field>
+        <field name="sequence">4</field>
+    </record>
+    <record id="rental_period_year" model="rental.period">
+        <field name="name">Year</field>
+        <field name="code">YEAR</field>
+        <field name="hours_per_unit">8760</field>
+        <field name="sequence">5</field>
+    </record>
+</odoo>

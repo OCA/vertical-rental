@@ -19,6 +19,6 @@ class StockRule(models.Model):
             and move_to_copy.sale_line_id
             and move_to_copy.sale_line_id.rental_type == "new_rental"
         ):
-            rental_end_date = move_to_copy.sale_line_id.end_date
+            rental_end_date = move_to_copy.sale_line_id.end_datetime
             res["date"] = fields.Datetime.to_datetime(rental_end_date)
         return res
