@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="rental_qc_inspection_form_view_picking">
+        <field name="name">qc.inspection.form.view.picking</field>
+        <field name="model">qc.inspection</field>
+        <field
+            name="inherit_id"
+            ref="quality_control_stock_oca.qc_inspection_form_view_picking"
+        />
+        <field name="arch" type="xml">
+            <field name="picking_id" position="after">
+                <field name="rental_id" readonly="1" />
+            </field>
+        </field>
+    </record>
+</odoo>
