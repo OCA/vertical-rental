@@ -1,0 +1,1 @@
+odoo-addon-sale_rental @ git+https://github.com/OCA/vertical-rental.git@refs/pull/66/head#subdirectory=setup/sale_rental
