@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- Extend product.product form to add rental_color -->
+    <record id="product_product_form_view_rental" model="ir.ui.view">
+        <field name="name">product.product.form.rental.color</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <group name="sale" position="inside">
+                <field
+                    name="rental_color"
+                    widget="color_picker"
+                    attrs="{'invisible': [('rental_service_ids', '=', [])]}"
+                />
+            </group>
+        </field>
+    </record>
+
+    <!-- Kanban View for Rental Products (product.product) -->
+    <record id="product_product_kanban_view_rental" model="ir.ui.view">
+        <field name="name">product.product.kanban.rental</field>
+        <field name="model">product.product</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1">
+                <field name="id" />
+                <field name="name" />
+                <field name="default_code" />
+                <field name="qty_available" />
+                <field name="rental_color" />
+                <field name="rental_service_ids" />
+                <field name="image_128" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click oe_kanban_card">
+                            <!-- Color indicator -->
+                            <div
+                                t-attf-class="oe_kanban_color_#{kanban_getcolor(record.rental_color.raw_value)}"
+                                style="height: 4px; margin-bottom: 8px;"
+                            />
+
+                            <div class="o_kanban_image">
+                                <img
+                                    t-att-src="kanban_image('product.product', 'image_128', record.id.raw_value)"
+                                    alt="Product"
+                                    class="o_image_64_cover"
+                                />
+                            </div>
+
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name" />
+                                </strong>
+
+                                <div
+                                    t-if="record.default_code.value"
+                                    class="text-muted small"
+                                >
+                                    [<field name="default_code" />]
+                                </div>
+
+                                <!-- Stock availability -->
+                                <div class="mt-2">
+                                    <span
+                                        t-if="record.qty_available.raw_value > 5"
+                                        class="badge rounded-pill text-bg-success"
+                                    >
+                                        <i class="fa fa-check" /> <field
+                                            name="qty_available"
+                                        /> Available
+                                    </span>
+                                    <span
+                                        t-elif="record.qty_available.raw_value > 0"
+                                        class="badge rounded-pill text-bg-warning"
+                                    >
+                                        <i class="fa fa-exclamation" /> <field
+                                            name="qty_available"
+                                        /> Left
+                                    </span>
+                                    <span
+                                        t-else=""
+                                        class="badge rounded-pill text-bg-danger"
+                                    >
+                                        <i class="fa fa-times" /> Unavailable
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Tree View for Rental Products (product.product) -->
+    <record id="product_product_tree_view_rental" model="ir.ui.view">
+        <field name="name">product.product.tree.rental</field>
+        <field name="model">product.product</field>
+        <field name="arch" type="xml">
+            <tree multi_edit="1">
+                <field name="name" />
+                <field name="default_code" optional="show" />
+                <field name="qty_available" string="On Hand" />
+                <field name="rental_color" widget="color_picker" optional="hide" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View for Rental Products (product.product) -->
+    <record id="product_product_search_view_rental" model="ir.ui.view">
+        <field name="name">product.product.search.rental</field>
+        <field name="model">product.product</field>
+        <field name="arch" type="xml">
+            <search string="Search Rental Products">
+                <field name="name" />
+                <field name="default_code" />
+                <field name="categ_id" />
+
+                <separator />
+                <filter
+                    name="filter_in_stock"
+                    string="In Stock"
+                    domain="[('qty_available', '&gt;', 0)]"
+                />
+                <filter
+                    name="filter_out_of_stock"
+                    string="Out of Stock"
+                    domain="[('qty_available', '&lt;=', 0)]"
+                />
+
+                <separator />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_categ"
+                        string="Category"
+                        context="{'group_by': 'categ_id'}"
+                    />
+                    <filter
+                        name="group_type"
+                        string="Product Type"
+                        context="{'group_by': 'detailed_type'}"
+                    />
+                </group>
+
+                <searchpanel>
+                    <field name="categ_id" icon="fa-folder" enable_counters="1" />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!-- Main Action for Rental Products -->
+    <record id="product_product_rental_action" model="ir.actions.act_window">
+        <field name="name">Rental Products</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="product_product_search_view_rental" />
+        <field name="domain">[('rental_service_ids', '!=', False)]</field>
+        <field name="context">{'search_default_filter_in_stock': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No rental products found.
+            </p>
+            <p>
+                Create a physical product and then use "Create Rental Service"
+                on its form to make it available for rental.
+            </p>
+        </field>
+    </record>
+
+    <!-- Explicit view references for action -->
+    <record
+        id="product_product_rental_action_view_kanban"
+        model="ir.actions.act_window.view"
+    >
+        <field name="sequence">1</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="product_product_kanban_view_rental" />
+        <field name="act_window_id" ref="product_product_rental_action" />
+    </record>
+
+    <record
+        id="product_product_rental_action_view_tree"
+        model="ir.actions.act_window.view"
+    >
+        <field name="sequence">2</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="product_product_tree_view_rental" />
+        <field name="act_window_id" ref="product_product_rental_action" />
+    </record>
+
+</odoo>
