@@ -279,7 +279,7 @@
                     attrs="{'invisible': [('rental', '=', False)]}"
                 >
                     <field name="number_of_days" />
-                    <label for="product_uom_qty" string="Ordered Rental Time" />
+                    <label for="product_uom_qty" />
                     <div>
                         <field
                             name="product_uom_qty"
