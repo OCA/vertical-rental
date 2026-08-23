@@ -15,7 +15,6 @@
         <field name="list_price">5</field>
         <field name="type">service</field>
         <field name="uom_id" ref="uom.product_uom_day" />
-        <field name="uom_po_id" ref="uom.product_uom_day" />
         <field name="must_have_dates" eval="True" />
         <field name="rented_product_id" ref="product.consu_delivery_01" />
         <!-- The 'stock' module sets it as type = 'product'
@@ -31,7 +30,6 @@
         <field name="list_price">4</field>
         <field name="type">service</field>
         <field name="uom_id" ref="uom.product_uom_day" />
-        <field name="uom_po_id" ref="uom.product_uom_day" />
         <field name="must_have_dates" eval="True" />
         <field name="rented_product_id" ref="product.product_product_20" />
     </record>
@@ -45,7 +43,6 @@
         <field name="list_price">60</field>
         <field name="type">service</field>
         <field name="uom_id" ref="uom.product_uom_day" />
-        <field name="uom_po_id" ref="uom.product_uom_day" />
         <field name="must_have_dates" eval="True" />
         <field name="rented_product_id" ref="product.product_product_25" />
     </record>

@@ -61,13 +61,10 @@ class SaleOrderLine(models.Model):
         check_company=True,
     )
 
-    _sql_constraints = [
-        (
-            "rental_qty_positive",
-            "CHECK(rental_qty >= 0)",
-            "The rental quantity must be positive or null.",
-        )
-    ]
+    _rental_qty_positive = models.Constraint(
+        "CHECK(rental_qty >= 0)",
+        "The rental quantity must be positive or null.",
+    )
 
     @api.constrains(
         "rental_type",
@@ -145,22 +142,24 @@ class SaleOrderLine(models.Model):
         self.ensure_one()
         return {"start_order_line_id": self.id}
 
-    def _prepare_new_rental_procurement_values(self, group=False):
+    def _prepare_new_rental_procurement_values(self):
+        self.ensure_one()
         vals = {
             "company_id": self.order_id.company_id,
-            "group_id": group,
             "sale_line_id": self.id,
             "date_planned": self.start_date,
-            "route_ids": self.route_id or self.order_id.warehouse_id.rental_route_id,
+            "date_deadline": self.start_date,
+            "route_ids": self.order_id.warehouse_id.rental_route_id,
             "warehouse_id": self.order_id.warehouse_id or False,
             "partner_id": self.order_id.partner_shipping_id.id,
+            "reference_ids": self.order_id.stock_reference_ids,
         }
         return vals
 
     def _run_rental_procurement(self, vals):
         self.ensure_one()
         procurements = [
-            self.env["procurement.group"].Procurement(
+            self.env["stock.rule"].Procurement(
                 self.product_id.rented_product_id,
                 self.rental_qty,
                 self.product_id.rented_product_id.uom_id,
@@ -171,7 +170,7 @@ class SaleOrderLine(models.Model):
                 vals,
             )
         ]
-        self.env["procurement.group"].run(procurements)
+        self.env["stock.rule"].run(procurements)
 
     def _create_sale_rental(self, order_line):
         existing_rental = self.env["sale.rental"].search(
@@ -188,19 +187,10 @@ class SaleOrderLine(models.Model):
         errors = []
         for line in self:
             if line.rental_type == "new_rental" and line.product_id.rented_product_id:
-                group = line.order_id.procurement_group_id
-                if not group:
-                    group = self.env["procurement.group"].create(
-                        {
-                            "name": line.order_id.name,
-                            "move_type": line.order_id.picking_policy,
-                            "sale_id": line.order_id.id,
-                            "partner_id": line.order_id.partner_shipping_id.id,
-                        }
-                    )
-                    line.order_id.procurement_group_id = group
-
-                vals = line._prepare_new_rental_procurement_values(group)
+                references = line.order_id.stock_reference_ids
+                if not references:
+                    self.env["stock.reference"].create(line._prepare_reference_vals())
+                vals = line._prepare_new_rental_procurement_values()
                 try:
                     line._run_rental_procurement(vals)
                 except UserError as error:
@@ -240,12 +230,12 @@ class SaleOrderLine(models.Model):
         )
         return res
 
-    def _prepare_procurement_values(self, group_id=False):
+    def _prepare_procurement_values(self):
         """
-        Overriding this function to changethe route
+        Overriding this function to change the route
         on selling rental product
         """
-        vals = super()._prepare_procurement_values(group_id=group_id)
+        vals = super()._prepare_procurement_values()
         if self.sell_rental_id:
             vals.update(
                 {"route_ids": self.order_id.warehouse_id.sell_rented_product_route_id}

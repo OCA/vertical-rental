@@ -63,7 +63,7 @@
                                     <field name="end_date" />
                                     <field name="product_uom_qty" />
                                     <field
-                                        name="product_uom"
+                                        name="product_uom_id"
                                         string="Unit of Measure"
                                         groups="uom.group_uom"
                                     />
@@ -145,7 +145,7 @@
                 />
                 <filter name="sold" string="Sold" domain="[('state', '=', 'sold')]" />
                 <filter name="in" string="Back In" domain="[('state', '=', 'in')]" />
-                <group string="Group By" name="groupby">
+                <group name="groupby">
                     <filter
                         name="partner_groupby"
                         string="Customer"

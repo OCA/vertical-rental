@@ -11,10 +11,31 @@ class TestSaleRental(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.test_rental_prod = cls.env.ref("sale_rental.rent_product_product_25")
         cls.test_partner = cls.env["res.partner"].create({"name": "Foo"})
         cls.rental_in_loc = cls.env.ref("stock.warehouse0").rental_in_location_id
         cls.rental_out_loc = cls.env.ref("stock.warehouse0").rental_out_location_id
+
+        base_product = cls.env["product.product"].create(
+            {
+                "name": "Test Sofa",
+                "type": "consu",
+                "is_storable": True,
+            }
+        )
+
+        cls.test_rental_prod = cls.env["product.product"].create(
+            {
+                "name": "Rental of Test Sofa",
+                "categ_id": cls.env.ref("product.product_category_goods").id,
+                "sale_ok": True,
+                "purchase_ok": False,
+                "list_price": 60,
+                "type": "service",
+                "uom_id": cls.env.ref("uom.product_uom_day").id,
+                "must_have_dates": True,
+                "rented_product_id": base_product.id,
+            }
+        )
 
         cls.env["ir.config_parameter"].sudo().set_param(
             "sale_rental.send_return_reminder", "True"
