@@ -1,0 +1,1 @@
+git+https://github.com/OCA/sale-workflow.git@refs/pull/4081/head#subdirectory=sale_start_end_dates
