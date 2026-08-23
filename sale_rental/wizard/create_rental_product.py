@@ -61,7 +61,6 @@ class CreateRentalProduct(models.TransientModel):
             "sale_ok": True,
             "purchase_ok": False,
             "uom_id": day_uom_id,
-            "uom_po_id": day_uom_id,
             "list_price": self.sale_price_per_day,
             "name": self.name,
             "default_code": self.default_code,
