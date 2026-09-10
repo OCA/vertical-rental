@@ -5,14 +5,14 @@
 
 {
     "name": "Sale Rental",
-    "version": "16.0.1.0.0",
+    "version": "17.0.1.0.0",
     "category": "Sales",
     "license": "AGPL-3",
     "summary": "Manage Rental of Products",
     "author": "Akretion, Sodexis, Odoo Community Association (OCA)",
     "maintainers": ["alexis-via"],
     "website": "https://github.com/OCA/vertical-rental",
-    "depends": ["sale_start_end_dates", "sale_stock", "sales_team"],
+    "depends": ["sale_start_end_dates", "sale_stock", "sale_management"],
     "data": [
         "security/ir.model.access.csv",
         "security/sale_rental_security.xml",

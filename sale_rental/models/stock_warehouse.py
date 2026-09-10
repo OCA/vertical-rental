@@ -136,7 +136,7 @@ class StockWarehouse(models.Model):
                         ("name", "ilike", "Rental"),
                         ("location_id", "=", wh.view_location_id.id),
                         ("usage", "=", "view"),
-                        ("company_id", "=", self.company_id.id),
+                        ("company_id", "=", wh.company_id.id),
                     ],
                     limit=1,
                 )
@@ -146,7 +146,7 @@ class StockWarehouse(models.Model):
                             "name": "Rental",
                             "location_id": wh.view_location_id.id,
                             "usage": "view",
-                            "company_id": self.company_id.id,
+                            "company_id": wh.company_id.id,
                         }
                     )
                     slo.browse(view_loc.id).name = _("Rental")
@@ -159,7 +159,7 @@ class StockWarehouse(models.Model):
                     [
                         ("name", "ilike", "Rental In"),
                         ("location_id", "=", wh.rental_view_location_id.id),
-                        ("company_id", "=", self.company_id.id),
+                        ("company_id", "=", wh.company_id.id),
                     ],
                     limit=1,
                 )
@@ -168,7 +168,7 @@ class StockWarehouse(models.Model):
                         {
                             "name": "Rental In",
                             "location_id": wh.rental_view_location_id.id,
-                            "company_id": self.company_id.id,
+                            "company_id": wh.company_id.id,
                         }
                     )
                     slo.browse(in_loc.id).name = _("Rental In")
@@ -181,7 +181,7 @@ class StockWarehouse(models.Model):
                     [
                         ("name", "ilike", "Rental Out"),
                         ("location_id", "=", wh.rental_view_location_id.id),
-                        ("company_id", "=", self.company_id.id),
+                        ("company_id", "=", wh.company_id.id),
                     ],
                     limit=1,
                 )
@@ -190,7 +190,7 @@ class StockWarehouse(models.Model):
                         {
                             "name": "Rental Out",
                             "location_id": wh.rental_view_location_id.id,
-                            "company_id": self.company_id.id,
+                            "company_id": wh.company_id.id,
                         }
                     )
                     slo.browse(out_loc.id).name = _("Rental Out")
@@ -199,53 +199,71 @@ class StockWarehouse(models.Model):
                     )
                 wh.rental_out_location_id = out_loc.id
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        warehouses = super().create(vals_list)
+        rental_warehouses = warehouses.filtered("rental_allowed")
+        if rental_warehouses:
+            rental_warehouses._activate_rental()
+        return warehouses
+
     def write(self, vals):
         if "rental_allowed" in vals:
-            rental_route = self.env.ref("sale_rental.route_warehouse0_rental")
-            sell_rented_route = self.env.ref(
-                "sale_rental.route_warehouse0_sell_rented_product"
-            )
             if vals.get("rental_allowed"):
-                self._create_rental_locations()
-                self.write(
-                    {
-                        "route_ids": [(4, rental_route.id)],
-                        "rental_route_id": rental_route.id,
-                        "sell_rented_product_route_id": sell_rented_route.id,
-                    }
-                )
-                rental_rules = self.env["stock.rule"].search(
-                    [
-                        ("route_id", "in", [rental_route.id, sell_rented_route.id]),
-                        ("active", "=", False),
-                    ]
-                )
-                if rental_rules:
-                    rental_rules.write({"active": True})
-                else:
-                    for rule_vals in self._get_rental_push_pull_rules():
-                        self.env["stock.rule"].create(rule_vals)
+                self._activate_rental()
             else:
-                for wh in self:
-                    rules_to_archive = self.env["stock.rule"].search(
-                        [
-                            (
-                                "route_id",
-                                "in",
-                                (
-                                    wh.rental_route_id.id,
-                                    wh.sell_rented_product_route_id.id,
-                                ),
-                            ),
-                            ("company_id", "=", wh.company_id.id),
-                        ]
-                    )
-                    rules_to_archive.write({"active": False})
-                    wh.write(
-                        {
-                            "route_ids": [(3, rental_route.id)],
-                            "rental_route_id": False,
-                            "sell_rented_product_route_id": False,
-                        }
-                    )
+                self._deactivate_rental()
         return super().write(vals)
+
+    def _activate_rental(self):
+        rule_obj = self.env["stock.rule"]
+        rental_route = self.env.ref("sale_rental.route_warehouse0_rental")
+        sell_rented_route = self.env.ref(
+            "sale_rental.route_warehouse0_sell_rented_product"
+        )
+        self._create_rental_locations()
+        self.write(
+            {
+                "route_ids": [(4, rental_route.id)],
+                "rental_route_id": rental_route.id,
+                "sell_rented_product_route_id": sell_rented_route.id,
+            }
+        )
+        for wh in self:
+            rental_rules = rule_obj.search(
+                [
+                    ("route_id", "in", [rental_route.id, sell_rented_route.id]),
+                    ("warehouse_id", "=", wh.id),
+                    ("active", "=", False),
+                ]
+            )
+            if rental_rules:
+                rental_rules.write({"active": True})
+            else:
+                for rule_vals in wh._get_rental_push_pull_rules():
+                    rule_obj.create(rule_vals)
+
+    def _deactivate_rental(self):
+        rental_route = self.env.ref("sale_rental.route_warehouse0_rental")
+        for wh in self:
+            rules_to_archive = self.env["stock.rule"].search(
+                [
+                    (
+                        "route_id",
+                        "in",
+                        (
+                            wh.rental_route_id.id,
+                            wh.sell_rented_product_route_id.id,
+                        ),
+                    ),
+                    ("company_id", "=", wh.company_id.id),
+                ]
+            )
+            rules_to_archive.write({"active": False})
+            wh.write(
+                {
+                    "route_ids": [(3, rental_route.id)],
+                    "rental_route_id": False,
+                    "sell_rented_product_route_id": False,
+                }
+            )

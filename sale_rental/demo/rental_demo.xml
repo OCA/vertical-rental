@@ -7,6 +7,10 @@
 -->
 <odoo noupdate="1">
 
+<record id="stock.warehouse0" model="stock.warehouse">
+    <field name="rental_allowed" eval="True" />
+</record>
+
 <record id="rent_consu_delivery_01" model="product.product">
     <field name="name">Rental of one Three-Seat Sofa</field>
     <field name="default_code">RENT-FURN_8999</field>

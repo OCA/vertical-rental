@@ -69,7 +69,6 @@ class TestSaleRental(TransactionCase):
         # Confirm the rental delivery and check the return which should
         # be cancelled
         rental_out_pick.action_assign()
-        rental_out_pick.action_set_quantities_to_reservation()
         rental_out_pick.button_validate()
         so2.action_confirm()
         self.assertEqual(rental_in_pick.state, "cancel")
