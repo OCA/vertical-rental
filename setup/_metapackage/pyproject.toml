@@ -1,0 +1,11 @@
+[project]
+name = "odoo-addons-oca-vertical-rental"
+version = "17.0.20261003.0"
+dependencies = [
+    "odoo-addon-sale_rental>=17.0dev,<17.1dev",
+]
+classifiers=[
+    "Programming Language :: Python",
+    "Framework :: Odoo",
+    "Framework :: Odoo :: 17.0",
+]
