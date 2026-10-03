@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0\n"
+"Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,11 +18,11 @@ msgstr ""
 #: model:ir.model.fields,help:sale_rental.field_sale_rental__out_state
 #: model:ir.model.fields,help:sale_rental.field_sale_rental__sell_state
 msgid ""
-"* New: When the stock move is created and not yet confirmed.\n"
-"* Waiting Another Move: This state can be seen when a move is waiting for another one, for example in a chained flow.\n"
-"* Waiting Availability: This state is reached when the procurement resolution is not straight forward. It may need the scheduler to run, a component to be manufactured...\n"
-"* Available: When products are reserved, it is set to 'Available'.\n"
-"* Done: When the shipment is processed, the state is 'Done'."
+"* New: The stock move is created but not confirmed.\n"
+"* Waiting Another Move: A linked stock move should be done before this one.\n"
+"* Waiting Availability: The stock move is confirmed but the product can't be reserved.\n"
+"* Available: The product of the stock move is reserved.\n"
+"* Done: The product has been transferred and the transfer has been confirmed."
 msgstr ""
 
 #. module: sale_rental
@@ -37,12 +37,14 @@ msgid "Can Sell from Rental"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/stock_warehouse.py:0
 #, python-format
 msgid "Can't find any generic 'Rent' route."
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/stock_warehouse.py:0
 #, python-format
 msgid "Can't find any generic 'Sell Rented Product' route."
@@ -59,6 +61,7 @@ msgid "Cancelled"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/sale_order.py:0
 #, python-format
 msgid "Cannot sell the rental {} because it has not been delivered"
@@ -108,16 +111,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__partner_id
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 msgid "Customer"
-msgstr ""
-
-#. module: sale_rental
-#: model:product.product,uom_name:sale_rental.rent_consu_delivery_01
-#: model:product.product,uom_name:sale_rental.rent_product_product_20
-#: model:product.product,uom_name:sale_rental.rent_product_product_25
-#: model:product.template,uom_name:sale_rental.rent_consu_delivery_01_product_template
-#: model:product.template,uom_name:sale_rental.rent_product_product_20_product_template
-#: model:product.template,uom_name:sale_rental.rent_product_product_25_product_template
-msgid "Days"
 msgstr ""
 
 #. module: sale_rental
@@ -184,12 +177,6 @@ msgid "Indicate the number of items that will be rented."
 msgstr ""
 
 #. module: sale_rental
-#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product____last_update
-#: model:ir.model.fields,field_description:sale_rental.field_sale_rental____last_update
-msgid "Last Modified on"
-msgstr ""
-
-#. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__write_uid
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__write_uid
 msgid "Last Updated by"
@@ -202,6 +189,7 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/sale_order.py:0
 #, python-format
 msgid ""
@@ -214,12 +202,14 @@ msgid "New Rental"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/sale_order.py:0
 #, python-format
 msgid "Not enough stock !"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/sale_order.py:0
 #, python-format
 msgid ""
@@ -228,29 +218,33 @@ msgid ""
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/sale_order.py:0
 #, python-format
 msgid ""
-"On the sale order line with product '{}' the Product Quantity ({}) should be"
-" the number of days ({}) multiplied by the Rental Quantity ({})."
+"On the sale order line with product %(name)s you are trying to sell a rented"
+" product with a quantity (%(uom_qty)s) that is different from the rented "
+"quantity (%(rental_qty)s). This is not supported."
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/sale_order.py:0
 #, python-format
 msgid ""
-"On the sale order line with product {} you are trying to sell a rented "
-"product with a quantity ({}) that is different from the rented quantity "
-"({}). This is not supported."
+"On the sale order line with product '%(name)s' the Product Quantity "
+"(%(uom_qty)s) should be the number of days (%(days)s) multiplied by the "
+"Rental Quantity (%(rental_qty)s)."
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/sale_order.py:0
 #, python-format
 msgid ""
-"On the sale order line with rental service {}, you are trying to extend a "
-"rental with a rental quantity {} that is different from the quantity of the "
-"original rental {}. This is not supported."
+"On the sale order line with rental service %(name)s, you are trying to "
+"extend a rental with a rental quantity %(qty)s that is different from the "
+"quantity of the original rental %(rental_qty)s. This is not supported."
 msgstr ""
 
 #. module: sale_rental
@@ -281,7 +275,7 @@ msgid "Parent Rental"
 msgstr ""
 
 #. module: sale_rental
-#: model:ir.model,name:sale_rental.model_product_product
+#: model:ir.model,name:sale_rental.model_product_template
 msgid "Product"
 msgstr ""
 
@@ -291,8 +285,8 @@ msgid "Product Category"
 msgstr ""
 
 #. module: sale_rental
-#: model:ir.model,name:sale_rental.model_product_template
-msgid "Product Template"
+#: model:ir.model,name:sale_rental.model_product_product
+msgid "Product Variant"
 msgstr ""
 
 #. module: sale_rental
@@ -306,6 +300,7 @@ msgid "Quants"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/wizard/create_rental_product.py:0
 #, python-format
 msgid "RENT-{}"
@@ -327,6 +322,7 @@ msgid "Related Rented Product"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/stock_warehouse.py:0
 #: model:stock.route,name:sale_rental.route_warehouse0_rental
 #, python-format
@@ -334,6 +330,7 @@ msgid "Rent"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/stock_warehouse.py:0
 #: model:ir.model,name:sale_rental.model_sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__rental
@@ -361,6 +358,7 @@ msgid "Rental Extensions"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/stock_warehouse.py:0
 #: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_in_location_id
 #, python-format
@@ -368,6 +366,7 @@ msgid "Rental In"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/stock_warehouse.py:0
 #: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_out_location_id
 #, python-format
@@ -376,6 +375,8 @@ msgstr ""
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__sale_price_per_day
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_template_only_form_view
 msgid "Rental Price per Day"
 msgstr ""
 
@@ -424,25 +425,23 @@ msgid "Rental Type"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/wizard/create_rental_product.py:0
 #, python-format
 msgid "Rental of a {}"
 msgstr ""
 
 #. module: sale_rental
-#: model:product.product,name:sale_rental.rent_product_product_25
 #: model:product.template,name:sale_rental.rent_product_product_25_product_template
 msgid "Rental of one Acoustic Bloc Screens"
 msgstr ""
 
 #. module: sale_rental
-#: model:product.product,name:sale_rental.rent_product_product_20
 #: model:product.template,name:sale_rental.rent_product_product_20_product_template
 msgid "Rental of one Flipover"
 msgstr ""
 
 #. module: sale_rental
-#: model:product.product,name:sale_rental.rent_consu_delivery_01
 #: model:product.template,name:sale_rental.rent_consu_delivery_01_product_template
 msgid "Rental of one Three-Seat Sofa"
 msgstr ""
@@ -467,6 +466,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_rental.field_product_product__rented_product_tmpl_id
 #: model:ir.model.fields,field_description:sale_rental.field_product_template__rented_product_tmpl_id
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rented_product_id
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_template_only_form_view
 msgid "Rented Product"
 msgstr ""
 
@@ -507,6 +508,7 @@ msgid "Sell Move State"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/stock_warehouse.py:0
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_order_line_ids
 #: model:stock.route,name:sale_rental.route_warehouse0_sell_rented_product
@@ -560,18 +562,21 @@ msgid "Stock Rule"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/stock_warehouse.py:0
 #, python-format
 msgid "The Rental Input stock location is not set on the warehouse {}"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/stock_warehouse.py:0
 #, python-format
 msgid "The Rental Output stock location is not set on the warehouse {}"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/sale_order.py:0
 #, python-format
 msgid ""
@@ -580,12 +585,14 @@ msgid ""
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/product.py:0
 #, python-format
 msgid "The rental product '{}' must be of type 'Service'."
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/product.py:0
 #, python-format
 msgid ""
@@ -599,6 +606,7 @@ msgid "The rental quantity must be positive or null."
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/product.py:0
 #, python-format
 msgid "The unit of measure of the rental product '{}' must be 'Day'."
@@ -620,16 +628,19 @@ msgid "Warehouse"
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/wizard/create_rental_product.py:0
 #, python-format
 msgid "Wrong active_model. Should never happen."
 msgstr ""
 
 #. module: sale_rental
+#. odoo-python
 #: code:addons/sale_rental/models/sale_order.py:0
 #, python-format
 msgid ""
-"You want to rent {:.2f} {} but you only have {:.2f} {} currently available "
-"on the stock location '{}' ! Make sure that you get some units back in the "
-"mean time or re-supply the stock location '{}'."
+"You want to rent %(rental_qty).2f  %(uom_name)s but you only have "
+"%(available_qty).2f %(uom_name)s currently available on the  stock location "
+"'%(rental_name)s' ! Make sure that you get some units back in the mean time "
+"or re-supply the stock location '%(rental_name)s'."
 msgstr ""
