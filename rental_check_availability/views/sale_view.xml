@@ -9,18 +9,14 @@
                 expr="//field[@name='order_line']/tree//field[@name='start_date']"
                 position="before"
             >
-                <field name="concurrent_orders" invisible="1" />
+                <field name="concurrent_orders" column_invisible="1" />
                 <button
                     name="action_view_concurrent_orders"
                     type="object"
                     icon="fa-list-alt"
                     class="oe_inline"
                     title="View concurrent Order/Quotation(s)"
-                    attrs="{'invisible': [
-                                   '|',
-                                   ('concurrent_orders','=', 'none'),
-                                   ('concurrent_orders','=', False),
-                               ]}"
+                    invisible="concurrent_orders in ('none', False)"
                 />
             </xpath>
         </field>
