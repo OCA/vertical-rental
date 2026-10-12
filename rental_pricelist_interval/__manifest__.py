@@ -4,7 +4,7 @@
     "name": "Rental Pricelist (Interval)",
     "summary": "Enables the user to define different rental prices "
     "time uom (Month, Day and Hour).",
-    "version": "15.0.1.0.0",
+    "version": "17.0.1.0.0",
     "category": "Rental",
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/vertical-rental",
@@ -16,8 +16,8 @@ To configure this module, you need to:
    computation of price intervals for rental service products
    when interval pricing is activated in stockable product.
 
-#. If desired go to 'RS (Prefix and Suffix)' tab an define how rental interval service product
-   names and reference numbers are created.
+#. If desired go to 'RS (Prefix and Suffix)' tab an define how rental
+interval service product names and reference numbers are created.
 """,
     "contributors": [
         "Ben Brich <b.brich@humanilog.org> (www.humanilog.org)",

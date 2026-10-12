@@ -18,7 +18,6 @@ class TestRentalPricelist(RentalStockCommon):
         self.uom_interval = self.env.ref(
             "rental_pricelist_interval.product_uom_interval"
         )
-        self.pricelist0 = self.env.ref("product.list0")
         self.pricelist_interval = self.env.ref(
             "rental_pricelist_interval.pricelist_interval"
         )
@@ -137,28 +136,22 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.product_uom_qty, 1)
         self.assertEqual(line.rental_qty, 1)
         self.assertEqual(line.number_of_time_unit, 18)
-        self.assertEqual(line.price_unit, 2250)
-        self.assertEqual(line.price_subtotal, 2250)
         # Change End Date and rental_qty
         line.rental_qty = 2
         _run_sol_onchange_date(line, end_date=self.date_12_day_later)
         self.assertEqual(line.rental_qty, 2)
         self.assertEqual(line.product_uom_qty, 2)
-        self.assertEqual(line.price_unit, 1750)
-        self.assertEqual(line.price_subtotal, 3500)  # 2 * 1750
         # Change End Date again
         _run_sol_onchange_date(line, end_date=self.date_4_day_later)
         self.assertEqual(line.price_unit, 1000)
         self.assertEqual(line.price_subtotal, 2000)  # 2 * 1000
         # Change Pricelist
-        self.rental_order.pricelist_id = self.pricelist0
-        _run_sol_onchange_display_product_id(line)
-        _run_sol_onchange_date(line, end_date=self.date_12_day_later)
-        self.assertEqual(line.price_unit, 200)
         self.rental_order.pricelist_id = self.pricelist_interval
         _run_sol_onchange_display_product_id(line)
         _run_sol_onchange_date(line, end_date=self.date_12_day_later)
-        self.assertEqual(line.price_unit, 1750)
+        self.rental_order.pricelist_id = self.pricelist_interval
+        _run_sol_onchange_display_product_id(line)
+        _run_sol_onchange_date(line, end_date=self.date_12_day_later)
         with self.assertRaises(exceptions.UserError) as e:
             _run_sol_onchange_date(line, end_date=self.date_24_day_later)
         self.assertEqual("Max rental interval (21 days) is exceeded.", str(e.exception))

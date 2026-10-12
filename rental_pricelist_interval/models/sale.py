@@ -94,7 +94,7 @@ class SaleOrderLine(models.Model):
                 self.price_unit = self.env[
                     "account.tax"
                 ]._fix_tax_included_price_company(
-                    self._get_display_price(product),
+                    self._get_display_price(),
                     product.taxes_id,
                     self.tax_id,
                     self.company_id,
@@ -112,9 +112,9 @@ class SaleOrderLine(models.Model):
         return res
 
     @api.onchange("product_id")
-    def product_id_change(self):
+    def _onchange_product_id(self):
         uom_interval = self.env.ref("rental_pricelist_interval.product_uom_interval")
-        res = super().product_id_change()
+        res = super()._onchange_product_id()
         if (
             self.order_id.pricelist_id.is_interval_pricelist
             and self.product_id
@@ -148,14 +148,14 @@ class SaleOrderLine(models.Model):
         return res
 
     @api.onchange("product_uom", "product_uom_qty")
-    def product_uom_change(self):
-        res = super().product_uom_change()
+    def _onchange_product_uom(self):
+        res = super()._onchange_product_uom()
         self._update_interval_price()
         return res
 
     @api.onchange("start_date", "end_date", "product_uom")
-    def onchange_start_end_date(self):
-        res = super().onchange_start_end_date()
+    def _onchange_start_end_date(self):
+        res = super()._onchange_start_end_date()
         if self.start_date and self.end_date:
             self._update_interval_price()
         return res
