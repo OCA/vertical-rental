@@ -1,1 +1,4 @@
-elego Software Solutions GmbH, Odoo Community Association (OCA)
+- elego Software Solutions GmbH
+- Odoo Community Association (OCA)
+- [Binhex](https://www.binhex.cloud):
+  - Edilio Escalona Almira \<e.escalona@binhex.cloud\>

@@ -42,7 +42,6 @@ def _run_sol_onchange_can_sell_rental(line, can_sell_rental):
     line.onchange_rental()
     line._onchange_product_id()
     line._onchange_product_uom()
-    line.product_id._compute_rental()
 
 
 def _run_sol_onchange_rental(line, rental):
@@ -79,6 +78,11 @@ class TestRentalPricelist(RentalStockCommon):
             }
         )
 
+        # Public Pricelist Test
+        public_pricelist = self.env["product.pricelist"].create(
+            {"name": "Public Pricelist", "sequence": 1}
+        )
+
         # Product Created A, B, C
         ProductObj = self.env["product.product"]
         self.productA = ProductObj.create(
@@ -94,6 +98,7 @@ class TestRentalPricelist(RentalStockCommon):
                 "rental_price_hour": 10,
                 "income_analytic_account_id": self.analytic_account_A.id,
                 "expense_analytic_account_id": self.analytic_account_A.id,
+                "def_pricelist_id": public_pricelist.id,
             }
         )
         self.productB = ProductObj.create(
@@ -125,6 +130,7 @@ class TestRentalPricelist(RentalStockCommon):
                 "rental_of_day": True,
                 "rental_price_day": 500,
                 "default_code": "PRD-E123",
+                "def_pricelist_id": public_pricelist.id,
             }
         )
         self.productF = ProductObj.create(
@@ -153,7 +159,6 @@ class TestRentalPricelist(RentalStockCommon):
             .create(
                 {
                     "partner_id": self.partnerA.id,
-                    "pricelist_id": self.env.ref("product.list0").id,
                 }
             )
         )
@@ -317,13 +322,13 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.rental_qty, 1)
         self.assertEqual(line.number_of_time_unit, 3)
         _run_sol_onchange_can_sell_rental(line, True)
-        self.assertEqual(line.rental, True)
+        self.assertEqual(line.rental, False)
         self.assertEqual(line.rental_type, False)
-        self.assertEqual(line.can_sell_rental, False)
-        self.assertEqual(line.product_id, self.productC.product_rental_month_id)
+        self.assertEqual(line.can_sell_rental, True)
+        self.assertEqual(line.product_id, self.productC)
         self.assertEqual(line.display_product_id, self.productC)
-        self.assertEqual(line.product_uom, self.uom_month)
-        self.assertEqual(line.rental_qty, 1)
+        self.assertEqual(line.product_uom, self.uom_unit)
+        self.assertEqual(line.rental_qty, 0)
         _run_sol_onchange_rental(line, True)
         self.assertEqual(line.rental, True)
         self.assertEqual(line.rental_type, "new_rental")
@@ -467,8 +472,6 @@ class TestRentalPricelist(RentalStockCommon):
         )
         line.onchange_display_product_id()
         line._onchange_product_id()
-        line.onchange_rental()
-        line._onchange_product_uom()
         line.rental = True
         vals = line._convert_to_write(line._cache)
         self.env["sale.order.line"].create(vals)
@@ -487,7 +490,8 @@ class TestRentalPricelist(RentalStockCommon):
         with self.assertRaises(ValidationError) as e:
             rental_serviceE.type = "consu"
         self.assertEqual(
-            "The rental product 'Rental of Product E (Day(s))' must be of type 'Service'.",
+            "The rental product 'Rental of Product E (Day(s))' must be "
+            "of type 'Service'.",
             str(e.exception),
         )
         with self.assertRaises(ValidationError) as e:
@@ -550,7 +554,6 @@ class TestRentalPricelist(RentalStockCommon):
             .create(
                 {
                     "partner_id": self.partnerA.id,
-                    "pricelist_id": self.env.ref("product.list0").id,
                 }
             )
         )

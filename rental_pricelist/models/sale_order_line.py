@@ -69,7 +69,6 @@ class SaleOrderLine(models.Model):
             else:
                 self.rental = False
                 self.product_id = self.display_product_id
-                # raise exceptions.UserError(_('The product has no related rental services.'))
         elif not self.rental and self.display_product_id:
             self.product_id = self.display_product_id
 
@@ -130,21 +129,19 @@ class SaleOrderLine(models.Model):
             precision_rounding=product_uom.rounding,
         )
         if compare_qty == -1:
+            rental_uom_name = self.product_id.rented_product_id.uom_id.name
             res["warning"] = {
                 "title": _("Not enough stock!"),
                 "message": _(
-                    "You want to rent %(rental_qty).2f %(rental_uom)s but you only "
-                    "have %(available_qty).2f %(rental_uom)s currently available on the "
-                    'stock location "%(rental_name)s"! Make sure that you '
+                    f"You want to rent {self.rental_qty}.2f {rental_uom_name} "
+                    f"but you only "
+                    f"have {in_location_available_qty}.2f "
+                    f"{rental_uom_name} currently available "
+                    "on the "
+                    f'stock location "{rental_in_location.name}"! Make sure that you '
                     "get some units back in the meantime or "
-                    're-supply the stock location "%(rental_name)s".'
-                )
-                % {
-                    "rental_qty": self.rental_qty,
-                    "rental_uom": self.product_id.rented_product_id.uom_id.name,
-                    "available_qty": in_location_available_qty,
-                    "rental_name": rental_in_location.name,
-                },
+                    f're-supply the stock location "{rental_in_location.name}".'
+                ),
             }
         return res
 
@@ -207,9 +204,9 @@ class SaleOrderLine(models.Model):
                         _(
                             "On the sale order line with rental service %(name)s, "
                             "you are trying to extend a rental with a rental "
-                            "quantity (%(rental_qty)s) that is different from the quantity "
-                            "of the original rental (%(ext_rental_qty)s). "
-                            "This is not supported."
+                            "quantity (%(rental_qty)s) that is different from "
+                            "the quantity of the original rental "
+                            "(%(ext_rental_qty)s). This is not supported."
                         )
                         % {
                             "name": line.product_id.name,
@@ -280,15 +277,11 @@ class SaleOrderLine(models.Model):
                             lambda key: time_uoms[key].id == line.product_uom.id,
                             time_uoms.keys(),
                         )
-                    )
-                    if key:
-                        line.product_id = line.display_product_id._get_rental_service(
-                            key[-1]
-                        )
+                    )[-1]
+                    line.product_id = line.display_product_id._get_rental_service(key)
 
     @api.onchange("start_date", "end_date", "product_uom")
     def _onchange_start_end_date(self):
         if self.start_date and self.end_date:
             number = self._get_number_of_time_unit()
             self.number_of_time_unit = number
-            self.product_uom_qty = number
