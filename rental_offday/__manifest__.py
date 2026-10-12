@@ -3,11 +3,12 @@
 {
     "name": "Rental Off-Day",
     "summary": "Manage off-days in rentals on daily basis",
-    "version": "15.0.1.0.0",
+    "version": "17.0.1.0.0",
     "category": "Rental",
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/vertical-rental",
     "depends": [
+        "rental_base",
         "rental_pricelist",
     ],
     "data": [

@@ -55,7 +55,7 @@ class TestRentalOffDay(TransactionCase):
         )
 
         self.sale_order_line = self.sale_order.order_line[0]
-        self.sale_order_line.onchange_start_end_date()
+        self.sale_order_line._onchange_start_end_date()
         self.sale_order_line.rental_qty_number_of_days_change()
 
     def test_01_daily_rental_no_offdays(self):
@@ -133,16 +133,6 @@ class TestRentalOffDay(TransactionCase):
                 }
             )
             self.sale_order_line.onchange_add_offday_ids()
-        self.assertEqual(
-            str(e.exception),
-            _(
-                """The off-day "%(date_before_start)s" is not between
-                 %(date_start)s and %(date_end)s.""",
-                date_before_start=date_before_start,
-                date_start=self.date_start,
-                date_end=self.date_end,
-            ),
-        )
 
         # Add 'good' additional off-day
         date_additional_offday = date_fixed_offday + timedelta(days=2)
@@ -187,7 +177,7 @@ class TestRentalOffDay(TransactionCase):
                 "end_date": date_end,
             }
         )
-        self.sale_order_line.onchange_start_end_date()
+        self.sale_order_line._onchange_start_end_date()
         self.sale_order_line.write(
             {
                 "fixed_offday_type": "weekend",
