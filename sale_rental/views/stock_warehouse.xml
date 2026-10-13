@@ -6,8 +6,6 @@
   License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 -->
 <odoo>
-
-
     <record id="view_warehouse" model="ir.ui.view">
         <field name="name">rental.stock.warehouse.form</field>
         <field name="model">stock.warehouse</field>
@@ -30,6 +28,4 @@
             </group>
         </field>
     </record>
-
-
 </odoo>
