@@ -1,7 +1,8 @@
 [project]
 name = "odoo-addons-oca-vertical-rental"
-version = "17.0.20261003.0"
+version = "17.0.20261013.0"
 dependencies = [
+    "odoo-addon-rental_base>=17.0dev,<17.1dev",
     "odoo-addon-sale_rental>=17.0dev,<17.1dev",
 ]
 classifiers=[
