@@ -2,7 +2,7 @@
 
 {
     "name": "Rental Timeline",
-    "version": "12.0.1.0.0",
+    "version": "17.0.1.0.0",
     "category": "Rental",
     "summary": "Timeline view for rental orders and rental products",
     "usage": """
@@ -11,15 +11,23 @@ Just install this module. No further configuration is necessary.
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/vertical-rental",
     "depends": [
+        "base",
         "web_timeline",
         "rental_base",
     ],
     "data": [
         "security/ir.model.access.csv",
-        "views/assets.xml",
         "views/product_timeline_view.xml",
         "views/product_view.xml",
+        "views/sale_order_views.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "rental_timeline/static/src/views/rental_timeline/rental_timeline_view.esm.js",
+            "rental_timeline/static/src/views/rental_timeline/rental_timeline_model.esm.js",
+            "rental_timeline/static/src/views/rental_timeline/rental_timeline_renderer.esm.js",
+        ],
+    },
     "demo": [],
     "qweb": [],
     "application": False,
