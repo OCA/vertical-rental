@@ -7,6 +7,7 @@ class TestSaleRental(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.env = cls.env(context=dict(cls.env.context, tracking_disable=True))
         cls.test_rental_prod = cls.env.ref("sale_rental.rent_product_product_25")
         cls.test_partner = cls.env["res.partner"].create({"name": "Foo"})
         cls.rental_in_loc = cls.env.ref("stock.warehouse0").rental_in_location_id
@@ -69,6 +70,7 @@ class TestSaleRental(TransactionCase):
         # Confirm the rental delivery and check the return which should
         # be cancelled
         rental_out_pick.action_assign()
+        rental_out_pick.move_ids.picked = True
         rental_out_pick.button_validate()
         so2.action_confirm()
         self.assertEqual(rental_in_pick.state, "cancel")

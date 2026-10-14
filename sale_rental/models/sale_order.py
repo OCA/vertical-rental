@@ -17,12 +17,12 @@ logger = logging.getLogger(__name__)
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    def action_cancel(self):
+    def _action_cancel(self):
         """
         When the user cancels a rental extension, Odoo writes the initial
         end date on the return picking
         """
-        res = super().action_cancel()
+        res = super()._action_cancel()
         for order in self:
             for line in order.order_line.filtered(
                 lambda lin: lin.rental_type == "rental_extension"

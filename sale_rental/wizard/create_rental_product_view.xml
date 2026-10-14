@@ -37,5 +37,6 @@
         <field name="res_model">create.rental.product</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
+        <field name="path">create_rental_service</field>
     </record>
 </odoo>

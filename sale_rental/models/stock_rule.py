@@ -4,14 +4,34 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import fields, models
+from odoo.tools import float_compare
 
 
 class StockRule(models.Model):
     _inherit = "stock.rule"
 
     def _push_prepare_move_copy_values(self, move_to_copy, new_date):
-        """Inherit to write the end date of the rental on the return move"""
+        """Inherit to write the end date of the rental on the return move.
+
+        In Odoo 18, the upstream method uses move_to_copy.quantity (actual
+        done/reserved quantity from move lines) for the new move's
+        product_uom_qty.  When push rules are applied during _action_confirm
+        (as we do for rental out moves in stock_move._action_confirm), the
+        move is still draft and quantity is 0, which would create a return
+        move with product_uom_qty=0.  Fix that by falling back to
+        product_uom_qty (the demanded quantity) when quantity is 0.
+        """
         res = super()._push_prepare_move_copy_values(move_to_copy, new_date)
+        rounding = move_to_copy.product_uom.rounding
+        if (
+            float_compare(res.get("product_uom_qty", 0), 0, precision_rounding=rounding)
+            == 0
+            and float_compare(
+                move_to_copy.product_uom_qty, 0, precision_rounding=rounding
+            )
+            > 0
+        ):
+            res["product_uom_qty"] = move_to_copy.product_uom_qty
         location_id = res.get("location_id", False)
         if (
             location_id

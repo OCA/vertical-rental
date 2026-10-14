@@ -93,6 +93,7 @@ class StockWarehouse(models.Model):
             "picking_type_id": self.out_type_id.id,
             "warehouse_id": self.id,
             "company_id": self.company_id.id,
+            "location_dest_from_rule": True,
         }
         rental_push_rule = {
             "name": self._format_rulename(
@@ -234,13 +235,22 @@ class StockWarehouse(models.Model):
                 [
                     ("route_id", "in", [rental_route.id, sell_rented_route.id]),
                     ("warehouse_id", "=", wh.id),
-                    ("active", "=", False),
                 ]
             )
+            rule_vals_list = wh._get_rental_push_pull_rules()
             if rental_rules:
                 rental_rules.write({"active": True})
+                for rule_vals in rule_vals_list:
+                    matching_rules = rental_rules.filtered(
+                        lambda r, rv=rule_vals: r.action == rv["action"]
+                        and r.location_src_id.id == rv["location_src_id"]
+                        and r.location_dest_id.id == rv["location_dest_id"]
+                        and r.picking_type_id.id == rv["picking_type_id"]
+                    )
+                    if matching_rules:
+                        matching_rules.write(rule_vals)
             else:
-                for rule_vals in wh._get_rental_push_pull_rules():
+                for rule_vals in rule_vals_list:
                     rule_obj.create(rule_vals)
 
     def _deactivate_rental(self):

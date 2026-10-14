@@ -14,19 +14,19 @@
                 <page
                     name="rental"
                     string="Rental"
-                    invisible="not sale_ok and detailed_type == 'service'"
+                    invisible="not sale_ok and type == 'service'"
                 >
                     <group
                         name="rental_product"
                         string="Rented Product"
-                        invisible="detailed_type != 'service'"
+                        invisible="type != 'service'"
                     >
                         <field name="rented_product_id" nolabel="1" colspan="2" />
                     </group>
                     <group
                         name="rental_services"
                         string="Rental Services"
-                        invisible="detailed_type == 'service'"
+                        invisible="type == 'service'"
                     >
                         <field
                             name="rental_service_ids"
@@ -35,13 +35,13 @@
                             readonly="1"
                             invisible="not rental_service_ids"
                         >
-                            <tree create="0" delete="0">
+                            <list create="0" delete="0">
                                 <field name="name" />
                                 <field name="lst_price" string="Rental Price per Day" />
-                            </tree>
+                            </list>
                         </field>
                     </group>
-                    <div invisible="detailed_type == 'service'">
+                    <div invisible="type == 'service'">
                         <button
                             type="action"
                             name="%(sale_rental.create_rental_product_action)d"
@@ -62,19 +62,19 @@
                 <page
                     name="rental"
                     string="Rental"
-                    invisible="not sale_ok and detailed_type == 'service'"
+                    invisible="not sale_ok and type == 'service'"
                 >
                     <group
                         name="rental_product"
                         string="Rented Product"
-                        invisible="detailed_type != 'service' or product_variant_count &gt; 1"
+                        invisible="type != 'service' or product_variant_count &gt; 1"
                     >
                         <field name="rented_product_tmpl_id" nolabel="1" colspan="2" />
                     </group>
                     <group
                         name="rental_services"
                         string="Rental Services"
-                        invisible="detailed_type == 'service' or product_variant_count &gt; 1"
+                        invisible="type == 'service' or product_variant_count &gt; 1"
                     >
                         <field
                             name="rental_service_tmpl_ids"
@@ -82,18 +82,16 @@
                             colspan="2"
                             invisible="not rental_service_tmpl_ids"
                         >
-                            <tree create="0" delete="0">
+                            <list create="0" delete="0">
                                 <field name="name" />
                                 <field
                                     name="list_price"
                                     string="Rental Price per Day"
                                 />
-                            </tree>
+                            </list>
                         </field>
                     </group>
-                    <div
-                        invisible="detailed_type == 'service' or product_variant_count &gt; 1"
-                    >
+                    <div invisible="type == 'service' or product_variant_count &gt; 1">
                         <button
                             type="action"
                             name="%(sale_rental.create_rental_product_action)d"
