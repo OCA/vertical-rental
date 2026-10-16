@@ -83,21 +83,28 @@ class SaleOrderLine(models.Model):
             ):
                 pricelist_rule = self.pricelist_item_id
                 order_date = self._get_order_date() or fields.Date.today()
-                product = self.product_id.with_context(**self._get_product_price_context())
+                product = self.product_id.with_context(
+                    **self._get_product_price_context()
+                )
                 qty = self.number_of_time_unit
                 uom = self.product_uom or self.product_id.uom_id
                 currency = self.currency_id or self.order_id.company_id.currency_id
 
                 res = pricelist_rule._compute_price(
-                    product, qty, uom, order_date, currency=currency)
+                    product, qty, uom, order_date, currency=currency
+                )
         return res
 
-    #(override) function _compute_pricelist_item_id from module sale
+    # (override) function _compute_pricelist_item_id from module sale
     # use number_of_time_unit instead of product_uom_qty
-    @api.depends('product_id', 'product_uom', 'product_uom_qty')
+    @api.depends("product_id", "product_uom", "product_uom_qty")
     def _compute_pricelist_item_id(self):
         for line in self:
-            if not line.product_id or line.display_type or not line.order_id.pricelist_id:
+            if (
+                not line.product_id
+                or line.display_type
+                or not line.order_id.pricelist_id
+            ):
                 line.pricelist_item_id = False
             else:
                 qty = line.product_uom_qty or 1.0
