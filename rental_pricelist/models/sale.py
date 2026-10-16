@@ -141,7 +141,7 @@ class SaleOrderLine(models.Model):
                     "have %(avail_qty).2f %(in_loc_name)s currently available on the "
                     'stock location "%(in_loc_name)s"! Make sure that you '
                     "get some units back in the meantime or "
-                    're-supply the stock location "%s".'
+                    're-supply the stock location "%(in_loc_name)s".'
                 )
                 % {
                     "qty": self.rental_qty,
