@@ -30,7 +30,7 @@ class SaleOrderLine(models.Model):
         if not self.start_date or not self.end_date or not self.rental_qty:
             return {}
         total_qty = self.product_id.rented_product_id.with_context(
-            {"location": self.order_id.warehouse_id.rental_view_location_id.id}
+            location=self.order_id.warehouse_id.rental_view_location_id.id
         ).qty_available
         max_ol_qty = self._get_max_overlapping_rental_qty()
         avail_qty = total_qty - max_ol_qty
@@ -45,15 +45,15 @@ class SaleOrderLine(models.Model):
             res["warning"] = {
                 "title": _("Not enough stock!"),
                 "message": _(
-                    "You want to rent %.2f %s but you only "
-                    "have %.2f %s available in the selected period."
+                    "You want to rent %(qty).2f %(product_name)s but you only "
+                    "have %(avail_qty).2f %(product_name)s "
+                    "available in the selected period."
                 )
-                % (
-                    self.rental_qty,
-                    self.product_id.rented_product_id.uom_id.name,
-                    avail_qty,
-                    self.product_id.rented_product_id.uom_id.name,
-                ),
+                % {
+                    "qty": self.rental_qty,
+                    "product_name": self.product_id.rented_product_id.uom_id.name,
+                    "avail_qty": avail_qty,
+                },
             }
         else:
             self.concurrent_orders = "none"
