@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale_rental.view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_start_end_dates.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='order_line']/tree//field[@name='start_date']"
+                position="before"
+            >
+                <field name="concurrent_orders" invisible="1" />
+                <button
+                    name="action_view_concurrent_orders"
+                    type="object"
+                    icon="fa-list-alt"
+                    class="oe_inline"
+                    title="View concurrent Order/Quotation(s)"
+                    attrs="{'invisible': [
+                                   '|',
+                                   ('concurrent_orders','=', 'none'),
+                                   ('concurrent_orders','=', False),
+                               ]}"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_tree" model="ir.ui.view">
+        <field name="name">sale_rental.view_order_tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree" />
+        <field name="arch" type="xml">
+            <field name="partner_id" position="before">
+                <field name="default_start_date" />
+                <field name="default_end_date" />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_order_form_order_line_tree_color" model="ir.ui.view">
+        <field name="name">sale_rental.view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                <attribute
+                    name="decoration-danger"
+                >concurrent_orders=='order'</attribute>
+                <attribute
+                    name="decoration-warning"
+                >concurrent_orders=='quotation'</attribute>
+            </xpath>
+            <button name="action_confirm" position="before">
+                <button
+                    name="action_check_rental_availability"
+                    string="Check Availability"
+                    type="object"
+                />
+            </button>
+        </field>
+    </record>
+
+</odoo>
