@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- Custom Dashboard Action -->
+    <record id="rental_dashboard_action_client" model="ir.actions.client">
+        <field name="name">Rental Dashboard</field>
+        <field name="tag">rental_dashboard.dashboard</field>
+    </record>
+
+</odoo>
