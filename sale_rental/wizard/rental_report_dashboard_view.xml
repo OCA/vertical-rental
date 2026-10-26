@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="action_rental_report_by_product" model="ir.actions.act_window">
+    <field name="name">Rental • By Product</field>
+        <field name="res_model">sale.rental</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="view_id" ref="view_rental_report_by_product_pivot" />
+        <field name="domain">[
+            ['start_date','&gt;=', context.get('default_date_from')],
+            ['start_date','&lt;=', context.get('default_date_to')]
+        ]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="action_rental_report_by_time" model="ir.actions.act_window">
+        <field name="name">Rental • By Time</field>
+        <field name="res_model">sale.rental</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="view_id" ref="view_rental_report_by_time_pivot" />
+        <field name="domain">[
+            ['start_date','&gt;=', context.get('default_date_from')],
+            ['start_date','&lt;=', context.get('default_date_to')]
+        ]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="action_rental_report_by_customer" model="ir.actions.act_window">
+        <field name="name">Rental • By Customer</field>
+        <field name="res_model">sale.rental</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="view_id" ref="view_rental_report_by_customer_pivot" />
+        <field name="domain">[
+            ['start_date','&gt;=', context.get('default_date_from')],
+            ['start_date','&lt;=', context.get('default_date_to')]
+        ]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="view_rental_report_dashboard_form" model="ir.ui.view">
+        <field name="name">rental.report.dashboard.form</field>
+        <field name="model">rental.report.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Rental Report Dashboard">
+                <sheet>
+                    <h2>Report Summary</h2>
+                    <group>
+                        <field name="date_from" readonly="1" />
+                        <field name="date_to" readonly="1" />
+                    </group>
+
+                    <group string="General">
+                        <field name="total_rental_products" readonly="1" />
+                        <field name="active_rentals" readonly="1" />
+                        <field name="average_rental_duration" readonly="1" />
+                        <field name="average_utilization_rate" readonly="1" />
+                    </group>
+
+                    <separator string="Detailed Reports" />
+                    <div class="d-flex">
+                        <button
+                            name="%(action_rental_report_by_product)d"
+                            context="{'default_date_from': date_from, 'default_date_to': date_to}"
+                            string="By Product"
+                            type="action"
+                            class="btn-primary"
+                        />
+                        <button
+                            name="%(action_rental_report_by_time)d"
+                            context="{'default_date_from': date_from, 'default_date_to': date_to}"
+                            string="By Time"
+                            type="action"
+                            class="btn-primary ms-2"
+                        />
+                        <button
+                            name="%(action_rental_report_by_customer)d"
+                            context="{'default_date_from': date_from, 'default_date_to': date_to}"
+                            string="By Customer"
+                            type="action"
+                            class="btn-primary ms-2"
+                        />
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
