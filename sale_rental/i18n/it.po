@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-23 01:51+0000\n"
-"PO-Revision-Date: 2026-10-27 15:46+0000\n"
+"PO-Revision-Date: 2026-10-28 08:38+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
 "Language: it\n"
@@ -113,7 +113,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__in
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 msgid "Back In"
-msgstr ""
+msgstr "Rientrato"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__can_sell_rental
@@ -125,7 +125,7 @@ msgstr "Vendita da noleggio"
 #: code:addons/sale_rental/models/stock_warehouse.py:0
 #, python-format
 msgid "Can't find any generic 'Rent' route."
-msgstr "Impossibile trovare route \"Noleggio\""
+msgstr "Impossibile trovare un instradamento 'Noleggio'."
 
 #. module: sale_rental
 #. odoo-python
@@ -143,7 +143,7 @@ msgstr "Cancella"
 #. module: sale_rental
 #: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__cancel
 msgid "Cancelled"
-msgstr ""
+msgstr "Annullato"
 
 #. module: sale_rental
 #. odoo-python
@@ -202,7 +202,7 @@ msgstr "Creato il"
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__partner_id
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 msgid "Customer"
-msgstr ""
+msgstr "Cliente"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__default_code
@@ -218,7 +218,7 @@ msgstr "Consegna"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_picking_id
 msgid "Delivery Order"
-msgstr ""
+msgstr "Ordine di consegna"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__display_name
@@ -239,6 +239,8 @@ msgid ""
 "End Date of the Rental (extensions included),         taking into account "
 "all the extensions sold to the customer."
 msgstr ""
+"Data di fine del noleggio,         comprese tutte le proroghe vendute al "
+"cliente."
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
@@ -254,18 +256,18 @@ msgstr "ID"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_state
 msgid "In Move State"
-msgstr ""
+msgstr "Stato del movimento in entrata"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_move_id
 msgid "Incoming Move"
-msgstr ""
+msgstr "Movimento in entrata"
 
 #. module: sale_rental
 #: model:ir.model.fields,help:sale_rental.field_sale_order_line__rental_qty
 #: model:ir.model.fields,help:sale_rental.field_sale_rental__rental_qty
 msgid "Indicate the number of items that will be rented."
-msgstr "Indica il numero di pezzi che verranno noleggiati"
+msgstr "Indica il numero di oggetti che verranno noleggiati."
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product____last_update
@@ -292,6 +294,8 @@ msgstr "Ultimo aggiornamento il"
 msgid ""
 "Missing 'Rental to Extend' on the sale order line with rental service {}"
 msgstr ""
+"Manca 'Noleggio da estendere' nella riga ordine di vendita con il servizio "
+"di noleggio {}"
 
 #. module: sale_rental
 #: model:ir.model.fields.selection,name:sale_rental.selection__sale_order_line__rental_type__new_rental
@@ -303,7 +307,7 @@ msgstr "Nuovo noleggio"
 #: code:addons/sale_rental/models/sale_order.py:0
 #, python-format
 msgid "Not enough stock !"
-msgstr "Non abbastanza stock"
+msgstr "Giacenza non sufficiente!"
 
 #. module: sale_rental
 #. odoo-python
@@ -313,8 +317,8 @@ msgid ""
 "On the 'new rental' sale order line with product '{}', we should have a "
 "rental service product !"
 msgstr ""
-"Nella nuova riga dell'ordine di vendita per il prodotto {}, e' necessario "
-"avere un prodotto di tipo \"servizio noleggio\" "
+"Nella riga 'nuovo noleggio' dell'ordine di vendita con il prodotto '{}', è "
+"necessario avere un prodotto di tipo servizio noleggio!"
 
 #. module: sale_rental
 #. odoo-python
@@ -360,28 +364,28 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__ordered
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 msgid "Ordered"
-msgstr ""
+msgstr "Ordinato"
 
 #. module: sale_rental
 #: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__out
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 msgid "Out"
-msgstr ""
+msgstr "In uscita"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_state
 msgid "Out Move State"
-msgstr ""
+msgstr "Stato del movimento in uscita"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_move_id
 msgid "Outgoing Move"
-msgstr ""
+msgstr "Movimento in uscita"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_view_location_id
 msgid "Parent Rental"
-msgstr ""
+msgstr "Noleggio padre"
 
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_product_template
@@ -400,9 +404,8 @@ msgstr "Variante prodotto"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__hw_product_id
-#, fuzzy
 msgid "Product to Rent"
-msgstr "Nome Prodotto"
+msgstr "Prodotto da noleggiare"
 
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_stock_quant
@@ -419,7 +422,7 @@ msgstr "NOLEGGIO - {}"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_picking_id
 msgid "Receipt"
-msgstr ""
+msgstr "Ricevimento"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_product_product__rental_service_ids
@@ -522,15 +525,13 @@ msgstr "Route - Noleggio"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__start_order_id
-#, fuzzy
 msgid "Rental SO"
-msgstr "Noleggio Out"
+msgstr "OV noleggio"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__start_order_line_id
-#, fuzzy
 msgid "Rental SO Line"
-msgstr "Riga del contratto di noleggio"
+msgstr "Riga OV noleggio"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_calendar
@@ -540,13 +541,12 @@ msgstr "Pianificazione noleggio"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rental_product_id
 msgid "Rental Service"
-msgstr ""
+msgstr "Servizio noleggio"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__name
-#, fuzzy
 msgid "Rental Service Name"
-msgstr "Crea servizio di noleggio"
+msgstr "Nome servizio noleggio"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_product_product__rental_service_tmpl_ids
@@ -570,21 +570,18 @@ msgstr "Noleggio di {}"
 
 #. module: sale_rental
 #: model:product.template,name:sale_rental.rent_product_product_25_product_template
-#, fuzzy
 msgid "Rental of one Acoustic Bloc Screens"
-msgstr "Rental of one iMac"
+msgstr "Noleggio di uno schermo divisorio acustico"
 
 #. module: sale_rental
 #: model:product.template,name:sale_rental.rent_product_product_20_product_template
-#, fuzzy
 msgid "Rental of one Flipover"
-msgstr "Rental of one iMac"
+msgstr "Noleggio di una lavagna a fogli mobili"
 
 #. module: sale_rental
 #: model:product.template,name:sale_rental.rent_consu_delivery_01_product_template
-#, fuzzy
 msgid "Rental of one Three-Seat Sofa"
-msgstr "Rental of one iMac"
+msgstr "Noleggio di un divano a tre posti"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__extension_rental_id
@@ -608,7 +605,7 @@ msgstr "Noleggi"
 #: model:ir.model.fields,field_description:sale_rental.field_product_template__rented_product_tmpl_id
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rented_product_id
 msgid "Rented Product"
-msgstr ""
+msgstr "Prodotto noleggiato"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
@@ -639,17 +636,17 @@ msgstr "Noleggi"
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 msgid "Search Rentals"
-msgstr ""
+msgstr "Cerca noleggi"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_picking_id
 msgid "Sell Delivery Order"
-msgstr ""
+msgstr "Ordine consegna vendita"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_state
 msgid "Sell Move State"
-msgstr ""
+msgstr "Stato movimento vendita"
 
 #. module: sale_rental
 #. odoo-python
@@ -664,24 +661,23 @@ msgstr "Prodotti noleggiati venduti"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__sell_rented_product_route_id
 msgid "Sell Rented Product Route"
-msgstr "Sell Rented Product Route"
+msgstr "Percorso vendita prodotto noleggiato"
 
 #. module: sale_rental
 #: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__sell_progress
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 msgid "Sell in progress"
-msgstr ""
+msgstr "Vendita in corso"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_move_id
 msgid "Selling Move"
-msgstr ""
+msgstr "Movimento di vendita"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
-#, fuzzy
 msgid "Selling Order Line"
-msgstr "Linea d'ordine di vendita"
+msgstr "Riga ordine di vendita"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_res_config_settings__send_return_reminder
@@ -700,7 +696,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__sold
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 msgid "Sold"
-msgstr ""
+msgstr "Venduto"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__start_date
@@ -712,12 +708,12 @@ msgstr "Data inizio"
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__state
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 msgid "State"
-msgstr ""
+msgstr "Stato"
 
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_stock_rule
 msgid "Stock Rule"
-msgstr ""
+msgstr "Regola di giacenza"
 
 #. module: sale_rental
 #. odoo-python
@@ -741,15 +737,15 @@ msgid ""
 "The Rental Service of the Rental Extension you just selected is '{}' and "
 "it's not the same as the Product currently selected in this Sale Order Line."
 msgstr ""
-"L'estensione del servizio di noleggio che e' stato selezionato per '{}' non "
-"e' lo stesso prodotto di quella nell'ordine di vendita"
+"Il servizio noleggio dell'estensione noleggio selezionato è '{}' che è "
+"diverso dal prodotto attualmente selezionato nella riga ordine di vendita."
 
 #. module: sale_rental
 #. odoo-python
 #: code:addons/sale_rental/models/product.py:0
 #, python-format
 msgid "The rental product '{}' must be of type 'Service'."
-msgstr "Il prodotto di noleggio '{}' deve essere di tipo 'Servizio'"
+msgstr "Il prodotto di noleggio '{}' deve essere di tipo 'Servizio'."
 
 #. module: sale_rental
 #. odoo-python
@@ -759,20 +755,20 @@ msgid ""
 "The rental product '{}' must have the option 'Must Have Start and End Dates' "
 "checked."
 msgstr ""
-"Il prodotto noleggiabile '{}' deve avere il flag su \"Deve avere una data di "
-"inizio e di fine\""
+"Il prodotto noleggio '{}' deve avere l'opzione 'Deve avere una data di "
+"inizio e di fine' selezionata."
 
 #. module: sale_rental
 #: model:ir.model.constraint,message:sale_rental.constraint_sale_order_line_rental_qty_positive
 msgid "The rental quantity must be positive or null."
-msgstr ""
+msgstr "La quantità del noleggio deve essere maggiore o uguale a zero."
 
 #. module: sale_rental
 #. odoo-python
 #: code:addons/sale_rental/models/product.py:0
 #, python-format
 msgid "The unit of measure of the rental product '{}' must be 'Day'."
-msgstr "L'unità di misura per il prodotto '{}' deve essere \"Giorno\""
+msgstr "L'unità di misura per il prodotto '{}' deve essere \"Giorno\"."
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
