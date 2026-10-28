@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <!-- Delivery Slip - Employee -->
+    <record id="rental_sign_slot_delivery_employee" model="rental.sign.template.item">
+        <field name="description">Deliver Slip Employee</field>
+        <field name="company_id" ref="base.main_company" />
+        <field name="report_id" ref="stock.action_report_delivery" />
+        <field name="role_id" ref="sign_oca.sign_role_employee" />
+        <field name="page">1</field>
+        <field name="position_x">6.94</field>
+        <field name="position_y">58.22</field>
+        <field name="width">24.95</field>
+        <field name="height">8.48</field>
+    </record>
+
+    <!-- Delivery Slip - Customer -->
+    <record id="rental_sign_slot_delivery_customer" model="rental.sign.template.item">
+        <field name="description">Deliver Slip Customer</field>
+        <field name="company_id" ref="base.main_company" />
+        <field name="report_id" ref="stock.action_report_delivery" />
+        <field name="role_id" ref="sign_oca.sign_role_customer" />
+        <field name="page">1</field>
+        <field name="position_x">65.80</field>
+        <field name="position_y">58.52</field>
+        <field name="width">24.95</field>
+        <field name="height">8.48</field>
+    </record>
+
+    <!-- Return Slip - Employee -->
+    <record id="rental_sign_slot_return_employee" model="rental.sign.template.item">
+        <field name="description">Return Slip Employee</field>
+        <field name="company_id" ref="base.main_company" />
+        <field name="report_id" ref="stock.action_report_delivery" />
+        <field name="role_id" ref="sign_oca.sign_role_employee" />
+        <field name="page">1</field>
+        <field name="position_x">6.94</field>
+        <field name="position_y">58.22</field>
+        <field name="width">24.95</field>
+        <field name="height">8.48</field>
+    </record>
+
+    <function model="ir.config_parameter" name="set_param">
+        <value eval="'rental_sign.delivery_report_id'" />
+        <value eval="ref('stock.action_report_delivery')" />
+    </function>
+
+    <function model="ir.config_parameter" name="set_param">
+        <value eval="'rental_sign.return_report_id'" />
+        <value eval="ref('stock.action_report_delivery')" />
+    </function>
+</odoo>
