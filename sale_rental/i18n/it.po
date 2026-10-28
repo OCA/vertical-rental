@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-23 01:51+0000\n"
-"PO-Revision-Date: 2026-04-30 10:45+0000\n"
+"PO-Revision-Date: 2026-10-28 11:46+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
 "Language: it\n"
@@ -256,12 +256,12 @@ msgstr "ID"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_state
 msgid "In Move State"
-msgstr "In stato movimento"
+msgstr "Stato del movimento in entrata"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_move_id
 msgid "Incoming Move"
-msgstr "Movimento in arrivo"
+msgstr "Movimento in entrata"
 
 #. module: sale_rental
 #: model:ir.model.fields,help:sale_rental.field_sale_order_line__rental_qty
@@ -375,12 +375,12 @@ msgstr "Fuori"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_state
 msgid "Out Move State"
-msgstr "Stato movimento fuori"
+msgstr "Stato del movimento in uscita"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_move_id
 msgid "Outgoing Move"
-msgstr "Movimento uscita"
+msgstr "Movimento in uscita"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_view_location_id
@@ -432,7 +432,7 @@ msgstr "Servizio noleggio collegato"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_product_product__rented_product_id
 msgid "Related Rented Product"
-msgstr "Prodotto noleggiato collegato"
+msgstr "Prodotto noleggiabile collegato"
 
 #. module: sale_rental
 #: model:mail.template,subject:sale_rental.mail_template_rental_return_reminder
@@ -559,14 +559,14 @@ msgstr "Servizi noleggio"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__rental_type
 msgid "Rental Type"
-msgstr "Tipo noleggio"
+msgstr "Tipo di noleggio"
 
 #. module: sale_rental
 #. odoo-python
 #: code:addons/sale_rental/wizard/create_rental_product.py:0
 #, python-format
 msgid "Rental of a {}"
-msgstr "Noleggio di un {}"
+msgstr "Noleggio di {}"
 
 #. module: sale_rental
 #: model:product.template,name:sale_rental.rent_product_product_25_product_template
@@ -656,7 +656,7 @@ msgstr "Stato movimento della vendita"
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
 #, python-format
 msgid "Sell Rented Product"
-msgstr "Prodotto noleggiato della vendita"
+msgstr "Vendita prodotti noleggiati"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__sell_rented_product_route_id
@@ -672,7 +672,7 @@ msgstr "Vendita in corso"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_move_id
 msgid "Selling Move"
-msgstr "Movimento vendita"
+msgstr "Movimento di vendita"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
@@ -763,7 +763,7 @@ msgstr ""
 #. module: sale_rental
 #: model:ir.model.constraint,message:sale_rental.constraint_sale_order_line_rental_qty_positive
 msgid "The rental quantity must be positive or null."
-msgstr "La quantità di noleggio deve essere positiva o nulla."
+msgstr "La quantità del noleggio deve essere maggiore o uguale a zero."
 
 #. module: sale_rental
 #. odoo-python
