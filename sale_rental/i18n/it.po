@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-23 01:51+0000\n"
-"PO-Revision-Date: 2026-10-27 15:46+0000\n"
+"PO-Revision-Date: 2026-10-28 10:46+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
 "Language: it\n"
@@ -59,23 +59,23 @@ msgstr "Vendita da noleggio"
 #: code:addons/sale_rental/models/stock.py:46
 #, python-format
 msgid "Can't find any generic 'Rent' route."
-msgstr "Impossibile trovare route \"Noleggio\""
+msgstr "Impossibile trovare un percorso 'Noleggio' generico."
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/stock.py:57
 #, python-format
 msgid "Can't find any generic 'Sell Rented Product' route."
-msgstr "Impossibile trovare route\"Vendita da noleggio\""
+msgstr "Impossibile trovare un percorso 'Vendita prodotto noleggiato' generico."
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.create_rental_product_form
 msgid "Cancel"
-msgstr "Cancella"
+msgstr "Annulla"
 
 #. module: sale_rental
 #: selection:sale.rental,state:0
 msgid "Cancelled"
-msgstr "Annullata"
+msgstr "Annullato"
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/sale_order.py:172
@@ -191,12 +191,12 @@ msgstr "ID"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_state
 msgid "In Move State"
-msgstr "In stato movimento"
+msgstr "Stato del movimento in entrata"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_move_id
 msgid "Incoming Move"
-msgstr "Movimento in arrivo"
+msgstr "Movimento in entrata"
 
 #. module: sale_rental
 #: model:ir.model.fields,help:sale_rental.field_sale_order_line__rental_qty
@@ -254,8 +254,8 @@ msgid ""
 "On the 'new rental' sale order line with product '{}', we should have a "
 "rental service product !"
 msgstr ""
-"Nella nuova riga dell'ordine di vendita per il prodotto {}, e' necessario "
-"avere un prodotto di tipo \"servizio noleggio\" "
+"Nella riga 'nuovo noleggio' dell'ordine di vendita con il prodotto '{}', è "
+"necessario avere un prodotto di tipo servizio noleggio!"
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/sale_order.py:102
@@ -306,12 +306,12 @@ msgstr "Fuori"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_state
 msgid "Out Move State"
-msgstr "Stato movimento fuori"
+msgstr "Stato del movimento in uscita"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_move_id
 msgid "Outgoing Move"
-msgstr "Movimento uscita"
+msgstr "Movimento in uscita"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_view_location_id
@@ -326,12 +326,12 @@ msgstr "Prodotto"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__categ_id
 msgid "Product Category"
-msgstr "Categoria Prodotto"
+msgstr "Categoria prodotto"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__hw_product_id
 msgid "Product to Rent"
-msgstr "Nome Prodotto"
+msgstr "Prodotto da noleggiare"
 
 #. module: sale_rental
 #: code:addons/sale_rental/wizard/create_rental_product.py:26
@@ -347,7 +347,7 @@ msgstr "Ricevuta"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_product_product__rented_product_id
 msgid "Related Rented Product"
-msgstr "Prodotto noleggiabile collegato"
+msgstr "Prodotto noleggiato collegato"
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/stock.py:43
@@ -476,7 +476,7 @@ msgstr "Rental of one iMac"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__extension_rental_id
 msgid "Rental to Extend"
-msgstr "Estensione noleggio"
+msgstr "Noleggio da estendere"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__sell_rental_id
@@ -540,12 +540,12 @@ msgstr ""
 #: model:stock.route,name:sale_rental.route_warehouse0_sell_rented_product
 #, python-format
 msgid "Sell Rented Product"
-msgstr "Prodotti noleggiati venduti"
+msgstr "Vendita prodotti noleggiati"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__sell_rented_product_route_id
 msgid "Sell Rented Product Route"
-msgstr "Sell Rented Product Route"
+msgstr "Percorso vendita prodotto noleggiato"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
@@ -606,14 +606,14 @@ msgid ""
 "The Rental Service of the Rental Extension you just selected is '{}' and "
 "it's not the same as the Product currently selected in this Sale Order Line."
 msgstr ""
-"L'estensione del servizio di noleggio che e' stato selezionato per '{}' non "
-"e' lo stesso prodotto di quella nell'ordine di vendita"
+"Il servizio noleggio dell'estensione noleggio selezionato è '{}' che è "
+"diverso dal prodotto attualmente selezionato nella riga ordine di vendita."
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/product.py:28
 #, python-format
 msgid "The rental product '{}' must be of type 'Service'."
-msgstr "Il prodotto di noleggio '{}' deve essere di tipo 'Servizio'"
+msgstr "Il prodotto di noleggio '{}' deve essere di tipo 'Servizio'."
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/product.py:32
@@ -622,8 +622,8 @@ msgid ""
 "The rental product '{}' must have the option 'Must Have Start and End Dates' "
 "checked."
 msgstr ""
-"Il prodotto noleggiabile '{}' deve avere il flag su \"Deve avere una data di "
-"inizio e di fine\""
+"Il prodotto noleggio '{}' deve avere l'opzione 'Deve avere una data di "
+"inizio e di fine' selezionata."
 
 #. module: sale_rental
 #: sql_constraint:sale.order.line:0
@@ -634,7 +634,7 @@ msgstr ""
 #: code:addons/sale_rental/models/product.py:39
 #, python-format
 msgid "The unit of measure of the rental product '{}' must be 'Day'."
-msgstr "L'unità di misura per il prodotto '{}' deve essere \"Giorno\""
+msgstr "L'unità di misura per il prodotto '{}' deve essere \"Giorno\"."
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
