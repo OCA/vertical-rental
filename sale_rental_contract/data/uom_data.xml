@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <!-- Monthly rental: the contract line counts rented units per month, in
+         the time category of the rental service (Days) so the invoice line
+         keeps a unit compatible with the product -->
+    <record id="product_uom_month" model="uom.uom">
+        <field name="name">Month</field>
+        <field name="category_id" ref="uom.uom_categ_wtime" />
+        <field name="uom_type">bigger</field>
+        <field name="factor_inv" eval="30" />
+        <field name="rounding" eval="0.01" />
+    </record>
+</odoo>
