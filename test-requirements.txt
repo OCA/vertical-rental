@@ -1,0 +1,2 @@
+odoo-addon-sale_start_end_dates @ git+https://github.com/OCA/sale-workflow.git@refs/pull/3505/head#subdirectory=sale_start_end_dates
+odoo-addon-sale_rental @ git+https://github.com/OCA/vertical-rental.git@refs/pull/71/head#subdirectory=sale_rental
