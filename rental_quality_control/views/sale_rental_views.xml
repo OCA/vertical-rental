@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_qc_inspection_per_sale_rental" model="ir.actions.act_window">
+        <field name="name">Quality inspections from sale rental</field>
+        <field name="res_model">qc.inspection</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('rental_id', '=', active_id)]</field>
+    </record>
+    <record
+        id="action_qc_inspection_per_sale_rental_done"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Quality inspection from picking done</field>
+        <field name="res_model">qc.inspection</field>
+        <field name="view_mode">list,form</field>
+        <field
+            name="domain"
+        >[('rental_id', '=', active_id), ('state', 'not in', ['draft', 'waiting'])]</field>
+    </record>
+    <record
+        id="action_qc_inspection_per_sale_rental_passed"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Quality inspection from picking passed</field>
+        <field name="res_model">qc.inspection</field>
+        <field name="view_mode">list,form</field>
+        <field
+            name="domain"
+        >[('rental_id', '=', active_id), ('state', '=', 'success')]</field>
+    </record>
+    <record
+        id="action_qc_inspection_per_sale_rental_failed"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Quality inspections from picking failed</field>
+        <field name="res_model">qc.inspection</field>
+        <field name="view_mode">list,form</field>
+        <field
+            name="domain"
+        >[('rental_id', '=', active_id), ('state', '=', 'failed')]</field>
+    </record>
+
+    <record model="ir.ui.view" id="stock_sale_rental_qc_view">
+        <field name="name">sale.rental.qc.view</field>
+        <field name="model">sale.rental</field>
+        <field name="inherit_id" ref="sale_rental.sale_rental_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div name="button_box">
+                    <button
+                        class="oe_inline oe_stat_button"
+                        type="action"
+                        name="%(action_qc_inspection_per_sale_rental)d"
+                        icon="fa-list"
+                        groups="quality_control_oca.group_quality_control_user"
+                    >
+                        <field
+                            name="created_inspections"
+                            widget="statinfo"
+                            string="inspections"
+                        />
+                    </button>
+                    <button
+                        class="oe_inline oe_stat_button"
+                        type="action"
+                        name="%(action_qc_inspection_per_sale_rental_done)d"
+                        icon="fa-pencil"
+                        groups="quality_control_oca.group_quality_control_user"
+                    >
+                        <field name="done_inspections" widget="statinfo" />
+                    </button>
+                    <button
+                        class="oe_inline oe_stat_button"
+                        type="action"
+                        name="%(action_qc_inspection_per_sale_rental_passed)d"
+                        icon="fa-thumbs-o-up"
+                        groups="quality_control_oca.group_quality_control_user"
+                    >
+                        <field name="passed_inspections" widget="statinfo" />
+                    </button>
+                    <button
+                        class="oe_inline oe_stat_button"
+                        type="action"
+                        name="%(action_qc_inspection_per_sale_rental_failed)d"
+                        icon="fa-thumbs-o-down"
+                        groups="quality_control_oca.group_quality_control_user"
+                    >
+                        <field
+                            name="failed_inspections"
+                            widget="statinfo"
+                            groups="quality_control_oca.group_quality_control_user"
+                        />
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
