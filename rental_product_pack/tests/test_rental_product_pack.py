@@ -17,6 +17,11 @@ class TestRentalProductPack(RentalStockCommon):
             login="rental_pack_salesman",
             groups="sales_team.group_sale_salesman,stock.group_stock_user",
         )
+        cls.user_internal = new_test_user(
+            cls.env,
+            login="rental_pack_internal",
+            groups="base.group_user",
+        )
 
     def setUp(self):
         super().setUp()
@@ -164,3 +169,25 @@ class TestRentalProductPack(RentalStockCommon):
         self.assertEqual(move_c.product_uom_qty, 2)
         move_a = picking_out.move_ids.filtered(lambda m: m.product_id == self.productA)
         self.assertEqual(move_a.rental_pack_move_id.product_id, product_d)
+
+    def test_03_used_pack_line_count_follows_pack_lines(self):
+        self.assertEqual(self.productC.used_pack_line_count, 1)
+        self.env["product.pack.line"].create(
+            {
+                "parent_product_id": self.productB.id,
+                "product_id": self.productC.id,
+                "quantity": 1,
+            }
+        )
+        self.assertEqual(self.productC.used_pack_line_count, 2)
+        self.assertEqual(self.productC.product_tmpl_id.used_pack_line_count, 2)
+
+    def test_04_internal_user_manages_pack_lines(self):
+        pack_line = self.productA.pack_line_ids.filtered(
+            lambda line: line.product_id == self.productC
+        )
+        pack_line.with_user(self.user_internal).write({"quantity": 3})
+        self.assertEqual(pack_line.quantity, 3)
+        pack_line.with_user(self.user_internal).unlink()
+        self.assertEqual(self.productA.pack_line_ids.product_id, self.productB)
+        self.assertEqual(self.productC.used_pack_line_count, 0)
