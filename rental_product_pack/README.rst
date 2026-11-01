@@ -28,20 +28,6 @@ Rental Product Pack
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-Rental Product Pack
--------------------
-
-*This file has been generated on 2022-05-04-12-21-41. Changes to it will
-be overwritten.*
-
-Summary
-~~~~~~~
-
-Manage rentals with product packs
-
-Description
-~~~~~~~~~~~
-
 This module allows to manage rentals with product packs. You can define
 product packs as described in the module product_pack. The components of
 the pack are added to both rental stock pickings after order
@@ -54,9 +40,6 @@ confirmation.
 
 Usage
 =====
-
-Usage
------
 
 Install the module. No further configuration is needed.
 
@@ -127,10 +110,11 @@ Authors
 Contributors
 ------------
 
-Contributors
-~~~~~~~~~~~~
+- Odoo Community Association (OCA)/Elego Software Solutions GmbH
 
-elego Software Solutions GmbH, Odoo Community Association (OCA)
+- `Binhex <https://www.binhex.cloud>`__:
+
+  - Edilio Escalona Almira e.escalona@binhex.cloud
 
 Maintainers
 -----------

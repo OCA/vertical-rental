@@ -1,5 +1,3 @@
-## Usage
-
 Install the module. No further configuration is needed.
 
 Create at least one storable product that will be a component of a pack.  
