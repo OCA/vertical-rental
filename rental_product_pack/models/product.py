@@ -11,7 +11,7 @@ class ProductTemplate(models.Model):
         compute="_compute_used_pack_line_count",
     )
 
-    @api.depends("pack_line_ids")
+    @api.depends("used_in_pack_line_ids")
     def _compute_used_pack_line_count(self):
         for rec in self:
             rec.used_pack_line_count = len(rec.used_in_pack_line_ids)
