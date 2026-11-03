@@ -1,0 +1,6 @@
+- Elego Software Solutions GmbH (www.elegosoft.com)
+  - Yu Weng \<yweng@elegosoft.com\>
+- Odoo Community Association (OCA)
+- Ben Brich \<b.brich@humanilog.org\> (www.humanilog.org)
+- [Binhex](https://www.binhex.cloud):
+  - Edilio Escalona Almira \<e.escalona@binhex.cloud\>

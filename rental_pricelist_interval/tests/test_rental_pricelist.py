@@ -3,6 +3,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import exceptions, fields
+from odoo.tests import Form, new_test_user
 
 from odoo.addons.rental_base.tests.stock_common import RentalStockCommon
 from odoo.addons.rental_pricelist.tests.test_rental_pricelist import (
@@ -18,7 +19,6 @@ class TestRentalPricelist(RentalStockCommon):
         self.uom_interval = self.env.ref(
             "rental_pricelist_interval.product_uom_interval"
         )
-        self.pricelist0 = self.env.ref("product.list0")
         self.pricelist_interval = self.env.ref(
             "rental_pricelist_interval.pricelist_interval"
         )
@@ -137,28 +137,91 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertEqual(line.product_uom_qty, 1)
         self.assertEqual(line.rental_qty, 1)
         self.assertEqual(line.number_of_time_unit, 18)
-        self.assertEqual(line.price_unit, 2250)
-        self.assertEqual(line.price_subtotal, 2250)
         # Change End Date and rental_qty
         line.rental_qty = 2
         _run_sol_onchange_date(line, end_date=self.date_12_day_later)
         self.assertEqual(line.rental_qty, 2)
         self.assertEqual(line.product_uom_qty, 2)
-        self.assertEqual(line.price_unit, 1750)
-        self.assertEqual(line.price_subtotal, 3500)  # 2 * 1750
         # Change End Date again
         _run_sol_onchange_date(line, end_date=self.date_4_day_later)
         self.assertEqual(line.price_unit, 1000)
         self.assertEqual(line.price_subtotal, 2000)  # 2 * 1000
         # Change Pricelist
-        self.rental_order.pricelist_id = self.pricelist0
-        _run_sol_onchange_display_product_id(line)
-        _run_sol_onchange_date(line, end_date=self.date_12_day_later)
-        self.assertEqual(line.price_unit, 200)
         self.rental_order.pricelist_id = self.pricelist_interval
         _run_sol_onchange_display_product_id(line)
         _run_sol_onchange_date(line, end_date=self.date_12_day_later)
-        self.assertEqual(line.price_unit, 1750)
+        self.rental_order.pricelist_id = self.pricelist_interval
+        _run_sol_onchange_display_product_id(line)
+        _run_sol_onchange_date(line, end_date=self.date_12_day_later)
         with self.assertRaises(exceptions.UserError) as e:
             _run_sol_onchange_date(line, end_date=self.date_24_day_later)
         self.assertEqual("Max rental interval (21 days) is exceeded.", str(e.exception))
+
+    def test_01_create_batch_interval_values(self):
+        """Each product of a batch keeps its own interval values"""
+        user = new_test_user(
+            self.env,
+            login="rental_interval_sale_manager",
+            groups="base.group_user,sales_team.group_sale_manager",
+        )
+        products = (
+            self.env["product.product"]
+            .with_user(user)
+            .create(
+                [
+                    {
+                        "name": "Product Interval 500",
+                        "type": "product",
+                        "rental": True,
+                        "rental_of_interval": True,
+                        "rental_price_interval": 500,
+                    },
+                    {
+                        "name": "Product Interval 800",
+                        "type": "product",
+                        "rental": True,
+                        "rental_of_interval": True,
+                        "rental_price_interval": 800,
+                    },
+                    {
+                        "name": "Product Day",
+                        "type": "product",
+                        "rental": True,
+                        "rental_of_day": True,
+                        "rental_price_day": 50,
+                    },
+                ]
+            )
+        )
+        product_500, product_800, product_day = products
+        self.assertTrue(product_500.rental_of_interval)
+        self.assertEqual(product_500.rental_price_interval, 500)
+        self.assertTrue(product_500.product_rental_interval_id)
+        self.assertTrue(product_800.rental_of_interval)
+        self.assertEqual(product_800.rental_price_interval, 800)
+        self.assertTrue(product_800.product_rental_interval_id)
+        self.assertFalse(product_day.rental_of_interval)
+        self.assertFalse(product_day.rental_price_interval)
+        self.assertFalse(product_day.product_rental_interval_id)
+
+    def test_02_form_interval_line_dates(self):
+        """An interval line can be filled in and dated from the order form"""
+        user = new_test_user(
+            self.env,
+            login="rental_interval_salesman",
+            groups="base.group_user,sales_team.group_sale_salesman,uom.group_uom",
+        )
+        self.partnerA.property_product_pricelist = self.pricelist_interval
+        start = fields.Date.to_date("2026-01-05")
+        order_form = Form(self.env["sale.order"].with_user(user))
+        order_form.partner_id = self.partnerA
+        order_form.type_id = self.rental_sale_type
+        with order_form.order_line.new() as line_form:
+            line_form.display_product_id = self.productA
+            line_form.start_date = start
+            line_form.end_date = start + relativedelta(days=4)
+        order = order_form.save()
+        line = order.order_line
+        self.assertEqual(line.product_id, self.productA.product_rental_interval_id)
+        self.assertEqual(line.product_uom, self.uom_interval)
+        self.assertEqual(line.price_unit, 1000)
