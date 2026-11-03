@@ -94,7 +94,7 @@ class SaleOrderLine(models.Model):
                 self.price_unit = self.env[
                     "account.tax"
                 ]._fix_tax_included_price_company(
-                    self._get_display_price(product),
+                    self._get_display_price(),
                     product.taxes_id,
                     self.tax_id,
                     self.company_id,
@@ -109,30 +109,6 @@ class SaleOrderLine(models.Model):
                 res = [time_uoms["interval"].id]
         else:
             res = super()._get_product_rental_uom_ids()
-        return res
-
-    @api.onchange("product_id")
-    def product_id_change(self):
-        uom_interval = self.env.ref("rental_pricelist_interval.product_uom_interval")
-        res = super().product_id_change()
-        if (
-            self.order_id.pricelist_id.is_interval_pricelist
-            and self.product_id
-            and self.product_id.rented_product_id
-            and self.product_id.rented_product_id.rental_of_interval
-        ):
-            if (
-                self.rental
-                and res
-                and "domain" in res
-                and "product_uom" in res["domain"]
-            ):
-                del res["domain"]["product_uom"]
-                if self.display_product_id.rental:
-                    uom_ids = [uom_interval.id]
-                    res["domain"]["product_uom"] = [("id", "in", uom_ids)]
-                    if self.product_uom.id not in uom_ids:
-                        self.product_uom = uom_ids[0]
         return res
 
     @api.onchange("product_id", "rental_qty")

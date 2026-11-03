@@ -107,16 +107,20 @@ class ProductProduct(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        ext_vals = {}
+        ext_vals_list = []
         for vals in vals_list:
+            ext_vals = {}
             if vals.get("rental_of_interval", False):
                 ext_vals["rental_of_interval"] = True
                 ext_vals["rental_price_interval"] = vals.get("rental_price_interval")
                 del vals["rental_of_interval"]
                 if "rental_price_interval" in vals:
                     del vals["rental_price_interval"]
+            ext_vals_list.append(ext_vals)
         res = super().create(vals_list)
-        res.write(ext_vals)
+        for product, ext_vals in zip(res, ext_vals_list, strict=True):
+            if ext_vals:
+                product.write(ext_vals)
         return res
 
     def action_reset_rental_price_interval_items(self):
