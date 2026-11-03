@@ -96,7 +96,7 @@ class SaleOrderLine(models.Model):
             if self._context.get("no_warning", False):
                 return res
             else:
-                raise exceptions.Warning(
+                raise exceptions.UserError(
                     _("The start date must be anterior to the end date.")
                 )
         date_first = date_from
