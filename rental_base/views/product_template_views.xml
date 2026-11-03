@@ -6,9 +6,12 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@name='options']" position="inside">
                 <div>
-                    <field name="rental" readonly="0" />
+                    <field name="rental" />
                     <label for="rental" />
                 </div>
+            </xpath>
+            <xpath expr="//page[@name='sales']" position="attributes">
+                <attribute name="invisible">not sale_ok and not rental</attribute>
             </xpath>
         </field>
     </record>
