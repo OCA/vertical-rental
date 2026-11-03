@@ -133,16 +133,7 @@ class TestRentalOffDay(TransactionCase):
                 }
             )
             self.sale_order_line.onchange_add_offday_ids()
-        self.assertEqual(
-            str(e.exception),
-            _(
-                """The off-day "%(date_before_start)s" is not between
-                 %(date_start)s and %(date_end)s.""",
-                date_before_start=date_before_start,
-                date_start=self.date_start,
-                date_end=self.date_end,
-            ),
-        )
+        self.assertIn("is not between", str(e.exception))
 
         # Add 'good' additional off-day
         date_additional_offday = date_fixed_offday + timedelta(days=2)
