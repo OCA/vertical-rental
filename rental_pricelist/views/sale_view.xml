@@ -18,7 +18,7 @@
             >
                 <field
                     name="display_product_id"
-                    attrs="{'required': [('display_type', '=', False)]}"
+                    required="not display_type"
                     context="{'type_id': parent.type_id}"
                 />
             </xpath>
@@ -31,16 +31,21 @@
             <xpath expr="//field[@name='product_id']" position="before">
                 <field
                     name="display_product_id"
-                    attrs="{'required': [('display_type', '=', False)]}"
+                    required="not display_type"
                     context="{'type_id': parent.type_id}"
                 />
                 <field name="rental_ok" invisible="1" />
                 <field name="sale_ok" invisible="1" />
+                <field name="rental_uom_ids" invisible="1" />
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']//form//group[@id='order_info']/field[@name='product_uom']"
+                position="attributes"
+            >
+                <attribute name="domain">[('id', 'in', rental_uom_ids)]</attribute>
             </xpath>
             <xpath expr="//group[@id='rental_settings']" position="attributes">
-                <attribute
-                    name="attrs"
-                >{'invisible': [('rental_ok', '=', False)]}</attribute>
+                <attribute name="invisible">not rental_ok</attribute>
             </xpath>
             <xpath
                 expr="//group[@id='rental_settings']//field[@name='rental']"
@@ -52,9 +57,7 @@
                 expr="//group[@id='rental_settings']//field[@name='order_type']"
                 position="attributes"
             >
-                <attribute
-                    name="attrs"
-                >{'readonly': ['|', ('sale_ok', '=', False), ('rental_ok', '=', False)]}</attribute>
+                <attribute name="readonly">not sale_ok or not rental_ok</attribute>
             </xpath>
             <xpath
                 expr="//group[@id='rental_times']//field[@name='number_of_days']"
@@ -63,7 +66,7 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath
-                expr="//group[@id='rental_times']//label[@for='product_uom_qty']"
+                expr="//group[@id='rental_times']//field[@name='product_uom_qty']"
                 position="before"
             >
                 <label for="number_of_time_unit" string="Time" />
@@ -75,7 +78,7 @@
                         force_save="1"
                         groups="uom.group_uom"
                         class="oe_inline oe_no_button"
-                        attrs="{'readonly': 1}"
+                        readonly="1"
                     />
                 </div>
             </xpath>

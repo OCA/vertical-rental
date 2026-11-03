@@ -28,20 +28,11 @@ Rental Pricelist
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-Rental Pricelist
-----------------
-
 *This file has been generated on 2022-05-04-12-21-41. Changes to it will
 be overwritten.*
 
-Summary
-~~~~~~~
-
 Enables the user to define different rental prices with time uom (Month,
 Day and Hour).
-
-Description
-~~~~~~~~~~~
 
 Rental prices are usually scaled prices based on a time unit, typically
 day, sometimes months or hour. This modules integrates the standard Odoo
@@ -54,11 +45,21 @@ pricelist features.
 .. contents::
    :local:
 
-Usage
-=====
+Configuration
+=============
+
+To configure this module, you need to:
+
+#. Go to company settings and define the default interval ranges on
+'Rental Interval Prices' tab. These ranges will be applied for
+computation of price intervals for rental service products when interval
+pricing is activated in stockable product.
+
+#. If desired go to 'RS (Prefix and Suffix)' tab an define how rental
+interval service product names and reference numbers are created.
 
 Usage
------
+=====
 
 Create a rentable product:
 
@@ -104,9 +105,6 @@ Please also see the usage section of sale_rental and rental_base module.
 Changelog
 =========
 
-Changelog
----------
-
 - 8d191ff7 2022-04-10 15:41:16 +0200 wagner@elegosoft.com add
   missing/lost documentation (issue #4516)
 - 4509f78a 2022-02-23 20:48:33 +0100 wagner@elegosoft.com
@@ -135,10 +133,11 @@ Authors
 Contributors
 ------------
 
-Contributors
-~~~~~~~~~~~~
+- elego Software Solutions GmbH
+- Odoo Community Association (OCA)
+- `Binhex <https://www.binhex.cloud>`__:
 
-elego Software Solutions GmbH, Odoo Community Association (OCA)
+  - Edilio Escalona Almira <e.escalona@binhex.cloud>
 
 Maintainers
 -----------

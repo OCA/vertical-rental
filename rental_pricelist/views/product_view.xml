@@ -11,7 +11,7 @@
                 <page
                     name="rental_price"
                     string="Rental Price"
-                    attrs="{'invisible': ['|', ('rental', '=', False), ('type', '!=', 'product')]}"
+                    invisible="not rental or type != 'product'"
                 >
                     <group>
                         <group string="Monthly Basis">
@@ -19,17 +19,14 @@
                             <field name="def_pricelist_id" invisible="1" />
                             <field
                                 name="rental_price_month"
-                                attrs="{'invisible': [('rental_of_month','=',False)]}"
+                                invisible="not rental_of_month"
                             />
                             <field
                                 name="product_rental_month_id"
                                 groups="base.group_no_one"
                             />
                             <field name="product_rental_month_id" invisible="1" />
-                            <strong
-                                colspan="2"
-                                attrs="{'invisible': [('product_rental_month_id', '=', False)]}"
-                            >
+                            <strong colspan="2" invisible="not product_rental_month_id">
                                 Bulk Prices
                             </strong>
                             <field
@@ -41,7 +38,7 @@
                                     'default_applied_on': '0_product_variant',
                                     'default_compute_price': 'fixed',
                                     'default_product_id': product_rental_month_id, 'default_pricelist_id': def_pricelist_id}"
-                                attrs="{'invisible': ['|', ('rental_of_month', '=', False), ('product_rental_month_id', '=', False)]}"
+                                invisible="not rental_of_month or not product_rental_month_id"
                                 nolabel="1"
                                 colspan="2"
                             >
@@ -54,11 +51,11 @@
                                         widget="monetary"
                                         options="{'currency_field': 'currency_id'}"
                                     />
-                                    <field name="compute_price" invisible="1" />
-                                    <field name="applied_on" invisible="1" />
-                                    <field name="pricelist_id" invisible="1" />
-                                    <field name="product_id" invisible="1" />
-                                    <field name="company_id" invisible="1" />
+                                    <field name="compute_price" column_invisible="1" />
+                                    <field name="applied_on" column_invisible="1" />
+                                    <field name="pricelist_id" column_invisible="1" />
+                                    <field name="product_id" column_invisible="1" />
+                                    <field name="company_id" column_invisible="1" />
                                 </tree>
                             </field>
                         </group>
@@ -66,17 +63,14 @@
                             <field name="rental_of_day" />
                             <field
                                 name="rental_price_day"
-                                attrs="{'invisible': [('rental_of_day','=',False)]}"
+                                invisible="not rental_of_day"
                             />
                             <field
                                 name="product_rental_day_id"
                                 groups="base.group_no_one"
                             />
                             <field name="product_rental_day_id" invisible="1" />
-                            <strong
-                                colspan="2"
-                                attrs="{'invisible': [('product_rental_day_id', '=', False)]}"
-                            >
+                            <strong colspan="2" invisible="not product_rental_day_id">
                                 Bulk Prices
                             </strong>
                             <field
@@ -88,7 +82,7 @@
                                     'default_applied_on': '0_product_variant',
                                     'default_compute_price': 'fixed',
                                     'default_product_id': product_rental_day_id, 'default_pricelist_id': def_pricelist_id}"
-                                attrs="{'invisible': ['|', ('rental_of_day', '=', False), ('product_rental_day_id', '=', False)]}"
+                                invisible="not rental_of_day or not product_rental_day_id"
                                 nolabel="1"
                                 colspan="2"
                             >
@@ -101,11 +95,11 @@
                                         widget="monetary"
                                         options="{'currency_field': 'currency_id'}"
                                     />
-                                    <field name="compute_price" invisible="1" />
-                                    <field name="applied_on" invisible="1" />
-                                    <field name="pricelist_id" invisible="1" />
-                                    <field name="product_id" invisible="1" />
-                                    <field name="company_id" invisible="1" />
+                                    <field name="compute_price" column_invisible="1" />
+                                    <field name="applied_on" column_invisible="1" />
+                                    <field name="pricelist_id" column_invisible="1" />
+                                    <field name="product_id" column_invisible="1" />
+                                    <field name="company_id" column_invisible="1" />
                                 </tree>
                             </field>
                         </group>
@@ -114,17 +108,14 @@
                             <field name="def_pricelist_id" invisible="1" />
                             <field
                                 name="rental_price_week"
-                                attrs="{'invisible': [('rental_of_week','=',False)]}"
+                                invisible="not rental_of_week"
                             />
                             <field
                                 name="product_rental_week_id"
                                 groups="base.group_no_one"
                             />
                             <field name="product_rental_week_id" invisible="1" />
-                            <strong
-                                colspan="2"
-                                attrs="{'invisible': [('product_rental_week_id', '=', False)]}"
-                            >
+                            <strong colspan="2" invisible="not product_rental_week_id">
                                 Bulk Prices
                             </strong>
                             <field
@@ -136,7 +127,7 @@
                                    'default_applied_on': '0_product_variant',
                                    'default_compute_price': 'fixed',
                                    'default_product_id': product_rental_week_id, 'default_pricelist_id': def_pricelist_id}"
-                                attrs="{'invisible': ['|', ('rental_of_week', '=', False), ('product_rental_week_id', '=', False)]}"
+                                invisible="not rental_of_week or not product_rental_week_id"
                                 nolabel="1"
                                 colspan="2"
                             >
@@ -149,11 +140,11 @@
                                         widget="monetary"
                                         options="{'currency_field': 'currency_id'}"
                                     />
-                                    <field name="compute_price" invisible="1" />
-                                    <field name="applied_on" invisible="1" />
-                                    <field name="product_id" invisible="1" />
-                                    <field name="pricelist_id" invisible="1" />
-                                    <field name="company_id" invisible="1" />
+                                    <field name="compute_price" column_invisible="1" />
+                                    <field name="applied_on" column_invisible="1" />
+                                    <field name="product_id" column_invisible="1" />
+                                    <field name="pricelist_id" column_invisible="1" />
+                                    <field name="company_id" column_invisible="1" />
                                 </tree>
                             </field>
                         </group>
@@ -161,17 +152,14 @@
                             <field name="rental_of_hour" />
                             <field
                                 name="rental_price_hour"
-                                attrs="{'invisible': [('rental_of_hour','=',False)]}"
+                                invisible="not rental_of_hour"
                             />
                             <field
                                 name="product_rental_hour_id"
                                 groups="base.group_no_one"
                             />
                             <field name="product_rental_hour_id" invisible="1" />
-                            <strong
-                                colspan="2"
-                                attrs="{'invisible': [('product_rental_hour_id', '=', False)]}"
-                            >
+                            <strong colspan="2" invisible="not product_rental_hour_id">
                                 Bulk Prices
                             </strong>
                             <field
@@ -183,7 +171,7 @@
                                     'default_applied_on': '0_product_variant',
                                     'default_compute_price': 'fixed',
                                     'default_product_id': product_rental_hour_id, 'default_pricelist_id': def_pricelist_id}"
-                                attrs="{'invisible': ['|', ('rental_of_hour', '=', False), ('product_rental_hour_id', '=', False)]}"
+                                invisible="not rental_of_hour or not product_rental_hour_id"
                                 nolabel="1"
                                 colspan="2"
                             >
@@ -196,11 +184,11 @@
                                         widget="monetary"
                                         options="{'currency_field': 'currency_id'}"
                                     />
-                                    <field name="compute_price" invisible="1" />
-                                    <field name="applied_on" invisible="1" />
-                                    <field name="pricelist_id" invisible="1" />
-                                    <field name="product_id" invisible="1" />
-                                    <field name="company_id" invisible="1" />
+                                    <field name="compute_price" column_invisible="1" />
+                                    <field name="applied_on" column_invisible="1" />
+                                    <field name="pricelist_id" column_invisible="1" />
+                                    <field name="product_id" column_invisible="1" />
+                                    <field name="company_id" column_invisible="1" />
                                 </tree>
                             </field>
                         </group>

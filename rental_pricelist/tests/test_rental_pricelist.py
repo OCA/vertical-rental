@@ -63,6 +63,9 @@ class TestRentalPricelist(RentalStockCommon):
     def setUp(self):
         super().setUp()
         self.uom_week = self.env.ref("rental_base.product_uom_week")
+        self.pricelist = self.env["product.pricelist"].create(
+            {"name": "Rental Pricelist", "sequence": 1}
+        )
         self.analytic_plan = self.env["account.analytic.plan"].create(
             {
                 "name": "Analytic Plan",
@@ -156,7 +159,7 @@ class TestRentalPricelist(RentalStockCommon):
             .create(
                 {
                     "partner_id": self.partnerA.id,
-                    "pricelist_id": self.env.ref("product.list0").id,
+                    "pricelist_id": self.pricelist.id,
                 }
             )
         )
@@ -262,13 +265,9 @@ class TestRentalPricelist(RentalStockCommon):
             )
         )
         line.onchange_display_product_id()
-        res = line.product_id_change()
+        line.product_id_change()
         # check uom domain
-        check_uom_domain = False
-        if "domain" in res and "product_uom" in res["domain"]:
-            self.assertEqual(len(res["domain"]["product_uom"][0][2]), 4)
-            check_uom_domain = True
-        self.assertTrue(check_uom_domain)
+        self.assertEqual(len(line.rental_uom_ids), 4)
         line.onchange_rental()
         line.product_uom_change()
         line.rental_product_id_change()
@@ -318,13 +317,9 @@ class TestRentalPricelist(RentalStockCommon):
             )
         )
         line.onchange_display_product_id()
-        res = line.product_id_change()
+        line.product_id_change()
         # check uom domain
-        check_uom_domain = False
-        if "domain" in res and "product_uom" in res["domain"]:
-            self.assertEqual(res["domain"]["product_uom"][0][2][0], self.uom_month.id)
-            check_uom_domain = True
-        self.assertTrue(check_uom_domain)
+        self.assertEqual(line.rental_uom_ids._origin, self.uom_month)
         line.onchange_rental()
         line.product_uom_change()
         line.rental_product_id_change()
@@ -573,7 +568,8 @@ class TestRentalPricelist(RentalStockCommon):
         with self.assertRaises(ValidationError) as e:
             rental_serviceE.type = "consu"
         self.assertEqual(
-            "The rental product 'Rental of Product E (Day(s))' must be of type 'Service'.",
+            "The rental product 'Rental of Product E (Day(s))' must be "
+            "of type 'Service'.",
             str(e.exception),
         )
         with self.assertRaises(ValidationError) as e:
@@ -640,7 +636,7 @@ class TestRentalPricelist(RentalStockCommon):
             .create(
                 {
                     "partner_id": self.partnerA.id,
-                    "pricelist_id": self.env.ref("product.list0").id,
+                    "pricelist_id": self.pricelist.id,
                 }
             )
         )
@@ -662,7 +658,8 @@ class TestRentalPricelist(RentalStockCommon):
         line.product_uom_change()
         line.rental_product_id_change()
         _run_sol_onchange_date(line)
-        line.start_end_dates_product_id_change()
+        line._compute_start_date()
+        line._compute_end_date()
         # no dates avaiavlbe
         self.assertEqual(line.start_date, False)
         self.assertEqual(line.end_date, False)
@@ -673,7 +670,8 @@ class TestRentalPricelist(RentalStockCommon):
                 "default_end_date": self.tomorrow,
             }
         )
-        line.start_end_dates_product_id_change()
+        line._compute_start_date()
+        line._compute_end_date()
         self.assertEqual(line.start_date, self.today)
         self.assertEqual(line.end_date, self.tomorrow)
 

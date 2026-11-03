@@ -13,7 +13,10 @@ class ProductProduct(models.Model):
 
     def _default_pricelist(self):
         # TODO change default pricelist if country group exist
-        return self.env.ref("product.list0").id
+        return self.env["product.pricelist"].search(
+            self.env["product.pricelist"]._check_company_domain(self.env.company),
+            limit=1,
+        )
 
     rental_of_month = fields.Boolean(
         string="Rented in months",
@@ -138,8 +141,8 @@ class ProductProduct(models.Model):
                 if product.type != "service":
                     raise ValidationError(
                         _(
-                            "The rental product '%(name)s' must be of type 'Service'."
-                            % {"name": product.name}
+                            "The rental product '%(name)s' must be of type 'Service'.",
+                            name=product.name,
                         )
                     )
                 if not product.must_have_dates:
@@ -153,7 +156,7 @@ class ProductProduct(models.Model):
 
     @api.model
     def _get_rental_service_prefix_suffix(self, field, str_type, rental_type):
-        field_name = "rental_service_%s_%s_%s" % (field, str_type, rental_type)
+        field_name = f"rental_service_{field}_{str_type}_{rental_type}"
         res = getattr(self.env.user.company_id, field_name)
         return res
 
@@ -222,9 +225,9 @@ class ProductProduct(models.Model):
         suffix = self._get_rental_service_prefix_suffix("name", "suffix", rental_type)
         name = sp_name
         if prefix:
-            name = "%s %s" % (prefix, name)
+            name = f"{prefix} {name}"
         if suffix:
-            name = "%s %s" % (name, suffix)
+            name = f"{name} {suffix}"
         return name
 
     def _get_rental_service_default_code(self, rental_type, sp_code):
@@ -238,9 +241,9 @@ class ProductProduct(models.Model):
         default_code = sp_code
         if default_code:
             if prefix:
-                default_code = "%s-%s" % (prefix, default_code)
+                default_code = f"{prefix}-{default_code}"
             if suffix:
-                default_code = "%s-%s" % (default_code, suffix)
+                default_code = f"{default_code}-{suffix}"
         else:
             default_code = ""
         return default_code
@@ -251,12 +254,13 @@ class ProductProduct(models.Model):
         values = {
             "hw_product_id": product.id,
             "name": _(
-                "Rental of %(product)s (%(uom)s)"
-                % {"product": product.name, "uom": uom.name}
+                "Rental of %(product)s (%(uom)s)",
+                product=product.name,
+                uom=uom.name,
             ),
             "categ_id": product.categ_id.id,
             "copy_image": True,
-            "default_code": "RENT-%s-%s" % (rental_type.upper(), product.default_code),
+            "default_code": f"RENT-{rental_type.upper()}-{product.default_code}",
         }
         res = (
             self.env["create.rental.product"]

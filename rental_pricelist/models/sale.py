@@ -1,6 +1,6 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-from odoo import _, api, exceptions, fields, models
+from odoo import Command, _, api, exceptions, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare
 
@@ -35,6 +35,12 @@ class SaleOrderLine(models.Model):
     sale_ok = fields.Boolean(
         string="Can be Sold",
         related="display_product_id.sale_ok",
+    )
+
+    rental_uom_ids = fields.Many2many(
+        comodel_name="uom.uom",
+        string="Rental Time Units",
+        compute="_compute_rental_uom_ids",
     )
 
     @api.model
@@ -212,7 +218,8 @@ class SaleOrderLine(models.Model):
                             "On the sale order line with rental service %(name)s, "
                             "you are trying to extend a rental with a rental "
                             "quantity (%(qty)s) that is different from the quantity "
-                            "of the original rental (%(extension_qty)s). This is not supported."
+                            "of the original rental (%(extension_qty)s). "
+                            "This is not supported."
                         )
                         % {
                             "name": line.product_id.name,
@@ -263,24 +270,27 @@ class SaleOrderLine(models.Model):
             if getattr(product, flag, False)
         ]
 
+    @api.depends(
+        "rental",
+        "display_product_id.rental",
+        "display_product_id.rental_of_month",
+        "display_product_id.rental_of_week",
+        "display_product_id.rental_of_day",
+        "display_product_id.rental_of_hour",
+    )
+    def _compute_rental_uom_ids(self):
+        for line in self:
+            uom_ids = []
+            if line.rental and line.display_product_id.rental:
+                uom_ids = line._get_product_rental_uom_ids()
+            line.rental_uom_ids = [Command.set(uom_ids)]
+
     @api.onchange("product_id")
     def product_id_change(self):
-        res = {}
-        # ported from v12 we need this domain of product_uom
-        if self.product_id:
-            res["domain"] = {
-                "product_uom": [
-                    ("category_id", "=", self.product_id.uom_id.category_id.id)
-                ]
-            }
-        if self.rental and "domain" in res and "product_uom" in res["domain"]:
-            del res["domain"]["product_uom"]
-            if self.display_product_id.rental:
-                uom_ids = self._get_product_rental_uom_ids()
-                res["domain"]["product_uom"] = [("id", "in", uom_ids)]
-                if uom_ids and self.product_uom.id not in uom_ids:
-                    self.product_uom = uom_ids[0]
-        return res
+        if self.product_id and self.rental and self.display_product_id.rental:
+            uom_ids = self._get_product_rental_uom_ids()
+            if uom_ids and self.product_uom.id not in uom_ids:
+                self.product_uom = uom_ids[0]
 
     @api.onchange("product_uom", "product_uom_qty")
     def product_uom_change(self):
@@ -299,23 +309,6 @@ class SaleOrderLine(models.Model):
         if self.start_date and self.end_date:
             number = self._get_number_of_time_unit()
             self.number_of_time_unit = number
-
-    # Override function from module sale_start_end_dates
-    @api.onchange("product_id")
-    def start_end_dates_product_id_change(self):
-        if self.product_id.must_have_dates:
-            if not self.start_date and not self.end_date:
-                if self.order_id.default_start_date:
-                    self.start_date = self.order_id.default_start_date
-                else:
-                    self.start_date = False
-                if self.order_id.default_end_date:
-                    self.end_date = self.order_id.default_end_date
-                else:
-                    self.end_date = False
-        else:
-            self.start_date = False
-            self.end_date = False
 
 
 class SaleOrder(models.Model):

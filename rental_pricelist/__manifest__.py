@@ -2,7 +2,8 @@
 
 {
     "name": "Rental Pricelist",
-    "summary": 'Enables the user to define different rental prices with time uom ("Month", "Day" and "Hour").',  # noqa: B950
+    "summary": "Enables the user to define different rental prices "
+    'with time uom ("Month", "Day" and "Hour").',
     "usage": """
 Create a rentable product:
  * Go to Rentals > Configuration > Settings.
@@ -21,12 +22,13 @@ Create a rentable product:
  * Go to the previously created rentable storable product.
  * Go to page 'Rental Price'.
  * Activate the boolean fields for hourly, daily or monthly rental as needed.
- * Save the product, which creates the related rental services for the given time units.
+ * Save the product, which creates the related rental services
+   for the given time units.
  * Add a usual price for one hour, one day or one month.
  * Add bulk prices, e.g. one day costs 300 €, 7 days 290 €, 21 days 250 €, and so on.
 
-Hint: The (bulk) prices are added in the product form view of the storable, rentable product
-but are actually used for its related rental services!
+Hint: The (bulk) prices are added in the product form view of the storable,
+rentable product but are actually used for its related rental services!
 
 Create a rental order:
  * Go to Rentals > Customer > Rental Quotations.
@@ -40,7 +42,7 @@ Create a rental order:
 
 Please also see the usage section of sale_rental and rental_base module.
     """,
-    "version": "16.0.1.0.2",
+    "version": "17.0.1.0.0",
     "category": "Rental",
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/vertical-rental",
