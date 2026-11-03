@@ -31,40 +31,117 @@ Rental Base
 Base Module for Rental Management
 
 This module provides a new menu for rental management. It is based on
-the sale_rental module that currently can be found in sale-workflow
-repository.
+the sale_rental module of this repository.
 
 **Table of contents**
 
 .. contents::
    :local:
 
+Configuration
+=============
+
+Only the members of the group 'See Rental Menu' see the Rentals menu.
+The superuser and the administrator get the group when the module is
+installed. To give it to another user:
+
+- Go to Settings > Users & Companies > Users.
+- Open the user.
+- In the tab 'Access Rights', section 'Other', set 'Rental' to 'See
+  Rental Menu'.
+- Save.
+
+|See Rental Menu group|
+
+When the module is updated to version 17.0.1.1.0 from an earlier
+version, every active user with access to Sales gets the group 'See
+Rental Menu'.
+
+The field 'Rental Time Unit' of the order lines, needed to rent by week,
+month or hour, is only visible with the units of measure:
+
+- Go to Sales > Configuration > Settings.
+- In the block 'Product Catalog', activate 'Units of Measure'.
+- Save.
+
+|Units of Measure setting|
+
+.. |See Rental Menu group| image:: https://raw.githubusercontent.com/OCA/vertical-rental/17.0/rental_base/static/description/configure_rental_menu_group.png
+.. |Units of Measure setting| image:: https://raw.githubusercontent.com/OCA/vertical-rental/17.0/rental_base/static/description/configure_units_of_measure.png
+
 Usage
 =====
 
-Create a rentable product and its rental service.
+The Rentals menu is visible to the members of the group 'See Rental
+Menu' (see the configuration section).
+
+Create a rentable product and its rental service:
 
 - Go to Rentals > Configuration > Settings.
-- Please activate the checkbox for using 'Product Variants'.
+- Activate the checkbox 'Variants'.
 - Go to Rentals > Products > Products.
 - Create a new storable product.
 - Activate the checkbox 'Can be Rented'.
-- Go to page 'Sales & Purchase'.
-- Create the rental service and configure its name and price.
+- Go to the tab 'Rental' and click 'Create Rental Service'.
+- Set the 'Rental Service Name' and the 'Rental Price per Day'.
 
 Create a rental order:
 
-- Go to Rentals > Customer > Rental Quotations.
-- Create a new order and choose the type 'Rental Order'.
-- Add the rental service as an order line.
-- Set the quantity to rent out one or several storable rentable
+- Go to Rentals > Customers > Quotations > Rental Quotations.
+- Create a new order and choose the 'Order Type' 'Rental Order'.
+- Add the rental service as an order line. In the group 'Rental
+  Settings' of the line, the option 'Rental' of 'Order Type' is
+  selected; 'Normal' is for the lines that are not a rental, and
+  confirming the order creates no rental for them.
+- Set the 'Rental Quantity' to rent out one or several storable rentable
   products.
-- Choose start and end date.
+- Choose the 'Start Date' and the 'End Date'. The group 'Rental Times'
+  shows the 'Number of Days' and the 'Ordered Rental Time'.
 - Confirm the order.
 - Check out the two deliveries, one for outgoing and one for incoming
   delivery.
 
-Please also see the usage section of sale_rental module.
+Rent by day, week, month or hour:
+
+- In the order line of a rental service, choose the 'Rental Time Unit':
+  Days, Week(s), Month(s) or Hours.
+- The 'Ordered Rental Time' is the 'Rental Quantity' multiplied by the
+  number of time units from the start date to the end date, both
+  included:
+
+  - Days: one per day.
+  - Week(s): every started week counts as a whole week.
+  - Month(s): the number of days divided by 30.4167, the average length
+    of a month, rounded to the nearest whole month.
+  - Hours: for each day, the 'Average Hour per Day' of the 'Default
+    Working Hours' of the company of the order, or 8 when there is none.
+
+For example, renting 2 products from January 1 to January 15, 2021 in
+Week(s) counts 3 weeks, so the 'Ordered Rental Time' is 6. In Month(s),
+the same 15 days are less than half a month and count 0 months, January
+1 to January 31, 2021 counts 1, and January 1 to March 1, 2021 (60 days)
+counts 2.
+
+|Rental Time Unit on an order line|
+
+Find rental orders and sales orders:
+
+- In the lists of quotations and orders, the search filter 'Rental
+  Order' shows the orders whose 'Order Type' is 'Rental Order', and
+  'Normal Order' shows all the others.
+- Sales > Orders > Quotations and Sales > Orders > Orders open with the
+  filter 'Normal Order' active.
+- Rentals > Customers > Quotations > Rental Quotations and Rentals >
+  Customers > Orders > Rental Orders open with the filter 'Rental Order'
+  active.
+- Remove the filter to see both kinds of orders.
+
+|Rental Order filter|
+
+See also the usage section of the sale_rental module.
+
+.. |Rental Time Unit on an order line| image:: https://raw.githubusercontent.com/OCA/vertical-rental/17.0/rental_base/static/description/usage_rental_time_unit.png
+.. |Rental Order filter| image:: https://raw.githubusercontent.com/OCA/vertical-rental/17.0/rental_base/static/description/usage_rental_orders_filter.png
 
 Changelog
 =========
@@ -106,6 +183,7 @@ Contributors
 
   - Adasat Torres de León <a.torres@binhex.cloud>
   - Zuzanna Elzbieta Szalaty Szalaty <zuzanna@binhex.cloud>
+  - Edilio Escalona Almira <e.escalona@binhex.cloud>
 
 Maintainers
 -----------
@@ -119,6 +197,17 @@ This module is maintained by the OCA.
 OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
+
+.. |maintainer-edescalona| image:: https://github.com/edescalona.png?size=40px
+    :target: https://github.com/edescalona
+    :alt: edescalona
+.. |maintainer-szalatyzuzanna| image:: https://github.com/szalatyzuzanna.png?size=40px
+    :target: https://github.com/szalatyzuzanna
+    :alt: szalatyzuzanna
+
+Current `maintainers <https://odoo-community.org/page/maintainer-role>`__:
+
+|maintainer-edescalona| |maintainer-szalatyzuzanna| 
 
 This module is part of the `OCA/vertical-rental <https://github.com/OCA/vertical-rental/tree/17.0/rental_base>`_ project on GitHub.
 

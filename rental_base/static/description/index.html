@@ -372,50 +372,116 @@ ul.auto-toc {
 <p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/vertical-rental/tree/17.0/rental_base"><img alt="OCA/vertical-rental" src="https://img.shields.io/badge/github-OCA%2Fvertical--rental-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/vertical-rental-17-0/vertical-rental-17-0-rental_base"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/vertical-rental&amp;target_branch=17.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
 <p>Base Module for Rental Management</p>
 <p>This module provides a new menu for rental management. It is based on
-the sale_rental module that currently can be found in sale-workflow
-repository.</p>
+the sale_rental module of this repository.</p>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#usage" id="toc-entry-1">Usage</a></li>
-<li><a class="reference internal" href="#changelog" id="toc-entry-2">Changelog</a></li>
-<li><a class="reference internal" href="#bug-tracker" id="toc-entry-3">Bug Tracker</a></li>
-<li><a class="reference internal" href="#credits" id="toc-entry-4">Credits</a><ul>
-<li><a class="reference internal" href="#authors" id="toc-entry-5">Authors</a></li>
-<li><a class="reference internal" href="#contributors" id="toc-entry-6">Contributors</a></li>
-<li><a class="reference internal" href="#maintainers" id="toc-entry-7">Maintainers</a></li>
+<li><a class="reference internal" href="#configuration" id="toc-entry-1">Configuration</a></li>
+<li><a class="reference internal" href="#usage" id="toc-entry-2">Usage</a></li>
+<li><a class="reference internal" href="#changelog" id="toc-entry-3">Changelog</a></li>
+<li><a class="reference internal" href="#bug-tracker" id="toc-entry-4">Bug Tracker</a></li>
+<li><a class="reference internal" href="#credits" id="toc-entry-5">Credits</a><ul>
+<li><a class="reference internal" href="#authors" id="toc-entry-6">Authors</a></li>
+<li><a class="reference internal" href="#contributors" id="toc-entry-7">Contributors</a></li>
+<li><a class="reference internal" href="#maintainers" id="toc-entry-8">Maintainers</a></li>
 </ul>
 </li>
 </ul>
 </div>
+<div class="section" id="configuration">
+<h1><a class="toc-backref" href="#toc-entry-1">Configuration</a></h1>
+<p>Only the members of the group ‘See Rental Menu’ see the Rentals menu.
+The superuser and the administrator get the group when the module is
+installed. To give it to another user:</p>
+<ul class="simple">
+<li>Go to Settings &gt; Users &amp; Companies &gt; Users.</li>
+<li>Open the user.</li>
+<li>In the tab ‘Access Rights’, section ‘Other’, set ‘Rental’ to ‘See
+Rental Menu’.</li>
+<li>Save.</li>
+</ul>
+<p><img alt="See Rental Menu group" src="https://raw.githubusercontent.com/OCA/vertical-rental/17.0/rental_base/static/description/configure_rental_menu_group.png" /></p>
+<p>When the module is updated to version 17.0.1.1.0 from an earlier
+version, every active user with access to Sales gets the group ‘See
+Rental Menu’.</p>
+<p>The field ‘Rental Time Unit’ of the order lines, needed to rent by week,
+month or hour, is only visible with the units of measure:</p>
+<ul class="simple">
+<li>Go to Sales &gt; Configuration &gt; Settings.</li>
+<li>In the block ‘Product Catalog’, activate ‘Units of Measure’.</li>
+<li>Save.</li>
+</ul>
+<p><img alt="Units of Measure setting" src="https://raw.githubusercontent.com/OCA/vertical-rental/17.0/rental_base/static/description/configure_units_of_measure.png" /></p>
+</div>
 <div class="section" id="usage">
-<h1><a class="toc-backref" href="#toc-entry-1">Usage</a></h1>
-<p>Create a rentable product and its rental service.</p>
+<h1><a class="toc-backref" href="#toc-entry-2">Usage</a></h1>
+<p>The Rentals menu is visible to the members of the group ‘See Rental
+Menu’ (see the configuration section).</p>
+<p>Create a rentable product and its rental service:</p>
 <ul class="simple">
 <li>Go to Rentals &gt; Configuration &gt; Settings.</li>
-<li>Please activate the checkbox for using ‘Product Variants’.</li>
+<li>Activate the checkbox ‘Variants’.</li>
 <li>Go to Rentals &gt; Products &gt; Products.</li>
 <li>Create a new storable product.</li>
 <li>Activate the checkbox ‘Can be Rented’.</li>
-<li>Go to page ‘Sales &amp; Purchase’.</li>
-<li>Create the rental service and configure its name and price.</li>
+<li>Go to the tab ‘Rental’ and click ‘Create Rental Service’.</li>
+<li>Set the ‘Rental Service Name’ and the ‘Rental Price per Day’.</li>
 </ul>
 <p>Create a rental order:</p>
 <ul class="simple">
-<li>Go to Rentals &gt; Customer &gt; Rental Quotations.</li>
-<li>Create a new order and choose the type ‘Rental Order’.</li>
-<li>Add the rental service as an order line.</li>
-<li>Set the quantity to rent out one or several storable rentable
+<li>Go to Rentals &gt; Customers &gt; Quotations &gt; Rental Quotations.</li>
+<li>Create a new order and choose the ‘Order Type’ ‘Rental Order’.</li>
+<li>Add the rental service as an order line. In the group ‘Rental
+Settings’ of the line, the option ‘Rental’ of ‘Order Type’ is
+selected; ‘Normal’ is for the lines that are not a rental, and
+confirming the order creates no rental for them.</li>
+<li>Set the ‘Rental Quantity’ to rent out one or several storable rentable
 products.</li>
-<li>Choose start and end date.</li>
+<li>Choose the ‘Start Date’ and the ‘End Date’. The group ‘Rental Times’
+shows the ‘Number of Days’ and the ‘Ordered Rental Time’.</li>
 <li>Confirm the order.</li>
 <li>Check out the two deliveries, one for outgoing and one for incoming
 delivery.</li>
 </ul>
-<p>Please also see the usage section of sale_rental module.</p>
+<p>Rent by day, week, month or hour:</p>
+<ul class="simple">
+<li>In the order line of a rental service, choose the ‘Rental Time Unit’:
+Days, Week(s), Month(s) or Hours.</li>
+<li>The ‘Ordered Rental Time’ is the ‘Rental Quantity’ multiplied by the
+number of time units from the start date to the end date, both
+included:<ul>
+<li>Days: one per day.</li>
+<li>Week(s): every started week counts as a whole week.</li>
+<li>Month(s): the number of days divided by 30.4167, the average length
+of a month, rounded to the nearest whole month.</li>
+<li>Hours: for each day, the ‘Average Hour per Day’ of the ‘Default
+Working Hours’ of the company of the order, or 8 when there is none.</li>
+</ul>
+</li>
+</ul>
+<p>For example, renting 2 products from January 1 to January 15, 2021 in
+Week(s) counts 3 weeks, so the ‘Ordered Rental Time’ is 6. In Month(s),
+the same 15 days are less than half a month and count 0 months, January
+1 to January 31, 2021 counts 1, and January 1 to March 1, 2021 (60 days)
+counts 2.</p>
+<p><img alt="Rental Time Unit on an order line" src="https://raw.githubusercontent.com/OCA/vertical-rental/17.0/rental_base/static/description/usage_rental_time_unit.png" /></p>
+<p>Find rental orders and sales orders:</p>
+<ul class="simple">
+<li>In the lists of quotations and orders, the search filter ‘Rental
+Order’ shows the orders whose ‘Order Type’ is ‘Rental Order’, and
+‘Normal Order’ shows all the others.</li>
+<li>Sales &gt; Orders &gt; Quotations and Sales &gt; Orders &gt; Orders open with the
+filter ‘Normal Order’ active.</li>
+<li>Rentals &gt; Customers &gt; Quotations &gt; Rental Quotations and Rentals &gt;
+Customers &gt; Orders &gt; Rental Orders open with the filter ‘Rental Order’
+active.</li>
+<li>Remove the filter to see both kinds of orders.</li>
+</ul>
+<p><img alt="Rental Order filter" src="https://raw.githubusercontent.com/OCA/vertical-rental/17.0/rental_base/static/description/usage_rental_orders_filter.png" /></p>
+<p>See also the usage section of the sale_rental module.</p>
 </div>
 <div class="section" id="changelog">
-<h1><a class="toc-backref" href="#toc-entry-2">Changelog</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-3">Changelog</a></h1>
 <ul class="simple">
 <li>8d191ff7 2022-04-10 15:41:16 +0200 <a class="reference external" href="mailto:wagner&#64;elegosoft.com">wagner&#64;elegosoft.com</a> add
 missing/lost documentation (issue #4516)</li>
@@ -430,7 +496,7 @@ cpatel and khanhbui (issue #4516)</li>
 </ul>
 </div>
 <div class="section" id="bug-tracker">
-<h1><a class="toc-backref" href="#toc-entry-3">Bug Tracker</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-4">Bug Tracker</a></h1>
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/OCA/vertical-rental/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
@@ -438,26 +504,27 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
-<h1><a class="toc-backref" href="#toc-entry-4">Credits</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-5">Credits</a></h1>
 <div class="section" id="authors">
-<h2><a class="toc-backref" href="#toc-entry-5">Authors</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-6">Authors</a></h2>
 <ul class="simple">
 <li>elego Software Solutions GmbH</li>
 </ul>
 </div>
 <div class="section" id="contributors">
-<h2><a class="toc-backref" href="#toc-entry-6">Contributors</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-7">Contributors</a></h2>
 <ul class="simple">
 <li>elego Software Solutions GmbH</li>
 <li><a class="reference external" href="http://www.binhex.cloud">Binhex</a>:<ul>
 <li>Adasat Torres de León &lt;<a class="reference external" href="mailto:a.torres&#64;binhex.cloud">a.torres&#64;binhex.cloud</a>&gt;</li>
 <li>Zuzanna Elzbieta Szalaty Szalaty &lt;<a class="reference external" href="mailto:zuzanna&#64;binhex.cloud">zuzanna&#64;binhex.cloud</a>&gt;</li>
+<li>Edilio Escalona Almira &lt;<a class="reference external" href="mailto:e.escalona&#64;binhex.cloud">e.escalona&#64;binhex.cloud</a>&gt;</li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="maintainers">
-<h2><a class="toc-backref" href="#toc-entry-7">Maintainers</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-8">Maintainers</a></h2>
 <p>This module is maintained by the OCA.</p>
 <a class="reference external image-reference" href="https://odoo-community.org">
 <img alt="Odoo Community Association" src="https://odoo-community.org/logo.png" />
@@ -465,6 +532,8 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <p>OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.</p>
+<p>Current <a class="reference external" href="https://odoo-community.org/page/maintainer-role">maintainers</a>:</p>
+<p><a class="reference external image-reference" href="https://github.com/edescalona"><img alt="edescalona" src="https://github.com/edescalona.png?size=40px" /></a> <a class="reference external image-reference" href="https://github.com/szalatyzuzanna"><img alt="szalatyzuzanna" src="https://github.com/szalatyzuzanna.png?size=40px" /></a></p>
 <p>This module is part of the <a class="reference external" href="https://github.com/OCA/vertical-rental/tree/17.0/rental_base">OCA/vertical-rental</a> project on GitHub.</p>
 <p>You are welcome to contribute. To learn how please visit <a class="reference external" href="https://odoo-community.org/page/Contribute">https://odoo-community.org/page/Contribute</a>.</p>
 </div>
