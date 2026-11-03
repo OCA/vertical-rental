@@ -1,0 +1,2 @@
+odoo-addon-rental_base @ git+https://github.com/OCA/vertical-rental.git@refs/pull/99/head#subdirectory=rental_base
+odoo-addon-rental_pricelist @ git+https://github.com/OCA/vertical-rental.git@refs/pull/54/head#subdirectory=rental_pricelist
