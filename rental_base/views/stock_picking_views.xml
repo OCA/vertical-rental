@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="stock_picking_action_picking_type_out" model="ir.actions.act_window">
+        <field name="name">Outgoing Deliveries</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,kanban,form,calendar</field>
+        <field name="domain" />
+        <field
+            name="context"
+            eval="{
+                'search_default_picking_type_id': [ref('stock.picking_type_out')],
+                'default_picking_type_id': ref('stock.picking_type_out'),
+                'contact_display': 'partner_address',
+        }"
+        />
+        <field name="search_view_id" ref="stock.view_picking_internal_search" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Define a new transfer
+            </p>
+        </field>
+    </record>
+
+    <record id="stock_picking_action_picking_type_in" model="ir.actions.act_window">
+        <field name="name">Incoming Deliveries</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,kanban,form,calendar</field>
+        <field name="domain" />
+        <field
+            name="context"
+            eval="{
+                'search_default_picking_type_id': [ref('stock.picking_type_in')],
+                'default_picking_type_id': ref('stock.picking_type_in'),
+                'contact_display': 'partner_address',
+        }"
+        />
+        <field name="search_view_id" ref="stock.view_picking_internal_search" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Define a new transfer
+            </p>
+        </field>
+    </record>
+</odoo>

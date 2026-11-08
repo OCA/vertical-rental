@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_update_sale_line_date_line,access_update_sale_line_date_line,model_update_sale_line_date_line,base.group_user,1,1,1,0
+access_update_sale_line_date,access_update_sale_line_date,model_update_sale_line_date,base.group_user,1,1,1,0

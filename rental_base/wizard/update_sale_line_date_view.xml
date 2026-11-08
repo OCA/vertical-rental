@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Part of rental-vertical See LICENSE file for full copyright and licensing details.
+-->
+<odoo>
+
+    <record id="update_sale_line_date_form" model="ir.ui.view">
+        <field name="name">update.sale.line.date.form</field>
+        <field name="model">update.sale.line.date</field>
+        <field name="arch" type="xml">
+            <form string="Update Times">
+                <p
+                >By changing the start and end dates of order lines, the dates are also updated in the timeline,the related stock pickings and contracts, if available.
+                Attention: The ordered quantities are not updated!</p>
+                <group name="main">
+                    <field
+                        name="date_start"
+                        attrs="{'invisible': [('date_in_line', '=', True)]}"
+                    />
+                    <field
+                        name="date_end"
+                        attrs="{'invisible': [('date_in_line', '=', True)]}"
+                    />
+                    <field name="date_in_line" />
+                    <field name="all_line" />
+                    <field
+                        name="from_line"
+                        attrs="{'invisible': [('all_line', '=', True)], 'required': [('all_line', '=', False)]}"
+                    />
+                    <field
+                        name="to_line"
+                        attrs="{'invisible': [('all_line', '=', True)], 'required': [('all_line', '=', False)]}"
+                    />
+                </group>
+                <field name="line_ids" no_label="1">
+                    <tree
+                        decoration-danger="change==True"
+                        create="0"
+                        delete="0"
+                        editable="top"
+                    >
+                        <field name="sequence" />
+                        <field name="product_id" readonly="1" />
+                        <field name="date_start" />
+                        <field name="date_end" />
+                        <field name="order_line_id" invisible="1" />
+                        <field name="change" invisible="1" />
+                    </tree>
+                </field>
+                <footer>
+                    <button
+                        name="action_confirm"
+                        string="Update"
+                        type="object"
+                        class="btn-primary"
+                    />
+                    <button special="cancel" string="Cancel" class="btn-default" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_update_sale_line_date" model="ir.actions.act_window">
+        <field name="name">Update Times</field>
+        <field name="res_model">update.sale.line.date</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
