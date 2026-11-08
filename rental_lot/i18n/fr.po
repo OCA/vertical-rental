@@ -1,0 +1,39 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* rental_lot
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-14 14:52+0000\n"
+"PO-Revision-Date: 2023-12-14 15:55+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.4.1\n"
+
+#. module: rental_lot
+#: model:ir.model,name:rental_lot.model_sale_rental
+msgid "Rental"
+msgstr "Location"
+
+#. module: rental_lot
+#: model:ir.model.fields,field_description:rental_lot.field_sale_order_line__rented_product_id
+msgid "Rented Product"
+msgstr "Produit Loué"
+
+#. module: rental_lot
+#: model:ir.model.fields,field_description:rental_lot.field_sale_order_line__rented_lot_id
+#: model:ir.model.fields,field_description:rental_lot.field_sale_rental__rented_lot_id
+msgid "Rented Serial Number"
+msgstr "Numéro de Série Loué"
+
+#. module: rental_lot
+#: model:ir.model,name:rental_lot.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Ligne de commande"
