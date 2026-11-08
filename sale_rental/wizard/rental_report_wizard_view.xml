@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_rental_report_wizard_form" model="ir.ui.view">
+        <field name="name">rental.report.wizard.form</field>
+        <field name="model">rental.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Select Period">
+                <group>
+                    <field name="date_from" />
+                    <field name="date_to" />
+                </group>
+                <footer>
+                    <button
+                        name="action_view_dashboard"
+                        string="View Dashboard"
+                        type="object"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_rental_report_wizard" model="ir.actions.act_window">
+        <field name="name">Rental Report Dashboard</field>
+        <field name="res_model">rental.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        id="menu_rental_report_dashboard"
+        name="Rental Report"
+        parent="sale.sale_order_menu"
+        action="action_rental_report_wizard"
+    />
+</odoo>

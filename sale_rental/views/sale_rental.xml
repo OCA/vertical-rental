@@ -219,4 +219,59 @@
         sequence="2"
     />
 
+    <record id="view_rental_report_by_product_pivot" model="ir.ui.view">
+        <field name="name">sale.rental.report.by.product.pivot</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <pivot string="By Product">
+                <field name="rented_product_id" type="row" string="Product" />
+                <field name="in_stock" type="measure" string="In Stock" />
+                <field name="revenue" type="measure" string="Revenue (Period)" />
+                <field
+                    name="utilization_rate"
+                    type="measure"
+                    string="Utilization Rate (%)"
+                />
+                <field name="rental_qty" type="measure" string="Units Rented" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_rental_report_by_time_pivot" model="ir.ui.view">
+        <field name="name">sale.rental.report.by.time.pivot</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <pivot string="By Time (Month)">
+                <field name="start_date" type="row" interval="month" string="Month" />
+                <field
+                    name="actual_rental_hours"
+                    type="measure"
+                    string="Total Rental Hours"
+                />
+                <field
+                    name="utilization_rate"
+                    type="measure"
+                    string="Utilization Rate (%)"
+                />
+                <field name="revenue" type="measure" string="Revenue" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_rental_report_by_customer_pivot" model="ir.ui.view">
+        <field name="name">sale.rental.report.by.customer.pivot</field>
+        <field name="model">sale.rental</field>
+        <field name="arch" type="xml">
+            <pivot string="By Customer">
+                <field name="partner_id" type="row" string="Customer" />
+                <field name="rental_qty" type="measure" string="Products Rented" />
+                <field
+                    name="actual_rental_hours"
+                    type="measure"
+                    string="Rental Duration (hrs)"
+                />
+                <field name="revenue" type="measure" string="Revenue Contribution" />
+            </pivot>
+        </field>
+    </record>
 </odoo>
