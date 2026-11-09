@@ -16,14 +16,14 @@ class ProductTimeline(models.Model):
         string="Origin Data Model",
         help="This is a technical field to know which kind "
         "of Odoo object this timeline item is about.",
-        require=True,
+        required=True,
     )
 
     res_id = fields.Integer(
         string="Origin Object ID",
         help="This is a technical field to know which exact "
         "Odoo object this timeline item is about.",
-        require=True,
+        required=True,
     )
 
     click_res_model = fields.Char(
@@ -31,7 +31,7 @@ class ProductTimeline(models.Model):
         help="This is a technical field to define which kind "
         "of Odoo object this timeline item opens, when "
         "double clicked.",
-        require=True,
+        required=True,
     )
 
     click_res_id = fields.Integer(
@@ -39,12 +39,11 @@ class ProductTimeline(models.Model):
         help="This is a technical field to define which exact "
         "Odoo object this timeline item opens, when double "
         "clicked.",
-        require=True,
+        required=True,
     )
 
     date_start = fields.Datetime(
-        string="Date Start",
-        require=True,
+        required=True,
     )
 
     date_start_formated = fields.Char(
@@ -57,8 +56,7 @@ class ProductTimeline(models.Model):
     )
 
     date_end = fields.Datetime(
-        string="Date End",
-        require=True,
+        required=True,
     )
 
     date_end_formated = fields.Char(
@@ -83,7 +81,6 @@ class ProductTimeline(models.Model):
     )
 
     product_name = fields.Char(
-        string="Product Name",
         help="This field contains the product name as string "
         "to show it in rental timeline mouseover view.",
         compute="_compute_required_fields",
@@ -91,7 +88,6 @@ class ProductTimeline(models.Model):
     )
 
     time_uom = fields.Many2one(
-        string="Time UOM",
         comodel_name="uom.uom",
         compute="_compute_fields",
         store=True,
@@ -101,15 +97,15 @@ class ProductTimeline(models.Model):
         string="Order",
         help="This field contains the order name as string "
         "to show it in rental timeline mouseover view.",
-        require=True,
+        required=True,
     )
 
     type = fields.Selection(
-        string="Type",
         selection=[
             ("rental", "Confirmed Order"),
             ("reserved", "Quotation"),
         ],
+        ondelete={"rental": "cascade", "reserved": "cascade"},
     )
 
     type_formated = fields.Char(
@@ -121,7 +117,6 @@ class ProductTimeline(models.Model):
     )
 
     has_clues = fields.Char(
-        "Has Clues",
         compute="_compute_fields",
         store=True,
     )
@@ -144,7 +139,6 @@ class ProductTimeline(models.Model):
     )
 
     name = fields.Char(
-        string="Name",
         compute="_compute_fields",
         store=True,
     )
@@ -182,7 +176,6 @@ class ProductTimeline(models.Model):
 
     price_subtotal = fields.Monetary(
         currency_field="currency_id",
-        field_digits=True,
         compute="_compute_fields",
         store=True,
     )
@@ -202,7 +195,6 @@ class ProductTimeline(models.Model):
     )
 
     amount = fields.Char(
-        string="Amount",
         compute="_compute_fields",
         store=True,
     )
@@ -215,7 +207,6 @@ class ProductTimeline(models.Model):
     )
 
     warehouse_name = fields.Char(
-        string="Warehouse Name",
         help="This field contains the warehouse name as string "
         "to show it in rental timeline mouseover view.",
         compute="_compute_warehouse_name",

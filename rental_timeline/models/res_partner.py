@@ -1,12 +1,11 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models
+from odoo import models
 
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    @api.multi
     def write(self, vals):
         res = super().write(vals)
         address_fields = self._address_fields()
