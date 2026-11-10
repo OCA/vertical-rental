@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-23 01:51+0000\n"
-"PO-Revision-Date: 2026-10-28 10:46+0000\n"
+"PO-Revision-Date: 2026-11-10 13:46+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
 "Language: it\n"
@@ -266,8 +266,8 @@ msgid ""
 "({}). This is not supported."
 msgstr ""
 "Nell'ordine di vendita per il prodotto {} si sta tentando di noleggiare la "
-"quantità ({}) che e' diversa da quella noleggiata ({}). Questo non e' "
-"previsto"
+"quantità ({}) che e' diversa da quella noleggiata ({}). Questo non è "
+"previsto."
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/sale_order.py:91
@@ -419,27 +419,24 @@ msgstr "OV noleggio"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__start_order_line_id
-#, fuzzy
 msgid "Rental SO Line"
-msgstr "Riga del contratto di noleggio"
+msgstr "Riga OV noleggio"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rental_product_id
 msgid "Rental Service"
-msgstr ""
+msgstr "Servizio di noleggio"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__name
-#, fuzzy
 msgid "Rental Service Name"
-msgstr "Crea servizio di noleggio"
+msgstr "Nome servizio di noleggio"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_product_product__rental_service_ids
 #: model_terms:ir.ui.view,arch_db:sale_rental.product_normal_form_view
-#, fuzzy
 msgid "Rental Services"
-msgstr "Servizio noleggio collegato"
+msgstr "Servizi di noleggio"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__rental_type
@@ -455,23 +452,20 @@ msgstr "Noleggio di {}"
 #. module: sale_rental
 #: model:product.product,name:sale_rental.rent_product_product_25
 #: model:product.template,name:sale_rental.rent_product_product_25_product_template
-#, fuzzy
 msgid "Rental of one Acoustic Bloc Screens"
-msgstr "Rental of one iMac"
+msgstr "Noleggio di un divisorio fonoassorbente"
 
 #. module: sale_rental
 #: model:product.product,name:sale_rental.rent_product_product_20
 #: model:product.template,name:sale_rental.rent_product_product_20_product_template
-#, fuzzy
 msgid "Rental of one Flipover"
-msgstr "Rental of one iMac"
+msgstr "Noleggio di una lavagna a fogli mobili"
 
 #. module: sale_rental
 #: model:product.product,name:sale_rental.rent_consu_delivery_01
 #: model:product.template,name:sale_rental.rent_consu_delivery_01_product_template
-#, fuzzy
 msgid "Rental of one Three-Seat Sofa"
-msgstr "Rental of one iMac"
+msgstr "Noleggio di un divano a tre posti"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__extension_rental_id
@@ -492,7 +486,7 @@ msgstr "Noleggi"
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rented_product_id
 msgid "Rented Product"
-msgstr ""
+msgstr "Prodotto noleggiato"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
@@ -502,9 +496,8 @@ msgstr "Rientro"
 
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_sale_order
-#, fuzzy
 msgid "Sale Order"
-msgstr "Ordini vendita"
+msgstr "Ordine di vendita"
 
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_sale_order_line
@@ -514,24 +507,23 @@ msgstr "Riga ordine di vendita"
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_tree
-#, fuzzy
 msgid "Sales Rentals"
-msgstr "Noleggi"
+msgstr "Noleggi di vendita"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 msgid "Search Rentals"
-msgstr ""
+msgstr "Cerca noleggi"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_picking_id
 msgid "Sell Delivery Order"
-msgstr ""
+msgstr "Ordine di consegna vendita"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_state
 msgid "Sell Move State"
-msgstr ""
+msgstr "Stato movimento di vendita"
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/stock.py:52
@@ -551,24 +543,23 @@ msgstr "Percorso vendita prodotto noleggiato"
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 #: selection:sale.rental,state:0
 msgid "Sell in progress"
-msgstr ""
+msgstr "Vendita in corso"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_move_id
 msgid "Selling Move"
-msgstr ""
+msgstr "Movimento di vendita"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
-#, fuzzy
 msgid "Selling Order Line"
-msgstr "Linea d'ordine di vendita"
+msgstr "Riga ordine di vendita"
 
 #. module: sale_rental
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 #: selection:sale.rental,state:0
 msgid "Sold"
-msgstr ""
+msgstr "Venduto"
 
 #. module: sale_rental
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__start_date
@@ -580,24 +571,24 @@ msgstr "Data inizio"
 #: model:ir.model.fields,field_description:sale_rental.field_sale_rental__state
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
 msgid "State"
-msgstr ""
+msgstr "Stato"
 
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_stock_rule
 msgid "Stock Rule"
-msgstr ""
+msgstr "Regola di giacenza"
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/stock.py:60
 #, python-format
 msgid "The Rental Input stock location is not set on the warehouse {}"
-msgstr "La locazione \"Noleggio In\" non fa parte del magazzino {}"
+msgstr "L'ubicazione \"Noleggio In\" non fa parte del magazzino {}"
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/stock.py:64
 #, python-format
 msgid "The Rental Output stock location is not set on the warehouse {}"
-msgstr "La locazione \"Noleggio Out\" non fa parte del magazzino {}"
+msgstr "L'ubicazione \"Noleggio Out\" non fa parte del magazzino {}"
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/sale_order.py:267
@@ -628,7 +619,7 @@ msgstr ""
 #. module: sale_rental
 #: sql_constraint:sale.order.line:0
 msgid "The rental quantity must be positive or null."
-msgstr ""
+msgstr "La quantità a noleggio deve essere positiva o nulla."
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/product.py:39
@@ -655,6 +646,8 @@ msgstr "Magazzino"
 #: model:ir.model.fields,help:sale_rental.field_sale_rental__partner_id
 msgid "You can find a customer by its Name, TIN, Email or Internal Reference."
 msgstr ""
+"È possibile trovare un cliente per nome, P. IVA, e-mail o riferimento "
+"interno."
 
 #. module: sale_rental
 #: code:addons/sale_rental/models/sale_order.py:226
@@ -664,9 +657,9 @@ msgid ""
 "the stock location '{}' ! Make sure that you get some units back in the mean "
 "time or re-supply the stock location '{}'."
 msgstr ""
-"Si vuole noleggiare %.2f {}  ma sono solo disponibili %.2f {} nella "
-"locazione '{}'. Assicurarsi prima il rientro o procedere alla riallocazione "
-"di '{}'"
+"Si vuole noleggiare %.2f {} ma sono solo disponibili %.2f {} nell'ubicazione "
+"'{}'. Assicurarsi prima il rientro di alcune unità o procedere al "
+"rifornimento dell'ubicazione '{}'."
 
 #. module: sale_rental
 #: model:product.product,weight_uom_name:sale_rental.rent_consu_delivery_01
@@ -676,7 +669,7 @@ msgstr ""
 #: model:product.template,weight_uom_name:sale_rental.rent_product_product_20_product_template
 #: model:product.template,weight_uom_name:sale_rental.rent_product_product_25_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"
 
 #~ msgid "Rental of one Laptop E5023"
 #~ msgstr "Rental of one Laptop E5023"
