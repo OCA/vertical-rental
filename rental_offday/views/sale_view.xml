@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">rental_offday.view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="rental_base.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//group[@id='rental_times']//field[@name='product_uom_qty']"
+                position="before"
+            >
+                <div invisible="not show_offday">
+                    <field
+                        name="offday_number"
+                        class="oe_inline"
+                        string="Off-Time"
+                    /> Day(s)
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//form" position="inside">
+                <notebook invisible="not show_offday">
+                    <page name="offdays" string="Off-Days">
+                        <field name="show_offday" invisible="1" />
+                        <group>
+                            <group string="Fixed Off Days">
+                                <field name="fixed_offday_type" />
+                                <field name="fixed_offday_ids" nolabel="1" colspan="2">
+                                    <tree>
+                                        <field name="date" />
+                                        <field name="name" />
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="Additional Off Days">
+                                <label for="offday_date_start" string="Dates" />
+                                <div class="o_row" name="additional_offday_period">
+                                    <field
+                                        name="offday_date_start"
+                                        widget="daterange"
+                                        options="{'end_date_field': 'offday_date_end', 'always_range': '1'}"
+                                    />
+                                </div>
+                                <field name="add_additional_offdays" string="OK?" />
+                                <field name="add_offday_ids" nolabel="1" colspan="2">
+                                    <tree editable="bottom">
+                                        <field name="date" />
+                                        <field name="name" />
+                                    </tree>
+                                </field>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
