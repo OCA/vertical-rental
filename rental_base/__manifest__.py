@@ -20,6 +20,7 @@
     ],
     "data": [
         "security/ir.model.access.csv",
+        "security/rental_security.xml",
         "data/ir_sequence_data.xml",
         "data/order_type_data.xml",
         "data/product_uom_data.xml",
