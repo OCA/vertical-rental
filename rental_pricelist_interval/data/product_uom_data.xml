@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="product_uom_interval" model="uom.uom">
+        <field name="name">Interval(s)</field>
+        <field name="uom_type">bigger</field>
+        <field ref="uom.uom_categ_wtime" name="category_id" />
+        <field name="factor" eval="1.000" />
+    </record>
+</odoo>

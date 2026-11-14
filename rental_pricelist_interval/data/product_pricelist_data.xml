@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Price list -->
+    <record id="pricelist_interval" model="product.pricelist">
+        <field name="name">Public Pricelist (Interval)</field>
+        <field name="sequence">10</field>
+        <field name="is_interval_pricelist" eval="True" />
+    </record>
+
+    <!--
+    <record id="item1" model="product.pricelist.item">
+        <field name="base">rental_price_interval</field>
+        <field name="applied_on">3_global</field>
+        <field name="pricelist_id" ref="rental_pricelist_interval.pricelist_interval"/>
+        <field name="min_quantity">0</field>
+        <field name="compute_price">formula</field>
+    </record>
+    -->
+</odoo>
