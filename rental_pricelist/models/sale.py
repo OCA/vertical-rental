@@ -143,15 +143,15 @@ class SaleOrderLine(models.Model):
             res["warning"] = {
                 "title": _("Not enough stock!"),
                 "message": _(
-                    "You want to rent %(qty).2f %(product_name)s but you only "
-                    "have %(avail_qty).2f %(in_loc_name)s currently available on the "
+                    "You want to rent %(qty).2f %(uom_name)s but you only "
+                    "have %(avail_qty).2f %(uom_name)s currently available on the "
                     'stock location "%(in_loc_name)s"! Make sure that you '
                     "get some units back in the meantime or "
                     're-supply the stock location "%(in_loc_name)s".'
                 )
                 % {
                     "qty": self.rental_qty,
-                    "product_name": self.product_id.rented_product_id.uom_id.name,
+                    "uom_name": product_uom.name,
                     "avail_qty": in_location_available_qty,
                     "in_loc_name": rental_in_location.name,
                 },

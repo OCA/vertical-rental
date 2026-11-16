@@ -690,3 +690,26 @@ class TestRentalPricelist(RentalStockCommon):
         self.assertTrue(self.productA.product_rental_month_id.image_variant_1920)
         self.assertTrue(self.productA.product_rental_day_id.image_variant_1920)
         self.assertTrue(self.productA.product_rental_hour_id.image_variant_1920)
+
+    def test_08_not_enough_stock_warning(self):
+        line = (
+            self.env["sale.order.line"]
+            .with_context(type_id=self.rental_sale_type.id)
+            .new(
+                {
+                    "order_id": self.rental_order.id,
+                    "display_product_id": self.productA.id,
+                }
+            )
+        )
+        _run_sol_onchange_display_product_id(line)
+        line.rental_qty = 2
+        location = self.rental_order.warehouse_id.rental_in_location_id.name
+        message = line.rental_product_id_change()["warning"]["message"]
+        self.assertEqual(
+            message,
+            "You want to rent 2.00 Units but you only have 0.00 Units currently "
+            f'available on the stock location "{location}"! Make sure that you '
+            "get some units back in the meantime or re-supply the stock "
+            f'location "{location}".',
+        )
