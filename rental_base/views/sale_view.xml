@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Hide fields inserted by sale_rental module to move them to new location -->
+    <record id="sale_rental" model="ir.ui.view">
+        <field name="name">rental_base.sale_rental</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_rental.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='rental_type']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='extension_rental_id']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='can_sell_rental']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sell_rental_id']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Hide fields inserted by sale_start_end_dates module to move them to new location -->
+    <record id="sale_start_end_dates" model="ir.ui.view">
+        <field name="name">rental_base.sale_start_end_dates</field>
+        <field name="model">sale.order</field>
+        <field name="priority">110</field>
+        <!--Priority greater than 100-->
+        <field name="inherit_id" ref="sale_start_end_dates.view_order_form" />
+        <field name="arch" type="xml">
+            <!-- Use of position=replace: It is necessary to adjust view design -->
+            <field name="default_start_date" position="replace" />
+            <field name="default_end_date" position="replace" />
+            <field name="validity_date" position="after">
+                <field
+                    name="default_start_date"
+                    string="Service Period"
+                    widget="daterange"
+                    options="{'end_date_field': 'default_end_date'}"
+                />
+                <field name="default_end_date" invisible="True" />
+            </field>
+            <field name="number_of_days" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </field>
+        </field>
+    </record>
+
+    <!-- Hide fields inserted by sale_stock module to move them to new location -->
+    <record id="sale_stock" model="ir.ui.view">
+        <field name="name">rental_base.sale_stock</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_packaging_id']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Hide fields inserted by sale_order_type module to move them to new location -->
+    <record id="sale_order_type" model="ir.ui.view">
+        <field name="name">rental_base.sale_order_type</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_order_type.sot_view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type_id']" position="attributes">
+                <attribute name="invisible">True</attribute>
+                <attribute name="widget">radio</attribute>
+                <attribute name="options">{'horizontal': true}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">rental_base.view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <!-- Sale Order -->
+            <!-- Button Header -->
+            <xpath expr="//button[@name='action_confirm']" position="after">
+                <button
+                    name="%(action_update_sale_line_date)d"
+                    string="Update Times"
+                    type="action"
+                    invisible="state in ['draft', 'sent']"
+                />
+            </xpath>
+            <!-- Hide fields inserted by sale module to move them to new location -->
+            <xpath
+                expr="//group[@name='sales_person']//field[@name='client_order_ref']"
+                position="attributes"
+            >
+                <attribute name="invisible">True</attribute>
+            </xpath>
+
+            <!-- Sheet -->
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field
+                    name="type_id"
+                    string="Order Type"
+                    required="True"
+                    widget="radio"
+                    options="{'horizontal': true}"
+                />
+            </xpath>
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <separator colspan="2" />
+                <field name="client_order_ref" string="Order Reference" />
+            </xpath>
+
+            <!-- Sale Order Lines -->
+            <!-- Hide fields inserted by sale module to move them to new location -->
+            <xpath
+                expr="//group[field[@name='analytic_distribution']]"
+                position="attributes"
+            >
+                <attribute name="id">further_rental_info</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tax_id']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//label[@for='customer_lead']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//div[field[@name='customer_lead']]" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='analytic_distribution']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//label[@for='qty_delivered']" position="attributes">
+                <attribute
+                    name="invisible"
+                >rental or parent.state not in ['sale', 'done']</attribute>
+            </xpath>
+            <xpath expr="//div[field[@name='qty_delivered']]" position="attributes">
+                <attribute
+                    name="invisible"
+                >rental or parent.state not in ['sale', 'done']</attribute>
+            </xpath>
+            <xpath expr="//label[@for='qty_invoiced']" position="attributes">
+                <attribute
+                    name="invisible"
+                >rental or parent.state not in ['sale', 'done']</attribute>
+            </xpath>
+            <xpath expr="//div[field[@name='qty_invoiced']]" position="attributes">
+                <attribute
+                    name="invisible"
+                >rental or parent.state not in ['sale', 'done']</attribute>
+            </xpath>
+            <xpath expr="//label[@for='name']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath
+                expr="//page[@name='order_lines']//form//field[@name='name']"
+                position="attributes"
+            >
+                <attribute name="invisible">display_type == False</attribute>
+            </xpath>
+
+            <!-- Group: Order Information -->
+            <group invisible="display_type" position="attributes">
+                <attribute name="id">order_info</attribute>
+                <attribute name="string">Order Information</attribute>
+            </group>
+            <xpath expr="//label[@for='product_uom_qty']" position="attributes">
+                <attribute name="invisible">rental</attribute>
+            </xpath>
+            <xpath expr="//div[field[@name='product_uom_qty']]" position="attributes">
+                <attribute name="invisible">rental</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_uom']" position="attributes">
+                <attribute name="options">{'no_create': True}</attribute>
+            </xpath>
+
+            <xpath expr="//label[@for='product_id']" position="attributes">
+                <attribute name="string">Rental Product </attribute>
+                <attribute name="invisible">rental == False</attribute>
+                <attribute name="class">o_form_label</attribute>
+            </xpath>
+            <xpath expr="//label[@for='product_id']" position="before">
+                <label
+                    for="product_id"
+                    string="Product"
+                    class="o_form_label"
+                    invisible="rental != False"
+                />
+            </xpath>
+
+            <xpath expr="//field[@name='product_type']" position="before">
+                <label
+                    for="rental_qty"
+                    string="Rental Quantity"
+                    invisible="rental == False"
+                />
+                <div invisible="rental == False">
+                    <field name="rental_qty" required="rental" class="oe_inline" />
+                    <span>&amp;nbsp;</span>
+                    <field
+                        name="rental_qty_uom"
+                        groups="uom.group_uom"
+                        readonly="True"
+                        class="oe_inline"
+                    />
+                </div>
+                <field
+                    name="product_uom"
+                    string="Rental Time Unit"
+                    force_save="1"
+                    groups="uom.group_uom"
+                    options="{'no_create': True}"
+                    class="oe_inline oe_no_button"
+                    readonly="state in ['sale', 'done', 'cancel']"
+                    required="display_type == False"
+                    invisible="rental == False"
+                />
+            </xpath>
+            <xpath expr="//div[@name='discount']" position="after">
+                <separator
+                    id="description"
+                    string="Description"
+                    invisible="display_type != False"
+                    colspan="2"
+                />
+                <field name="name" nolabel="1" colspan="2" />
+            </xpath>
+
+            <xpath expr="//group[@id='further_rental_info']" position="inside">
+                <!-- Group: Rental Settings -->
+                <group id="rental_settings" string="Rental Settings" colspan="4">
+                    <field name="rental" invisible="True" />
+                    <field
+                        name="order_type"
+                        widget="radio"
+                        options="{'horizontal': True}"
+                    />
+                    <field
+                        name="rental_type"
+                        invisible="rental == False"
+                        required="rental"
+                    />
+                    <field
+                        name="extension_rental_id"
+                        options="{'no_quick_create': True, 'no_create_edit': True}"
+                        invisible="rental_type != 'rental_extension'"
+                        required="rental_type == 'rental_extension'"
+                        domain="[('rental_product_id', '=', product_id), ('state', 'in', ('ordered', 'out'))]"
+                    />
+                    <field name="can_sell_rental" invisible="True" />
+                    <field
+                        name="sell_rental_id"
+                        options="{'no_quick_create': True, 'no_create_edit': True}"
+                        invisible="can_sell_rental == False"
+                        domain="[('rented_product_id', '=', product_id), ('state', '=', 'out')]"
+                    />
+                </group>
+
+                <!-- Group: Rental Times -->
+                <group
+                    id="rental_times"
+                    string="Rental Times"
+                    colspan="4"
+                    invisible="rental == False"
+                >
+                    <field name="number_of_days" />
+                    <label for="product_uom_qty" string="Ordered Rental Time" />
+                    <div>
+                        <field
+                            name="product_uom_qty"
+                            context="{'partner_id':parent.partner_id,
+                                         'quantity':product_uom_qty,
+                                         'pricelist':parent.pricelist_id,
+                                         'uom':product_uom,
+                                         'uom_qty_change':True,
+                                         'company_id': parent.company_id}"
+                            class="oe_inline"
+                        />
+                        <span>&amp;nbsp;</span>
+                        <field
+                            name="product_uom"
+                            force_save="1"
+                            groups="uom.group_uom"
+                            class="oe_inline oe_no_button"
+                            readonly="True"
+                        />
+                    </div>
+                    <label
+                        for="qty_delivered"
+                        string="Delivered Rental Quantity"
+                        invisible="parent.state not in ['sale', 'done']"
+                    />
+                    <div invisible="parent.state not in ['sale', 'done']">
+                        <field
+                            name="qty_delivered"
+                            readonly="qty_delivered_method != 'manual'"
+                            class="oe_inline"
+                        />
+                        <span>&amp;nbsp;</span>
+                        <field
+                            name="rental_qty_uom"
+                            groups="uom.group_uom"
+                            readonly="True"
+                            class="oe_inline oe_no_button"
+                        />
+                    </div>
+                    <label
+                        for="qty_invoiced"
+                        string="Invoiced Rental Time"
+                        invisible="parent.state not in ['sale', 'done']"
+                    />
+                    <div invisible="parent.state not in ['sale', 'done']">
+                        <field
+                            name="qty_invoiced"
+                            invisible="parent.state not in ['sale', 'done']"
+                            class="oe_inline"
+                        />
+                        <span>&amp;nbsp;</span>
+                        <field
+                            name="product_uom"
+                            force_save="1"
+                            groups="uom.group_uom"
+                            class="oe_inline oe_no_button"
+                            readonly="True"
+                        />
+                    </div>
+                </group>
+
+                <!-- Group: Transport -->
+                <group id="rental_transport" string="Transport" colspan="4">
+                    <field
+                        name="product_packaging_id"
+                        invisible="product_id == False"
+                        context="{'default_product_id': product_id,
+                                     'list_view_ref':'product.product_packaging_tree_view',
+                                     'form_view_ref':'product.product_packaging_form_view',
+                                     }"
+                        domain="[('product_id','=',product_id)]"
+                        groups="product.group_stock_packaging"
+                    />
+                    <label for="customer_lead" />
+                    <div>
+                        <field name="customer_lead" class="oe_inline" /> Day(s)
+                    </div>
+                </group>
+
+                <!-- Group: Invoicing -->
+                <group id="rental_invoicing" string="Invoicing" colspan="4">
+                    <field
+                        name="tax_id"
+                        widget="many2many_tags"
+                        options="{'no_create': True}"
+                        context="{'search_view_ref': 'account.account_tax_view_search'}"
+                        domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
+                        readonly="qty_invoiced > 0"
+                    />
+                    <label
+                        for="analytic_distribution"
+                        groups="analytic.group_analytic_accounting"
+                    />
+                    <div>
+                        <field
+                            name="analytic_distribution"
+                            widget="analytic_distribution"
+                            groups="analytic.group_analytic_accounting"
+                            options="{'product_field': 'product_id', 'business_domain': 'sale_order'}"
+                        />
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sales_order_filter" model="ir.ui.view">
+        <field name="name">rental_base.sales_order_filter</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                <separator />
+                <filter
+                    string="Normal Order"
+                    domain="[('is_rental_order','=',False)]"
+                    name="is_normal_order"
+                />
+                <filter
+                    string="Rental Order"
+                    domain="[('is_rental_order','=',True)]"
+                    name="is_rental_order"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
