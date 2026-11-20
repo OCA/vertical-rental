@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo noupdate="1">
     <!-- Sequences for sale.order for rental-->
     <record id="seq_rental_order" model="ir.sequence">

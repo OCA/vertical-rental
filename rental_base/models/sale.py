@@ -1,10 +1,11 @@
 # Part of rental-vertical See LICENSE file for full copyright and licensing details.
+
 import datetime
 from math import ceil
 
-from odoo import _, api, exceptions, fields, models
+from odoo import api, exceptions, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools import float_round
+from odoo.tools import float_compare, float_round
 
 
 class SaleOrder(models.Model):
@@ -59,18 +60,80 @@ class SaleOrder(models.Model):
                     }
                 )
 
-    @api.depends("type_id")
+    @api.depends("partner_id", "company_id")
+    @api.depends_context("partner_id", "company_id", "company")
+    def _compute_sale_type_id(self):
+        """Keep the order type sticky when dependencies change.
+
+        sale_order_type recomputes ``type_id`` from ``partner_id`` /
+        ``company_id`` and always assigns a value, which silently replaces
+        the type set by the menu action (``default_type_id``) or a manual
+        selection as soon as the customer is entered or changed. Restore
+        the v12 behavior: the type is only determined while it is not set
+        yet (action context default first, then partner sale type, then
+        the first configured type) and is not overwritten afterwards.
+        """
+        for record in self:
+            if record.type_id:
+                continue
+            sale_type = record.default_get(["type_id"]).get("type_id", False)
+            if not sale_type:
+                sale_type = (
+                    record.partner_id.with_company(record.company_id).sale_type
+                    or record.partner_id.commercial_partner_id.with_company(
+                        record.company_id
+                    ).sale_type
+                )
+            if not sale_type:
+                sale_type = record._default_type_id()
+            record.type_id = sale_type
+
+    @api.depends("type_id", "type_id.is_rental_type")
     def _compute_is_rental_order(self):
-        try:
-            rental_type = self.sudo().env.ref("rental_base.rental_sale_type")
-        except ValueError:
-            for order in self:
-                order.is_rental_order = False
-            return
+        rental_type = self.sudo().env.ref(
+            "rental_base.rental_sale_type", raise_if_not_found=False
+        )
         for order in self:
-            order.is_rental_order = False
-            if order.type_id.id == rental_type.id:
-                order.is_rental_order = True
+            order.is_rental_order = bool(
+                order.type_id.is_rental_type
+                or (rental_type and order.type_id.id == rental_type.id)
+            )
+
+    is_rental_line = fields.Boolean(
+        compute="_compute_is_rental_line",
+        store=False,
+    )
+    is_of_rental_type = fields.Selection(
+        [("new_rental", "New Rental"), ("rental_extension", "Rental Extension")],
+        string="Rental Type (Mirror)",
+        compute="_compute_is_of_rental_type",
+        store=False,
+    )
+    is_can_sell_rental = fields.Boolean(
+        compute="_compute_is_can_sell_rental",
+        store=False,
+    )
+
+    @api.depends("order_line.rental")
+    def _compute_is_rental_line(self):
+        for order in self:
+            order.is_rental_line = any(line.rental for line in order.order_line)
+
+    @api.depends("order_line.rental_type", "order_line.rental")
+    def _compute_is_of_rental_type(self):
+        for order in self:
+            rental_line = next(
+                (line for line in order.order_line if line.rental and line.rental_type),
+                False,
+            )
+            order.is_of_rental_type = rental_line.rental_type if rental_line else False
+
+    @api.depends("order_line.can_sell_rental")
+    def _compute_is_can_sell_rental(self):
+        for order in self:
+            order.is_can_sell_rental = any(
+                line.can_sell_rental for line in order.order_line
+            )
 
     def unlink(self):
         for rec in self:
@@ -91,21 +154,9 @@ class SaleOrderLine(models.Model):
         related="product_id.rented_product_id.uom_id",
     )
 
-    start_date = fields.Date(
-        states={
-            "draft": [("readonly", False)],
-            "sent": [("readonly", False)],
-            "sale": [("readonly", False)],
-        }
-    )
+    start_date = fields.Date()
 
-    end_date = fields.Date(
-        states={
-            "draft": [("readonly", False)],
-            "sent": [("readonly", False)],
-            "sale": [("readonly", False)],
-        }
-    )
+    end_date = fields.Date()
 
     @api.constrains(
         "rental_type",
@@ -121,55 +172,76 @@ class SaleOrderLine(models.Model):
             if line.rental_type == "rental_extension":
                 if not line.extension_rental_id:
                     raise ValidationError(
-                        _(
-                            'Missing "Rental to Extend" on the sale order line'
-                            " with rental service %(name)s."
+                        self.env._(
+                            'Missing "Rental to Extend" on the sale order line '
+                            "with rental service %s."
                         )
-                        % {"name": line.product_id.name}
+                        % line.product_id.name
                     )
 
                 if line.rental_qty != line.extension_rental_id.rental_qty:
                     raise ValidationError(
-                        _(
-                            "On the sale order line with"
-                            " rental service %(name)s"
-                            " ,you are trying to extend a "
-                            "rental with a rental "
-                            "quantity (%(rental_qty)s) "
-                            "that is different from the quantity "
-                            "of the original rental "
-                            "(%(ext_rental_qty)s). "
-                            "This is not supported."
+                        self.env._(
+                            "On the sale order line with rental service %s, "
+                            "you are trying to extend a rental with a rental "
+                            "quantity (%s) that is different from the quantity "
+                            "of the original rental (%s). This is not supported."
                         )
-                        % {
-                            "name": line.product_id.name,
-                            "rental_qty": line.rental_qty,
-                            "ext_rental_qty": line.extension_rental_id.rental_qty,
-                        }
+                        % (
+                            line.product_id.name,
+                            line.rental_qty,
+                            line.extension_rental_id.rental_qty,
+                        )
                     )
             if line.rental_type in ("new_rental", "rental_extension"):
                 if not line.product_id.rented_product_id:
                     raise ValidationError(
-                        _(
+                        self.env._(
                             'On the "new rental" sale order line with product '
-                            '"%(name)s", we should have a rental service product!'
+                            '"%s", we should have a rental service product!'
                         )
-                        % {"name": line.product_id.name}
+                        % (line.product_id.name)
                     )
+                if (
+                    not self._context.get("allow_write", False)
+                    and line.start_date
+                    and line.end_date
+                    and line.start_date <= line.end_date
+                ):
+                    number_of_time_unit = line._get_number_of_time_unit()
+                    if (
+                        number_of_time_unit
+                        and line.product_uom_qty
+                        != line.rental_qty * number_of_time_unit
+                    ):
+                        raise ValidationError(
+                            self.env._(
+                                "On the sale order line with product '%s' "
+                                "the Product Quantity (%s) should be the "
+                                "number of time units (%s) "
+                                "multiplied by the Rental Quantity (%s)."
+                            )
+                            % (
+                                line.product_id.name,
+                                line.product_uom_qty,
+                                number_of_time_unit,
+                                line.rental_qty,
+                            )
+                        )
             elif line.sell_rental_id:
                 if line.product_uom_qty != line.sell_rental_id.rental_qty:
                     raise ValidationError(
-                        _(
-                            "On the sale order line with product %(name)s "
+                        self.env._(
+                            "On the sale order line with product %s "
                             "you are trying to sell a rented product with a "
-                            "quantity (%(qty)s) that is different from the rented "
-                            "quantity (%(sell_rental_qty)s). This is not supported."
+                            "quantity (%s) that is different from the rented "
+                            "quantity (%s). This is not supported."
                         )
-                        % {
-                            "name": line.product_id.name,
-                            "qty": line.product_uom_qty,
-                            "sell_rental_qty": line.sell_rental_id.rental_qty,
-                        }
+                        % (
+                            line.product_id.name,
+                            line.product_uom_qty,
+                            line.sell_rental_id.rental_qty,
+                        )
                     )
 
     # use this field to show the widget radio for field rental
@@ -192,17 +264,46 @@ class SaleOrderLine(models.Model):
     def _onchange_order_type(self):
         self.rental = self.order_type == "rental"
 
-    def _prepare_invoice_line(self, **optional_values):
-        self.ensure_one()
-        res = super()._prepare_invoice_line(**optional_values)
-        if self.product_id.income_analytic_account_id:
-            res["analytic_account_id"] = self.product_id.income_analytic_account_id.id
-        return res
+    @api.model
+    def _search_time_uom(self, factor_low, factor_high):
+        """Fallback when this module's own Month/Week uoM records are not present
+        (deployment dedupes them against migrated customer uoMs). The migrated
+        uoMs keep the same factor windows; smallest id wins to prefer first-created."""
+        return self.env["uom.uom"].search(
+            [
+                ("category_id", "=", self.env.ref("uom.uom_categ_wtime").id),
+                ("uom_type", "=", "bigger"),
+                ("factor", ">", factor_low),
+                ("factor", "<", factor_high),
+            ],
+            order="id",
+            limit=1,
+        )
 
     @api.model
     def _get_time_uom(self):
-        uom_month = self.env.ref("rental_base.product_uom_month")
-        uom_week = self.env.ref("rental_base.product_uom_week")
+        def _time_uom_by_factor(factor_low, factor_high):
+            return self.env["uom.uom"].search(
+                [
+                    ("category_id", "=", self.env.ref("uom.uom_categ_wtime").id),
+                    ("uom_type", "=", "bigger"),
+                    ("factor", ">", factor_low),
+                    ("factor", "<", factor_high),
+                ],
+                order="id",
+                limit=1,
+            )
+
+        # The deployment may keep migrated customer UoMs (same factor, different
+        # id) instead of this module's records. Resolve by factor within the
+        # expected window so the migrated UoMs are found; fall back to the
+        # module's own records. (issue #7190, staging data check 2026-10-27)
+        uom_month = self._search_time_uom(0.02, 0.05) or self.env.ref(
+            "rental_base.product_uom_month", raise_if_not_found=False
+        )
+        uom_week = self._search_time_uom(0.1, 0.2) or self.env.ref(
+            "rental_base.product_uom_week", raise_if_not_found=False
+        )
         uom_day = self.env.ref("uom.product_uom_day")
         uom_hour = self.env.ref("uom.product_uom_hour")
         return {
@@ -215,17 +316,40 @@ class SaleOrderLine(models.Model):
     def _get_number_of_time_unit(self):
         self.ensure_one()
         number = False
+        if not self.start_date or not self.end_date:
+            return number
         time_uoms = self._get_time_uom()
-        if self.product_uom.id == time_uoms["day"].id:
+        # Compare by factor instead of record id: deployments may keep migrated
+        # customer UoMs (same factor, different id) next to this module's records.
+        # (issue #7190, staging data check 2026-10-27)
+        if (
+            float_compare(
+                self.product_uom.factor, time_uoms["day"].factor, precision_digits=2
+            )
+            == 0
+        ):
             number = (self.end_date - self.start_date).days + 1
-        elif self.product_uom.id == time_uoms["hour"].id:
+        elif (
+            float_compare(
+                self.product_uom.factor, time_uoms["hour"].factor, precision_digits=2
+            )
+            == 0
+        ):
             number = ((self.end_date - self.start_date).days + 1) * 8
-        elif self.product_uom.id == time_uoms["month"].id:
-            # ref link to calculate months (why 30.4167 ?)
-            # https://www.checkyourmath.com/convert/time/days_months.php
+        elif (
+            float_compare(
+                self.product_uom.factor, time_uoms["month"].factor, precision_digits=2
+            )
+            == 0
+        ):
             number = ((self.end_date - self.start_date).days + 1) / 30.4167
             number = float_round(number, precision_rounding=1)
-        elif self.product_uom.id == time_uoms["week"].id:
+        elif (
+            float_compare(
+                self.product_uom.factor, time_uoms["week"].factor, precision_digits=2
+            )
+            == 0
+        ):
             number = ceil(((self.end_date - self.start_date).days + 1) / 7)
         return number
 
@@ -260,13 +384,14 @@ class SaleOrderLine(models.Model):
                             "draft",
                             "confirmed",
                             "waiting",
+                            "assigned",
                         ]:
                             raise exceptions.UserError(
-                                _(
-                                    "Outgoing shipment is in state %(state)s."
-                                    " You cannot change the start date anymore."
+                                self.env._(
+                                    "Outgoing shipment is in state %s. You "
+                                    "cannot change the start date anymore."
                                 )
-                                % {"state": rental.out_move_id.state}
+                                % rental.out_move_id.state
                             )
                         rental.out_move_id.date = datetime_start
                 if rentals and date_end:
@@ -277,13 +402,14 @@ class SaleOrderLine(models.Model):
                             "draft",
                             "confirmed",
                             "waiting",
+                            "assigned",
                         ]:
                             raise exceptions.UserError(
-                                _(
-                                    "Incoming shipment is in state %s."
-                                    " You cannot change the end date anymore."
+                                self.env._(
+                                    "Incoming shipment is in state %s. You "
+                                    "cannot change the end date anymore."
                                 )
-                                % {"state": rental.in_move_id.state}
+                                % rental.in_move_id.state
                             )
                         rental.in_move_id.date = datetime_end
 
@@ -316,7 +442,7 @@ class SaleOrderLine(models.Model):
                         and sol.start_date != values["start_date"]
                     ):
                         messages.append(
-                            _(
+                            self.env._(
                                 "You are not allowed to change the 'start date' "
                                 "in an order line of a confirmed order."
                             )
@@ -333,25 +459,22 @@ class SaleOrderLine(models.Model):
                         and sol.end_date != values["end_date"]
                     ):
                         messages.append(
-                            _(
+                            self.env._(
                                 "You are not allowed to change the 'end date' "
                                 "in an order line of a confirmed order."
                             )
                         )
                 if messages:
                     messages.append(
-                        _(
-                            "\nOrder: %(order)s\n"
-                            "Line with product: '%(product)s'\n\n"
+                        self.env._(
+                            "\nOrder: %s\n"
+                            "Line with product: '%s'\n\n"
                             "Please use instead the button 'Update Times' "
                             "in the order to correctly update the order "
                             "line's times, its timeline entry, contract and "
                             "its stock moves and pickings as required."
                         )
-                        % {
-                            "order": sol.order_id.name,
-                            "product": sol.product_id.display_name,
-                        }
+                        % (sol.order_id.name, sol.product_id.display_name)
                     )
                     raise exceptions.UserError("\n".join(messages))
         return super().write(values)

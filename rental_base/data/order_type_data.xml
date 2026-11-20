@@ -4,5 +4,6 @@
         <field name="name">Rental Order</field>
         <field name="warehouse_id" ref="stock.warehouse0" />
         <field name="sequence_id" ref="seq_rental_order" />
+        <field name="is_rental_type" eval="True" />
     </record>
 </odoo>

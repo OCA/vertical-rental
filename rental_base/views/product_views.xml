@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="product_template_form_view" model="ir.ui.view">
         <field name="model">product.template</field>
@@ -12,8 +12,8 @@
             </xpath>
             <xpath expr="//page[@name='sales']" position="attributes">
                 <attribute
-                    name="attrs"
-                >{'invisible': [('sale_ok','=',False), ('rental','=',False)]}</attribute>
+                    name="invisible"
+                >sale_ok == False and rental == False</attribute>
             </xpath>
         </field>
     </record>
@@ -27,7 +27,7 @@
                 <filter
                     name="rental"
                     string="Can be Rented"
-                    domain="[('rental','=',True), ('type','=','product')]"
+                    domain="[('rental','=',True), ('type','=','consu')]"
                 />
             </xpath>
         </field>
