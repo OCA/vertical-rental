@@ -33,7 +33,7 @@ class RentalStockCommon(common.TransactionCase):
     def _create_rental_service_day(cls, product):
         values = {
             "hw_product_id": product.id,
-            "name": "Rental of %s (Day)" % product.name,
+            "name": f"Rental of {product.name} (Day)",
             "categ_id": product.categ_id.id,
             "copy_image": True,
         }

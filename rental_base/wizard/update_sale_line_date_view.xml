@@ -3,7 +3,6 @@
 Part of rental-vertical See LICENSE file for full copyright and licensing details.
 -->
 <odoo>
-
     <record id="update_sale_line_date_form" model="ir.ui.view">
         <field name="name">update.sale.line.date.form</field>
         <field name="model">update.sale.line.date</field>
@@ -66,5 +65,4 @@ Part of rental-vertical See LICENSE file for full copyright and licensing detail
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-
 </odoo>
