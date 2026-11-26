@@ -4,23 +4,24 @@
         <field name="name">Sales Orders</field>
         <field
             name="context"
-            eval="{'default_type_id': ref('sale_order_type.normal_sale_type')}"
+            eval="{'default_type_id': ref('sale_order_type.normal_sale_type'), 'search_default_is_normal_order': 1}"
         />
-        <field
-            name="domain"
-            eval="[('type_id','!=', ref('rental_sale_type')), ('state', 'not in', ('draft', 'sent'))]"
-        />
+        <field name="domain" eval="[('state', 'not in', ('draft', 'sent'))]" />
     </record>
 
     <record id="sale.action_quotations" model="ir.actions.act_window">
         <field name="name">Sales Quotations</field>
         <field
             name="context"
-            eval="{'search_default_my_quotation': 1, 'default_type_id': ref('sale_order_type.normal_sale_type')}"
+            eval="{'search_default_my_quotation': 1, 'default_type_id': ref('sale_order_type.normal_sale_type'), 'search_default_is_normal_order': 1}"
         />
+        <field name="domain" eval="[('state', 'in', ('draft', 'sent', 'cancel'))]" />
+    </record>
+
+    <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
         <field
-            name="domain"
-            eval="[('type_id','!=', ref('rental_sale_type')), ('state', 'in', ('draft', 'sent', 'cancel'))]"
+            name="context"
+            eval="{'search_default_my_quotation': 1, 'default_type_id': ref('sale_order_type.normal_sale_type'), 'search_default_is_normal_order': 1}"
         />
     </record>
 
@@ -30,11 +31,11 @@
         <field name="res_model">sale.order</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
         <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale" />
-        <field name="context" eval="{'default_type_id': ref('rental_sale_type')}" />
         <field
-            name="domain"
-            eval="[('type_id','=', ref('rental_sale_type')), ('state', 'not in', ('draft', 'sent'))]"
+            name="context"
+            eval="{'default_type_id': ref('rental_sale_type'), 'search_default_is_rental_order': 1}"
         />
+        <field name="domain" eval="[('state', 'not in', ('draft', 'sent'))]" />
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new quotation, the first step of a new sale!
@@ -51,11 +52,11 @@
         <field name="res_model">sale.order</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
         <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale" />
-        <field name="context" eval="{'default_type_id': ref('rental_sale_type')}" />
         <field
-            name="domain"
-            eval="[('type_id','=', ref('rental_sale_type')), ('state', 'in', ['draft', 'sent', 'cancel'])]"
+            name="context"
+            eval="{'default_type_id': ref('rental_sale_type'), 'search_default_is_rental_order': 1}"
         />
+        <field name="domain" eval="[('state', 'in', ['draft', 'sent', 'cancel'])]" />
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new quotation, the first step of a new sale!
@@ -80,6 +81,7 @@
         name="Rentals"
         id="menu_rental_root"
         sequence="5"
+        groups="group_rental_menu"
         web_icon="rental_base,static/description/icon.png"
     />
 

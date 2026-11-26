@@ -2,10 +2,11 @@
 
 {
     "name": "Rental Base",
-    "version": "17.0.1.0.0",
+    "version": "17.0.1.1.0",
     "category": "Rental",
     "summary": "Manage Rental of Products",
     "author": "elego Software Solutions GmbH, Odoo Community Association (OCA)",
+    "maintainers": ["edescalona", "szalatyzuzanna"],
     "website": "https://github.com/OCA/vertical-rental",
     "depends": [
         "base",
@@ -20,6 +21,7 @@
     ],
     "data": [
         "security/ir.model.access.csv",
+        "security/rental_security.xml",
         "data/ir_sequence_data.xml",
         "data/order_type_data.xml",
         "data/product_uom_data.xml",
@@ -32,6 +34,7 @@
     ],
     "demo": [],
     "qweb": [],
+    "development_status": "Beta",
     "installable": True,
     "application": True,
     "license": "AGPL-3",
